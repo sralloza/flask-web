@@ -1,17 +1,17 @@
 import pytest
-from flask import url_for, current_app
+from flask import url_for
 
-from my_app import create_app
+from app import create_app
 
 
 @pytest.fixture
 def app():
-    app = create_app(config_object='config.TestingConfig')
+    app = create_app(config_object='app.config.TestingConfig')
     return app
 
 
 def test_api_ping(client):
-    # res = client.get(url_for('index'))
-    # assert res == 0
-
-     print(current_app.url_map)
+    assert client.get(url_for('base.index', _external=True)).status_code == 302
+    assert client.get(url_for('base.menus', _external=True)).status_code == 302
+    assert client.get(url_for('base.aemet', _external=True)).status_code == 302
+    assert client.get(url_for('static', filename='peter.pdf', _external=True)).status_code == 404

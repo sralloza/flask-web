@@ -10,6 +10,6 @@ import logging
 logging.basicConfig(stream=sys.stderr)
 
 sys.path.insert(0, '/home/server/www/')
-from my_app import app as application
+from app import app as application
 application.secret_key = 'secret key'
 
