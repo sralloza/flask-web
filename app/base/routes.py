@@ -1,8 +1,17 @@
 import requests
 from bs4 import BeautifulSoup as Soup
-from flask import redirect, current_app, url_for
+from flask import redirect, current_app, url_for, request
 
 from . import blue
+
+
+@blue.before_request
+def before_request():
+    user_agent = request.headers.get('User-Agent').lower()
+    if 'rift' in user_agent:
+        return 'Rift not allowed', 401
+    if 'python' in user_agent:
+        return 'Python requests not allowed', 401
 
 
 @blue.route('/favicon.ico')

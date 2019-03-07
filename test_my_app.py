@@ -1,5 +1,6 @@
 import pytest
 from flask import url_for
+from flask.testing import FlaskClient
 
 from app import create_app
 
@@ -8,6 +9,18 @@ from app import create_app
 def app():
     app = create_app(config_object='app.config.TestingConfig')
     return app
+
+
+def test_useragent_block(client: FlaskClient):
+    index_url = url_for('base.index', _external=True)
+
+    assert client.get(index_url, headers={
+        'User-Agent': 'python-requests/2.21.0', 'Accept-Encoding': 'gzip, deflate',
+        'Accept': '*/*', 'Connection': 'keep-alive'}).status_code == 401
+
+    assert client.get(index_url, headers={
+        'User-Agent': 'Rift/2.0', 'Accept-Encoding': 'gzip, deflate',
+        'Accept': '*/*', 'Connection': 'keep-alive'}).status_code == 401
 
 
 def test_index_ping(client):
