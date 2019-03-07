@@ -1,12 +1,22 @@
 import requests
 from bs4 import BeautifulSoup as Soup
-from flask import redirect, current_app
+from flask import redirect, current_app, url_for
 
 from . import blue
 
 
+@blue.route('/favicon.ico')
+def favicon():
+    return redirect(url_for('static', filename='favicon.png'))
+
+
 @blue.route('/')
 def index():
+    return redirect('menus')
+
+
+@blue.route('/m')
+def redirect_menus():
     return redirect('menus')
 
 
@@ -38,3 +48,8 @@ def feedback():
 def aemet():
     return redirect(
         'http://www.aemet.es/es/eltiempo/prediccion/municipios/horas/tabla/valladolid-id47186')
+
+
+@blue.route('/a')
+def redirect_aemet():
+    return redirect('aemet')
