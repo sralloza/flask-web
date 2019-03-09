@@ -30,7 +30,7 @@ def favicon():
 
 @blue.route('/')
 def index():
-    return redirect('menus')
+    return redirect(url_for('new_menus.new_menus_view'))
 
 
 @blue.route('/m')

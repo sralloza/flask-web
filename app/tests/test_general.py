@@ -15,11 +15,6 @@ def test_useragent_block(client: FlaskClient):
         'Accept': '*/*', 'Connection': 'keep-alive'}).status_code == 401
 
 
-def test_index_ping(client):
-    r_index = client.get(url_for('base.index', _external=True))
-    assert r_index.status_code == 302
-    assert r_index.location == url_for('base.menus', _external=True)
-
 
 def test_menus_ping(client):
     r_menus = client.get(url_for('base.menus', _external=True))
@@ -57,5 +52,6 @@ def test_static_ping(client):
 
 
 def test_new_menus_ping(client):
-    r_new_menus = client.get(url_for('new_menus.new_menus', _external=True))
+    r_new_menus = client.get(url_for('new_menus.new_menus_view', _external=True))
     assert r_new_menus.status_code == 200
+
