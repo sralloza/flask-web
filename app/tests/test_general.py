@@ -2,14 +2,6 @@ import pytest
 from flask import url_for
 from flask.testing import FlaskClient
 
-from app import create_app
-
-
-@pytest.fixture
-def app():
-    app = create_app(config_object='app.config.TestingConfig')
-    return app
-
 
 def test_useragent_block(client: FlaskClient):
     index_url = url_for('base.index', _external=True)

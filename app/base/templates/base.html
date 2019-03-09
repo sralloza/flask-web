@@ -1,0 +1,50 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}SrAlloza's Server{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <!--<li><a href="">Cambiar nombres</a></li>-->
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<{% block content %}
+{{super()}}
+<div class="container">
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{category}}">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% block page_content %}{% endblock %}
+</div>
+
+{% block footer %}
+<footer class="page-footer font-small blue bg-dark">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">
+      <br><br>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+{% endblock %}
+{% endblock %}

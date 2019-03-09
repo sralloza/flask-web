@@ -1,17 +1,26 @@
+import logging
+
 import requests
 from bs4 import BeautifulSoup as Soup
 from flask import redirect, current_app, url_for, request
 
 from . import blue
 
+logger = logging.getLogger(__name__)
+
 
 @blue.before_request
 def before_request():
     user_agent = request.headers.get('User-Agent').lower()
     if 'rift' in user_agent:
+        logger.debug('Detected Rift as user agent (%r)', request.headers.get('User-Agent'))
         return 'Rift not allowed', 401
     if 'python' in user_agent:
+        logger.debug('Detected Python as user agent (%r)', request.headers.get('User-Agent'))
         return 'Python requests not allowed', 401
+    if user_agent == '-':
+        logger.debug('Not user agent provided (%r)', request.headers.get('User-Agent'))
+        return 'A user agent must be provided', 401
 
 
 @blue.route('/favicon.ico')
@@ -45,6 +54,7 @@ def menus():
         redirect_url = container[0].a['href']
         return redirect(redirect_url)
     except Exception:
+        logger.exception('Failed detecting this week\'s menus url')
         return redirect(principal_url)
 
 

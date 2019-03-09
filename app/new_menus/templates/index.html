@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block page_content %}
+<div class="container text-center">
+    <h1 style="color: #0088ff;" class="text-center  my-5">
+        Menús
+    </h1>
+    <div>
+        <table class="table table-hover table-light text-dark table-responsive table-striped">
+            <tr style="background-color: orange;">
+                <th scope="col" class="align-middle">
+                    Día
+                </th>
+                <th scope="col" class="align-middle">
+                    Comida plato 1
+                </th>
+                <th scope="col" class="align-middle">
+                    Comida plato 2
+                </th>
+                <th scope="col" class="align-middle">
+                    Cena plato 1
+                </th>
+                <th scope="col" class="align-middle">
+                    Cena plato 2
+                </th>
+            </tr>
+            {% for menu in menus %}
+            <tr class="{{ menu.code }}">
+                <th scope="row" class="dia align-middle">
+                    {{ menu.format_date() }}
+                </th>
+                <td class="text-center align-middle">
+                    {{ menu.lunch.p1 }}
+                </td>
+                <td class="text-center align-middle">
+                    {{ menu.lunch.p2 }}
+                </td>
+                <td class="text-center align-middle">
+                    {{ menu.dinner.p1 }}
+                </td>
+                <td class="text-center align-middle">
+                    {{ menu.dinner.p2 }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<style type="text/css">
+.dia {
+    white-space: nowrap;
+}
+</style>
+
+{% endblock %}
