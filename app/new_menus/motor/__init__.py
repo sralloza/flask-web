@@ -2,7 +2,6 @@ import logging
 import re
 from datetime import datetime, date
 from threading import Lock, Thread
-from typing import List
 
 import requests
 from bs4 import BeautifulSoup as Soup
@@ -47,13 +46,13 @@ class Functions:
 
 
 class DailyMenusManager:
-    _day_pattern: re.Pattern = re.compile(
+    _day_pattern = re.compile(
         r'día: (?P<day>\d+) de (?P<month>\w+) de (?P<year>\d{4}) \((?P<weekday>\w+)\)',
         re.IGNORECASE)
 
     _fix_dates_pattern = re.compile(r'(\w+)\n(\d{4})', re.I)
 
-    ignore_patters: List[re.Pattern] = (
+    ignore_patters = (
         re.compile(r'\d+\.\s\w+\s\d+', re.IGNORECASE),
         re.compile(r'semana del \d+ al \d+ de \w+', re.IGNORECASE),
         re.compile(r'semana del \d+ de \w+ al \d+ de \w+ \d+', re.IGNORECASE)
