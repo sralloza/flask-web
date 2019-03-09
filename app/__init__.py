@@ -12,7 +12,7 @@ logging.basicConfig(filename='flask_app.log', level=logging.DEBUG,
 
 werkzeug = logging.getLogger('werkzeug')
 werkzeug.handlers = []
-werkzeug_handler = logging.FileHandler('flask-access.log', encoding='utf-8')
+werkzeug_handler = logging.FileHandler('./flask-access.log', encoding='utf-8')
 werkzeug_handler.setFormatter(logging.Formatter(fmt='%(asctime)s] %(levelname)s - %(message)s'))
 werkzeug.addHandler(werkzeug_handler)
 
