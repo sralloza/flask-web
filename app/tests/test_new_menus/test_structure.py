@@ -254,6 +254,46 @@ class TestMeal:
 
 class TestDailyMenu:
 
+    def test_e_to_s(self):
+        test = DailyMenu.e_to_s
+        assert test('12 february 2016 tuesday') == '12 febrero 2016 martes'
+        assert test('16 january friday') == '16 enero viernes'
+        assert test('16 january friday') == '16 enero viernes'
+        assert test('día: 25 de february de 2019 (monday)') == 'día: 25 de febrero de 2019 (lunes)'
+        assert test('13 de december de 2016 (tuesday)') == '13 de diciembre de 2016 (martes)'
+        assert test('13 de january de 2017 (friday)') == '13 de enero de 2017 (viernes)'
+        assert test('23 de february de 2017 (thursday)') == '23 de febrero de 2017 (jueves)'
+        assert test('6 de march de 2017 (monday)') == '6 de marzo de 2017 (lunes)'
+        assert test('9 de april de 2017 (sunday)') == '9 de abril de 2017 (domingo)'
+        assert test('30 de may de 2017 (tuesday)') == '30 de mayo de 2017 (martes)'
+        assert test('28 de june de 2017 (wednesday)') == '28 de junio de 2017 (miércoles)'
+        assert test('14 de july de 2017 (friday)') == '14 de julio de 2017 (viernes)'
+        assert test('15 de august de 2017 (tuesday)') == '15 de agosto de 2017 (martes)'
+        assert test('22 de september de 2017 (friday)') == '22 de septiembre de 2017 (viernes)'
+        assert test('16 de october de 2017 (monday)') == '16 de octubre de 2017 (lunes)'
+        assert test('7 de november de 2017 (tuesday)') == '7 de noviembre de 2017 (martes)'
+        assert test('13 de december de 2017 (wednesday)') == '13 de diciembre de 2017 (miércoles)'
+
+    def test_s_to_e(self):
+        test = DailyMenu.s_to_e
+        assert test('12 febrero 2016 martes') == '12 february 2016 tuesday'
+        assert test('16 enero viernes') == '16 january friday'
+        assert test('16 enero viernes') == '16 january friday'
+        assert test('día: 25 de febrero de 2019 (lunes)') == 'día: 25 de february de 2019 (monday)'
+        assert test('13 de diciembre de 2016 (martes)') == '13 de december de 2016 (tuesday)'
+        assert test('13 de enero de 2017 (viernes)') == '13 de january de 2017 (friday)'
+        assert test('23 de febrero de 2017 (jueves)') == '23 de february de 2017 (thursday)'
+        assert test('6 de marzo de 2017 (lunes)') == '6 de march de 2017 (monday)'
+        assert test('9 de abril de 2017 (domingo)') == '9 de april de 2017 (sunday)'
+        assert test('30 de mayo de 2017 (martes)') == '30 de may de 2017 (tuesday)'
+        assert test('28 de junio de 2017 (miércoles)') == '28 de june de 2017 (wednesday)'
+        assert test('14 de julio de 2017 (viernes)') == '14 de july de 2017 (friday)'
+        assert test('15 de agosto de 2017 (martes)') == '15 de august de 2017 (tuesday)'
+        assert test('22 de septiembre de 2017 (viernes)') == '22 de september de 2017 (friday)'
+        assert test('16 de octubre de 2017 (lunes)') == '16 de october de 2017 (monday)'
+        assert test('7 de noviembre de 2017 (martes)') == '7 de november de 2017 (tuesday)'
+        assert test('13 de diciembre de 2017 (miércoles)') == '13 de december de 2017 (wednesday)'
+
     # noinspection PyAttributeOutsideInit
     @pytest.fixture
     def init(self):

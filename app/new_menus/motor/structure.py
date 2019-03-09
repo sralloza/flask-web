@@ -1,5 +1,5 @@
-import locale
 import logging
+import re
 import warnings
 from datetime import datetime, date
 from typing import Union
@@ -8,7 +8,6 @@ from sqlalchemy.exc import IntegrityError
 
 from app.new_menus.models import DailyMenu as DailyMenuDB, db
 
-locale.setlocale(locale.LC_ALL, 'spanish')
 logger = logging.getLogger(__name__)
 
 
@@ -151,6 +150,22 @@ class Meal:
 
 
 class DailyMenu:
+    _e_to_s_weekdays = {'monday': 'lunes', 'tuesday': 'martes', 'wednesday': 'miércoles',
+                        'thursday': 'jueves', 'friday': 'viernes', 'saturday': 'sábado',
+                        'sunday': 'domingo'}
+    _s_to_e_weekdays = {'lunes': 'monday', 'martes': 'tuesday', 'miércoles': 'wednesday',
+                        'jueves': 'thursday', 'viernes': 'friday', 'sábado': 'saturday',
+                        'domingo': 'sunday'}
+
+    _e_to_s_months = {'january': 'enero', 'february': 'febrero', 'march': 'marzo', 'april': 'abril',
+                      'may': 'mayo', 'june': 'junio', 'july': 'julio', 'august': 'agosto',
+                      'september': 'septiembre', 'october': 'octubre', 'november': 'noviembre',
+                      'december': 'diciembre'}
+    _s_to_e_months = {'enero': 'january', 'febrero': 'february', 'marzo': 'march', 'abril': 'april',
+                      'mayo': 'may', 'junio': 'june', 'julio': 'july', 'agosto': 'august',
+                      'septiembre': 'september', 'octubre': 'october', 'noviembre': 'november',
+                      'diciembre': 'december'}
+
     def __init__(self, day: int, month: int, year: int, lunch: Meal = None, dinner: Meal = None):
         self.day = day
         self.month = month
@@ -159,7 +174,7 @@ class DailyMenu:
         self.dinner = dinner or Meal()
 
         self.date = date(self.year, self.month, self.day)
-        self.weekday = self.date.strftime('%A').capitalize()
+        self.weekday = self._e_to_s_weekdays[self.date.strftime('%A').lower()]
         self.id = int(f'{self.year:04d}{self.month:02d}{self.day:02d}')
 
     def __eq__(self, other):
@@ -212,6 +227,28 @@ class DailyMenu:
     def to_html(self):
         return self.to_string().replace('\n', '<br>')
 
+    @staticmethod
+    def e_to_s(text):
+        text = text.lower()
+        for key, value in DailyMenu._e_to_s_months.items():
+            text = re.sub(key, value, text, re.I)
+
+        for key, value in DailyMenu._e_to_s_weekdays.items():
+            text = text.replace(key, value)
+
+        return text
+
+    @staticmethod
+    def s_to_e(text):
+        text = text.lower()
+        for key, value in DailyMenu._s_to_e_months.items():
+            text = re.sub(key, value, text, re.I)
+
+        for key, value in DailyMenu._s_to_e_weekdays.items():
+            text = text.replace(key, value)
+
+        return text
+
     @classmethod
     def from_datetime(cls, dt: Union[datetime, str, date]):
         self = DailyMenu.__new__(DailyMenu)
@@ -220,7 +257,7 @@ class DailyMenu:
             dt = dt.lower()
             dt = dt.replace('miercoles', 'miércoles')
             dt = dt.replace('sabado', 'sábado')
-            dt = datetime.strptime(dt, 'día: %d de %B de %Y (%A)')
+            dt = datetime.strptime(self.s_to_e(dt), 'día: %d de %B de %Y (%A)')
 
         if not isinstance(dt, (datetime, date)):
             raise TypeError(f'dt must be datetime or str, not {type(dt).__name__}')
@@ -230,7 +267,7 @@ class DailyMenu:
         return self
 
     def format_date(self):
-        return self.date.strftime('%d de %B de %Y (%A)')
+        return self.e_to_s(self.date.strftime('%d de %B de %Y (%A)'))
 
     def update(self, **kwargs):
         lunch = kwargs.pop('lunch', None)

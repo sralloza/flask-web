@@ -168,7 +168,7 @@ class DailyMenusManager:
 
                 day = int(search.group('day'))
                 month = search.group('month')
-                month = datetime.strptime(month.lower(), '%B').month
+                month = datetime.strptime(DailyMenu.s_to_e(month.lower()), '%B').month
                 year = int(search.group('year'))
 
                 index.set_date(date(year, month, day))

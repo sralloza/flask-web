@@ -1,3 +1,4 @@
+sqlalchemy
 beautifulsoup4
 requests
 pytest
@@ -9,4 +10,3 @@ MarkupSafe
 Werkzeug
 Flask-Bootstrap
 flask-sqlalchemy
-pytest-flask
