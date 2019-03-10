@@ -76,7 +76,7 @@ class DailyMenusManager:
 
     def sort(self):
         logger.debug('Sorting menus')
-        self.menus.sort(key=lambda x: x.date)
+        self.menus.sort(key=lambda x: x.date, reverse=True)
 
     def to_string(self):
         return '\n'.join([x.to_string() for x in self.menus])
