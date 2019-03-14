@@ -11,6 +11,9 @@ logger = logging.getLogger(__name__)
 
 @blue.before_request
 def before_request():
+    if request.headers.get('User-Agent') is None:
+        return 'A user agent must be provided', 401
+
     user_agent = request.headers.get('User-Agent').lower()
     if 'rift' in user_agent:
         logger.debug('Detected Rift as user agent (%r)', request.headers.get('User-Agent'))
