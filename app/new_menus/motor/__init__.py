@@ -10,8 +10,6 @@ from app.new_menus.models import DailyMenu as DailyMenuDB
 from .get_urls import get_menus_urls
 from .structure import DailyMenu, _Index
 
-# TODO get menus url
-
 logger = logging.getLogger()
 
 
@@ -38,6 +36,8 @@ class Functions:
         if 'postre' in x:
             return False
         if 'tag' in x:
+            return False
+        if 'cocina' in x:
             return False
         for pattern in DailyMenusManager.ignore_patters:
             if pattern.search(x) is not None:
