@@ -1,4 +1,4 @@
-from flask import render_template, redirect
+from flask import render_template, redirect, url_for
 
 from app.new_menus.motor import DailyMenusManager
 from . import new_menus
@@ -17,3 +17,12 @@ def new_menus_view():
 @new_menus.route('/new_menus')
 def new_menus_redirect():
     return redirect('new-menus')
+
+@new_menus.route('/new-menus/reload')
+def new_menus_reload():
+    dmm = DailyMenusManager.load(force=True)
+
+    for menu in dmm:
+        menu.to_database()
+
+    return redirect(url_for('new_menus.new_menus_view', _external=True))

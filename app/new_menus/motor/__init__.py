@@ -92,13 +92,13 @@ class DailyMenusManager:
                 self.menus += [menus, ]
 
     @classmethod
-    def load(cls):
+    def load(cls, force=False):
         self = DailyMenusManager.__new__(cls)
         self.__init__()
         self.load_from_database()
 
         today = datetime.today().date()
-        if today not in self:
+        if today not in self or force:
             self.load_from_menus_urls()
             self.save_to_database()
 
