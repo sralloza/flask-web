@@ -10,35 +10,35 @@
                 <th scope="col" class="align-middle">
                     Día
                 </th>
-                <th scope="col" class="align-middle">
+                <th scope="col" class="text-center align-middle">
                     Comida plato 1
                 </th>
-                <th scope="col" class="align-middle">
+                <th scope="col" class="text-center align-middle">
                     Comida plato 2
                 </th>
-                <th scope="col" class="align-middle">
+                <th scope="col" class="text-center align-middle">
                     Cena plato 1
                 </th>
-                <th scope="col" class="align-middle">
+                <th scope="col" class="text-center align-middle">
                     Cena plato 2
                 </th>
             </tr>
             {% for menu in menus %}
             <tr class="{{ menu.code }}">
-                <th scope="row" class="dia align-middle">
+                <th scope="row" class="align-middle">
                     {{ menu.format_date() }}
                 </th>
                 <td class="text-center align-middle">
-                    {{ menu.lunch.p1 }}
+                    {{ menu.lunch.p1 or '-' }}
                 </td>
                 <td class="text-center align-middle">
-                    {{ menu.lunch.p2 }}
+                    {{ menu.lunch.p2 or '-' }}
                 </td>
                 <td class="text-center align-middle">
-                    {{ menu.dinner.p1 }}
+                    {{ menu.dinner.p1 or '-' }}
                 </td>
                 <td class="text-center align-middle">
-                    {{ menu.dinner.p2 }}
+                    {{ menu.dinner.p2 or '-' }}
                 </td>
             </tr>
             {% endfor %}
@@ -49,6 +49,7 @@
 <style type="text/css">
 .dia {
     white-space: nowrap;
+    background: #00ff00;
 }
 </style>
 
