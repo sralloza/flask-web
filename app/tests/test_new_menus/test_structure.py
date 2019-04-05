@@ -57,31 +57,31 @@ class TestIndex:
     def test_is_actual_meal_empty(self, init):
         assert init
 
-        assert self.i02.is_actual_meal_empty()
-        assert self.i04.is_actual_meal_empty()
-        assert self.i06.is_actual_meal_empty()
-        assert not self.i08.is_actual_meal_empty()
-        assert not self.i10.is_actual_meal_empty()
-        assert self.i12.is_actual_meal_empty()
-        assert not self.i14.is_actual_meal_empty()
-        assert not self.i16.is_actual_meal_empty()
+        assert self.i02.is_current_meal_empty()
+        assert self.i04.is_current_meal_empty()
+        assert self.i06.is_current_meal_empty()
+        assert not self.i08.is_current_meal_empty()
+        assert not self.i10.is_current_meal_empty()
+        assert self.i12.is_current_meal_empty()
+        assert not self.i14.is_current_meal_empty()
+        assert not self.i16.is_current_meal_empty()
 
         with pytest.raises(MealError, match='Meal_type is None'):
-            assert self.i01.is_actual_meal_empty()
+            assert self.i01.is_current_meal_empty()
         with pytest.raises(MealError, match='Meal_type is None'):
-            assert self.i03.is_actual_meal_empty()
+            assert self.i03.is_current_meal_empty()
         with pytest.raises(MealError, match='Meal_type is None'):
-            assert self.i05.is_actual_meal_empty()
+            assert self.i05.is_current_meal_empty()
         with pytest.raises(MealError, match='Meal_type is None'):
-            assert self.i07.is_actual_meal_empty()
+            assert self.i07.is_current_meal_empty()
         with pytest.raises(MealError, match='Meal_type is None'):
-            assert not self.i09.is_actual_meal_empty()
+            assert not self.i09.is_current_meal_empty()
         with pytest.raises(MealError, match='Meal_type is None'):
-            assert not self.i11.is_actual_meal_empty()
+            assert not self.i11.is_current_meal_empty()
         with pytest.raises(MealError, match='Meal_type is None'):
-            assert not self.i13.is_actual_meal_empty()
+            assert not self.i13.is_current_meal_empty()
         with pytest.raises(MealError, match='Meal_type is None'):
-            assert not self.i15.is_actual_meal_empty()
+            assert not self.i15.is_current_meal_empty()
 
     def test_decide(self, init):
         assert init
