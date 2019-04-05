@@ -15,6 +15,10 @@ class MealError(Exception):
     """Meal error."""
 
 
+class MealWarning(Warning):
+    """Meal warning."""
+
+
 class _Index:
     """Represents the interface to store temporal values of a DailyMenu."""
     _valid_states = ('LUNCH', 'DINNER')
@@ -81,7 +85,13 @@ class _Index:
         """Sets a new date."""
         self._date = new_date
 
-    def is_actual_meal_empty(self):
+    def is_current_meal_empty(self):
+        """Detects if the actual meal is empty.
+
+        Raises
+            MealError: if no state is configured.
+        """
+
         if self._state == 'LUNCH':
             return self._lunch.is_empty()
         elif self._state == 'DINNER':
@@ -91,17 +101,39 @@ class _Index:
         raise MealError(f'Invalid value for meal_type: {self._state}')
 
     def decide(self, text: str):
-        if self.is_actual_meal_empty():
+        """Called if the normal algorithm couldn't idenfity content.
+
+        If the current meal is emtpy, it will asssume content is the fist plate. Otherwise, a
+        warning will be raised.
+
+        Warnings:
+            MealWarning: if the current meal is not empty, which means that the secondary
+                algorithm couldn't make a decition.
+        """
+
+        if self.is_current_meal_empty():
             return self.set_first(text)
         else:
-            warnings.warn(f'Could not decide: {text}', stacklevel=2)
+            warnings.warn(f'Could not decide: {text}', MealWarning, stacklevel=2)
 
     def set_state(self, meal_type):
+        """Sets the actual state.
+
+        Raises:
+            ValueError: if the meal_type is invalid.
+        """
+
         if meal_type not in self._valid_states:
             raise ValueError('Invalid meal type: %s from %r'.format(meal_type, self._valid_states))
         self._state = meal_type
 
     def set_first(self, first):
+        """Sets the first plate.
+
+        Raises:
+            ValueError: if the meal_type is invalid.
+        """
+
         if not first:
             return
 
@@ -113,6 +145,12 @@ class _Index:
             raise ValueError(f'Invalid meal type: {self._state}')
 
     def set_second(self, second):
+        """Sets the second plate.
+
+        Raises:
+            ValueError: if the meal_type is invalid.
+        """
+
         if not second:
             return
 
@@ -124,6 +162,7 @@ class _Index:
             raise ValueError(f'Invalid meal type: {self._state}')
 
     def to_dict(self):
+        """Returns the lunch and dinner info as a dict."""
         return {'lunch': self._lunch, 'dinner': self._dinner}
 
 
@@ -150,6 +189,8 @@ class Meal:
 
 
 class DailyMenu:
+    """Represents the menu of a day."""
+
     _e_to_s_weekdays = {'monday': 'lunes', 'tuesday': 'martes', 'wednesday': 'miércoles',
                         'thursday': 'jueves', 'friday': 'viernes', 'saturday': 'sábado',
                         'sunday': 'domingo'}
@@ -176,6 +217,8 @@ class DailyMenu:
         self.date = date(self.year, self.month, self.day)
         self.weekday = self._e_to_s_weekdays[self.date.strftime('%A').lower()]
         self.id = int(f'{self.year:04d}{self.month:02d}{self.day:02d}')
+        self.is_today = self.date == datetime.today().date()
+        self.code = 'dia' if self.is_today else ''
 
     def __eq__(self, other):
         return self.day == other.day and self.month == other.month and self.year == other.year \
@@ -188,6 +231,7 @@ class DailyMenu:
         return str(self)
 
     def to_database(self):
+        """Saves the menu to the database."""
         logger.debug('Saving menu %d to database', self.id)
         menu = DailyMenuDB(
             id=self.id, day=self.day, month=self.month, year=self.year, lunch1=self.lunch.p1,
@@ -205,6 +249,8 @@ class DailyMenu:
             db.session.close()
 
     def to_string(self):
+        """Returns the menu formatted as a string."""
+
         string = ''
         string += f'{self.format_date()}\n'
 
@@ -225,10 +271,12 @@ class DailyMenu:
         return string
 
     def to_html(self):
+        """Returns the menu formatted as html."""
         return self.to_string().replace('\n', '<br>')
 
     @staticmethod
     def e_to_s(text):
+        """Converts months and weekdays from english to spanish."""
         text = text.lower()
         for key, value in DailyMenu._e_to_s_months.items():
             text = re.sub(key, value, text, re.I)
@@ -240,6 +288,7 @@ class DailyMenu:
 
     @staticmethod
     def s_to_e(text):
+        """Converts months and weekdays from spanish to english."""
         text = text.lower()
         for key, value in DailyMenu._s_to_e_months.items():
             text = re.sub(key, value, text, re.I)
@@ -251,6 +300,12 @@ class DailyMenu:
 
     @classmethod
     def from_datetime(cls, dt: Union[datetime, str, date]):
+        """Creates a DailyMenu given its datetime.
+
+        Args:
+            dt (datetime, str, date): datetime of the menu.
+        """
+
         self = DailyMenu.__new__(DailyMenu)
 
         if isinstance(dt, str):
@@ -267,9 +322,11 @@ class DailyMenu:
         return self
 
     def format_date(self):
+        """Returns the day formatted of the menu."""
         return self.e_to_s(self.date.strftime('%d de %B de %Y (%A)'))
 
     def update(self, **kwargs):
+        """Updates values of the menu."""
         lunch = kwargs.pop('lunch', None)
         dinner = kwargs.pop('dinner', None)
 
