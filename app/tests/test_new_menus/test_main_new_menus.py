@@ -3,13 +3,13 @@ from datetime import date
 import pytest
 
 from app.new_menus.models import DailyMenu as DailyMenuDB
-from app.new_menus.motor import Functions, DailyMenusManager
+from app.new_menus.motor import DailyMenusManager, filter_data, has_day
 from app.new_menus.motor.structure import Meal, DailyMenu
 
 
 class TestFunctions:
     def test_has_day(self):
-        test = Functions.has_day
+        test = has_day
         assert test('DÍA: 05 DE MARZO DE 2019 (MARTES)')
         assert test('DÍA: 05 DE JUNIO DE 2019 (MARTES)')
         assert not test('DÍA: 4 DE 2019 DE MARZO (MARTES')
@@ -22,21 +22,25 @@ class TestFunctions:
         assert test('DÍA: 11 DE MARZO DE 2019 (LUNES)')
 
     def test_filter_data(self):
-        test = Functions.filter_data
-        assert test('DÍA: 07 DE MARZO DE 2019(JUEVES)')
-        assert test('DÍA: 07 DE MARZO DE 2019(JUEVES)')
-        assert not test('DESAYUNO:')
-        assert not test('BUFFET: LECHE, CAFÉ, COLACAO, BIZCOCHO, GALLETAS, TOSTADAS, PAN,')
-        assert not test('MANTEQUILLA, MERMELADA, ZUMOS VARIADOS, CEREALES, PAYÉS CON')
-        assert not test('TUMACA, EMBUTIDO Y TORTILLA ESPAÑOLA')
-        assert test('COMIDA:')
-        assert test('1 ER PLATO: COLIFLOR AL AJO ARRIERO')
-        assert test('2 º PLATO: FILETE DE TERNERA CON GUARNICIÓN')
-        assert not test('POSTRE: BUFFET.FRUTAS DEL TIEMPO Y POSTRES VARIADOS')
-        assert test('CENA:')
-        assert test('1 ER PLATO: ENSALADA TROPICAL')
-        assert test('2 º PLATO: CHULETA DE CERDO CON PIMIENTOS')
-        assert not test('POSTRE: VASO DE LECHE Y GALLETAS')
+        def test(*args, **kwargs):
+            return filter_data(*args, **kwargs).upper()
+
+        assert 'DÍA: 07 DE MARZO DE 2019(JUEVES)' == test('DÍA: 07 DE MARZO DE 2019(JUEVES)')
+        assert 'DÍA: 07 DE MARZO DE 2019 (JUEVES)' == test('DÍA: 07 DE MARZO DE 2019 (JUEVES)')
+        assert '' == test('DESAYUNO:')
+        assert '' == test('BUFFET: LECHE, CAFÉ, COLACAO, BIZCOCHO, GALLETAS, TOSTADAS, PAN,')
+        assert '' == test('MANTEQUILLA, MERMELADA, ZUMOS VARIADOS, CEREALES, PAYÉS CON')
+        assert '' == test('TUMACA, EMBUTIDO Y TORTILLA ESPAÑOLA')
+        assert 'COMIDA:' == test('COMIDA:')
+        assert '1ER PLATO: COLIFLOR AL AJO ARRIERO' == test('1 ER PLATO: COLIFLOR AL AJO ARRIERO')
+        assert '2º PLATO: FILETE DE TERNERA CON GUARNICIÓN' == test(
+            '2 º PLATO: FILETE DE TERNERA CON GUARNICIÓN')
+        assert '' == test('POSTRE: BUFFET.FRUTAS DEL TIEMPO Y POSTRES VARIADOS')
+        assert 'CENA:' == test('CENA:')
+        assert '1ER PLATO: ENSALADA TROPICAL' == test('1 ER PLATO: ENSALADA TROPICAL')
+        assert '2º PLATO: CHULETA DE CERDO CON PIMIENTOS' == test(
+            '2 º PLATO: CHULETA DE CERDO CON PIMIENTOS')
+        assert '' == test('POSTRE: VASO DE LECHE Y GALLETAS')
 
 
 # class DailyMenusManager:
@@ -74,7 +78,7 @@ class TestDailyMenusManager:
         return dmm
 
     def test_day_pattern(self):
-        test = DailyMenusManager._day_pattern.search
+        test = DailyMenusManager.day_pattern.search
 
         assert test('DÍA: 05 DE MARZO DE 2019 (MARTES)')
         assert test('DÍA: 05 DE JUNIO DE 2019 (MARTES)')
@@ -88,7 +92,7 @@ class TestDailyMenusManager:
         assert test('DÍA: 11 DE MARZO DE 2019 (LUNES)')
 
     def test_fix_dates_pattern(self):
-        test = DailyMenusManager._fix_dates_pattern.search
+        test = DailyMenusManager.fix_dates_pattern.search
 
         assert test('febrero\n2010')
         assert test('word\n1000')
@@ -122,14 +126,10 @@ class TestDailyMenusManager:
             assert 'anything' in dmm
 
     def test_sort(self, dmm: DailyMenusManager):
+        ideal_dates = [x.date for x in dmm]
+        ideal_dates.sort(reverse=True)
         dmm.sort()
         real_dates = [x.date for x in dmm]
-
-        ideal_dates = [
-            date(2019, 9, 1, ), date(2019, 8, 1, ), date(2019, 7, 1, ),
-            date(2019, 6, 1, ), date(2019, 5, 1, ), date(2019, 4, 1, ),
-            date(2019, 3, 1, ), date(2019, 2, 1, ), date(2019, 1, 1, ), ]
-        ideal_dates.sort()
 
         assert real_dates == ideal_dates
 
@@ -213,3 +213,13 @@ class TestDailyMenusManager:
         assert date(2019, 2, 23) in dmm
         assert date(2019, 2, 24) in dmm
         assert date(2019, 2, 25) in dmm
+
+
+class TestGeneral:
+    def test_patch(self):
+        dmm = DailyMenusManager()
+        dmm.process_url(
+            'https://www.residenciasantiago.es/2019/04/01/semana-del-2-al-8-de-abril-2019/')
+
+        assert date(2019, 4, 6) in dmm
+        assert date(2019, 4, 7) in dmm

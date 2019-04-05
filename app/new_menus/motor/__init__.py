@@ -13,44 +13,39 @@ from .structure import DailyMenu, _Index
 logger = logging.getLogger()
 
 
-class Functions:
-    @staticmethod
-    def has_day(x):
-        x = x.lower()
+def has_day(x):
+    x = x.lower()
 
-        return DailyMenusManager._day_pattern.search(x) is not None
+    return DailyMenusManager.day_pattern.search(x) is not None
 
-    @staticmethod
-    def filter_data(x):
-        x = x.lower()
-        if not x:
-            return False
-        if 'buffet' in x:
-            return False
-        if 'mantequilla' in x:
-            return False
-        if 'tumaca' in x:
-            return False
-        if 'desayuno' in x:
-            return False
-        if 'postre' in x:
-            return False
-        if 'tag' in x:
-            return False
-        if 'cocina' in x:
-            return False
-        for pattern in DailyMenusManager.ignore_patters:
-            if pattern.search(x) is not None:
-                return False
-        return True
+
+def filter_data(x):
+    x = x.lower()
+    if not x:
+        return ''
+    if '1er plato' in x:
+        return x
+    if '1 er plato' in x:
+        return x.replace('1 er', '1er')
+    if '2º plato' in x:
+        return x
+    if '2 º plato' in x:
+        return x.replace('2 º', '2º')
+    if 'comida:' in x:
+        return x
+    if 'cena:' in x:
+        return x
+    if DailyMenusManager.day_pattern.search(x) is not None:
+        return DailyMenusManager.day_pattern.search(x).group()
+    return ''
 
 
 class DailyMenusManager:
-    _day_pattern = re.compile(
-        r'día: (?P<day>\d+) de (?P<month>\w+) de (?P<year>\d{4}) \((?P<weekday>\w+)\)',
+    day_pattern = re.compile(
+        r'día: (?P<day>\d+) de (?P<month>\w+) de (?P<year>\d{4})\s?\((?P<weekday>\w+)\)',
         re.IGNORECASE)
 
-    _fix_dates_pattern = re.compile(r'(\w+)\n(\d{4})', re.I)
+    fix_dates_pattern = re.compile(r'(\w+)\n(\d{4})', re.I)
 
     ignore_patters = (
         re.compile(r'\d+\.\s\w+\s\d+', re.IGNORECASE),
@@ -92,14 +87,14 @@ class DailyMenusManager:
                 self.menus += [menus, ]
 
     @classmethod
-    def load(cls, force=False):
+    def load(cls, force=False, index_path=None):
         self = DailyMenusManager.__new__(cls)
         self.__init__()
         self.load_from_database()
 
         today = datetime.today().date()
         if today not in self or force:
-            self.load_from_menus_urls()
+            self.load_from_menus_urls(index_path)
             self.save_to_database()
 
         self.sort()
@@ -114,10 +109,10 @@ class DailyMenusManager:
         for menu in self:
             menu.to_database()
 
-    def load_from_menus_urls(self):
+    def load_from_menus_urls(self, index_path=None):
         logger.debug('Loading from menus urls')
         threads = []
-        for u in get_menus_urls():
+        for u in get_menus_urls(index_path):
             t = Worker(u, self)
             t.start()
             threads.append(t)
@@ -140,30 +135,40 @@ class DailyMenusManager:
 
         s = Soup(r.content, 'html.parser')
         container = s.find('article', {'class': 'j-blog'})
-        text = '\n'.join(x.strip() for x in container.text.splitlines() if x.strip())
+        container = self.patch_urls(url, container.text)
+        text = '\n'.join(x.strip() for x in container.splitlines() if x.strip())
 
-        text = self._fix_dates_pattern.sub(r'\g<1> \g<2>', text)
+        text = self.fix_dates_pattern.sub(r'\g<1> \g<2>', text)
         texts = [x.strip() for x in text.splitlines() if x.strip()]
 
-        texts = [x for x in texts if Functions.filter_data(x)]
-        menus = [DailyMenu.from_datetime(x) for x in texts if Functions.has_day(x)]
+        texts = [filter_data(x) for x in texts]
+        texts = [x for x in texts if x]
+        menus = [DailyMenu.from_datetime(x) for x in texts if has_day(x)]
 
         self.add_to_menus(menus)
         self._process_texts(texts)
 
         return self
 
+    @staticmethod
+    def patch_urls(url, text):
+        if url != 'https://www.residenciasantiago.es/2019/04/01/semana-del-2-al-8-de-abril-2019/':
+            return text
+        text = text.replace('06 DE MARZO DE 2019', '06 DE ABRIL DE 2019')
+        text = text.replace('07 DE MARZO DE 2019', '07 DE ABRIL DE 2019')
+        return text
+
     def _process_texts(self, texts):
         logger.debug('Processing texts')
         index = _Index()
         for text in texts:
             text = text.replace('_', ' ').lower()
-            if self._day_pattern.search(text) is not None:
+            if self.day_pattern.search(text) is not None:
                 if index.commit():
                     self._update_menu(index)
 
                 index.reset()
-                search = self._day_pattern.search(text)
+                search = self.day_pattern.search(text)
 
                 day = int(search.group('day'))
                 month = search.group('month')

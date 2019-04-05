@@ -2,7 +2,7 @@ import datetime
 
 import pytest
 
-from app.new_menus.motor.structure import Meal, MealError, DailyMenu
+from app.new_menus.motor.structure import Meal, MealError, DailyMenu, MealWarning
 from app.new_menus.motor.structure import _Index as Index
 
 
@@ -113,13 +113,13 @@ class TestIndex:
         assert self.i06.lunch.p1 == 'dummy text'
         assert self.i12.dinner.p1 == 'dummy text'
 
-        with pytest.warns(UserWarning, match='Could not decide'):
+        with pytest.warns(MealWarning, match='Could not decide'):
             self.i08.decide('dummy text')
-        with pytest.warns(UserWarning, match='Could not decide'):
+        with pytest.warns(MealWarning, match='Could not decide'):
             self.i10.decide('dummy text')
-        with pytest.warns(UserWarning, match='Could not decide'):
+        with pytest.warns(MealWarning, match='Could not decide'):
             self.i14.decide('dummy text')
-        with pytest.warns(UserWarning, match='Could not decide'):
+        with pytest.warns(MealWarning, match='Could not decide'):
             self.i16.decide('dummy text')
 
         assert self.i08.dinner.p1 != 'dummy text'
@@ -241,16 +241,6 @@ class TestMeal:
         with pytest.raises(ValueError, match="Invalid arguments: {'foo': 'bar'}"):
             m1.update(foo='bar', p1='new_meal')
 
-
-#
-
-# class DailyMenu:
-#     def __init__(self, day: int, month: int, year: int): ...
-#     def __str__(self): ...
-#     def __repr__(self): ...
-#     def from_datetime(cls, dt): ...
-#     def format_date(self): ...
-#     def update(self, **kwargs): ...
 
 class TestDailyMenu:
 
@@ -386,4 +376,5 @@ class TestDailyMenu:
             datetime.date(2017, 12, 13)).format_date() == '13 de diciembre de 2017 (miércoles)'
 
     def test_update(self):
+        # todo make test
         pass

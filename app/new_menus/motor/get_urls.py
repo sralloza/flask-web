@@ -7,15 +7,19 @@ from requests.exceptions import ConnectionError
 logger = logging.getLogger(__name__)
 
 
-def get_menus_urls(principal_url=None, retries=5):
+def get_menus_urls(principal_url=None, retries=5, index_path=None):
     logger.debug('Getting menus urls')
     if not principal_url:
         principal_url = 'https://www.residenciasantiago.es/menus-1/'
 
     while retries:
         try:
-            response = requests.get(principal_url)
-            soup = Soup(response.content, 'html.parser')
+            if not index_path:
+                response = requests.get(principal_url)
+                soup = Soup(response.content, 'html.parser')
+            else:
+                with open(index_path, 'rb') as fh:
+                    soup = Soup(fh.read(), 'html.parser')
             container = soup.findAll('div', {'class': 'j-blog-meta'})
             urls = [x.a['href'] for x in container]
             return urls[:6]
