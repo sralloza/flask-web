@@ -137,7 +137,6 @@ class DailyMenusManager:
         container = s.find('article', {'class': 'j-blog'})
         container = self.patch_urls(url, container.text)
         text = '\n'.join(x.strip() for x in container.splitlines() if x.strip())
-
         text = self.fix_dates_pattern.sub(r'\g<1> \g<2>', text)
         texts = [x.strip() for x in text.splitlines() if x.strip()]
 
@@ -156,6 +155,7 @@ class DailyMenusManager:
             return text
         text = text.replace('06 DE MARZO DE 2019', '06 DE ABRIL DE 2019')
         text = text.replace('07 DE MARZO DE 2019', '07 DE ABRIL DE 2019')
+        text = text.replace('1ER PLATO:\n\n\nBARBACOA', '1ER PLATO: BARBACOA')
         return text
 
     def _process_texts(self, texts):
