@@ -34,12 +34,18 @@
                 <td class="text-center align-middle">
                     {{ menu.lunch.p2 or '-' }}
                 </td>
-                <td class="text-center align-middle">
-                    {{ menu.dinner.p1 or '-' }}
-                </td>
-                <td class="text-center align-middle">
-                    {{ menu.dinner.p2 or '-' }}
-                </td>
+		{% if not menu.dinner.p2 %}
+			<td class="text-center align-middle" colspan="2">
+				{{ menu.dinner.p1 or '-' }}
+			</td>
+		{% else %}
+	                <td class="text-center align-middle">
+        	            {{ menu.dinner.p1 or '-' }}
+                	</td>
+	                <td class="text-center align-middle">
+	                    {{ menu.dinner.p2 or '-' }}
+	                </td>
+		{% endif %}
             </tr>
             {% endfor %}
         </table>

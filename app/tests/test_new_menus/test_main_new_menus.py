@@ -41,6 +41,8 @@ class TestFunctions:
         assert '2º PLATO: CHULETA DE CERDO CON PIMIENTOS' == test(
             '2 º PLATO: CHULETA DE CERDO CON PIMIENTOS')
         assert '' == test('POSTRE: VASO DE LECHE Y GALLETAS')
+        assert '1ER PLATO: PLATO COMBINADO: HUEVO FRITO, PECHUGA A LA PLANCHA' == test(
+            '1ER PLATO: PLATO COMBINADO: HUEVO FRITO, PECHUGA A LA PLANCHA')
 
 
 # class DailyMenusManager:
