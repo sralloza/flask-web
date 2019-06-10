@@ -24,6 +24,7 @@ def create_app(config_filename=None, config_object=None, settings_override=None)
     flask_app = Flask(__name__)
 
     db.init_app(flask_app)
+
     Bootstrap(flask_app)
 
     if config_filename:
@@ -37,6 +38,9 @@ def create_app(config_filename=None, config_object=None, settings_override=None)
 
     flask_app.register_blueprint(blue)
     flask_app.register_blueprint(new_menus)
+
+    db.create_all(app=flask_app)
+
     return flask_app
 
 
