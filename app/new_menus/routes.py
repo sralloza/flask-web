@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, request
 
 from app.new_menus.motor import DailyMenusManager
 from app.utils import get_last_menus_page
@@ -13,7 +13,12 @@ def new_menus_view():
         menu.to_database()
 
     last_url = get_last_menus_page()
-    return render_template('index.html', menus=dmm.menus[:15], last_url=last_url)
+    print(request.data)
+    if request.args.get('all'):
+        show = dmm.menus
+    else:
+        show = dmm.menus[:15]
+    return render_template('index.html', menus=show, last_url=last_url)
 
 
 @new_menus.route('/n')
