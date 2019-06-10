@@ -13,7 +13,7 @@ def new_menus_view():
         menu.to_database()
 
     last_url = get_last_menus_page()
-    print(request.data)
+
     if request.args.get('all'):
         show = dmm.menus
     else:

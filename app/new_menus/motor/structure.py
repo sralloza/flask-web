@@ -40,9 +40,18 @@ class _Index:
         self._lunch = lunch or Meal()
         self._dinner = dinner or Meal()
         self._state = None
+        self.is_combinated = False
+        self.meal_combined = None
 
         if state:
             self.set_state(state)
+
+    def set_combined(self, meal_combined):
+        if meal_combined not in ('LUNCH', 'DINNER'):
+            raise MealError(f'Invalid meal: {meal_combined}')
+
+        self.is_combinated = True
+        self.meal_combined = meal_combined
 
     @property
     def lunch(self):
@@ -59,6 +68,10 @@ class _Index:
     @property
     def date(self):
         return self._date
+
+    @property
+    def state(self):
+        return self._state
 
     def commit(self):
         """Decides if the _Index is ready to be stored in a database.
@@ -185,7 +198,23 @@ class Meal:
         self.p2 = self.p2 or kwargs.pop('p2', None)
 
         if kwargs:
-            raise ValueError(f'Invalid arguments: {kwargs}')
+            raise ValueError(f'Invalid arguments for Meal: {kwargs}')
+
+
+class Combined(Meal):
+    def __init__(self, p1=None):
+        super().__init__(p1=p1)
+        self.p1 = p1
+        self.p2 = None
+
+    def is_empty(self):
+        return self.p1 is None
+
+    def update(self, **kwargs):
+        self.p1 = self.p1 or kwargs.pop('p1', None)
+
+        if kwargs:
+            raise ValueError(f'Invalid arguments for Combined: {kwargs}')
 
 
 class DailyMenu:
@@ -229,6 +258,16 @@ class DailyMenu:
 
     def __repr__(self):
         return str(self)
+
+    def set_combined(self, meal: str):
+        if meal not in ('LUNCH', 'DINNER'):
+            raise ValueError(f'meal must be LUNCH or DINNER, not {meal}')
+
+        if meal == 'LUNCH':
+            self.lunch.p1 = Combined()
+
+        if meal == 'DINNER':
+            self.dinner.p1 = Combined()
 
     def to_database(self):
         """Saves the menu to the database."""

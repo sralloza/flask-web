@@ -19,6 +19,35 @@ def has_day(x):
     return DailyMenusManager.day_pattern.search(x) is not None
 
 
+def filter_data_2(data):
+    while '' in data:
+        data.remove('')
+
+    for i in range(len(data)):
+        data[i] = data[i].lower().strip()
+
+    out = []
+    for i, d in enumerate(data):
+        if '1er plato:' in d:
+            out.append(d)
+        elif '2º plato:' in d:
+            out.append(d)
+        elif 'comida' in d:
+            out.append(d)
+        elif 'cena' in d:
+            out.append(d)
+        elif 'cóctel' in d or 'coctel' in d:
+            out.append('cóctel')
+        elif 'combinado' in d:
+            out.append(d.replace('1er plato:', '').strip())
+        elif DailyMenusManager.day_pattern.search(d) is not None:
+            out.append(DailyMenusManager.day_pattern.search(d).group())
+        else:
+            if 'combinado' in data[i - 1]:
+                out[-1] += ' ' + d
+    return out
+
+
 def filter_data(x):
     x = x.lower()
     if not x:
@@ -34,6 +63,8 @@ def filter_data(x):
     if 'comida:' in x:
         return x
     if 'cena:' in x:
+        return x
+    if 'combinado' in x:
         return x
     if DailyMenusManager.day_pattern.search(x) is not None:
         return DailyMenusManager.day_pattern.search(x).group()
@@ -112,7 +143,7 @@ class DailyMenusManager:
     def load_from_menus_urls(self, index_path=None):
         logger.debug('Loading from menus urls')
         threads = []
-        for u in get_menus_urls(index_path):
+        for u in get_menus_urls(index_path=index_path):
             t = Worker(u, self)
             t.start()
             threads.append(t)
@@ -140,8 +171,7 @@ class DailyMenusManager:
         text = self.fix_dates_pattern.sub(r'\g<1> \g<2>', text)
         texts = [x.strip() for x in text.splitlines() if x.strip()]
 
-        texts = [filter_data(x) for x in texts]
-        texts = [x for x in texts if x]
+        texts = filter_data_2(texts)
         menus = [DailyMenu.from_datetime(x) for x in texts if has_day(x)]
 
         self.add_to_menus(menus)
@@ -176,7 +206,14 @@ class DailyMenusManager:
                 year = int(search.group('year'))
 
                 index.set_date(date(year, month, day))
+                continue
 
+            if 'combinado' in text:
+                index.set_combined(index.state)
+                foo = text.split(':')[1].strip()
+                index.set_first('PC: ' + foo)
+            elif 'coctel' in text or 'cóctel' in text:
+                index.set_first('cóctel')
             elif 'comida' in text:
                 index.set_state('LUNCH')
             elif 'cena' in text:
@@ -200,6 +237,9 @@ class DailyMenusManager:
         with self._lock:
             for i, menu in enumerate(self.menus):
                 if self.menus[i].date == index.date:
+                    if index.is_combinated:
+                        self.menus[i].set_combined(index.meal_combined)
+
                     index_info = index.to_dict()
                     index_info.pop('day', None)
                     index_info.pop('month', None)
@@ -219,5 +259,5 @@ class Worker(Thread):
         self.dmm = dmm_instance
 
     def run(self):
-        logger.debug('Starting worker')
+        logger.debug('Starting worker with url %s', self.url)
         self.dmm.process_url(self.url, self.retries)
