@@ -23,9 +23,6 @@ werkzeug.addHandler(werkzeug_handler)
 def create_app(config_filename=None, config_object=None, settings_override=None):
     flask_app = Flask(__name__)
 
-    db.init_app(flask_app)
-
-    Bootstrap(flask_app)
 
     if config_filename:
         flask_app.config.from_pyfile(config_filename)
@@ -36,6 +33,9 @@ def create_app(config_filename=None, config_object=None, settings_override=None)
     else:
         raise RuntimeError('Select config source (file or object)')
 
+    db.init_app(flask_app)
+
+    Bootstrap(flask_app)
     flask_app.register_blueprint(blue)
     flask_app.register_blueprint(new_menus)
 
