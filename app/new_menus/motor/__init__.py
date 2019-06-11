@@ -211,7 +211,7 @@ class DailyMenusManager:
 
             if 'combinado' in text:
                 index.set_combined(index.state)
-                foo = text.split(':')[1].strip()
+                foo = text.split(':')[-1].strip()
                 index.set_first('PC: ' + foo)
             elif 'coctel' in text or 'cóctel' in text:
                 index.set_first('cóctel')
