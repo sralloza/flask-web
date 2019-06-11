@@ -112,10 +112,11 @@ class DailyMenusManager:
 
     def add_to_menus(self, menus):
         with self._lock:
-            try:
-                self.menus += menus
-            except TypeError:
-                self.menus += [menus, ]
+            foo = {x.date: x for x in self.menus}
+            for menu in menus:
+                foo[menu.date] = menu
+
+            self.menus = list(foo.values())
 
     @classmethod
     def load(cls, force=False, index_path=None):
