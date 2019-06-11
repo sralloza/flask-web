@@ -147,6 +147,8 @@ class _Index:
             ValueError: if the meal_type is invalid.
         """
 
+        first = first.strip()
+
         if not first:
             return
 
@@ -163,6 +165,8 @@ class _Index:
         Raises:
             ValueError: if the meal_type is invalid.
         """
+
+        second = second.strip()
 
         if not second:
             return
@@ -184,6 +188,8 @@ class Meal:
         self.p1 = p1
         self.p2 = p2
 
+        self.strip()
+
     def __repr__(self):
         return f'{self.p1} - {self.p2}'
 
@@ -200,12 +206,23 @@ class Meal:
         if kwargs:
             raise ValueError(f'Invalid arguments for Meal: {kwargs}')
 
+        self.strip()
+
+    def strip(self):
+        if self.p1:
+            self.p1 = self.p1.strip()
+
+        if self.p2:
+            self.p2 = self.p2.strip()
+
 
 class Combined(Meal):
     def __init__(self, p1=None):
         super().__init__(p1=p1)
         self.p1 = p1
         self.p2 = None
+
+        self.strip()
 
     def is_empty(self):
         return self.p1 is None
@@ -215,6 +232,8 @@ class Combined(Meal):
 
         if kwargs:
             raise ValueError(f'Invalid arguments for Combined: {kwargs}')
+
+        self.strip()
 
 
 class DailyMenu:
