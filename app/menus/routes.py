@@ -12,15 +12,20 @@ def menus_view():
         menu.to_database()
 
     last_url = get_last_menus_page()
+    all = request.args.get('all') is not None
+    beta = request.args.get('beta') is not None
 
-    if request.args.get('all'):
+    if all:
         show = dmm.menus
     else:
         show = dmm.menus[:15]
-    return render_template('index.html', menus=show, last_url=last_url)
 
+    template_name = 'index.html'
 
+    if beta:
+        template_name = 'beta.html'
 
+    return render_template(template_name, menus=show, last_url=last_url)
 
 
 @menus.route('/n')

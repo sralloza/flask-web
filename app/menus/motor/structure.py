@@ -379,8 +379,10 @@ class DailyMenu:
 
         return self
 
-    def format_date(self):
+    def format_date(self, long=True):
         """Returns the day formatted of the menu."""
+        if not long:
+            return str(self.date)
         return self.e_to_s(self.date.strftime('%d de %B de %Y (%A)'))
 
     def update(self, **kwargs):
