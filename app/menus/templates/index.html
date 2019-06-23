@@ -52,17 +52,18 @@
             </tr>
             {% endfor %}
             </tbody>
+            <tr>
+                <td colspan="5" class="align-left">
+                    <a href="?all">Show all</a>
+                </td>
+            </tr>
         </table>
     </div>
 </div>
 
-<style type="text/css">
-.dia {
-    white-space: nowrap;
-    background: #00ff00 !important;
-}
+{% endblock %}
 
-
-</style>
-
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menus.css') }}">
 {% endblock %}
