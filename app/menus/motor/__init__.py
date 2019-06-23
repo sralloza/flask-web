@@ -6,7 +6,7 @@ from threading import Lock, Thread
 import requests
 from bs4 import BeautifulSoup as Soup
 
-from app.new_menus.models import DailyMenu as DailyMenuDB
+from app.menus.models import DailyMenu as DailyMenuDB
 from .get_urls import get_menus_urls
 from .structure import DailyMenu, _Index
 

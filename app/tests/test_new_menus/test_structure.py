@@ -2,8 +2,8 @@ import datetime
 
 import pytest
 
-from app.new_menus.motor.structure import Meal, MealError, DailyMenu, MealWarning
-from app.new_menus.motor.structure import _Index as Index
+from app.menus.motor.structure import Meal, MealError, DailyMenu, MealWarning
+from app.menus.motor.structure import _Index as Index
 
 
 class TestIndex:

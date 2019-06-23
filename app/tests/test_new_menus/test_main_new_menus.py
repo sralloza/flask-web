@@ -2,9 +2,9 @@ from datetime import date
 
 import pytest
 
-from app.new_menus.models import DailyMenu as DailyMenuDB
-from app.new_menus.motor import DailyMenusManager, filter_data, has_day
-from app.new_menus.motor.structure import Meal, DailyMenu
+from app.menus.models import DailyMenu as DailyMenuDB
+from app.menus.motor import DailyMenusManager, filter_data, has_day
+from app.menus.motor.structure import Meal, DailyMenu
 
 
 class TestFunctions:

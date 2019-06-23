@@ -2,13 +2,13 @@ import logging
 
 from flask import redirect, current_app, url_for, request
 
-from . import blue
+from . import base
 from app.utils import get_last_menus_page
 
 logger = logging.getLogger(__name__)
 
 
-@blue.before_request
+@base.before_request
 def before_request():
     if request.headers.get('User-Agent') is None:
         return 'A user agent must be provided', 401
@@ -25,41 +25,41 @@ def before_request():
         return 'A user agent must be provided', 401
 
 
-@blue.route('/favicon.ico')
+@base.route('/favicon.ico')
 def favicon():
     return redirect(url_for('static', filename='favicon.png'))
 
 
-@blue.route('/')
+@base.route('/')
 def index():
-    return redirect(url_for('new_menus.new_menus_view'))
+    return redirect(url_for('menus.menus_view'))
 
 
-@blue.route('/m')
-def redirect_menus():
-    return redirect('menus')
+@base.route('/s')
+def redirect_source():
+    return redirect('source')
 
 
 # noinspection PyBroadException
-@blue.route('/menus')
-def menus():
+@base.route('/source')
+def source():
     if not current_app.config['PARSE_MAIN_WEB']:
         return redirect(current_app.config['LAST_URL'])
 
     return redirect(get_last_menus_page())
 
 
-@blue.route('/feedback')
+@base.route('/feedback')
 def feedback():
     return '<h1>Send feedback to sralloza@gmail.com</h1>'
 
 
-@blue.route('/aemet')
+@base.route('/aemet')
 def aemet():
     return redirect(
         'http://www.aemet.es/es/eltiempo/prediccion/municipios/horas/tabla/valladolid-id47186')
 
 
-@blue.route('/a')
+@base.route('/a')
 def redirect_aemet():
     return redirect('aemet')

@@ -1,13 +1,12 @@
 from flask import render_template, redirect, url_for, request
 
-from app.new_menus.motor import DailyMenusManager
+from app.menus.motor import DailyMenusManager
 from app.utils import get_last_menus_page
-from . import new_menus
+from . import menus
 
 
-# noinspection PyBroadException
-@new_menus.route('/new-menus')
-def new_menus_view():
+@menus.route('/menus')
+def menus_view():
     dmm = DailyMenusManager.load()
     for menu in dmm:
         menu.to_database()
@@ -21,17 +20,21 @@ def new_menus_view():
     return render_template('index.html', menus=show, last_url=last_url)
 
 
-@new_menus.route('/n')
-@new_menus.route('/new_menus')
-def new_menus_redirect():
-    return redirect('new-menus')
 
 
-@new_menus.route('/new-menus/reload')
-def new_menus_reload():
+
+@menus.route('/n')
+@menus.route('/new_menus')
+@menus.route('/new-menus')
+def menus_redirect():
+    return redirect('menus')
+
+
+@menus.route('/menus/reload')
+def menus_reload():
     dmm = DailyMenusManager.load(force=True)
 
     for menu in dmm:
         menu.to_database()
 
-    return redirect(url_for('new_menus.new_menus_view', _external=True))
+    return redirect(url_for('menus.menus_view', _external=True))

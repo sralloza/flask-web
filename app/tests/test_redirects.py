@@ -10,9 +10,9 @@ def test_redirect_aemet(client):
 
 
 def test_redirect_new_menus(client):
-    assert client.get('/n').location == url_for('new_menus.new_menus_view')
-    assert client.get('/new_menus').location == url_for('new_menus.new_menus_view')
+    assert client.get('/n').location == url_for('menus.new_menus_view')
+    assert client.get('/menus').location == url_for('menus.new_menus_view')
 
 
 def test_redirect_index(client):
-    assert client.get('/').location == url_for('new_menus.new_menus_view')
+    assert client.get('/').location == url_for('menus.new_menus_view')

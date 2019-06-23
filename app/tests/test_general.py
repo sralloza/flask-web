@@ -1,4 +1,3 @@
-import pytest
 from flask import url_for
 from flask.testing import FlaskClient
 
@@ -13,7 +12,6 @@ def test_useragent_block(client: FlaskClient):
     assert client.get(index_url, headers={
         'User-Agent': 'Rift/2.0', 'Accept-Encoding': 'gzip, deflate',
         'Accept': '*/*', 'Connection': 'keep-alive'}).status_code == 401
-
 
 
 def test_menus_ping(client):
@@ -52,6 +50,5 @@ def test_static_ping(client):
 
 
 def test_new_menus_ping(client):
-    r_new_menus = client.get(url_for('new_menus.new_menus_view', _external=True))
+    r_new_menus = client.get(url_for('menus.new_menus_view', _external=True))
     assert r_new_menus.status_code == 200
-
