@@ -17,10 +17,11 @@ def menus_view():
 
     show = dmm.menus
 
+    if all and beta:
+        return redirect('/menus?beta')
+
     if not all and not beta:
         show = dmm.menus[:15]
-
-    print(request.args, not all or beta, len(show))
 
     template_name = 'index.html'
 
