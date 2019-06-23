@@ -2,6 +2,13 @@
 
 {% block title %}SrAlloza's Server{% endblock %}
 
+{% block head %}
+{{ super() }}
+<link rel="apple-touch-icon-precomposed" sizes="200x200" href="{{ url_for('static', filename='images/favicon.png') }}"/>
+<link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}"/>
+<link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}"/>
+{% endblock %}
+
 {% block navbar %} <!--
 <div class="navbar navbar-inverse" role="navigation">
     <div class="container">
