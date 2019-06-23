@@ -15,10 +15,12 @@ def menus_view():
     all = request.args.get('all') is not None
     beta = request.args.get('beta') is not None
 
-    if all:
-        show = dmm.menus
-    else:
+    show = dmm.menus
+
+    if not all and not beta:
         show = dmm.menus[:15]
+
+    print(request.args, not all or beta, len(show))
 
     template_name = 'index.html'
 
