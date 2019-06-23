@@ -8,8 +8,6 @@ from . import menus
 @menus.route('/menus')
 def menus_view():
     dmm = DailyMenusManager.load()
-    for menu in dmm:
-        menu.to_database()
 
     last_url = get_last_menus_page()
     all = request.args.get('all') is not None
@@ -40,9 +38,4 @@ def menus_redirect():
 
 @menus.route('/menus/reload')
 def menus_reload():
-    dmm = DailyMenusManager.load(force=True)
-
-    for menu in dmm:
-        menu.to_database()
-
     return redirect(url_for('menus.menus_view', _external=True))
