@@ -17,7 +17,6 @@
             </thead>
             <tbody>
             {% for menu in menus %}
-            <!--<tr>-->
             <tr class="{{ menu.code }}">
                 <td>{{ menu.format_date(long=False) }}</td>
                 <td>{{ menu.lunch.p1 or '-' }}</td>
@@ -26,61 +25,26 @@
                 <td>{{ menu.dinner.p2 or '-' }}</td>
             </tr>
             {% endfor %}
-            <!--<tr>-->
-            <!--<td colspan="5">-->
-            <!--<a href="?all=True">Show all</a>-->
-            <!--</td>-->
-            <!--</tr>-->
+            </tbody>
+            <tbody>
+            <tr>
+                <td colspan="5"><a href="?all&beta">Show all</a></td>
+            </tr>
             </tbody>
         </table>
     </div>
 </div>
 
-<style type="text/css">
-.dia {
-white-space: nowrap;
-background: #00ff00 !important;
-}
-
-
-
-
-
-
-
-
-
-</style>
-
 {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" type="text/css"
-      href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menus.css') }}">
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 {% endblock %}
 
 {% block scripts %}
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-
-<script type="text/javascript">
-        $(document).ready( function () {
-        $('#menus_table').DataTable( {
-            // "ordering": false
-            "order": [[ 0, "desc" ]],
-            "columns": [
-            { "orderDataType": "date-dd-MMM-yyyy" },
-            null,
-            null,
-            null,
-            null
-            ]
-        });
-        console.log('loaded');
-    }
-);
-
-
-</script>
+<script src="{{ url_for('static', filename='js/beta-datatable-menus.js') }}"></script>
 {% endblock %}
 
