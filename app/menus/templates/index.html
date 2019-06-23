@@ -52,11 +52,13 @@
             </tr>
             {% endfor %}
             </tbody>
+            {% if 'all' not in request.args %}
             <tr>
                 <td colspan="5" class="align-left">
                     <a href="?all">Show all</a>
                 </td>
             </tr>
+            {% endif %}
         </table>
     </div>
 </div>
