@@ -32,7 +32,7 @@ def favicon():
 
 @base.route('/')
 def index():
-    return redirect(url_for('menus.menus_view'))
+    return redirect(url_for('menus.today'))
 
 
 @base.route('/s')
