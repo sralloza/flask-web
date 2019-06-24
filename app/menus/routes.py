@@ -57,11 +57,14 @@ def today():
 
     asked = datetime.today()
 
-    if day in (None, ''):
-        menu = dmm[datetime.today().date()]
-    else:
-        asked = datetime.strptime(day, '%Y-%m-%d')
-        menu = dmm[asked.date()]
+    try:
+        if day in (None, ''):
+            menu = dmm[datetime.today().date()]
+        else:
+            asked = datetime.strptime(day, '%Y-%m-%d')
+            menu = dmm[asked.date()]
+    except KeyError:
+        return f'<h1>Día no encontrado: {day}</h1>', 404
 
     delta = timedelta(days=1)
     tomorrow = asked + delta
