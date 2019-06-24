@@ -42,6 +42,11 @@ def menus_redirect():
 
 @menus.route('/menus/reload')
 def menus_reload():
+    dmm = DailyMenusManager.load(force=True)
+
+    for menu in dmm:
+        menu.to_database()
+
     return redirect(url_for('menus.menus_view', _external=True))
 
 
