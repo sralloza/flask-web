@@ -52,7 +52,7 @@ def filter_data(data):
                       DailyMenusManager.semi_day_pattern_2.search(d).group()
                 out.append(foo)
         else:
-            if 'combinado' in data[i - 1]:
+            if 'combinado' in data[i - 1] and 'postre' not in d:
                 out[-1] += ' ' + d
     return out
 

@@ -22,8 +22,7 @@ def get_menus_urls(principal_url=None, retries=5, index_path=None):
                     soup = Soup(fh.read(), 'html.parser')
             container = soup.findAll('div', {'class': 'j-blog-meta'})
             urls = [x.a['href'] for x in container]
-            return urls[:6]
-            # return [urls[-5], ]
+            return urls
         except ConnectionError:
             logger.warning('Connection error downloading principal url (%r)', principal_url)
             retries -= 1
