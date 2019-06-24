@@ -1,3 +1,4 @@
+import json
 import re
 from datetime import datetime, timedelta
 
@@ -96,5 +97,5 @@ def api_menus():
         foo["dinner"] = {"p1": menu.dinner.p1, "p2": menu.dinner.p2}
         out.append(foo)
 
-    return str(out), 200
+    return json.dumps(out), 200
 
