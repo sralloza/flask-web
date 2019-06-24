@@ -21,8 +21,10 @@
                     <div class="w-100 text-left d-none d-sm-block"><p>{{ menu.lunch.p1 }}</p></div>
                     <div class="w-100 d-sm-none"><p>{{ menu.lunch.p1 }}</p></div>
 
+                    {% if menu.lunch.p2 %}
                     <div class="w-100 text-left d-none d-sm-block"><p>{{ menu.lunch.p2 }}</p></div>
                     <div class="w-100 d-sm-none"><p>{{ menu.lunch.p2 }}</p></div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -34,8 +36,10 @@
                     <div class="w-100 text-left d-none d-sm-block"><p>{{ menu.dinner.p1 }}</p></div>
                     <div class="w-100 d-sm-none"><p>{{ menu.dinner.p1 }}</p></div>
 
+                    {% if menu.dinner.p2 %}
                     <div class="w-100 text-left d-none d-sm-block"><p>{{ menu.dinner.p2 }}</p></div>
                     <div class="w-100 d-sm-none"><p>{{ menu.dinner.p2 }}</p></div>
+                    {% endif %}
                 </div>
             </div>
         </div>
