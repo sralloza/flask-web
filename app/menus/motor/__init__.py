@@ -86,7 +86,8 @@ class DailyMenusManager:
     semi_day_pattern_1 = re.compile(r'día: (?P<day>\d+) de (?P<month>\w+)$', re.I)
     semi_day_pattern_2 = re.compile(r'(?P<year>\d{4})\s?\((?P<weekday>\w+)\)', re.I)
 
-    fix_dates_pattern = re.compile(r'(\w+)\n(\d{4})', re.I)
+    fix_dates_pattern_1 = re.compile(r'(\w+)\n(\d{4})', re.I)
+    fix_dates_pattern_2 = re.compile(r'(día:)[\s\n]+(\d+)', re.I)
 
     ignore_patters = (
         re.compile(r'\d+\.\s\w+\s\d+', re.IGNORECASE),
@@ -189,7 +190,8 @@ class DailyMenusManager:
         container = s.find('article', {'class': 'j-blog'})
         container = self.patch_urls(url, container.text)
         text = '\n'.join(x.strip() for x in container.splitlines() if x.strip())
-        text = self.fix_dates_pattern.sub(r'\g<1> \g<2>', text)
+        text = self.fix_dates_pattern_1.sub(r'\1 \2', text)
+        text = self.fix_dates_pattern_2.sub(r'\1 \2', text)
         texts = [x.strip() for x in text.splitlines() if x.strip()]
 
         texts = filter_data_2(texts)

@@ -94,7 +94,7 @@ class TestDailyMenusManager:
         assert test('DÍA: 11 DE MARZO DE 2019 (LUNES)')
 
     def test_fix_dates_pattern(self):
-        test = DailyMenusManager.fix_dates_pattern.search
+        test = DailyMenusManager.fix_dates_pattern_1.search
 
         assert test('febrero\n2010')
         assert test('word\n1000')
