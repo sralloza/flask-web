@@ -71,9 +71,6 @@ def today():
     if tomorrow.date() in dmm:
         next_url = url_for('menus.today', _external=True) + '?day=' + str(tomorrow.date())
 
-    print(yesterday.date(), tomorrow.date())
-    print(previous_url, next_url)
-
     return render_template(
         'today.html', menu=menu, day=day, last_url=get_last_menus_page(),
         previous_url=previous_url, next_url=next_url
