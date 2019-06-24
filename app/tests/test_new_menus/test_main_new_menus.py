@@ -21,29 +21,6 @@ class TestFunctions:
         assert not test('CENA:\n\n\n \n\nCÓCTEL ESPAÑOL')
         assert test('DÍA: 11 DE MARZO DE 2019 (LUNES)')
 
-    def test_filter_data(self):
-        def test(*args, **kwargs):
-            return filter_data(*args, **kwargs).upper()
-
-        assert 'DÍA: 07 DE MARZO DE 2019(JUEVES)' == test('DÍA: 07 DE MARZO DE 2019(JUEVES)')
-        assert 'DÍA: 07 DE MARZO DE 2019 (JUEVES)' == test('DÍA: 07 DE MARZO DE 2019 (JUEVES)')
-        assert '' == test('DESAYUNO:')
-        assert '' == test('BUFFET: LECHE, CAFÉ, COLACAO, BIZCOCHO, GALLETAS, TOSTADAS, PAN,')
-        assert '' == test('MANTEQUILLA, MERMELADA, ZUMOS VARIADOS, CEREALES, PAYÉS CON')
-        assert '' == test('TUMACA, EMBUTIDO Y TORTILLA ESPAÑOLA')
-        assert 'COMIDA:' == test('COMIDA:')
-        assert '1ER PLATO: COLIFLOR AL AJO ARRIERO' == test('1 ER PLATO: COLIFLOR AL AJO ARRIERO')
-        assert '2º PLATO: FILETE DE TERNERA CON GUARNICIÓN' == test(
-            '2 º PLATO: FILETE DE TERNERA CON GUARNICIÓN')
-        assert '' == test('POSTRE: BUFFET.FRUTAS DEL TIEMPO Y POSTRES VARIADOS')
-        assert 'CENA:' == test('CENA:')
-        assert '1ER PLATO: ENSALADA TROPICAL' == test('1 ER PLATO: ENSALADA TROPICAL')
-        assert '2º PLATO: CHULETA DE CERDO CON PIMIENTOS' == test(
-            '2 º PLATO: CHULETA DE CERDO CON PIMIENTOS')
-        assert '' == test('POSTRE: VASO DE LECHE Y GALLETAS')
-        assert '1ER PLATO: PLATO COMBINADO: HUEVO FRITO, PECHUGA A LA PLANCHA' == test(
-            '1ER PLATO: PLATO COMBINADO: HUEVO FRITO, PECHUGA A LA PLANCHA')
-
 
 # class DailyMenusManager:
 #     def __contains__(self, item: date): ...

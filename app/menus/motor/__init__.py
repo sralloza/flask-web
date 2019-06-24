@@ -1,6 +1,5 @@
 import logging
 import re
-import warnings
 from datetime import datetime, date
 from threading import Lock, Thread
 
@@ -20,7 +19,7 @@ def has_day(x):
     return DailyMenusManager.day_pattern.search(x) is not None
 
 
-def filter_data_2(data):
+def filter_data(data):
     while '' in data:
         data.remove('')
 
@@ -32,7 +31,7 @@ def filter_data_2(data):
         if '1er plato:' in d:
             out.append(d)
         elif '2º plato:' in d:
-            if  'combinado' in data[i-1]:
+            if 'combinado' in data[i - 1]:
                 d = d.replace('2º plato:', '').strip()
                 out[-1] += ' ' + d
                 continue
@@ -56,30 +55,6 @@ def filter_data_2(data):
             if 'combinado' in data[i - 1]:
                 out[-1] += ' ' + d
     return out
-
-
-def filter_data(x):
-    warnings.warn('This filter should not be used, use filter_data_2 instead', DeprecationWarning)
-    x = x.lower()
-    if not x:
-        return ''
-    if '1er plato' in x:
-        return x
-    if '1 er plato' in x:
-        return x.replace('1 er', '1er')
-    if '2º plato' in x:
-        return x
-    if '2 º plato' in x:
-        return x.replace('2 º', '2º')
-    if 'comida:' in x:
-        return x
-    if 'cena:' in x:
-        return x
-    if 'combinado' in x:
-        return x
-    if DailyMenusManager.day_pattern.search(x) is not None:
-        return DailyMenusManager.day_pattern.search(x).group()
-    return ''
 
 
 class DailyMenusManager:
@@ -198,7 +173,7 @@ class DailyMenusManager:
         text = self.fix_dates_pattern_2.sub(r'\1 \2', text)
         texts = [x.strip() for x in text.splitlines() if x.strip()]
 
-        texts = filter_data_2(texts)
+        texts = filter_data(texts)
         menus = [DailyMenu.from_datetime(x) for x in texts if has_day(x)]
 
         self.add_to_menus(menus)
