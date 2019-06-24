@@ -64,14 +64,20 @@ def today():
     day = re.search(r'\((\w+)\)', menu.format_date()).group(1).capitalize()
     day = f'{day} {menu.date.day}'
 
-    previous_url = None
-    next_url = None
+    yesterday_url = None
+    tomorrow_url = None
+    disabled_yesterday = 'disabled'
+    disabled_tomorrow = 'disabled'
+
     if yesterday.date() in dmm:
-        previous_url = url_for('menus.today', _external=True) + '?day=' + str(yesterday.date())
+        yesterday_url = url_for('menus.today', _external=True) + '?day=' + str(yesterday.date())
+        disabled_yesterday = ''
     if tomorrow.date() in dmm:
-        next_url = url_for('menus.today', _external=True) + '?day=' + str(tomorrow.date())
+        tomorrow_url = url_for('menus.today', _external=True) + '?day=' + str(tomorrow.date())
+        disabled_tomorrow = ''
 
     return render_template(
-        'today.html', menu=menu, day=day, last_url=get_last_menus_page(),
-        previous_url=previous_url, next_url=next_url
+        'today.html', menu=menu, day=day, title_url=url_for('menus.menus_view', _external=True),
+        yesterday_url=yesterday_url, tomorrow_url=tomorrow_url,
+        disabled_yesterday=disabled_yesterday, disabled_tomorrow=disabled_tomorrow
     )
