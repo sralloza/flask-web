@@ -43,12 +43,25 @@
 </div>
 <div class="container h-100 d-flex justify-content-center">
     <div class="container h-100 col-sm-8 d-flex justify-content-between p-0">
-        {% if previous_url is not none %}
-        <div><a class="btn btn-primary" href="{{ previous_url }}" role="button">Anterior</a></div>
-        {% endif %}
-        {% if next_url is not none %}
-        <div><a class="btn btn-primary" href="{{ next_url }}" role="button">Siguiente</a></div>
-        {% endif %}
+
+        <div>
+            <a class="btn btn-primary {{ disabled_yesterday }}" href="{{ yesterday_url }}"
+               role="button">
+                Anterior
+            </a>
+        </div>
+        <div>
+            <a class="btn btn-primary" href="{{ url_for('menus.menus_view', _external=True) }}"
+               role="button">
+                Todos
+            </a>
+        </div>
+        <div>
+            <a class="btn btn-primary {{ disabled_tomorrow }}" href="{{ tomorrow_url }}"
+               role="button">
+                Siguiente
+            </a>
+        </div>
     </div>
 </div>
 {% endblock %}
