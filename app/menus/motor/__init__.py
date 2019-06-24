@@ -1,5 +1,6 @@
 import logging
 import re
+import warnings
 from datetime import datetime, date
 from threading import Lock, Thread
 
@@ -31,6 +32,10 @@ def filter_data_2(data):
         if '1er plato:' in d:
             out.append(d)
         elif '2º plato:' in d:
+            if  'combinado' in data[i-1]:
+                d = d.replace('2º plato:', '').strip()
+                out[-1] += ' ' + d
+                continue
             out.append(d)
         elif 'comida' in d:
             out.append(d)
@@ -47,8 +52,6 @@ def filter_data_2(data):
                 foo = DailyMenusManager.semi_day_pattern_1.search(data[i - 1]).group() + ' de ' + \
                       DailyMenusManager.semi_day_pattern_2.search(d).group()
                 out.append(foo)
-
-
         else:
             if 'combinado' in data[i - 1]:
                 out[-1] += ' ' + d
@@ -56,6 +59,7 @@ def filter_data_2(data):
 
 
 def filter_data(x):
+    warnings.warn('This filter should not be used, use filter_data_2 instead', DeprecationWarning)
     x = x.lower()
     if not x:
         return ''
