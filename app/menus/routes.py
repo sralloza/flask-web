@@ -81,3 +81,20 @@ def today():
         yesterday_url=yesterday_url, tomorrow_url=tomorrow_url,
         disabled_yesterday=disabled_yesterday, disabled_tomorrow=disabled_tomorrow
     )
+
+
+@menus.route('/api/menus')
+def api_menus():
+    dmm = DailyMenusManager.load()
+    out = []
+
+    for menu in dmm:
+        foo = {}
+        day = re.search(r'\((\w+)\)', menu.format_date()).group(1).capitalize()
+        foo["day"] = f'{day} {menu.date.day}'
+        foo["lunch"] = {"p1": menu.lunch.p1, "p2": menu.lunch.p2}
+        foo["dinner"] = {"p1": menu.dinner.p1, "p2": menu.dinner.p2}
+        out.append(foo)
+
+    return str(out), 200
+
