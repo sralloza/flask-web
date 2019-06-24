@@ -14,15 +14,15 @@ def menus_view():
     dmm = DailyMenusManager.load()
 
     last_url = get_last_menus_page()
-    all = request.args.get('all') is not None
+    _all = request.args.get('all') is not None
     beta = request.args.get('beta') is not None
 
     show = dmm.menus
 
-    if all and beta:
+    if _all and beta:
         return redirect('/menus?beta')
 
-    if not all and not beta:
+    if not _all and not beta:
         show = dmm.menus[:15]
 
     template_name = 'index.html'
