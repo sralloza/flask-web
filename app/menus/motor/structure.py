@@ -300,7 +300,6 @@ class DailyMenu:
             logger.info('Saved menu %d to database', self.id)
             return True
         except IntegrityError:
-            logger.debug('Could not save menu %d to database (IntegrityError)', self.id)
             db.session.rollback()
             return False
         finally:
