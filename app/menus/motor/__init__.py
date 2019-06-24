@@ -42,6 +42,13 @@ def filter_data_2(data):
             out.append(d.replace('1er plato:', '').strip())
         elif DailyMenusManager.day_pattern.search(d) is not None:
             out.append(DailyMenusManager.day_pattern.search(d).group())
+        elif DailyMenusManager.semi_day_pattern_2.search(d) is not None:
+            if DailyMenusManager.semi_day_pattern_1.search(data[i - 1]) is not None:
+                foo = DailyMenusManager.semi_day_pattern_1.search(data[i - 1]).group() + ' de ' + \
+                      DailyMenusManager.semi_day_pattern_2.search(d).group()
+                out.append(foo)
+
+
         else:
             if 'combinado' in data[i - 1]:
                 out[-1] += ' ' + d
@@ -75,6 +82,9 @@ class DailyMenusManager:
     day_pattern = re.compile(
         r'día: (?P<day>\d+) de (?P<month>\w+) de (?P<year>\d{4})\s?\((?P<weekday>\w+)\)',
         re.IGNORECASE)
+
+    semi_day_pattern_1 = re.compile(r'día: (?P<day>\d+) de (?P<month>\w+)$', re.I)
+    semi_day_pattern_2 = re.compile(r'(?P<year>\d{4})\s?\((?P<weekday>\w+)\)', re.I)
 
     fix_dates_pattern = re.compile(r'(\w+)\n(\d{4})', re.I)
 
