@@ -100,6 +100,16 @@ class DailyMenusManager:
     def __iter__(self):
         return iter(self.menus)
 
+    def __getitem__(self, item):
+        if not isinstance(item, date):
+            raise TypeError(f'Getitem does only work with dates, not {type(item).__name__}')
+
+        for menu in self.menus:
+            if menu.date == item:
+                return menu
+
+        raise KeyError(f'No menu found: {item}')
+
     def sort(self):
         logger.debug('Sorting menus')
         self.menus.sort(key=lambda x: x.date, reverse=True)
