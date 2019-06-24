@@ -77,7 +77,7 @@ def today():
         disabled_tomorrow = ''
 
     return render_template(
-        'today.html', menu=menu, day=day, title_url=url_for('menus.menus_view', _external=True),
+        'today.html', menu=menu, day=day, title_url=get_last_menus_page(),
         yesterday_url=yesterday_url, tomorrow_url=tomorrow_url,
         disabled_yesterday=disabled_yesterday, disabled_tomorrow=disabled_tomorrow
     )
