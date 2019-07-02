@@ -278,6 +278,12 @@ class DailyMenu:
     def __repr__(self):
         return str(self)
 
+    def is_empty(self):
+        try:
+            return self.lunch.is_empty() and self.dinner.is_empty()
+        except AttributeError:
+            return False
+
     def set_combined(self, meal: str):
         if meal not in ('LUNCH', 'DINNER'):
             raise ValueError(f'meal must be LUNCH or DINNER, not {meal}')
