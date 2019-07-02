@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from flask import render_template, redirect, url_for, request
 
-from app.menus.motor import DailyMenusManager
+from app.menus.motor import DailyMenusManager, DailyMenu
 from app.utils import get_last_menus_page
 from . import menus
 
@@ -56,6 +56,7 @@ def today():
     day = request.args.get('day')
 
     asked = datetime.today()
+    code = 200
 
     try:
         if day in (None, ''):
@@ -63,8 +64,9 @@ def today():
         else:
             asked = datetime.strptime(day, '%Y-%m-%d')
             menu = dmm[asked.date()]
-    except KeyError:
-        return f'<h1>Día no encontrado: {day}</h1>', 404
+    except (KeyError, ValueError):
+        menu = DailyMenu(asked.day, asked.month, asked.year)
+        code = 404
 
     delta = timedelta(days=1)
     tomorrow = asked + delta
@@ -89,7 +91,7 @@ def today():
         'today.html', menu=menu, day=day, title_url=get_last_menus_page(),
         yesterday_url=yesterday_url, tomorrow_url=tomorrow_url,
         disabled_yesterday=disabled_yesterday, disabled_tomorrow=disabled_tomorrow
-    )
+    ), code
 
 
 @menus.route('/api/menus')
