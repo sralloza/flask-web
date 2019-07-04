@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from flask import render_template, redirect, url_for, request
 
-from app.menus.motor import DailyMenusManager, DailyMenu
+from app.menus.core import DailyMenusManager, DailyMenu
 from app.utils import get_last_menus_page
 from . import menus
 

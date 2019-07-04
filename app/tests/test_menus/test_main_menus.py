@@ -3,8 +3,8 @@ from datetime import date
 import pytest
 
 from app.menus.models import DailyMenu as DailyMenuDB
-from app.menus.motor import DailyMenusManager, filter_data, has_day
-from app.menus.motor.structure import Meal, DailyMenu
+from app.menus.core import DailyMenusManager, filter_data, has_day
+from app.menus.core.structure import Meal, DailyMenu
 
 
 class TestFunctions:

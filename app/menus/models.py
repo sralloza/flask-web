@@ -15,7 +15,7 @@ class DailyMenu(db.Model):
     dinner2 = db.Column(db.String(200))
 
     def to_normal_daily_menu(self):
-        from .motor.structure import DailyMenu as NormalDailyMenu, Meal
+        from .core.structure import DailyMenu as NormalDailyMenu, Meal
         day = int(self.day)
         month = int(self.month)
         year = int(self.year)
