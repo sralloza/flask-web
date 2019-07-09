@@ -8,126 +8,41 @@ from app.menus.core.structure import _Index as Index
 
 
 class TestIndex:
+    mydate = (datetime.date(2019, 1, 1), None)
+    lunch = (Meal('lunch1', 'lunch2'), None)
+    dinner = (Meal('dinner1', 'dinner2'), None)
+    states = ('LUNCH', 'DINNER', None)
+    _params = list(itertools.product(lunch, dinner, mydate, states))
+    _indexes = [Index(*a) for a in _params]
+    _commit = [1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    _emtpy = [0, 0, 2, 0, 0, 2, 0, 1, 2, 0, 1, 2, 1, 0, 2, 1, 0, 2, 1, 1, 2, 1, 1, 2]
+    _decide = [0, 0, 2, 0, 0, 2, 0, 1, 2, 0, 1, 2, 1, 0, 2, 1, 0, 2, 1, 1, 2, 1, 1, 2]
 
-    # noinspection PyAttributeOutsideInit,PyTypeChecker
-    @pytest.fixture
-    def init(self):
-        self.mydate = datetime.date(2019, 1, 1)
-        self.lunch = Meal('lunch1', 'lunch2')
-        self.dinner = Meal('dinner1', 'dinner2')
+    @pytest.mark.parametrize('index, commit', list(zip(_indexes, _commit)))
+    def test_commit(self, index, commit):
+        assert index.commit() == bool(commit)
 
-        self.i01 = Index(None, None, None, None)
-        self.i02 = Index(None, None, None, 'LUNCH')
-        self.i03 = Index(None, None, self.mydate, None)
-        self.i04 = Index(None, None, self.mydate, 'DINNER')
-        self.i05 = Index(None, self.dinner, None, None)
-        self.i06 = Index(None, self.dinner, None, 'LUNCH')
-        self.i07 = Index(None, self.dinner, self.mydate, None)
-        self.i08 = Index(None, self.dinner, self.mydate, 'DINNER')
-        self.i09 = Index(self.lunch, None, None, None)
-        self.i10 = Index(self.lunch, None, None, 'LUNCH')
-        self.i11 = Index(self.lunch, None, self.mydate, None)
-        self.i12 = Index(self.lunch, None, self.mydate, 'DINNER')
-        self.i13 = Index(self.lunch, self.dinner, None, None)
-        self.i14 = Index(self.lunch, self.dinner, None, 'LUNCH')
-        self.i15 = Index(self.lunch, self.dinner, self.mydate, None)
-        self.i16 = Index(self.lunch, self.dinner, self.mydate, 'DINNER')
+    @pytest.mark.parametrize('index, empty', list(zip(_indexes, _emtpy)))
+    def test_is_actual_meal_empty(self, index, empty):
+        if empty == 2:
+            with pytest.raises(MealError, match='Meal_type is None'):
+                assert index.is_current_meal_empty()
+        else:
+            assert index.is_current_meal_empty() == bool(empty)
 
-        return True
+    @pytest.mark.parametrize('index, decide', list(zip(_indexes, _decide)))
+    def test_decide(self, index, decide):
+        if decide == 2:
+            with pytest.raises(MealError, match='Meal_type is None'):
+                assert index.is_current_meal_empty()
+        elif decide == 1:
+            assert index.decide('hello-world')
+            assert index.get_first() == 'hello-world'
+        else:
+            with pytest.warns(MealWarning, match='Could not decide: hello-world'):
+                assert not index.decide('hello-world')
 
-    def test_commit(self, init):
-        assert init
-
-        assert not self.i01.commit()
-        assert not self.i02.commit()
-        assert not self.i03.commit()
-        assert not self.i04.commit()
-        assert not self.i05.commit()
-        assert not self.i06.commit()
-        assert not self.i07.commit()
-        assert self.i08.commit()
-        assert not self.i09.commit()
-        assert not self.i10.commit()
-        assert not self.i11.commit()
-        assert self.i12.commit()
-        assert not self.i13.commit()
-        assert not self.i14.commit()
-        assert not self.i15.commit()
-        assert self.i16.commit()
-
-    def test_is_actual_meal_empty(self, init):
-        assert init
-
-        assert self.i02.is_current_meal_empty()
-        assert self.i04.is_current_meal_empty()
-        assert self.i06.is_current_meal_empty()
-        assert not self.i08.is_current_meal_empty()
-        assert not self.i10.is_current_meal_empty()
-        assert self.i12.is_current_meal_empty()
-        assert not self.i14.is_current_meal_empty()
-        assert not self.i16.is_current_meal_empty()
-
-        with pytest.raises(MealError, match='Meal_type is None'):
-            assert self.i01.is_current_meal_empty()
-        with pytest.raises(MealError, match='Meal_type is None'):
-            assert self.i03.is_current_meal_empty()
-        with pytest.raises(MealError, match='Meal_type is None'):
-            assert self.i05.is_current_meal_empty()
-        with pytest.raises(MealError, match='Meal_type is None'):
-            assert self.i07.is_current_meal_empty()
-        with pytest.raises(MealError, match='Meal_type is None'):
-            assert not self.i09.is_current_meal_empty()
-        with pytest.raises(MealError, match='Meal_type is None'):
-            assert not self.i11.is_current_meal_empty()
-        with pytest.raises(MealError, match='Meal_type is None'):
-            assert not self.i13.is_current_meal_empty()
-        with pytest.raises(MealError, match='Meal_type is None'):
-            assert not self.i15.is_current_meal_empty()
-
-    def test_decide(self, init):
-        assert init
-
-        with pytest.raises(MealError, match='Meal_type is None'):
-            self.i01.decide('dummy text')
-        with pytest.raises(MealError, match='Meal_type is None'):
-            self.i03.decide('dummy text')
-        with pytest.raises(MealError, match='Meal_type is None'):
-            self.i05.decide('dummy text')
-        with pytest.raises(MealError, match='Meal_type is None'):
-            self.i07.decide('dummy text')
-        with pytest.raises(MealError, match='Meal_type is None'):
-            self.i09.decide('dummy text')
-        with pytest.raises(MealError, match='Meal_type is None'):
-            self.i11.decide('dummy text')
-        with pytest.raises(MealError, match='Meal_type is None'):
-            self.i13.decide('dummy text')
-        with pytest.raises(MealError, match='Meal_type is None'):
-            self.i15.decide('dummy text')
-
-        self.i02.decide('dummy text')
-        self.i04.decide('dummy text')
-        self.i06.decide('dummy text')
-        self.i12.decide('dummy text')
-
-        assert self.i02.lunch.p1 == 'dummy text'
-        assert self.i04.dinner.p1 == 'dummy text'
-        assert self.i06.lunch.p1 == 'dummy text'
-        assert self.i12.dinner.p1 == 'dummy text'
-
-        with pytest.warns(MealWarning, match='Could not decide'):
-            self.i08.decide('dummy text')
-        with pytest.warns(MealWarning, match='Could not decide'):
-            self.i10.decide('dummy text')
-        with pytest.warns(MealWarning, match='Could not decide'):
-            self.i14.decide('dummy text')
-        with pytest.warns(MealWarning, match='Could not decide'):
-            self.i16.decide('dummy text')
-
-        assert self.i08.dinner.p1 != 'dummy text'
-        assert self.i10.lunch.p1 != 'dummy text'
-        assert self.i14.lunch.p1 != 'dummy text'
-        assert self.i16.dinner.p1 != 'dummy text'
-
+    @pytest.mark.skip(reason='old')
     def test_set_meal_type(self):
         i = Index()
         i.set_state('LUNCH')
