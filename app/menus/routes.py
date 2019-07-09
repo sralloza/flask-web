@@ -109,3 +109,7 @@ def api_menus():
 
     return json.dumps(out), 200
 
+
+@menus.route('/test/hoy')
+def test_hoy():
+    return render_template('test_hoy.html')
