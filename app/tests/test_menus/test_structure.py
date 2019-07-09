@@ -1,5 +1,4 @@
 import datetime
-import itertools
 
 import pytest
 
@@ -142,7 +141,6 @@ class TestIndex:
         with pytest.raises(ValueError, match='Invalid meal type'):
             i.set_state('LAUNCH')
 
-    @pytest.mark.skip(reason='old')
     def test_set_first(self):
         i = Index()
 
@@ -160,7 +158,6 @@ class TestIndex:
         i.set_first('')
         assert i.dinner.p1 == 'test first dinner'
 
-    @pytest.mark.skip(reason='old')
     def test_set_second(self):
         i = Index()
 
@@ -178,7 +175,6 @@ class TestIndex:
         i.set_second('')
         assert i.dinner.p2 == 'test second dinner'
 
-    @pytest.mark.skip(reason='old')
     def test_to_dict(self, init):
         assert init
 
@@ -200,7 +196,6 @@ class TestIndex:
         assert self.i16.to_dict() == {'lunch': self.lunch, 'dinner': self.dinner}
 
 
-@pytest.mark.skip(reason='old')
 class TestMeal:
     # noinspection PyAttributeOutsideInit
     @pytest.fixture
@@ -247,7 +242,6 @@ class TestMeal:
             m1.update(foo='bar', p1='new_meal')
 
 
-@pytest.mark.skip(reason='old')
 class TestDailyMenu:
 
     def test_e_to_s(self):

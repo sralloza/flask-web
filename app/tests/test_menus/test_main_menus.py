@@ -2,12 +2,11 @@ from datetime import date
 
 import pytest
 
-from app.menus.core import DailyMenusManager, has_day
-from app.menus.core.structure import Meal, DailyMenu
 from app.menus.models import DailyMenu as DailyMenuDB
+from app.menus.core import DailyMenusManager, filter_data, has_day
+from app.menus.core.structure import Meal, DailyMenu
 
 
-@pytest.mark.skip(reason='old')
 class TestFunctions:
     def test_has_day(self):
         test = has_day
@@ -38,7 +37,6 @@ class TestFunctions:
 #     def _update_menu(self, index: _Index): ...
 
 
-@pytest.mark.skip(reason='old')
 class TestDailyMenusManager:
     @pytest.fixture
     def dmm(self):
@@ -196,7 +194,6 @@ class TestDailyMenusManager:
         assert date(2019, 2, 25) in dmm
 
 
-@pytest.mark.skip(reason='old')
 class TestGeneral:
     def test_patch(self):
         dmm = DailyMenusManager()
