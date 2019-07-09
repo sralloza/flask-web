@@ -19,6 +19,39 @@ class MealWarning(Warning):
     """Meal warning."""
 
 
+class Meal:
+    def __init__(self, p1=None, p2=None):
+        self.p1 = p1
+        self.p2 = p2
+
+        self.strip()
+
+    def __repr__(self):
+        return f'{self.p1} - {self.p2}'
+
+    def __eq__(self, other):
+        return self.p1 == other.p1 and self.p2 == other.p2
+
+    def is_empty(self):
+        return self.p1 is None and self.p2 is None
+
+    def update(self, **kwargs):
+        self.p1 = self.p1 or kwargs.pop('p1', None)
+        self.p2 = self.p2 or kwargs.pop('p2', None)
+
+        if kwargs:
+            raise ValueError(f'Invalid arguments for Meal: {kwargs}')
+
+        self.strip()
+
+    def strip(self):
+        if self.p1:
+            self.p1 = self.p1.strip()
+
+        if self.p2:
+            self.p2 = self.p2.strip()
+
+
 class _Index:
     """Represents the interface to store temporal values of a DailyMenu."""
     _valid_states = ('LUNCH', 'DINNER')
@@ -45,6 +78,10 @@ class _Index:
 
         if state:
             self.set_state(state)
+
+    def __repr__(self):
+        return f'Index(lunch={self.lunch!r}, dinner={self.dinner!r},' \
+            f' date={self.date!r}, state={self.state!r})'
 
     def set_combined(self, meal_combined):
         if meal_combined not in ('LUNCH', 'DINNER'):
@@ -103,6 +140,7 @@ class _Index:
 
         Raises
             MealError: if no state is configured.
+            MealError: if an invalid value is set for meal_type.
         """
 
         if self._state == 'LUNCH':
@@ -122,12 +160,21 @@ class _Index:
         Warnings:
             MealWarning: if the current meal is not empty, which means that the secondary
                 algorithm couldn't make a decition.
+
+        Raises:
+            MealError: if no state is configured (via _Index.is_current_meal_empty)
+
+        Returns:
+            bool: True if everything went right, false otherwise.
+
         """
 
         if self.is_current_meal_empty():
-            return self.set_first(text)
+            self.set_first(text)
+            return True
         else:
             warnings.warn(f'Could not decide: {text}', MealWarning, stacklevel=2)
+            return False
 
     def set_state(self, meal_type):
         """Sets the actual state.
@@ -159,6 +206,19 @@ class _Index:
         else:
             raise ValueError(f'Invalid meal type: {self._state}')
 
+    def get_first(self):
+        """Returns the first plate.
+
+        Raises:
+            ValueError: if the meal_type is invalid.
+        """
+        if self._state == 'LUNCH':
+            return self._lunch.p1
+        elif self.meal_type == 'DINNER':
+            return self._dinner.p1
+        else:
+            raise ValueError(f'Invalid meal type: {self._state}')
+
     def set_second(self, second):
         """Sets the second plate.
 
@@ -178,42 +238,23 @@ class _Index:
         else:
             raise ValueError(f'Invalid meal type: {self._state}')
 
+    def get_second(self):
+        """Gets the second plate.
+
+        Raises:
+            ValueError: if the meal_type is invalid.
+        """
+
+        if self._state == 'LUNCH':
+            return self._lunch.p2
+        elif self._state == 'DINNER':
+            return self._dinner.p2
+        else:
+            raise ValueError(f'Invalid meal type: {self._state}')
+
     def to_dict(self):
         """Returns the lunch and dinner info as a dict."""
         return {'lunch': self._lunch, 'dinner': self._dinner}
-
-
-class Meal:
-    def __init__(self, p1=None, p2=None):
-        self.p1 = p1
-        self.p2 = p2
-
-        self.strip()
-
-    def __repr__(self):
-        return f'{self.p1} - {self.p2}'
-
-    def __eq__(self, other):
-        return self.p1 == other.p1 and self.p2 == other.p2
-
-    def is_empty(self):
-        return self.p1 is None and self.p2 is None
-
-    def update(self, **kwargs):
-        self.p1 = self.p1 or kwargs.pop('p1', None)
-        self.p2 = self.p2 or kwargs.pop('p2', None)
-
-        if kwargs:
-            raise ValueError(f'Invalid arguments for Meal: {kwargs}')
-
-        self.strip()
-
-    def strip(self):
-        if self.p1:
-            self.p1 = self.p1.strip()
-
-        if self.p2:
-            self.p2 = self.p2.strip()
 
 
 class Combined(Meal):
