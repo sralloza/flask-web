@@ -186,6 +186,16 @@ class TestMeal:
 
         assert m1.p1 == 'new_meal'
 
+    def test_force_update(self):
+        meal = Meal()
+        meal.update(p1='P1', p2='P2')
+        assert meal.p1 == 'P1'
+        assert meal.p2 == 'P2'
+
+        meal.update(p1='new-1', p2='new-2')
+        assert meal.p1 == 'new-1'
+        assert meal.p2 == 'new-2'
+
     def test_strip(self):
         m = Meal(p1=' p1 ', p2='   p2   ')
         m.strip()

@@ -36,8 +36,13 @@ class Meal:
         return self.p1 is None and self.p2 is None
 
     def update(self, **kwargs):
-        self.p1 = self.p1 or kwargs.pop('p1', None)
-        self.p2 = self.p2 or kwargs.pop('p2', None)
+        p1 = kwargs.pop('p1', None)
+        p2 = kwargs.pop('p2', None)
+
+        if p1:
+            self.p1 = p1
+        if p2:
+            self.p2 = p2
 
         if kwargs:
             raise ValueError(f'Invalid arguments for Meal: {kwargs}')
@@ -456,7 +461,7 @@ class DailyMenu:
             self.dinner = dinner
 
         if not lunch:
-            self.lunch.update(p1=kwargs.pop('launch1', None), p2=kwargs.pop('launch2', None))
+            self.lunch.update(p1=kwargs.pop('lunch1', None), p2=kwargs.pop('lunch2', None))
 
         if not dinner:
             self.dinner.update(p1=kwargs.pop('dinner1', None), p2=kwargs.pop('dinner2', None))
