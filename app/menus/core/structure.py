@@ -191,6 +191,7 @@ class _Index:
         """Sets the first plate.
 
         Raises:
+            RuntimeError: if no state is set.
             ValueError: if the meal_type is invalid.
         """
 
@@ -198,6 +199,9 @@ class _Index:
 
         if not first:
             return
+
+        if not self._state:
+            raise RuntimeError('Meal type not set')
 
         if self._state == 'LUNCH':
             self._lunch.p1 = first
@@ -223,6 +227,7 @@ class _Index:
         """Sets the second plate.
 
         Raises:
+            RuntimeError: if no state is set.
             ValueError: if the meal_type is invalid.
         """
 
@@ -230,6 +235,9 @@ class _Index:
 
         if not second:
             return
+
+        if not self._state:
+            raise RuntimeError('Meal type not set')
 
         if self._state == 'LUNCH':
             self._lunch.p2 = second
