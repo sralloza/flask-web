@@ -140,26 +140,23 @@ class TestIndex:
             assert 0, 'Invalid dictcode state: %s' % dictcode
 
 
+def gen_meals():
+    p1 = ('meal_1', None)
+    p2 = ('meal_2', None)
 
-@pytest.mark.skip(reason='old')
+    _params = list(itertools.product(p1, p2))
+    return [Meal(*a) for a in _params]
+
+
 class TestMeal:
-    # noinspection PyAttributeOutsideInit
-    @pytest.fixture
-    def init(self):
-        self.m1 = Meal(p1=None, p2=None)
-        self.m2 = Meal(p1='meal_1', p2=None)
-        self.m3 = Meal(p1=None, p2='meal_2')
-        self.m4 = Meal(p1='meal_1', p2='meal_2')
+    _is_empty = [0, 0, 0, 1]
 
-        return True
-
-    def test_is_emtpy(self, init):
-        assert init
-
-        assert self.m1.is_empty()
-        assert not self.m2.is_empty()
-        assert not self.m3.is_empty()
-        assert not self.m4.is_empty()
+    @pytest.mark.parametrize('meal, is_empty', list(zip(gen_meals(), _is_empty)))
+    def test_is_empty(self, meal, is_empty):
+        if is_empty == 1:
+            assert meal.is_empty()
+        else:
+            assert not meal.is_empty()
 
     def test_update(self):
         m1 = Meal()
@@ -184,8 +181,17 @@ class TestMeal:
         assert m4.p1 == 'meal_1'
         assert m4.p2 == 'meal_2'
 
-        with pytest.raises(ValueError, match="Invalid arguments: {'foo': 'bar'}"):
+        with pytest.raises(ValueError, match="Invalid arguments for Meal: {'foo': 'bar'}"):
             m1.update(foo='bar', p1='new_meal')
+
+        assert m1.p1 == 'new_meal'
+
+    def test_strip(self):
+        m = Meal(p1=' p1 ', p2='   p2   ')
+        m.strip()
+
+        assert m.p1 == 'p1'
+        assert m.p2 == 'p2'
 
 
 @pytest.mark.skip(reason='old')
