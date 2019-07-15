@@ -42,7 +42,6 @@ class TestIndex:
             with pytest.warns(MealWarning, match='Could not decide: hello-world'):
                 assert not index.decide('hello-world')
 
-    @pytest.mark.skip(reason='old')
     def test_set_meal_type(self):
         i = Index()
         i.set_state('LUNCH')
@@ -57,11 +56,10 @@ class TestIndex:
         with pytest.raises(ValueError, match='Invalid meal type'):
             i.set_state('LAUNCH')
 
-    @pytest.mark.skip(reason='old')
     def test_set_first(self):
         i = Index()
 
-        with pytest.raises(ValueError, match='Invalid meal type'):
+        with pytest.raises(RuntimeError, match='Meal type not set'):
             i.set_first('dummy')
 
         i.set_state('LUNCH')
@@ -75,11 +73,24 @@ class TestIndex:
         i.set_first('')
         assert i.dinner.p1 == 'test first dinner'
 
-    @pytest.mark.skip(reason='old')
+    def test_get_first(self):
+        i = Index()
+
+        i.set_state('LUNCH')
+        i.set_first('test first lunch')
+        assert i.get_first() == 'test first lunch'
+
+        i.set_state('DINNER')
+        i.set_first('test first dinner')
+        assert i.get_first() == 'test first dinner'
+
+        i.set_first('')
+        assert i.get_first() == 'test first dinner'
+
     def test_set_second(self):
         i = Index()
 
-        with pytest.raises(ValueError, match='Invalid meal type'):
+        with pytest.raises(RuntimeError, match='Meal type not set'):
             i.set_second('dummy')
 
         i.set_state('LUNCH')
@@ -92,6 +103,20 @@ class TestIndex:
 
         i.set_second('')
         assert i.dinner.p2 == 'test second dinner'
+
+    def test_get_second(self):
+        i = Index()
+
+        i.set_state('LUNCH')
+        i.set_second('test first lunch')
+        assert i.get_second() == 'test first lunch'
+
+        i.set_state('DINNER')
+        i.set_second('test first dinner')
+        assert i.get_second() == 'test first dinner'
+
+        i.set_second('')
+        assert i.get_second() == 'test first dinner'
 
     @pytest.mark.skip(reason='old')
     def test_to_dict(self, init):
