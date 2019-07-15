@@ -216,6 +216,7 @@ class _Index:
         Raises:
             ValueError: if the meal_type is invalid.
         """
+
         if self._state == 'LUNCH':
             return self._lunch.p1
         elif self.meal_type == 'DINNER':

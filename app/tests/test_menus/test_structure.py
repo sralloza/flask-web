@@ -6,23 +6,29 @@ import pytest
 from app.menus.core.structure import Meal, MealError, DailyMenu, MealWarning
 from app.menus.core.structure import _Index as Index
 
+# Test data
+mydate = (datetime.date(2019, 1, 1), None)
+lunch = (Meal('lunch1', 'lunch2'), None)
+dinner = (Meal('dinner1', 'dinner2'), None)
+states = ('LUNCH', 'DINNER', None)
+
+
+def gen_indexes():
+    _params = list(itertools.product(lunch, dinner, mydate, states))
+    return [Index(*a) for a in _params]
+
 
 class TestIndex:
-    mydate = (datetime.date(2019, 1, 1), None)
-    lunch = (Meal('lunch1', 'lunch2'), None)
-    dinner = (Meal('dinner1', 'dinner2'), None)
-    states = ('LUNCH', 'DINNER', None)
-    _params = list(itertools.product(lunch, dinner, mydate, states))
-    _indexes = [Index(*a) for a in _params]
     _commit = [1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     _emtpy = [0, 0, 2, 0, 0, 2, 0, 1, 2, 0, 1, 2, 1, 0, 2, 1, 0, 2, 1, 1, 2, 1, 1, 2]
     _decide = [0, 0, 2, 0, 0, 2, 0, 1, 2, 0, 1, 2, 1, 0, 2, 1, 0, 2, 1, 1, 2, 1, 1, 2]
+    _dicts = [3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0]
 
-    @pytest.mark.parametrize('index, commit', list(zip(_indexes, _commit)))
+    @pytest.mark.parametrize('index, commit', list(zip(gen_indexes(), _commit)))
     def test_commit(self, index, commit):
         assert index.commit() == bool(commit)
 
-    @pytest.mark.parametrize('index, empty', list(zip(_indexes, _emtpy)))
+    @pytest.mark.parametrize('index, empty', list(zip(gen_indexes(), _emtpy)))
     def test_is_actual_meal_empty(self, index, empty):
         if empty == 2:
             with pytest.raises(MealError, match='Meal_type is None'):
@@ -30,7 +36,7 @@ class TestIndex:
         else:
             assert index.is_current_meal_empty() == bool(empty)
 
-    @pytest.mark.parametrize('index, decide', list(zip(_indexes, _decide)))
+    @pytest.mark.parametrize('index, decide', list(zip(gen_indexes(), _decide)))
     def test_decide(self, index, decide):
         if decide == 2:
             with pytest.raises(MealError, match='Meal_type is None'):
@@ -118,26 +124,21 @@ class TestIndex:
         i.set_second('')
         assert i.get_second() == 'test first dinner'
 
-    @pytest.mark.skip(reason='old')
-    def test_to_dict(self, init):
-        assert init
+    @pytest.mark.parametrize('index, dictcode', list(zip(gen_indexes(), _dicts)))
+    def test_to_dict(self, index, dictcode):
+        # 0 -> none, 1 -> dinner, 2 -> lunch, 3 -> both
 
-        assert self.i01.to_dict() == {'lunch': Meal(), 'dinner': Meal()}
-        assert self.i02.to_dict() == {'lunch': Meal(), 'dinner': Meal()}
-        assert self.i03.to_dict() == {'lunch': Meal(), 'dinner': Meal()}
-        assert self.i04.to_dict() == {'lunch': Meal(), 'dinner': Meal()}
-        assert self.i05.to_dict() == {'lunch': Meal(), 'dinner': self.dinner}
-        assert self.i06.to_dict() == {'lunch': Meal(), 'dinner': self.dinner}
-        assert self.i07.to_dict() == {'lunch': Meal(), 'dinner': self.dinner}
-        assert self.i08.to_dict() == {'lunch': Meal(), 'dinner': self.dinner}
-        assert self.i09.to_dict() == {'lunch': self.lunch, 'dinner': Meal()}
-        assert self.i10.to_dict() == {'lunch': self.lunch, 'dinner': Meal()}
-        assert self.i11.to_dict() == {'lunch': self.lunch, 'dinner': Meal()}
-        assert self.i12.to_dict() == {'lunch': self.lunch, 'dinner': Meal()}
-        assert self.i13.to_dict() == {'lunch': self.lunch, 'dinner': self.dinner}
-        assert self.i14.to_dict() == {'lunch': self.lunch, 'dinner': self.dinner}
-        assert self.i15.to_dict() == {'lunch': self.lunch, 'dinner': self.dinner}
-        assert self.i16.to_dict() == {'lunch': self.lunch, 'dinner': self.dinner}
+        if dictcode == 0:
+            assert index.to_dict() == {'lunch': Meal(), 'dinner': Meal()}
+        elif dictcode == 1:
+            assert index.to_dict() == {'lunch': Meal(), 'dinner': dinner[0]}
+        elif dictcode == 2:
+            assert index.to_dict() == {'lunch': lunch[0], 'dinner': Meal()}
+        elif dictcode == 3:
+            assert index.to_dict() == {'lunch': lunch[0], 'dinner': dinner[0]}
+        else:
+            assert 0, 'Invalid dictcode state: %s' % dictcode
+
 
 
 @pytest.mark.skip(reason='old')
