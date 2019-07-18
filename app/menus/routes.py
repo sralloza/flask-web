@@ -6,10 +6,10 @@ from flask import render_template, redirect, url_for, request
 
 from app.menus.core import DailyMenusManager, DailyMenu
 from app.utils import get_last_menus_page
-from . import menus
+from . import menus_blueprint
 
 
-@menus.route('/menus')
+@menus_blueprint.route('/menus')
 def menus_view():
     dmm = DailyMenusManager.load()
 
@@ -33,14 +33,14 @@ def menus_view():
     return render_template(template_name, menus=show, last_url=last_url)
 
 
-@menus.route('/n')
-@menus.route('/new_menus')
-@menus.route('/new-menus')
+@menus_blueprint.route('/n')
+@menus_blueprint.route('/new_menus')
+@menus_blueprint.route('/new-menus')
 def menus_redirect():
     return redirect('menus')
 
 
-@menus.route('/menus/reload')
+@menus_blueprint.route('/menus/reload')
 def menus_reload():
     dmm = DailyMenusManager.load(force=True)
 
@@ -49,8 +49,11 @@ def menus_reload():
 
     return redirect(url_for('menus.menus_view', _external=True))
 
+@menus_blueprint.route('/h')
+def today_redirect():
+    return redirect('hoy')
 
-@menus.route('/hoy')
+@menus_blueprint.route('/hoy')
 def today():
     dmm = DailyMenusManager.load()
     day = request.args.get('day')
@@ -94,7 +97,7 @@ def today():
     ), code
 
 
-@menus.route('/api/menus')
+@menus_blueprint.route('/api/menus')
 def api_menus():
     dmm = DailyMenusManager.load()
     out = []
