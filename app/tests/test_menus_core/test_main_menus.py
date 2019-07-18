@@ -2,44 +2,118 @@ from datetime import date
 
 import pytest
 
-from app.menus.core import DailyMenusManager, has_day
+from app.menus.core import DailyMenusManager, has_day, Patterns
 from app.menus.core.structure import Meal, DailyMenu
 from app.menus.models import DailyMenu as DailyMenuDB
 
 
 @pytest.mark.skip(reason='old')
 class TestFunctions:
-    def test_has_day(self):
-        test = has_day
-        assert test('DÍA: 05 DE MARZO DE 2019 (MARTES)')
-        assert test('DÍA: 05 DE JUNIO DE 2019 (MARTES)')
-        assert not test('DÍA: 4 DE 2019 DE MARZO (MARTES')
-        assert not test('day: 15 of 1562, june')
-        assert not test('BUFFET: LECHE, CAFÉ, COLACAO, BIZCOCHO, GALLETAS, TOSTADAS, PAN,')
-        assert test('DÍA: 06 DE MARZO DE 2019 (MIERCOLES)')
-        assert not test('DÍA: 07 DE MARZO\nDE 2019 (JUEVES)')
-        assert not test('1ER PLATO: ENSALADA TROPICAL')
-        assert not test('CENA:\n\n\n \n\nCÓCTEL ESPAÑOL')
-        assert test('DÍA: 11 DE MARZO DE 2019 (LUNES)')
+    has_day_args = [
+        ('DÍA: 05 DE MARZO DE 2019 (MARTES)', 1),
+        ('DÍA: 05 DE JUNIO DE 2019 (MARTES)', 1),
+        ('DÍA: 4 DE 2019 DE MARZO (MARTES', 0),
+        ('day: 15 of 1562, june', 0),
+        ('BUFFET: LECHE, CAFÉ, COLACAO, BIZCOCHO, GALLETAS, TOSTADAS, PAN,', 0),
+        ('DÍA: 06 DE MARZO DE 2019 (MIERCOLES)', 1),
+        ('DÍA: 07 DE MARZO\nDE 2019 (JUEVES)', 0),
+        ('1ER PLATO: ENSALADA TROPICAL', 0),
+        ('CENA:\n\n\n \n\nCÓCTEL ESPAÑOL', 0),
+        ('DÍA: 11 DE MARZO DE 2019 (LUNES)', 1),
+    ]
+
+    @pytest.mark.parametrize('str_to_parse, parse_code', has_day_args)
+    def test_has_day(self, str_to_parse, parse_code):
+        if parse_code == 1:
+            assert has_day(str_to_parse)
+        elif parse_code == 0:
+            assert not has_day(str_to_parse)
+        else:
+            assert 0, 'Invalid parse code'
+
+    @pytest.mark.skip
+    def test_filer_data(self):
+        pass
 
 
-# class DailyMenusManager:
-#     def __contains__(self, item: date): ...
-#     def sort(self): ...
-#     def to_string(self): ...
-#     def to_html(self): ...
-#     def add_to_menus(self, menus): ...
-#     def load(cls): ...
-#     def load_from_database(self): ...
-#     def save_to_database(self): ...
-#     def load_from_menus_urls(self): ...
-#     def process_url(self, url, retries=5): ...
-#     def _process_texts(self, texts): ...
-#     def _update_menu(self, index: _Index): ...
+class TestPatterns:
+    @pytest.mark.skip
+    def test_day_pattern(self):
+        pass
+
+    @pytest.mark.skip
+    def test_semi_day_pattern_1(self):
+        pass
+
+    @pytest.mark.skip
+    def test_semi_day_pattern_2(self):
+        pass
+
+    @pytest.mark.skip
+    def test_fix_dates_pattern_1(self):
+        pass
+
+    @pytest.mark.skip
+    def test_fix_dates_pattern_2(self):
+        pass
+
+    @pytest.mark.skip
+    def test_ignore_patters(self):
+        pass
 
 
-@pytest.mark.skip(reason='old')
 class TestDailyMenusManager:
+    @pytest.mark.skip
+    def test__contains__(self):
+        pass
+
+    @pytest.mark.skip
+    def testsort(self):
+        pass
+
+    @pytest.mark.skip
+    def testto_string(self):
+        pass
+
+    @pytest.mark.skip
+    def testto_html(self):
+        pass
+
+    @pytest.mark.skip
+    def testadd_to_menus(self):
+        pass
+
+    @pytest.mark.skip
+    def testload(self):
+        pass
+
+    @pytest.mark.skip
+    def testload_from_database(self):
+        pass
+
+    @pytest.mark.skip
+    def testsave_to_database(self):
+        pass
+
+    @pytest.mark.skip
+    def testload_from_menus_urls(self):
+        pass
+
+    @pytest.mark.skip
+    def testprocess_url(self):
+        pass
+
+    @pytest.mark.skip
+    def test_process_texts(self):
+        pass
+
+    @pytest.mark.skip
+    def test_update_menu(self):
+        pass
+
+
+@pytest.mark.skip
+class TestDailyMenusManagerOld:
     @pytest.fixture
     def dmm(self):
         dmm = DailyMenusManager()
@@ -59,7 +133,7 @@ class TestDailyMenusManager:
         return dmm
 
     def test_day_pattern(self):
-        test = DailyMenusManager.day_pattern.search
+        test = Patterns.day_pattern.search
 
         assert test('DÍA: 05 DE MARZO DE 2019 (MARTES)')
         assert test('DÍA: 05 DE JUNIO DE 2019 (MARTES)')
@@ -73,7 +147,7 @@ class TestDailyMenusManager:
         assert test('DÍA: 11 DE MARZO DE 2019 (LUNES)')
 
     def test_fix_dates_pattern(self):
-        test = DailyMenusManager.fix_dates_pattern_1.search
+        test = Patterns.fix_dates_pattern_1.search
 
         assert test('febrero\n2010')
         assert test('word\n1000')
@@ -86,7 +160,7 @@ class TestDailyMenusManager:
 
     def test_ignore_patterns(self):
         def ignore(x):
-            for pat in DailyMenusManager.ignore_patters:
+            for pat in Patterns.ignore_patters:
                 if pat.search(x) is not None:
                     return True
             return False
