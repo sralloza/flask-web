@@ -113,7 +113,7 @@ class TestGetMenusUrls:
         assert logger_mock.warning.call_count == 5
 
         logger_mock.critical.assert_called_once_with(
-            'Fatal connection error downloading principal url (%r). No urls found (%d retries)',
+            'Fatal connection error downloading principal url (%r) (%d retries)',
             PRINCIPAL_URL, 5)
 
         assert len(urls) == 0
