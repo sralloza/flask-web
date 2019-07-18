@@ -11,16 +11,16 @@ from . import menus_blueprint
 
 @menus_blueprint.route('/menus')
 def menus_view():
-    dmm = DailyMenusManager.load()
-
-    last_url = get_last_menus_page()
     _all = request.args.get('all') is not None
     beta = request.args.get('beta') is not None
 
-    show = dmm.menus
-
     if _all and beta:
         return redirect('/menus?beta', code=301)
+
+    dmm = DailyMenusManager.load()
+
+    last_url = get_last_menus_page()
+    show = dmm.menus
 
     if not _all and not beta:
         show = dmm.menus[:15]
@@ -49,9 +49,11 @@ def menus_reload():
 
     return redirect(url_for('menus.menus_view', _external=True), code=301)
 
+
 @menus_blueprint.route('/h')
 def today_redirect():
     return redirect('hoy', code=301)
+
 
 @menus_blueprint.route('/hoy')
 def today():
@@ -111,4 +113,3 @@ def api_menus():
         out.append(foo)
 
     return json.dumps(out), 200
-
