@@ -377,6 +377,6 @@ class TestDailyMenu:
         with pytest.raises(ValueError, match='Dinner must be Meal'):
             dm.update(dinner='pan')
 
-        dm.update(lunch1='lunch1', lunch2='lunch2',dinner1='dinner1',dinner2='dinner2')
+        dm.update(lunch1='lunch1', lunch2='lunch2', dinner1='dinner1', dinner2='dinner2')
         assert dm.lunch == Meal('lunch1', 'lunch2')
         assert dm.dinner == Meal('dinner1', 'dinner2')
