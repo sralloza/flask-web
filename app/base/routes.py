@@ -27,18 +27,17 @@ def before_request():
 
 @base_blueprint.route('/favicon.ico')
 def favicon():
-    return redirect(url_for('static', filename='images/favicon.png', _scheme='https', _external=True),
-                    code=301)
+    return redirect(url_for('static', filename='images/favicon.png'), code=301)
 
 
 @base_blueprint.route('/')
 def index():
-    return redirect(url_for('menus_blueprint.today', _scheme='https', _external=True), code=301)
+    return redirect(url_for('menus_blueprint.today'), code=301)
 
 
 @base_blueprint.route('/s')
 def redirect_source():
-    return redirect(url_for('base_blueprint.source', _scheme='https', _external=True), code=301)
+    return redirect(url_for('base_blueprint.source'), code=301)
 
 
 # noinspection PyBroadException
@@ -57,11 +56,12 @@ def feedback():
 
 @base_blueprint.route('/a')
 def redirect_aemet():
-    return redirect(url_for('base_blueprint.aemet', _scheme='https', _external=True), code=301)
+    return redirect(url_for('base_blueprint.aemet'), code=301)
 
 
 @base_blueprint.route('/aemet')
 def aemet():
     return redirect(
         'http://www.aemet.es/es/eltiempo/prediccion/municipios/horas/tabla/valladolid-id47186',
-        code=301)
+        code=301
+    )

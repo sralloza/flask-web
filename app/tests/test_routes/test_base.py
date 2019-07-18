@@ -10,7 +10,7 @@ def test_user_agent_filter(client):
 def test_redirect_favicon(client):
     rv = client.get('/favicon.ico')
     assert rv.status_code == 301
-    assert rv.location == 'https://menus.sralloza.es/static/images/favicon.png'
+    assert rv.location == 'http://menus.sralloza.es/static/images/favicon.png'
 
 
 def test_favicon(client):
@@ -27,13 +27,13 @@ def test_index(client):
 def test_redirect_index(client):
     rv = client.get('/')
     assert rv.status_code == 301
-    assert rv.location == 'https://menus.sralloza.es/hoy'
+    assert rv.location == 'http://menus.sralloza.es/hoy'
 
 
 def test_redirect_source(client):
     rv = client.get('/s')
     assert rv.status_code == 301
-    assert rv.location == 'https://menus.sralloza.es/source'
+    assert rv.location == 'http://menus.sralloza.es/source'
 
 
 @pytest.mark.skip
@@ -50,7 +50,7 @@ def test_feedback(client):
 def test_redirect_aemet(client):
     rv = client.get('/a')
     assert rv.status_code == 301
-    assert rv.location == 'https://menus.sralloza.es/aemet'
+    assert rv.location == 'http://menus.sralloza.es/aemet'
 
 
 def test_aemet(client):
