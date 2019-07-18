@@ -4,7 +4,7 @@ import os
 from flask import Flask
 from flask_bootstrap import Bootstrap
 
-from .base import base
+from .base import base_blueprint
 from .menus import menus_blueprint
 from .menus.models import db
 
@@ -35,7 +35,7 @@ def create_app(config_filename=None, config_object=None, settings_override=None)
     db.init_app(flask_app)
 
     Bootstrap(flask_app)
-    flask_app.register_blueprint(base)
+    flask_app.register_blueprint(base_blueprint)
     flask_app.register_blueprint(menus_blueprint)
 
     db.create_all(app=flask_app)
