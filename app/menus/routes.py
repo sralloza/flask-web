@@ -20,7 +20,7 @@ def menus_view():
     show = dmm.menus
 
     if _all and beta:
-        return redirect('/menus?beta')
+        return redirect('/menus?beta', code=301)
 
     if not _all and not beta:
         show = dmm.menus[:15]
@@ -37,7 +37,7 @@ def menus_view():
 @menus_blueprint.route('/new_menus')
 @menus_blueprint.route('/new-menus')
 def menus_redirect():
-    return redirect('menus')
+    return redirect('menus', code=301)
 
 
 @menus_blueprint.route('/menus/reload')
@@ -47,11 +47,11 @@ def menus_reload():
     for menu in dmm:
         menu.to_database()
 
-    return redirect(url_for('menus.menus_view', _external=True))
+    return redirect(url_for('menus.menus_view', _external=True), code=301)
 
 @menus_blueprint.route('/h')
 def today_redirect():
-    return redirect('hoy')
+    return redirect('hoy', code=301)
 
 @menus_blueprint.route('/hoy')
 def today():
