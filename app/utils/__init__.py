@@ -18,7 +18,7 @@ def get_last_menus_page():
 
     try:
         response = requests.get(principal_url)
-        soup = Soup(response.content, 'html.parser')
+        soup = Soup(response.text, 'html.parser')
         container = soup.findAll('div', {'class': 'j-blog-meta'})
 
         redirect_url = container[0].a['href']

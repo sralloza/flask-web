@@ -165,7 +165,7 @@ class DailyMenusManager:
         if not retries:
             return -1
 
-        s = Soup(r.content, 'html.parser')
+        s = Soup(r.text, 'html.parser')
         container = s.find('article', {'class': 'j-blog'})
         container = self.patch_urls(url, container.text)
         text = '\n'.join(x.strip() for x in container.splitlines() if x.strip())
