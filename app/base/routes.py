@@ -43,9 +43,6 @@ def redirect_source():
 # noinspection PyBroadException
 @base_blueprint.route('/source')
 def source():
-    if not current_app.config['PARSE_MAIN_WEB']:
-        return redirect(current_app.config['LAST_URL'])
-
     return redirect(get_last_menus_page())
 
 
