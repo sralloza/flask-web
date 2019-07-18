@@ -16,7 +16,7 @@ logger = logging.getLogger()
 def has_day(x):
     x = x.lower()
 
-    return DailyMenusManager.day_pattern.search(x) is not None
+    return Patterns.day_pattern.search(x) is not None
 
 
 def filter_data(data):
@@ -44,12 +44,12 @@ def filter_data(data):
             out.append('cóctel')
         elif 'combinado' in d:
             out.append(d.replace('1er plato:', '').strip())
-        elif DailyMenusManager.day_pattern.search(d) is not None:
-            out.append(DailyMenusManager.day_pattern.search(d).group())
-        elif DailyMenusManager.semi_day_pattern_2.search(d) is not None:
-            if DailyMenusManager.semi_day_pattern_1.search(data[i - 1]) is not None:
-                foo = DailyMenusManager.semi_day_pattern_1.search(data[i - 1]).group() + ' de ' + \
-                      DailyMenusManager.semi_day_pattern_2.search(d).group()
+        elif Patterns.day_pattern.search(d) is not None:
+            out.append(Patterns.day_pattern.search(d).group())
+        elif Patterns.semi_day_pattern_2.search(d) is not None:
+            if Patterns.semi_day_pattern_1.search(data[i - 1]) is not None:
+                foo = Patterns.semi_day_pattern_1.search(data[i - 1]).group() + ' de ' + \
+                      Patterns.semi_day_pattern_2.search(d).group()
                 out.append(foo)
         else:
             if 'combinado' in data[i - 1] and 'postre' not in d:
@@ -57,7 +57,7 @@ def filter_data(data):
     return out
 
 
-class DailyMenusManager:
+class Patterns:
     day_pattern = re.compile(
         r'día: (?P<day>\d+) de (?P<month>\w+) de (?P<year>\d{4})\s?\((?P<weekday>\w+)\)',
         re.IGNORECASE)
@@ -73,6 +73,9 @@ class DailyMenusManager:
         re.compile(r'semana del \d+ al \d+ de \w+', re.IGNORECASE),
         re.compile(r'semana del \d+ de \w+ al \d+ de \w+ \d+', re.IGNORECASE)
     )
+
+
+class DailyMenusManager:
 
     def __init__(self):
         self.menus = []
@@ -169,8 +172,8 @@ class DailyMenusManager:
         container = s.find('article', {'class': 'j-blog'})
         container = self.patch_urls(url, container.text)
         text = '\n'.join(x.strip() for x in container.splitlines() if x.strip())
-        text = self.fix_dates_pattern_1.sub(r'\1 \2', text)
-        text = self.fix_dates_pattern_2.sub(r'\1 \2', text)
+        text = Patterns.fix_dates_pattern_1.sub(r'\1 \2', text)
+        text = Patterns.fix_dates_pattern_2.sub(r'\1 \2', text)
         texts = [x.strip() for x in text.splitlines() if x.strip()]
 
         texts = filter_data(texts)
@@ -195,12 +198,12 @@ class DailyMenusManager:
         index = _Index()
         for text in texts:
             text = text.replace('_', ' ').lower()
-            if self.day_pattern.search(text) is not None:
+            if Patterns.day_pattern.search(text) is not None:
                 if index.commit():
                     self._update_menu(index)
 
                 index.reset()
-                search = self.day_pattern.search(text)
+                search = Patterns.day_pattern.search(text)
 
                 day = int(search.group('day'))
                 month = search.group('month')
@@ -225,7 +228,7 @@ class DailyMenusManager:
             elif '2º' in text:
                 index.set_second(text.split(':')[1])
             else:
-                for pattern in self.ignore_patters:
+                for pattern in Patterns.ignore_patters:
                     if pattern.search(text) is not None:
                         break
                 else:
