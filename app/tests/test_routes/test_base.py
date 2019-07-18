@@ -1,4 +1,4 @@
-import pytest
+from unittest import mock
 
 
 def test_user_agent_filter(client):
@@ -36,9 +36,13 @@ def test_redirect_source(client):
     assert rv.location == 'http://menus.sralloza.es/source'
 
 
-@pytest.mark.skip
-def test_source():
-    pass
+@mock.patch('app.base.routes.get_last_menus_page', return_value='http://example.com')
+def test_source(get_last_menus_page_mock, client):
+    rv = client.get('/source')
+    assert rv.status_code == 301
+    assert rv.location == 'http://example.com'
+
+    get_last_menus_page_mock.assert_called_once_with()
 
 
 def test_feedback(client):
