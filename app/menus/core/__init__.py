@@ -144,10 +144,10 @@ class DailyMenusManager:
         for menu in self:
             menu.to_database()
 
-    def load_from_menus_urls(self, index_path=None):
+    def load_from_menus_urls(self):
         logger.debug('Loading from menus urls')
         threads = []
-        for u in get_menus_urls(index_path=index_path):
+        for u in get_menus_urls():
             t = Worker(u, self)
             t.start()
             threads.append(t)
