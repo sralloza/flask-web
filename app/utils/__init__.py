@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup as Soup
@@ -36,3 +37,7 @@ def get_last_menus_page(retries=5):
         'Fatal connection error downloading principal url (%r) (%d retries)',
         PRINCIPAL_URL, total_retries)
     return PRINCIPAL_URL
+
+
+def today():
+    return datetime.now()
