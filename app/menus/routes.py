@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from flask import render_template, redirect, url_for, request
 
 from app.menus.core import DailyMenusManager, DailyMenu
-from app.utils import get_last_menus_page
+from app.utils import get_last_menus_page, today
 from . import menus_blueprint
 
 
@@ -61,16 +61,21 @@ def today():
     dmm = DailyMenusManager.load()
     day = request.args.get('day')
 
-    asked = datetime.today()
+    asked = None
     code = 200
 
     try:
         if day in (None, ''):
-            menu = dmm[datetime.today().date()]
+            asked = today()
+            menu = dmm[asked.date()]
         else:
             asked = datetime.strptime(day, '%Y-%m-%d')
             menu = dmm[asked.date()]
-    except (KeyError, ValueError):
+    except ValueError:
+        asked = today()
+        menu = DailyMenu(asked.day, asked.month, asked.year)
+        code = 404
+    except KeyError:
         menu = DailyMenu(asked.day, asked.month, asked.year)
         code = 404
 
@@ -87,10 +92,12 @@ def today():
     disabled_tomorrow = 'disabled'
 
     if yesterday.date() in dmm:
-        yesterday_url = url_for('menus_blueprint.today', _external=True) + '?day=' + str(yesterday.date())
+        yesterday_url = url_for('menus_blueprint.today', _external=True) + '?day=' + str(
+            yesterday.date())
         disabled_yesterday = ''
     if tomorrow.date() in dmm:
-        tomorrow_url = url_for('menus_blueprint.today', _external=True) + '?day=' + str(tomorrow.date())
+        tomorrow_url = url_for('menus_blueprint.today', _external=True) + '?day=' + str(
+            tomorrow.date())
         disabled_tomorrow = ''
 
     return render_template(
