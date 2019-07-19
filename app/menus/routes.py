@@ -47,7 +47,8 @@ def menus_reload():
     for menu in dmm:
         menu.to_database()
 
-    return redirect(url_for('menus.menus_view', _external=True), code=301)
+    # todo change to redirect to /hoy
+    return redirect(url_for('menus_blueprint.menus_view', _external=True), code=301)
 
 
 @menus_blueprint.route('/h')
@@ -86,10 +87,10 @@ def today():
     disabled_tomorrow = 'disabled'
 
     if yesterday.date() in dmm:
-        yesterday_url = url_for('menus.today', _external=True) + '?day=' + str(yesterday.date())
+        yesterday_url = url_for('menus_blueprint.today', _external=True) + '?day=' + str(yesterday.date())
         disabled_yesterday = ''
     if tomorrow.date() in dmm:
-        tomorrow_url = url_for('menus.today', _external=True) + '?day=' + str(tomorrow.date())
+        tomorrow_url = url_for('menus_blueprint.today', _external=True) + '?day=' + str(tomorrow.date())
         disabled_tomorrow = ''
 
     return render_template(
