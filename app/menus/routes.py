@@ -47,13 +47,22 @@ def menus_reload():
     for menu in dmm:
         menu.to_database()
 
-    # todo change to redirect to /hoy
     return redirect(url_for('menus_blueprint.menus_view', _external=True), code=301)
 
 
 @menus_blueprint.route('/h')
 def today_redirect():
     return redirect('hoy', code=301)
+
+
+@menus_blueprint.route('/hoy/reload')
+def today_reload():
+    dmm = DailyMenusManager.load(force=True)
+
+    for menu in dmm:
+        menu.to_database()
+
+    return redirect(url_for('menus_blueprint.today', _external=True), code=301)
 
 
 @menus_blueprint.route('/hoy')
