@@ -20,7 +20,6 @@ class TestFunctions:
         ('DÍA: 11 DE MARZO DE 2019 (LUNES)', 1),
     ]
 
-    @pytest.mark.parametrize('str_to_parse, parse_code', has_day_args)
     def test_has_day(self, str_to_parse, parse_code):
         if parse_code == 1:
             assert has_day(str_to_parse)
@@ -120,4 +119,3 @@ class TestWorker:
 
         logger_mock.assert_called_once_with('Starting worker with url %s', 'http://example.com')
         m.process_url.assert_called_once_with('http://example.com', 5)
-
