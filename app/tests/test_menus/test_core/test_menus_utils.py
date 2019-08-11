@@ -4,7 +4,7 @@ from unittest import mock
 import pytest
 from requests.exceptions import ConnectionError
 
-from app.menus.core.utils import get_menus_urls, PRINCIPAL_URL
+from app.menus.core.utils import get_menus_urls, PRINCIPAL_URL, Worker
 
 
 @mock.patch('requests.get')
@@ -117,3 +117,47 @@ class TestGetMenusUrls:
 
         assert len(urls) == 0
         assert urls == []
+
+
+@pytest.mark.skip
+def test_has_day():
+    pass
+
+
+@pytest.mark.skip
+def test_filter_data():
+    pass
+
+
+@pytest.mark.skip
+class TestPatterns:
+    def test_day_pattern(self):
+        pass
+
+    def test_semi_day_pattern_1(self):
+        pass
+
+    def test_semi_day_pattern_2(self):
+        pass
+
+    def test_fix_dates_patterns_1(self):
+        pass
+
+    def test_fix_dates_patterns_2(self):
+        pass
+
+    def test_ignore_patterns(self):
+        pass
+
+
+@pytest.mark.skip('Check')
+class TestWorker:
+    @mock.patch('app.menus.core.logger.debug', spec=True)
+    def test_run(self, logger_mock):
+        m = mock.Mock()
+        w = Worker('http://example.com', m)
+
+        w.run()
+
+        logger_mock.assert_called_once_with('Starting worker with url %s', 'http://example.com')
+        m.process_url.assert_called_once_with('http://example.com', 5)

@@ -12,44 +12,6 @@ from .exceptions import MealError, MealWarning
 logger = logging.getLogger(__name__)
 
 
-class Meal:
-    def __init__(self, p1=None, p2=None):
-        self.p1 = p1
-        self.p2 = p2
-
-        self.strip()
-
-    def __repr__(self):
-        return f'{self.p1} - {self.p2}'
-
-    def __eq__(self, other):
-        return self.p1 == other.p1 and self.p2 == other.p2
-
-    def is_empty(self):
-        return self.p1 is None and self.p2 is None
-
-    def update(self, **kwargs):
-        p1 = kwargs.pop('p1', None)
-        p2 = kwargs.pop('p2', None)
-
-        if p1:
-            self.p1 = p1
-        if p2:
-            self.p2 = p2
-
-        if kwargs:
-            raise ValueError(f'Invalid arguments for Meal: {kwargs}')
-
-        self.strip()
-
-    def strip(self):
-        if self.p1:
-            self.p1 = self.p1.strip()
-
-        if self.p2:
-            self.p2 = self.p2.strip()
-
-
 class _Index:
     """Represents the interface to store temporal values of a DailyMenu."""
     _valid_states = ('LUNCH', 'DINNER')
@@ -262,6 +224,44 @@ class _Index:
     def to_dict(self):
         """Returns the lunch and dinner info as a dict."""
         return {'lunch': self._lunch, 'dinner': self._dinner}
+
+
+class Meal:
+    def __init__(self, p1=None, p2=None):
+        self.p1 = p1
+        self.p2 = p2
+
+        self.strip()
+
+    def __repr__(self):
+        return f'{self.p1} - {self.p2}'
+
+    def __eq__(self, other):
+        return self.p1 == other.p1 and self.p2 == other.p2
+
+    def is_empty(self):
+        return self.p1 is None and self.p2 is None
+
+    def update(self, **kwargs):
+        p1 = kwargs.pop('p1', None)
+        p2 = kwargs.pop('p2', None)
+
+        if p1:
+            self.p1 = p1
+        if p2:
+            self.p2 = p2
+
+        if kwargs:
+            raise ValueError(f'Invalid arguments for Meal: {kwargs}')
+
+        self.strip()
+
+    def strip(self):
+        if self.p1:
+            self.p1 = self.p1.strip()
+
+        if self.p2:
+            self.p2 = self.p2.strip()
 
 
 class Combined(Meal):
