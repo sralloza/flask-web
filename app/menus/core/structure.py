@@ -6,7 +6,7 @@ from typing import Union
 
 from sqlalchemy.exc import IntegrityError
 
-from app.menus.models import DailyMenu as DailyMenuDB, db
+from app.menus.models import DailyMenuDB, db
 
 logger = logging.getLogger(__name__)
 

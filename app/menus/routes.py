@@ -4,9 +4,10 @@ from datetime import datetime, timedelta
 
 from flask import render_template, redirect, url_for, request
 
-from app.menus.core import DailyMenusManager, DailyMenu
 from app.utils import get_last_menus_page, today
 from . import menus_blueprint
+from .core.daily_menus_manager import DailyMenusManager
+from .core.structure import DailyMenu
 
 
 @menus_blueprint.route('/menus')

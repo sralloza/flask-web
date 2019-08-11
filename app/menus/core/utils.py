@@ -6,8 +6,6 @@ import requests
 from bs4 import BeautifulSoup as Soup
 from requests.exceptions import ConnectionError
 
-from app.menus.core.daily_menus_manager import DailyMenusManager
-
 logger = logging.getLogger(__name__)
 PRINCIPAL_URL = 'https://www.residenciasantiago.es/menus-1/'
 
@@ -97,11 +95,11 @@ class Patterns:
 
 
 class Worker(Thread):
-    def __init__(self, url, dmm_instance: DailyMenusManager, retries=5):
+    def __init__(self, url, dmm, retries=5):
         super().__init__()
         self.url = url
         self.retries = retries
-        self.dmm = dmm_instance
+        self.dmm = dmm
 
     def run(self):
         logger.debug('Starting worker with url %s', self.url)

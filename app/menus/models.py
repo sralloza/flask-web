@@ -4,7 +4,7 @@ db = SQLAlchemy()
 
 
 # noinspection PyUnresolvedReferences
-class DailyMenu(db.Model):
+class DailyMenuDB(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     day = db.Column(db.Integer, nullable=False)
     month = db.Column(db.Integer, nullable=False)

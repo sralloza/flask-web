@@ -2,7 +2,7 @@ from unittest import mock
 
 import pytest
 
-from app.menus.core import has_day, Worker
+from app.menus.core.utils import has_day, Worker
 
 
 @pytest.mark.skip(reason='old')

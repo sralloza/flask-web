@@ -4,8 +4,7 @@ from unittest import mock
 import pytest
 from requests.exceptions import ConnectionError
 
-from app.menus.core import get_menus_urls
-from app.menus.core.get_urls import PRINCIPAL_URL
+from app.menus.core.utils import get_menus_urls, PRINCIPAL_URL
 
 
 @mock.patch('requests.get')
