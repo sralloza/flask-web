@@ -24,6 +24,7 @@ class TestMenus:
     def argument(self, request):
         return request.param
 
+    @pytest.mark.xfail
     @mock.patch('app.menus.routes.DailyMenusManager.load')
     @mock.patch('app.menus.routes.get_last_menus_page', return_value='http://example.com')
     def test_without_args(self, glmp_mock, load_mock, client, menu_mock, argument):

@@ -1,14 +1,15 @@
+from pathlib import Path
+
+
 class Config(object):
-    DEBUG = False
+    ROOT_PATH = Path(__file__).parent
     TESTING = False
-    LAST_URL = 'https://www.residenciasantiago.es/2019/03/04/semana-del-5-al-11-de-marzo-2019/'
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///../flask.db'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + (ROOT_PATH / 'flask.db').as_posix()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class TestingConfig(Config):
-    DEBUG = False
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///flask_tmp.db'
+    SQLALCHEMY_DATABASE_URI = 'sqlite://'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SERVER_NAME = 'menus.sralloza.es'
