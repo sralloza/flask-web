@@ -204,6 +204,11 @@ class TestMeal:
         assert m.p2 == 'p2'
 
 
+@pytest.mark.skip
+class TestCombined:
+    pass
+
+
 def gen_daily_menus():
     lunch = (Meal(), Meal(p1='L1'), Meal(p1='L1', p2='L2'))
     dinner = (Meal(), Meal(p1='D1'), Meal(p1='D1', p2='D2'))

@@ -8,7 +8,7 @@ from app.menus.core.utils import get_menus_urls, PRINCIPAL_URL, Worker
 
 
 @mock.patch('requests.get')
-@mock.patch('app.menus.core.get_urls.logger')
+@mock.patch('app.menus.core.utils.logger')
 class TestGetMenusUrls:
     urls_expected = ['https://www.residenciasantiago.es/2019/06/20/del-21-al-24-de-junio-2019/',
                      'https://www.residenciasantiago.es/2019/06/17/del-18-al-20-de-junio-2019/']
@@ -17,7 +17,7 @@ class TestGetMenusUrls:
 
     @pytest.fixture(scope='class')
     def test_content(self):
-        path = Path(__file__).parent.parent / 'data' / 'get_urls.txt'
+        path = Path(__file__).parent.parent.parent / 'data' / 'get_urls.txt'
 
         with path.open() as f:
             return f.read()
