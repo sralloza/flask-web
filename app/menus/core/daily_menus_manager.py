@@ -5,9 +5,9 @@ from threading import Lock
 import requests
 from bs4 import BeautifulSoup as Soup
 
-from app.menus.core import _Index, Patterns, DailyMenu, Worker
-from app.menus.core.utils import get_menus_urls, filter_data, has_day
-from app.menus.models import DailyMenu as DailyMenuDB
+from app.menus.models import DailyMenu as DailyMenuDB, DailyMenu
+from .structure import _Index
+from .utils import get_menus_urls, filter_data, has_day, Patterns, Worker
 
 logger = logging.getLogger(__name__)
 
