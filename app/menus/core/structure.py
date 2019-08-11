@@ -7,16 +7,9 @@ from typing import Union
 from sqlalchemy.exc import IntegrityError
 
 from app.menus.models import DailyMenuDB, db
+from .exceptions import MealError, MealWarning
 
 logger = logging.getLogger(__name__)
-
-
-class MealError(Exception):
-    """Meal error."""
-
-
-class MealWarning(Warning):
-    """Meal warning."""
 
 
 class Meal:
