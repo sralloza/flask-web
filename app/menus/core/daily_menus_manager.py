@@ -58,14 +58,14 @@ class DailyMenusManager:
             self.menus = list(foo.values())
 
     @classmethod
-    def load(cls, force=False, index_path=None):
+    def load(cls, force=False):
         self = DailyMenusManager.__new__(cls)
         self.__init__()
         self.load_from_database()
 
         today = datetime.today().date()
         if today not in self or force:
-            self.load_from_menus_urls(index_path)
+            self.load_from_menus_urls()
             self.save_to_database()
 
         self.sort()
