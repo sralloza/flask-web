@@ -4,7 +4,7 @@ from unittest import mock
 import pytest
 from requests.exceptions import ConnectionError
 
-from app.menus.core.utils import get_menus_urls, PRINCIPAL_URL, Worker
+from app.menus.core.utils import get_menus_urls, PRINCIPAL_URL, Worker, has_day
 
 
 @mock.patch('requests.get')
@@ -119,9 +119,29 @@ class TestGetMenusUrls:
         assert urls == []
 
 
-@pytest.mark.skip
-def test_has_day():
-    pass
+class TestHasDay:
+    data = (
+        ('Día: 25 de diciembre de 2017 (martes)', True),
+        ('Día: 07 de enero de 2019 (viernes)', True),
+        ('Día: 1 de junio de 2000 (sábado)', True),
+        ('Día:    1 de junio de 2000 (sábado)', True),
+        ('Día: 1    de junio de 2000 (sábado)', True),
+        ('Día: 1 de    junio de 2000 (sábado)', True),
+        ('Día: 1 de junio    de 2000 (sábado)', True),
+        ('Día: 1 de junio de    2000 (sábado)', True),
+        ('Día: 1 de junio de 2000    (sábado)', True),
+        ('Día: 1  de  junio  de 2000 (sábado)', True),
+        ('Día: 1 de junio  de  2000  (sábado)', True),
+        ('Día   : 1 de junio de 2000 (sábado)', True),
+        ('Día: 1 de enero de 0001 (lunes)', True),
+        ('Día: 1 de enero de 1 (lunes)', False),
+        ('1 de enero de 1998 (jueves)', False),
+        ('1 de marzo de 1930', False),
+    )
+
+    @pytest.mark.parametrize('day_str, result', data)
+    def test_has_day(self, day_str, result):
+        assert has_day(day_str) == result
 
 
 @pytest.mark.skip

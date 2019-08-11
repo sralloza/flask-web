@@ -78,7 +78,8 @@ def filter_data(data):
 
 class Patterns:
     day_pattern = re.compile(
-        r'día: (?P<day>\d+) de (?P<month>\w+) de (?P<year>\d{4})\s?\((?P<weekday>\w+)\)',
+        r'día\s*:\s*(?P<day>\d+)\s*de\s*(?P<month>\w+)\s*'
+        r'de\s*(?P<year>\d{4})\s*\((?P<weekday>\w+)\)',
         re.IGNORECASE)
 
     semi_day_pattern_1 = re.compile(r'día: (?P<day>\d+) de (?P<month>\w+)$', re.I)
