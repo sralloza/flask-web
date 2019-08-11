@@ -4,7 +4,7 @@ from pathlib import Path
 class Config(object):
     ROOT_PATH = Path(__file__).parent
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + (ROOT_PATH / 'flask.db').as_posix()
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + ROOT_PATH.parent.joinpath('flask.db').as_posix()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
