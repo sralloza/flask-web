@@ -39,6 +39,12 @@ def has_day(x):
 
 
 def filter_data(data):
+    if isinstance(data, str):
+        data = data.splitlines()
+        is_string = True
+    else:
+        is_string = False
+
     while '' in data:
         data.remove('')
 
@@ -73,6 +79,10 @@ def filter_data(data):
         else:
             if 'combinado' in data[i - 1] and 'postre' not in d:
                 out[-1] += ' ' + d
+
+    if is_string:
+        return '\n'.join(out)
+
     return out
 
 
