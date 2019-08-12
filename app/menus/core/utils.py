@@ -39,9 +39,12 @@ def has_day(x):
 
 
 def filter_data(data):
+    if not isinstance(data, (str, list)):
+        raise TypeError(f'data must be str or list, not {type(data).__name__}')
+
     if isinstance(data, str):
-        data = data.splitlines()
         is_string = True
+        data = data.splitlines()
     else:
         is_string = False
 
@@ -50,6 +53,14 @@ def filter_data(data):
 
     for i in range(len(data)):
         data[i] = data[i].lower().strip()
+
+    for i in range(len(data)):
+        if '1 plato:' in data[i]:
+            data[i] = data[i].replace('1 plato:', '1er plato:')
+        elif '2o plato:' in data[i]:
+            data[i] = data[i].replace('2o plato:', '2º plato:')
+        elif '2 plato:' in data[i]:
+            data[i] = data[i].replace('2 plato:', '2º plato:')
 
     out = []
     for i, d in enumerate(data):
