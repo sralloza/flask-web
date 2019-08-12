@@ -4,7 +4,7 @@ from unittest import mock
 import pytest
 from requests.exceptions import ConnectionError
 
-from app.menus.core.utils import get_menus_urls, PRINCIPAL_URL, Worker, has_day
+from app.menus.core.utils import get_menus_urls, PRINCIPAL_URL, Worker, has_day, filter_data
 
 
 @mock.patch('requests.get')
@@ -144,9 +144,36 @@ class TestHasDay:
         assert has_day(day_str) == result
 
 
-@pytest.mark.skip
-def test_filter_data():
-    pass
+class TestFilterData:
+    def test_argument_type(self):
+        assert filter_data('hola\nadios') == ''
+        assert filter_data(['hola', 'adios']) == []
+
+        with pytest.raises(TypeError, match='data must be str or list, not'):
+            filter_data(1)
+        with pytest.raises(TypeError, match='data must be str or list, not'):
+            filter_data(2 + 3j)
+        with pytest.raises(TypeError, match='data must be str or list, not'):
+            filter_data(True)
+        with pytest.raises(TypeError, match='data must be str or list, not'):
+            filter_data(object)
+
+    def test_normal(self):
+        input = ['1er plato:  ', '   1 plato:   ', '2º plato:   ', '2o plato:', '2 plato:',
+                 'desayuno', 'CoMiDa  ', 'cena', 'combinado', 'cóctel', 'coctel', '', '', '', '']
+        expected = ['1er plato:', '1er plato:', '2º plato:', '2º plato:', '2º plato:', 'comida',
+                    'cena', 'combinado', 'cóctel', 'cóctel']
+        real = filter_data(input)
+
+        assert real == expected
+
+    @pytest.mark.skip
+    def test_separate_date(self):
+        pass
+
+    @pytest.mark.skip
+    def test_combined(self):
+        pass
 
 
 @pytest.mark.skip
