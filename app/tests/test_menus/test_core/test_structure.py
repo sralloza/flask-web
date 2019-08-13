@@ -3,7 +3,7 @@ import itertools
 
 import pytest
 
-from app.menus.core.structure import Meal, MealError, DailyMenu, MealWarning
+from app.menus.core.structure import Meal, MealError, DailyMenu, MealWarning, Combined
 from app.menus.core.structure import _Index as Index
 
 # Test data
@@ -204,9 +204,25 @@ class TestMeal:
         assert m.p2 == 'p2'
 
 
-@pytest.mark.skip
 class TestCombined:
-    pass
+    def test_attributes(self):
+        combined = Combined('hello')
+        assert combined.p1 == 'hello'
+        assert combined.p2 is None
+
+    def test_is_empty(self):
+        combined_1 = Combined('hello')
+        combined_2 = Combined()
+        assert not combined_1.is_empty()
+        assert combined_2.is_empty()
+
+    def test_update(self):
+        combined = Combined()
+        combined.update(p1='hello')
+        assert combined.p1 == 'hello'
+
+        with pytest.raises(ValueError, match='Invalid arguments for Combined'):
+            combined.update(p2='world')
 
 
 def gen_daily_menus():
