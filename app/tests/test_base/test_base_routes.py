@@ -20,7 +20,7 @@ def test_index(client):
 
 def test_redirect_index(client):
     rv = client.get('/')
-    assert rv.status_code == 301
+    assert rv.status_code == 302
     assert rv.location == 'http://menus.sralloza.es/hoy'
 
 
@@ -33,7 +33,7 @@ def test_redirect_source(client):
 @mock.patch('app.base.routes.get_last_menus_page', return_value='http://example.com')
 def test_source(get_last_menus_page_mock, client):
     rv = client.get('/source')
-    assert rv.status_code == 301
+    assert rv.status_code == 302
     assert rv.location == 'http://example.com'
 
     get_last_menus_page_mock.assert_called_once_with()
