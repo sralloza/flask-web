@@ -64,7 +64,10 @@ def filter_data(data):
 
     out = []
     for i, d in enumerate(data):
-        if '1er plato:' in d:
+        # First check for 'combinado'
+        if 'combinado' in d:
+            out.append(d.replace('1er plato:', '').strip())
+        elif '1er plato:' in d:
             out.append(d)
         elif '2º plato:' in d:
             if 'combinado' in data[i - 1]:
@@ -78,8 +81,6 @@ def filter_data(data):
             out.append(d)
         elif 'cóctel' in d or 'coctel' in d:
             out.append('cóctel')
-        elif 'combinado' in d:
-            out.append(d.replace('1er plato:', '').strip())
         elif Patterns.day_pattern.search(d) is not None:
             out.append(Patterns.day_pattern.search(d).group())
         elif Patterns.semi_day_pattern_2.search(d) is not None:
