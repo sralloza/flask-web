@@ -17,20 +17,20 @@ def menu_mock():
     return m
 
 
-class TestMenus:
+class TestViewMenus:
     example_url = '<a href="http://example.com" target="_blank">Menús</a>'
 
     @pytest.fixture(params=[None, 'all', 'beta', 'all&beta'])
     def argument(self, request):
         return request.param
 
-    @pytest.mark.xfail
     @mock.patch('app.menus.routes.DailyMenusManager.load')
     @mock.patch('app.menus.routes.get_last_menus_page', return_value='http://example.com')
     def test_without_args(self, glmp_mock, load_mock, client, menu_mock, argument):
         menus_mocks = iter([menu_mock] * 30)
-        load_mock.return_value.__iter__.return_value = menus_mocks
-        load_mock.return_value.__getitem__.return_value = menus_mocks
+        # load_mock.return_value = menus_mocks
+        load_mock.return_value.menus.__iter__.return_value = menus_mocks
+        load_mock.return_value.menus.__getitem__.return_value = menus_mocks
         load_mock.menus = menus_mocks
 
         url = '/menus'
@@ -53,7 +53,7 @@ class TestMenus:
         else:
             load_mock.return_value.menus.__getitem__.assert_not_called()
 
-        if argument == 'all':
+        if argument is None:
             assert b'<a href="?all">Show all</a>' in rv.data
 
         if argument in (None, 'all'):
@@ -64,7 +64,16 @@ class TestMenus:
             assert 0, 'Invalid argument'
 
         menu_mock.format_date.assert_called()
-        assert menu_mock.format_date.call_count == 15 if argument in (None, 'all') else 30
+        if argument in (None, 'all'):
+            # Test before, with slice(None, 15, None)
+            pass
+        else:
+            assert menu_mock.format_date.call_count == 30
+
+            if argument == 'beta':
+                menu_mock.format_date.assert_called_with(long=False)
+            else:
+                menu_mock.format_date.assert_called_with()
 
 
 def test_redirect_menus(client):
