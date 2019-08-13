@@ -96,7 +96,7 @@ def test_menus_reload(dmm_mock, client):
     dmm_mock.load.return_value.__iter__.return_value = iter([m, m, m, m, m])
 
     rv = client.get('/menus/reload')
-    assert rv.status_code == 301
+    assert rv.status_code == 302
     assert rv.location == 'http://menus.sralloza.es/menus'
 
     dmm_mock.load.assert_called_once_with(force=True)
@@ -117,7 +117,7 @@ def test_today_reload(dmm_mock, client, menu_mock):
         [menu_mock, menu_mock, menu_mock, menu_mock, menu_mock, menu_mock, menu_mock])
 
     rv = client.get('/hoy/reload')
-    assert rv.status_code == 301
+    assert rv.status_code == 302
     assert rv.location == 'http://menus.sralloza.es/hoy'
 
     dmm_mock.load.assert_called_once_with(force=True)
