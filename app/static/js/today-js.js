@@ -14,6 +14,12 @@ function fetch_menus() {
 
 var date_viewed = new Date();
 var menus = [];
+const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+
+function get_day_title() {
+    var day = days[date_viewed.getDay()];
+    return day + " " + date_viewed.getDate();
+}
 
 function update_interface() {
     var ask = date_viewed.print();
@@ -25,6 +31,9 @@ function update_interface() {
         document.getElementById("N/A").style.display = "block";
         document.getElementById("lunch").style.display = "none";
         document.getElementById("dinner").style.display = "none";
+
+        document.getElementById("day-title-a").innerHTML = get_day_title();
+        document.getElementById("day-title-a").innerHTML = get_day_title();
         return;
     }
 
@@ -85,7 +94,6 @@ tomorrow = function() {
     date_viewed.setDate(date_viewed.getDate() + 1);
     update_interface();
     update_buttons();
-    console.log('tomorrow');
     console.log(date_viewed.print());
 }
 
@@ -93,7 +101,6 @@ yesterday = function() {
     date_viewed.setDate(date_viewed.getDate() - 1);
     update_interface();
     update_buttons();
-    console.log("yesterday");
     console.log(date_viewed.print());
 }
 
