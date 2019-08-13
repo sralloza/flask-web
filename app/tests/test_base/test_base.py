@@ -13,12 +13,6 @@ def test_redirect_favicon(client):
     assert rv.location == 'http://menus.sralloza.es/static/images/favicon.png'
 
 
-def test_favicon(client):
-    rv = client.get('/static/images/favicon.png')
-    assert rv.status_code == 200
-    assert rv.headers['Content-Type'] == 'image/png'
-
-
 def test_index(client):
     rv = client.get('/')
     assert 200 <= rv.status_code <= 399

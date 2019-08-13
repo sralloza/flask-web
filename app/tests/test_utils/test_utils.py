@@ -17,7 +17,7 @@ class TestGetMenusUrls:
 
     @pytest.fixture(scope='class')
     def test_content(self):
-        path = Path(__file__).parent / 'data' / 'get_urls.txt'
+        path = Path(__file__).parent.parent / 'data' / 'get_urls.txt'
 
         with path.open() as f:
             return f.read()
