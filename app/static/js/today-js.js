@@ -1,3 +1,12 @@
+var date_viewed = new Date();
+var menus = [];
+const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+
+// Add loader
+document.getElementById("N/A").style.display = "none";
+document.getElementById("lunch").style.display = "none";
+document.getElementById("dinner").style.display = "none";
+
 function fetch_menus() {
     fetch('/api/menus')
     .then(response => {
@@ -11,10 +20,6 @@ function fetch_menus() {
         console.log(err)
     })
 }
-
-var date_viewed = new Date();
-var menus = [];
-const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
 function get_day_title() {
     var day = days[date_viewed.getDay()];
