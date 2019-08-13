@@ -4,7 +4,8 @@ from unittest import mock
 import pytest
 from requests.exceptions import ConnectionError
 
-from app.menus.core.utils import get_menus_urls, PRINCIPAL_URL, Worker, has_day, filter_data
+from app.menus.core.utils import get_menus_urls, PRINCIPAL_URL, Worker, has_day, filter_data, \
+    Patterns
 
 
 @mock.patch('requests.get')
@@ -198,35 +199,68 @@ class TestFilterData:
             assert real == expected
 
 
-@pytest.mark.skip
 class TestPatterns:
-    def test_day_pattern(self):
-        pass
+    day_pattern_data = (
+        ('día: 23 de diciembre de 1998 (martes)', True),
+        ('día: 29 de junio de 1023 (jueves)', True),
+        ('día: 00 de enero de 0000 (lunes)', True),
+        ('día: 05 de marzo de 2019 (martes)', True),
+        ('día: 06 de junio de 2019 (martes)', True),
+        ('día: 04 de 2019 de marzo (martes', False),
+        ('día: 4 de 2019 de marzo (martes', False),
+        ('day: 15 of 1562, june', False),
+        ('buffet: leche, café, colacao, bizcocho, galletas, tostadas, pan,', False),
+        ('día: 06 de marzo de 2019 (miercoles)', True),
+        ('día: 07 de marzo\nde 2019 (jueves)', True),
+        ('1er plato: ensalada tropical', False),
+        ('cena:\n\n\n \n\ncóctel español', False),
+        ('día: 11 de marzo de 2019 (lunes)', True),
+    )
 
+    @pytest.mark.parametrize('string, match_code', day_pattern_data)
+    def test_day_pattern(self, string, match_code):
+        pattern_match = Patterns.day_pattern.search(string)
+
+        if match_code:
+            assert pattern_match is not None
+            assert pattern_match.group() == string
+        else:
+            assert pattern_match is None
+
+    @pytest.mark.skip
     def test_semi_day_pattern_1(self):
         pass
 
+    @pytest.mark.skip
     def test_semi_day_pattern_2(self):
         pass
 
+    @pytest.mark.skip
     def test_fix_dates_patterns_1(self):
         pass
 
+    @pytest.mark.skip
     def test_fix_dates_patterns_2(self):
         pass
 
+    @pytest.mark.skip
     def test_ignore_patterns(self):
         pass
 
 
-@pytest.mark.skip('Check')
 class TestWorker:
-    @mock.patch('app.menus.core.logger.debug', spec=True)
-    def test_run(self, logger_mock):
-        m = mock.Mock()
-        w = Worker('http://example.com', m)
+    def test_attributes(self):
+        worker = Worker('', '', '')
+        assert hasattr(worker, 'url')
+        assert hasattr(worker, 'retries')
+        assert hasattr(worker, 'dmm')
 
-        w.run()
+    @mock.patch('app.menus.core.utils.logger.debug', spec=True)
+    def test_run(self, logger_mock):
+        dmm_mock = mock.Mock()
+        worker = Worker('http://example.com', dmm_mock)
+
+        worker.run()
 
         logger_mock.assert_called_once_with('Starting worker with url %s', 'http://example.com')
-        m.process_url.assert_called_once_with('http://example.com', 5)
+        dmm_mock.process_url.assert_called_once_with('http://example.com', 5)
