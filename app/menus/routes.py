@@ -125,6 +125,7 @@ def api_menus():
     for menu in dmm:
         foo = {}
         day = re.search(r'\((\w+)\)', menu.format_date()).group(1).capitalize()
+        foo["id"] = str(menu.date)
         foo["day"] = f'{day} {menu.date.day}'
         foo["lunch"] = {"p1": menu.lunch.p1, "p2": menu.lunch.p2}
         foo["dinner"] = {"p1": menu.dinner.p1, "p2": menu.dinner.p2}
