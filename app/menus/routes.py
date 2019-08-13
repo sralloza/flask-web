@@ -48,7 +48,7 @@ def menus_reload():
     for menu in dmm:
         menu.to_database()
 
-    return redirect(url_for('menus_blueprint.menus_view', _external=True), code=301)
+    return redirect(url_for('menus_blueprint.menus_view', _external=True))
 
 
 @menus_blueprint.route('/h')
@@ -63,7 +63,7 @@ def today_reload():
     for menu in dmm:
         menu.to_database()
 
-    return redirect(url_for('menus_blueprint.today', _external=True), code=301)
+    return redirect(url_for('menus_blueprint.today', _external=True))
 
 
 @menus_blueprint.route('/hoy')

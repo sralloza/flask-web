@@ -32,7 +32,7 @@ def favicon():
 
 @base_blueprint.route('/')
 def index():
-    return redirect(url_for('menus_blueprint.today'), code=301)
+    return redirect(url_for('menus_blueprint.today'))
 
 
 @base_blueprint.route('/s')
@@ -43,7 +43,7 @@ def redirect_source():
 # noinspection PyBroadException
 @base_blueprint.route('/source')
 def source():
-    return redirect(get_last_menus_page(), code=301)
+    return redirect(get_last_menus_page())
 
 
 @base_blueprint.route('/feedback')
