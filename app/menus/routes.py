@@ -131,3 +131,8 @@ def api_menus():
         out.append(foo)
 
     return json.dumps(out), 200
+
+
+@menus_blueprint.route('/today/test')
+def today_test_view():
+    return render_template('today-js.html')
