@@ -1,5 +1,14 @@
-function update() {
-    document.getElementById('day-title-a').text = "hola";
+function fetch_menus() {
+    fetch('/api/menus')
+    .then(response => {
+        return response.json()
+    })
+    .then(data => {
+        console.log(data)
+    })
+    .catch(err => {
+        console.log(err)
+    })
 }
 
-update()
+window.onload = fetch_menus;
