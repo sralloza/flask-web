@@ -160,20 +160,42 @@ class TestFilterData:
 
     def test_normal(self):
         input = ['1er plato:  ', '   1 plato:   ', '2º plato:   ', '2o plato:', '2 plato:',
-                 'desayuno', 'CoMiDa  ', 'cena', 'combinado', 'cóctel', 'coctel', '', '', '', '']
+                 'desayuno', 'CoMiDa  ', 'cena', 'combinado', 'cóctel', 'coctel', '', '', '', '',
+                 'día: 29 de febrero de 2019 (viernes)']
         expected = ['1er plato:', '1er plato:', '2º plato:', '2º plato:', '2º plato:', 'comida',
-                    'cena', 'combinado', 'cóctel', 'cóctel']
+                    'cena', 'combinado', 'cóctel', 'cóctel', 'día: 29 de febrero de 2019 (viernes)']
         real = filter_data(input)
 
         assert real == expected
 
-    @pytest.mark.skip
     def test_separate_date(self):
-        pass
+        input = ['Día: 23 de diciembre', 'de 2018 (martes)']
+        expected = ['día: 23 de diciembre de 2018 (martes)']
+        real = filter_data(input)
 
-    @pytest.mark.skip
-    def test_combined(self):
-        pass
+        assert real == expected
+
+    class TestCombined:
+        def test_easy(self):
+            input = ['1er plato: combinado: jamón y queso']
+            expected = ['combinado: jamón y queso']
+            real = filter_data(input)
+
+            assert real == expected
+
+        def test_split(self):
+            input = ['1er plato: combinado: jamón', 'y queso']
+            expected = ['combinado: jamón y queso']
+            real = filter_data(input)
+
+            assert real == expected
+
+        def test_with_second(self):
+            input = ['1er plato: combinado: jamón', '2 plato: y queso']
+            expected = ['combinado: jamón y queso']
+            real = filter_data(input)
+
+            assert real == expected
 
 
 @pytest.mark.skip
