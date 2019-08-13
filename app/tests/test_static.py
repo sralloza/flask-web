@@ -19,3 +19,8 @@ class TestStaticFiles:
             rv = client.get(url_for('static', filename='js/beta-datatable-menus.js'))
             assert rv.status_code == 200
             assert rv.headers['Content-Type'] == 'text/plain; charset=utf-8'
+
+        def test_today_js(self, client):
+            rv = client.get(url_for('static', filename='js/today-js.js'))
+            assert rv.status_code == 200
+            assert rv.headers['Content-Type'] == 'text/plain; charset=utf-8'
