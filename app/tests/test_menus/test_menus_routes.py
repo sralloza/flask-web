@@ -17,7 +17,7 @@ def menu_mock():
     return m
 
 
-class TestViewMenus:
+class TestMenusView:
     example_url = '<a href="http://example.com" target="_blank">Menús</a>'
 
     @pytest.fixture(params=[None, 'all', 'beta', 'all&beta'])
@@ -76,7 +76,7 @@ class TestViewMenus:
                 menu_mock.format_date.assert_called_with()
 
 
-def test_redirect_menus(client):
+def test_menus_redirect(client):
     rv = client.get('/n')
     assert rv.status_code == 301
     assert rv.location == 'http://menus.sralloza.es/menus'
@@ -126,7 +126,9 @@ def test_today_reload(dmm_mock, client, menu_mock):
     assert menu_mock.to_database.call_count == 7
 
 
-class TestToday:
+@pytest.mark.skip
+def test_today():
+    pass
 
 
 @mock.patch('re.search')
@@ -193,6 +195,8 @@ class TestApiMenus:
 
         dmm_mock.load.assert_called_once_with(force=True)
 
+
+class TestTodayOld:
     disabled_yesterday_pattern = re.compile(
         r'<a class="btn btn-primary disabled" href="None"\s+role="button">\s+Anterior\s+</a>')
     disabled_tomorrow_pattern = re.compile(
@@ -228,8 +232,8 @@ class TestApiMenus:
     def is_empty(self, request):
         return request.param
 
-    def test_today(self, today_mocks, client, menu_mock, today_dt, day_request, db_available,
-                   is_empty):
+    def test_today_old(self, today_mocks, client, menu_mock, today_dt, day_request, db_available,
+                       is_empty):
         dmm_mock, today_mock, search_mock, glmp_mock, daily_menu_mock = today_mocks
 
         daily_menu_mock.return_value = menu_mock
@@ -249,7 +253,7 @@ class TestApiMenus:
         elif db_available == 'both':
             dmm_mock.load.return_value.__contains__.return_value = True
 
-        get_url = '/hoy'
+        get_url = '/old/hoy'
         if day_request:
             get_url += '?day=' + day_request
 
@@ -275,17 +279,17 @@ class TestApiMenus:
             assert b'D2' in rv.data
 
         if db_available == 'none':
-            assert TestToday.disabled_yesterday_pattern.search(rv.data.decode())
-            assert TestToday.disabled_tomorrow_pattern.search(rv.data.decode())
+            assert TestTodayOld.disabled_yesterday_pattern.search(rv.data.decode())
+            assert TestTodayOld.disabled_tomorrow_pattern.search(rv.data.decode())
         elif db_available == 'yesterday':
-            assert not TestToday.disabled_yesterday_pattern.search(rv.data.decode())
-            assert TestToday.disabled_tomorrow_pattern.search(rv.data.decode())
+            assert not TestTodayOld.disabled_yesterday_pattern.search(rv.data.decode())
+            assert TestTodayOld.disabled_tomorrow_pattern.search(rv.data.decode())
         elif db_available == 'tomorrow':
-            assert TestToday.disabled_yesterday_pattern.search(rv.data.decode())
-            assert not TestToday.disabled_tomorrow_pattern.search(rv.data.decode())
+            assert TestTodayOld.disabled_yesterday_pattern.search(rv.data.decode())
+            assert not TestTodayOld.disabled_tomorrow_pattern.search(rv.data.decode())
         elif db_available == 'both':
-            assert not TestToday.disabled_yesterday_pattern.search(rv.data.decode())
-            assert not TestToday.disabled_tomorrow_pattern.search(rv.data.decode())
+            assert not TestTodayOld.disabled_yesterday_pattern.search(rv.data.decode())
+            assert not TestTodayOld.disabled_tomorrow_pattern.search(rv.data.decode())
         else:
             assert 0, 'Invalid state'
 

@@ -58,16 +58,18 @@ def today_redirect():
 
 @menus_blueprint.route('/hoy/reload')
 def today_reload():
+    # TODO: instead of having endpoint '/menus/reload', add argument in request 'force'
     dmm = DailyMenusManager.load(force=True)
 
     for menu in dmm:
         menu.to_database()
 
-    return redirect(url_for('menus_blueprint.today_view', _external=True))
+    return redirect(url_for('menus_blueprint.today_js_view', _external=True))
 
 
 @menus_blueprint.route('/hoy')
-def today_view():
+def today_js_view():
+    return render_template('today-js.html')
 
 
 @menus_blueprint.route('/api/menus')
@@ -91,6 +93,10 @@ def api_menus():
         out.append(foo)
 
     return json.dumps(out), 200
+
+
+@menus_blueprint.route('/old/hoy')
+def today_old_view():
     dmm = DailyMenusManager.load()
     day = request.args.get('day')
 
@@ -125,11 +131,11 @@ def api_menus():
     disabled_tomorrow = 'disabled'
 
     if yesterday.date() in dmm:
-        yesterday_url = url_for('menus_blueprint.today_view', _external=True) + '?day=' + str(
+        yesterday_url = url_for('menus_blueprint.today_old_view', _external=True) + '?day=' + str(
             yesterday.date())
         disabled_yesterday = ''
     if tomorrow.date() in dmm:
-        tomorrow_url = url_for('menus_blueprint.today_view', _external=True) + '?day=' + str(
+        tomorrow_url = url_for('menus_blueprint.today_old_view', _external=True) + '?day=' + str(
             tomorrow.date())
         disabled_tomorrow = ''
 
@@ -138,7 +144,3 @@ def api_menus():
         yesterday_url=yesterday_url, tomorrow_url=tomorrow_url,
         disabled_yesterday=disabled_yesterday, disabled_tomorrow=disabled_tomorrow
     ), code
-
-@menus_blueprint.route('/today/test')
-def today_test_view():
-    return render_template('today-js.html')
