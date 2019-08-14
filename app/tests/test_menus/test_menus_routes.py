@@ -127,6 +127,72 @@ def test_today_reload(dmm_mock, client, menu_mock):
 
 
 class TestToday:
+
+
+@mock.patch('re.search')
+@mock.patch('app.menus.routes.DailyMenusManager')
+class TestApiMenus:
+    def test_without_force(self, dmm_mock, search_mock, client, menu_mock):
+        menu_mock.format_date.return_value = '28 de junio de 2019 (viernes)'
+        menu_mock.date.day = 28
+        menu_mock.id = '2019-06-28'
+
+        dmm_mock.load.return_value.__iter__.return_value = iter([
+            menu_mock, menu_mock, menu_mock, menu_mock, menu_mock, menu_mock])
+        search_mock.return_value.group.return_value.capitalize.return_value = 'Viernes'
+
+        expected_json = [{'id': '2019-06-28', 'day': 'Viernes 28',
+                          'lunch': {'p1': 'L1', 'p2': 'L2'},
+                          'dinner': {'p1': 'D1', 'p2': 'D2'}}
+                         ] * 6
+
+        rv = client.get('/api/menus')
+        real_json = json.loads(rv.data.decode())
+
+        assert rv.status_code == 200
+        assert real_json == expected_json
+
+        search_mock.return_value.group.assert_called_with(1)
+        assert search_mock.return_value.group.call_count == 6
+
+        search_mock.return_value.group.return_value.capitalize.assert_called()
+        assert search_mock.return_value.group.return_value.capitalize.call_count == 6
+
+        menu_mock.format_date.assert_called()
+        assert menu_mock.format_date.call_count == 6
+
+        dmm_mock.load.assert_called_once_with()
+
+    def test_with_force(self, dmm_mock, search_mock, client, menu_mock):
+        menu_mock.format_date.return_value = '28 de junio de 2019 (viernes)'
+        menu_mock.date.day = 28
+        menu_mock.id = '2019-06-28'
+
+        dmm_mock.load.return_value.__iter__.return_value = iter(
+            [menu_mock, menu_mock, menu_mock, menu_mock, menu_mock, menu_mock])
+        search_mock.return_value.group.return_value.capitalize.return_value = 'Viernes'
+
+        expected_json = [{'id': '2019-06-28', 'day': 'Viernes 28',
+                          'lunch': {'p1': 'L1', 'p2': 'L2'},
+                          'dinner': {'p1': 'D1', 'p2': 'D2'}}] * 6
+
+        rv = client.get('/api/menus?force')
+        real_json = json.loads(rv.data.decode())
+
+        assert rv.status_code == 200
+        assert real_json == expected_json
+
+        search_mock.return_value.group.assert_called_with(1)
+        assert search_mock.return_value.group.call_count == 6
+
+        search_mock.return_value.group.return_value.capitalize.assert_called()
+        assert search_mock.return_value.group.return_value.capitalize.call_count == 6
+
+        menu_mock.format_date.assert_called()
+        assert menu_mock.format_date.call_count == 6
+
+        dmm_mock.load.assert_called_once_with(force=True)
+
     disabled_yesterday_pattern = re.compile(
         r'<a class="btn btn-primary disabled" href="None"\s+role="button">\s+Anterior\s+</a>')
     disabled_tomorrow_pattern = re.compile(
@@ -245,31 +311,3 @@ class TestToday:
         search_mock.assert_called_once()
         search_mock.return_value.group.assert_called_once_with(1)
         search_mock.return_value.group.return_value.capitalize.assert_called_once_with()
-
-
-@mock.patch('re.search')
-@mock.patch('app.menus.routes.DailyMenusManager')
-def test_api_menus(dmm_mock, search_mock, client, menu_mock):
-    menu_mock.format_date.return_value = '28 de junio de 2019 (viernes)'
-    menu_mock.date.day = 28
-
-    dmm_mock.load.return_value.__iter__.return_value = iter(
-        [menu_mock, menu_mock, menu_mock, menu_mock, menu_mock])
-    search_mock.return_value.group.return_value.capitalize.return_value = 'Viernes'
-
-    expected_json = [{'day': 'Viernes 28', 'lunch': {'p1': 'L1', 'p2': 'L2'},
-                      'dinner': {'p1': 'D1', 'p2': 'D2'}}] * 5
-
-    rv = client.get('/api/menus')
-
-    assert rv.status_code == 200
-    assert json.loads(rv.data.decode()) == expected_json
-
-    search_mock.return_value.group.assert_called_with(1)
-    assert search_mock.return_value.group.call_count == 5
-
-    search_mock.return_value.group.return_value.capitalize.assert_called()
-    assert search_mock.return_value.group.return_value.capitalize.call_count == 5
-
-    menu_mock.format_date.assert_called()
-    assert menu_mock.format_date.call_count == 5

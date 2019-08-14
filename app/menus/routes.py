@@ -68,6 +68,29 @@ def today_reload():
 
 @menus_blueprint.route('/hoy')
 def today_view():
+
+
+@menus_blueprint.route('/api/menus')
+def api_menus():
+    force = request.args.get('force') is not None or request.args.get('f') is not None
+
+    if force:
+        dmm = DailyMenusManager.load(force=True)
+    else:
+        dmm = DailyMenusManager.load()
+
+    out = []
+
+    for menu in dmm:
+        foo = {}
+        day = re.search(r'\((\w+)\)', menu.format_date()).group(1).capitalize()
+        foo["id"] = menu.id
+        foo["day"] = f'{day} {menu.date.day}'
+        foo["lunch"] = {"p1": menu.lunch.p1, "p2": menu.lunch.p2}
+        foo["dinner"] = {"p1": menu.dinner.p1, "p2": menu.dinner.p2}
+        out.append(foo)
+
+    return json.dumps(out), 200
     dmm = DailyMenusManager.load()
     day = request.args.get('day')
 
@@ -115,24 +138,6 @@ def today_view():
         yesterday_url=yesterday_url, tomorrow_url=tomorrow_url,
         disabled_yesterday=disabled_yesterday, disabled_tomorrow=disabled_tomorrow
     ), code
-
-
-@menus_blueprint.route('/api/menus')
-def api_menus():
-    dmm = DailyMenusManager.load()
-    out = []
-
-    for menu in dmm:
-        foo = {}
-        day = re.search(r'\((\w+)\)', menu.format_date()).group(1).capitalize()
-        foo["id"] = str(menu.date)
-        foo["day"] = f'{day} {menu.date.day}'
-        foo["lunch"] = {"p1": menu.lunch.p1, "p2": menu.lunch.p2}
-        foo["dinner"] = {"p1": menu.dinner.p1, "p2": menu.dinner.p2}
-        out.append(foo)
-
-    return json.dumps(out), 200
-
 
 @menus_blueprint.route('/today/test')
 def today_test_view():
