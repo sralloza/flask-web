@@ -8,7 +8,15 @@ document.getElementById("lunch").style.display = "none";
 document.getElementById("dinner").style.display = "none";
 
 function fetch_menus() {
-    fetch('/api/menus')
+    var force = get('force') || get('f')
+    console.log('force: ' + get('force'));
+    console.log('f    : ' + get('f'));
+    console.log('both : ' +force);
+
+    var url = '/api/menus'
+    if (force) url += '?force';
+
+    fetch(url)
     .then(response => {
         return response.json()
     })
@@ -125,6 +133,18 @@ Date.prototype.print = function() {
     return year + "-" + month + "-" + day;
 }
 
+function get(name) {
+    if (name == '') return false;
+    queryDict = {};
+    queryDict[name] = false;
+    location.search.substr(1).split('&').forEach(function(item) {
+        queryDict[item.split('=')[0]] = true
+    })
+
+    return queryDict[name];
+}
+
 window.onload = fetch_menus;
 document.getElementById("next").onclick = tomorrow;
+document.getElementById("all").onclick = function() { window.location = '/menus' };
 document.getElementById("previous").onclick = yesterday;
