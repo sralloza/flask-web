@@ -39,7 +39,7 @@ class TestMenusView:
         rv = client.get(url)
 
         if argument == 'all&beta':
-            assert rv.status_code == 301
+            assert rv.status_code == 302
             assert rv.location == 'http://menus.sralloza.es/menus?beta'
             load_mock.return_value.menus.__getitem__.assert_not_called()
             return

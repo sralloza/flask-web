@@ -16,7 +16,7 @@ def menus_view():
     beta = request.args.get('beta') is not None
 
     if _all and beta:
-        return redirect('/menus?beta', code=301)
+        return redirect('/menus?beta')
 
     dmm = DailyMenusManager.load()
 
