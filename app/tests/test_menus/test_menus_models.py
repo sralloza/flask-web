@@ -4,7 +4,6 @@ from unittest import mock
 
 import pytest
 
-from app import app
 from app.menus.core.structure import DailyMenu, Meal
 from app.menus.models import DailyMenuDB, UpdateControl
 
@@ -84,57 +83,66 @@ class TestUpdateControl:
         cursor_mock.close.assert_called_once()
         sqlite_mock.connect.return_value.close.assert_called_once()
 
-
     class TestShouldUpdate:
-        @pytest.fixture
+        @pytest.fixture(scope='function', autouse=True)
         def db_connection(self):
-            connection = sqlite3.connect(app.config['DATABASE_PATH'])
-            cursor = connection.cursor()
-            cursor.execute("DELETE FROM update_control")
+            config_mock = mock.patch('app.menus.models.Config').start()
+            config_mock.DATABASE_PATH = ':memory:'
+
+            connection = sqlite3.connect(':memory:')
+
             yield connection
 
-        def test_yes_1(self, db_connection):
-            cursor = db_connection.cursor()
-            cursor.execute('INSERT INTO update_control VALUES (?)', ('2000-01-01 00:00:00',))
-            db_connection.commit()
-            db_connection.close()
+            connection.close()
+            mock.patch.stopall()
+
+        @pytest.fixture
+        def gul_mock(self):
+            gul_mock = mock.patch('app.menus.models.UpdateControl.get_last_update').start()
+            yield gul_mock
+            mock.patch.stopall()
+
+        def test_yes_1(self, gul_mock):
+            gul_mock.return_value = datetime(2000, 1, 1, 0, 0, 0)
 
             assert UpdateControl.should_update() is True
 
-        def test_yes_2(self, db_connection):
-            cursor = db_connection.cursor()
-            today = datetime.today() - timedelta(minutes=20)
-            cursor.execute('INSERT INTO update_control VALUES (?)',
-                           (today.strftime('%Y-%m-%d %H:%M:%S'),))
-            db_connection.commit()
-            db_connection.close()
+        def test_yes_2(self, gul_mock):
+            gul_mock.return_value = datetime.today() - timedelta(minutes=20)
 
             assert UpdateControl.should_update() is True
 
-        def test_yes_3(self, db_connection):
-            cursor = db_connection.cursor()
-            today = datetime.today() - timedelta(minutes=21)
-            cursor.execute('INSERT INTO update_control VALUES (?)',
-                           (today.strftime('%Y-%m-%d %H:%M:%S'),))
-            db_connection.commit()
-            db_connection.close()
+        def test_yes_3(self, gul_mock):
+            gul_mock.return_value = datetime.today() - timedelta(minutes=21)
 
             assert UpdateControl.should_update() is True
 
-        def test_no(self, db_connection):
-            cursor = db_connection.cursor()
-            today = datetime.today() - timedelta(minutes=19)
-            cursor.execute('INSERT INTO update_control VALUES (?)',
-                           (today.strftime('%Y-%m-%d %H:%M:%S'),))
-            db_connection.commit()
-            db_connection.close()
+        def test_no(self, gul_mock):
+            gul_mock.return_value = datetime.today() - timedelta(minutes=19)
 
             assert UpdateControl.should_update() is False
 
-    def test_set_last_update(self):
+        @mock.patch('app.menus.models.UpdateControl.set_last_update')
+        def test_set_after(self, slu_mock, db_connection):
+            db_connection.close()
+
+            assert UpdateControl.should_update() is True
+            slu_mock.assert_called_once_with()
+
+            glu_mock = mock.patch('app.menus.models.UpdateControl.get_last_update').start()
+            glu_mock.return_value = datetime.today()
+
+            assert UpdateControl.should_update() is False
+            assert slu_mock.call_count == 1
+
+            # mock.patch.stopall()
+
+    @mock.patch('app.menus.models.datetime')
+    def test_set_last_update(self, today_mock):
+        expected = '2019-05-18 17:25:15'
+        today_mock.datetime.today.return_value.strftime.return_value = expected
         with UpdateControl() as uc:
             uc.set_last_update()
-            expected = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
             uc.cursor.execute('SELECT datetime FROM update_control')
             data = uc.cursor.fetchall()
             assert data[0][0] == expected

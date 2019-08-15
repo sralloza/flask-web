@@ -31,6 +31,8 @@ class DailyMenuDB(db.Model):
 
 
 class UpdateControl:
+    _MIN_DATETIME = datetime.datetime.min
+
     def __init__(self):
         self.session = sqlite3.connect(Config.DATABASE_PATH)
         self.cursor = self.session.cursor()
@@ -57,7 +59,12 @@ class UpdateControl:
         today = datetime.datetime.today()
         today.replace(microsecond=0)
         delta = datetime.timedelta(minutes=minutes)
-        return last_update + delta <= today
+        should_update = last_update + delta <= today
+
+        if should_update:
+            UpdateControl.set_last_update()
+
+        return should_update
 
     @staticmethod
     def set_last_update():
@@ -84,7 +91,7 @@ class UpdateControl:
             data = uc.cursor.fetchall()
 
             if len(data) == 0:
-                return None
+                return uc._MIN_DATETIME
 
             if len(data) > 1:
                 raise sqlite3.DatabaseError(f'Too many datetimes stored ({len(data)})')
@@ -93,4 +100,4 @@ class UpdateControl:
                 return datetime.datetime.strptime(data[0][0], '%Y-%m-%d %H:%M:%S')
             except ValueError:
                 uc.cursor.execute('DELETE FROM update_control')
-                return datetime.datetime(2050, 12, 31)
+                return uc._MIN_DATETIME
