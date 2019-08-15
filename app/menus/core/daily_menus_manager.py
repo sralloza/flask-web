@@ -5,7 +5,7 @@ from threading import Lock
 import requests
 from bs4 import BeautifulSoup as Soup
 
-from app.menus.models import DailyMenuDB
+from app.menus.models import DailyMenuDB, UpdateControl
 from .structure import _Index, DailyMenu
 from .utils import get_menus_urls, filter_data, has_day, Patterns, Worker
 
@@ -13,7 +13,6 @@ logger = logging.getLogger(__name__)
 
 
 class DailyMenusManager:
-
     def __init__(self):
         self.menus = []
         self._lock = Lock()
@@ -77,6 +76,10 @@ class DailyMenusManager:
         self.add_to_menus([x.to_normal_daily_menu() for x in DailyMenuDB.query.all()])
 
     def save_to_database(self):
+        if not UpdateControl.should_update():
+            logger.info('Permission denied by UpdateControl')
+            return
+
         logger.debug('Saving menus to database')
         for menu in self:
             menu.to_database()
