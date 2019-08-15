@@ -11,6 +11,7 @@ class Config(object):
 
 class TestingConfig(Config):
     TESTING = True
+    DATABASE_PATH = ':memory:'
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SERVER_NAME = 'menus.sralloza.es'
