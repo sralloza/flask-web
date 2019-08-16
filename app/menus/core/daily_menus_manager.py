@@ -1,6 +1,8 @@
 import logging
+import re
 from datetime import datetime, date
 from threading import Lock
+from typing import List
 
 import requests
 from bs4 import BeautifulSoup as Soup
@@ -49,7 +51,7 @@ class DailyMenusManager:
     def to_html(self):
         return '<br>'.join([x.to_html() for x in self.menus])
 
-    def add_to_menus(self, menus):
+    def add_to_menus(self, menus: List[DailyMenu]):
         with self._lock:
             foo = {x.date: x for x in self.menus}
             for menu in menus:
@@ -70,6 +72,20 @@ class DailyMenusManager:
 
         self.sort()
         return self
+
+    def to_json(self):
+        output = []
+
+        for menu in self:
+            foo = {}
+            day = re.search(r'\((\w+)\)', menu.format_date()).group(1).capitalize()
+            foo["id"] = menu.id
+            foo["day"] = f'{day} {menu.date.day}'
+            foo["lunch"] = {"p1": menu.lunch.p1, "p2": menu.lunch.p2}
+            foo["dinner"] = {"p1": menu.dinner.p1, "p2": menu.dinner.p2}
+            output.append(foo)
+
+        return output
 
     def load_from_database(self):
         logger.debug('Loading from database')

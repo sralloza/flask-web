@@ -75,24 +75,9 @@ def today_js_view():
 @menus_blueprint.route('/api/menus')
 def api_menus():
     force = request.args.get('force') is not None or request.args.get('f') is not None
-
-    if force:
-        dmm = DailyMenusManager.load(force=True)
-    else:
-        dmm = DailyMenusManager.load()
-
-    out = []
-
-    for menu in dmm:
-        foo = {}
-        day = re.search(r'\((\w+)\)', menu.format_date()).group(1).capitalize()
-        foo["id"] = menu.id
-        foo["day"] = f'{day} {menu.date.day}'
-        foo["lunch"] = {"p1": menu.lunch.p1, "p2": menu.lunch.p2}
-        foo["dinner"] = {"p1": menu.dinner.p1, "p2": menu.dinner.p2}
-        out.append(foo)
-
-    return json.dumps(out), 200
+    dmm = DailyMenusManager.load(force=force)
+    data = dmm.to_json()
+    return json.dumps(data), 200
 
 
 @menus_blueprint.route('/old/hoy')
