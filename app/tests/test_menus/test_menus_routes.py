@@ -5,6 +5,9 @@ from unittest import mock
 
 import pytest
 
+from app.menus.core.daily_menus_manager import DailyMenusManager
+from app.menus.core.structure import DailyMenu, Meal
+
 
 @pytest.fixture
 def menu_mock():
@@ -131,19 +134,17 @@ def test_today():
     pass
 
 
-@mock.patch('re.search')
+# @mock.patch('re.search')
 @mock.patch('app.menus.routes.DailyMenusManager')
 class TestApiMenus:
-    def test_without_force(self, dmm_mock, search_mock, client, menu_mock):
-        menu_mock.format_date.return_value = '28 de junio de 2019 (viernes)'
-        menu_mock.date.day = 28
-        menu_mock.id = '2019-06-28'
+    def test_without_force(self, dmm_mock, client):
+        menu = DailyMenu(28, 6, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
 
-        dmm_mock.load.return_value.__iter__.return_value = iter([
-            menu_mock, menu_mock, menu_mock, menu_mock, menu_mock, menu_mock])
-        search_mock.return_value.group.return_value.capitalize.return_value = 'Viernes'
+        dmm = DailyMenusManager()
+        dmm.menus = [menu] * 6
+        dmm_mock.load.return_value = dmm
 
-        expected_json = [{'id': '2019-06-28', 'day': 'Viernes 28',
+        expected_json = [{'id': 20190628, 'day': 'Viernes 28',
                           'lunch': {'p1': 'L1', 'p2': 'L2'},
                           'dinner': {'p1': 'D1', 'p2': 'D2'}}
                          ] * 6
@@ -153,46 +154,25 @@ class TestApiMenus:
 
         assert rv.status_code == 200
         assert real_json == expected_json
+        dmm_mock.load.assert_called_once_with(force=False)
 
-        search_mock.return_value.group.assert_called_with(1)
-        assert search_mock.return_value.group.call_count == 6
+    def test_with_force(self, dmm_mock, client):
+        menu = DailyMenu(28, 6, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
 
-        search_mock.return_value.group.return_value.capitalize.assert_called()
-        assert search_mock.return_value.group.return_value.capitalize.call_count == 6
+        dmm = DailyMenusManager()
+        dmm.menus = [menu] * 6
+        dmm_mock.load.return_value = dmm
 
-        menu_mock.format_date.assert_called()
-        assert menu_mock.format_date.call_count == 6
-
-        dmm_mock.load.assert_called_once_with()
-
-    def test_with_force(self, dmm_mock, search_mock, client, menu_mock):
-        menu_mock.format_date.return_value = '28 de junio de 2019 (viernes)'
-        menu_mock.date.day = 28
-        menu_mock.id = '2019-06-28'
-
-        dmm_mock.load.return_value.__iter__.return_value = iter(
-            [menu_mock, menu_mock, menu_mock, menu_mock, menu_mock, menu_mock])
-        search_mock.return_value.group.return_value.capitalize.return_value = 'Viernes'
-
-        expected_json = [{'id': '2019-06-28', 'day': 'Viernes 28',
+        expected_json = [{'id': 20190628, 'day': 'Viernes 28',
                           'lunch': {'p1': 'L1', 'p2': 'L2'},
-                          'dinner': {'p1': 'D1', 'p2': 'D2'}}] * 6
+                          'dinner': {'p1': 'D1', 'p2': 'D2'}}
+                         ] * 6
 
         rv = client.get('/api/menus?force')
         real_json = json.loads(rv.data.decode())
 
         assert rv.status_code == 200
         assert real_json == expected_json
-
-        search_mock.return_value.group.assert_called_with(1)
-        assert search_mock.return_value.group.call_count == 6
-
-        search_mock.return_value.group.return_value.capitalize.assert_called()
-        assert search_mock.return_value.group.return_value.capitalize.call_count == 6
-
-        menu_mock.format_date.assert_called()
-        assert menu_mock.format_date.call_count == 6
-
         dmm_mock.load.assert_called_once_with(force=True)
 
 

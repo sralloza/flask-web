@@ -27,6 +27,10 @@ class TestDailyMenusManager:
         pass
 
     @pytest.mark.skip
+    def test_to_json(self):
+        pass
+
+    @pytest.mark.skip
     def test_load_from_database(self):
         pass
 

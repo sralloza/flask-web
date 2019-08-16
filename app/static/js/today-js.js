@@ -130,7 +130,7 @@ Date.prototype.print = function() {
         day = "0" + day;
     }
 
-    return year + "-" + month + "-" + day;
+    return parseInt(year + month + day);
 }
 
 function get(name) {
