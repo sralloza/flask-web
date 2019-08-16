@@ -47,7 +47,7 @@ function update_interface() {
         document.getElementById("dinner").style.display = "none";
 
         document.getElementById("day-title-a").innerHTML = get_day_title();
-        document.getElementById("day-title-a").innerHTML = get_day_title();
+        document.getElementById("day-title-b").innerHTML = get_day_title();
         return;
     }
 
@@ -57,7 +57,7 @@ function update_interface() {
 
     // Day
     document.getElementById("day-title-a").innerHTML = menu["day"];
-    document.getElementById("day-title-a").innerHTML = menu["day"];
+    document.getElementById("day-title-b").innerHTML = menu["day"];
 
     // Lunch
     document.getElementById("lunch-1a").innerHTML = menu["lunch"]["p1"];
