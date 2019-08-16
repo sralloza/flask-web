@@ -3,6 +3,11 @@ from flask import url_for
 
 class TestStaticFiles:
     class TestCss:
+        def test_bootstrap(self, client):
+            rv = client.get(url_for('static', filename='css/bootstrap.min.css'))
+            assert rv.status_code == 200
+            assert rv.headers['Content-Type'] == 'text/css; charset=utf-8'
+
         def test_menus(self, client):
             rv = client.get(url_for('static', filename='css/menus.css'))
             assert rv.status_code == 200
