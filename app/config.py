@@ -1,3 +1,4 @@
+import platform
 from pathlib import Path
 
 
@@ -7,6 +8,7 @@ class Config(object):
     DATABASE_PATH = ROOT_PATH.parent.joinpath('flask.db').as_posix()
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + DATABASE_PATH
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    IS_LINUX = platform.system() == 'Linux'
 
 
 class TestingConfig(Config):
