@@ -9,9 +9,7 @@ document.getElementById("dinner").style.display = "none";
 
 function fetch_menus() {
     var force = get('force') || get('f')
-    console.log('force: ' + get('force'));
-    console.log('f    : ' + get('f'));
-    console.log('both : ' +force);
+    console.log('force: ' +force);
 
     var url = '/api/menus'
     if (force) url += '?force';
@@ -36,9 +34,12 @@ function get_day_title() {
 
 function update_interface() {
     var ask = date_viewed.print();
-//    var ask = "2019-06-14";
     var menu = menus.find(menu => menu["id"] == ask);
+
+    console.log('Día: ' + ask);
     console.log(menu);
+
+    document.getElementById("loader").style.display = "none";
 
     if (menu == null) {
         document.getElementById("N/A").style.display = "block";
