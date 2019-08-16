@@ -75,7 +75,7 @@ class UpdateControl:
 
             last_update = uc.get_last_update()
 
-            if last_update is None:
+            if last_update is UpdateControl.MIN_DATETIME:
                 uc.cursor.execute('INSERT INTO update_control VALUES (?)', (dt_str,))
             else:
                 uc.cursor.execute('UPDATE update_control SET datetime=?', (dt_str,))
