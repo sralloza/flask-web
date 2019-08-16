@@ -8,6 +8,11 @@ class TestStaticFiles:
             assert rv.status_code == 200
             assert rv.headers['Content-Type'] == 'text/css; charset=utf-8'
 
+        def test_loader(self, client):
+            rv = client.get(url_for('static', filename='css/loader.css'))
+            assert rv.status_code == 200
+            assert rv.headers['Content-Type'] == 'text/css; charset=utf-8'
+
         def test_menus(self, client):
             rv = client.get(url_for('static', filename='css/menus.css'))
             assert rv.status_code == 200
