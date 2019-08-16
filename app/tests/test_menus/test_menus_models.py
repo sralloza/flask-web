@@ -135,8 +135,6 @@ class TestUpdateControl:
             assert UpdateControl.should_update() is False
             assert slu_mock.call_count == 1
 
-            # mock.patch.stopall()
-
     @mock.patch('app.menus.models.datetime')
     def test_set_last_update(self, today_mock):
         expected = '2019-05-18 17:25:15'
