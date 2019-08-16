@@ -93,7 +93,7 @@ class DailyMenusManager:
 
     def save_to_database(self):
         if not UpdateControl.should_update():
-            logger.info('Permission denied by UpdateControl')
+            logger.info('Permission denied by UpdateControl (%s)', UpdateControl.get_last_update())
             return
 
         logger.debug('Saving menus to database')
