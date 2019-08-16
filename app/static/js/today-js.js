@@ -1,4 +1,4 @@
-var date_viewed = new Date();
+var date_viewed = new Date('2019-06-18');
 var menus = [];
 const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
