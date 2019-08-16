@@ -1,4 +1,4 @@
-var date_viewed = new Date();
+var date_viewed = new Date('2019-06-18');
 var menus = [];
 const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
@@ -66,6 +66,9 @@ function update_interface() {
     if (menu["lunch"]["p2"] != null) {
         document.getElementById("lunch-2a").innerHTML = menu["lunch"]["p2"];
         document.getElementById("lunch-2b").innerHTML = menu["lunch"]["p2"];
+    } else {
+        document.getElementById("lunch-2a").innerHTML = ' ';
+        document.getElementById("lunch-2b").innerHTML = ' ';
     }
 
     // Dinner
@@ -75,6 +78,9 @@ function update_interface() {
     if (menu["dinner"]["p2"] != null) {
         document.getElementById("dinner-2a").innerHTML = menu["dinner"]["p2"];
         document.getElementById("dinner-2b").innerHTML = menu["dinner"]["p2"];
+    } else {
+        document.getElementById("dinner-2a").innerHTML = ' ';
+        document.getElementById("dinner-2b").innerHTML = ' ';
     }
 
     update_buttons();
