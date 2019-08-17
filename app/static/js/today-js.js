@@ -64,11 +64,14 @@ function update_interface() {
     document.getElementById("lunch-1b").innerHTML = menu["lunch"]["p1"];
 
     if (menu["lunch"]["p2"] != null) {
+        document.getElementById("lunch-2a").style.display = 'block';
         document.getElementById("lunch-2a").innerHTML = menu["lunch"]["p2"];
+
+        document.getElementById("lunch-2b").style.display = 'block';
         document.getElementById("lunch-2b").innerHTML = menu["lunch"]["p2"];
     } else {
-        document.getElementById("lunch-2a").innerHTML = ' ';
-        document.getElementById("lunch-2b").innerHTML = ' ';
+        document.getElementById("lunch-2a").style.display = 'none';
+        document.getElementById("lunch-2b").style.display = 'none';
     }
 
     // Dinner
@@ -76,11 +79,14 @@ function update_interface() {
     document.getElementById("dinner-1b").innerHTML = menu["dinner"]["p1"];
 
     if (menu["dinner"]["p2"] != null) {
+        document.getElementById("dinner-2a").style.display = 'block';
         document.getElementById("dinner-2a").innerHTML = menu["dinner"]["p2"];
+
+        document.getElementById("dinner-2b").style.display = 'block';
         document.getElementById("dinner-2b").innerHTML = menu["dinner"]["p2"];
     } else {
-        document.getElementById("dinner-2a").innerHTML = ' ';
-        document.getElementById("dinner-2b").innerHTML = ' ';
+        document.getElementById("dinner-2a").style.display = 'none';
+        document.getElementById("dinner-2b").style.display = 'none';
     }
 
     update_buttons();
