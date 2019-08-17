@@ -59,14 +59,15 @@ class DailyMenusManager:
     def add_to_menus(self, menus):
         with self._lock:
             if isinstance(menus, DailyMenu):
-                self.menus.append(menus)
-                return
+                menus = [menus, ]
 
-            foo = {x.date: x for x in self.menus}
+            existing_dates = [x.date for x in self.menus]
+            new_menus = []
             for menu in menus:
-                foo[menu.date] = menu
+                if menu.date not in existing_dates:
+                    new_menus.append(menu)
 
-            self.menus += list(foo.values())
+            self.menus += new_menus
 
     @classmethod
     def load(cls, force=False):

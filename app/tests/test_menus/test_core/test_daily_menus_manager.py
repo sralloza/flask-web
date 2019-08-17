@@ -97,14 +97,18 @@ class TestDailyMenusManager:
         assert string.count('Cena') == string.count('D1')
 
     class TestAddToMenus:
-        def test_one_menu(self, dmm):
+        def test_one_menu(self):
+            dmm = DailyMenusManager()
+
             menu = DailyMenu(6, 12, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
             assert date(2019, 12, 6) not in dmm
 
             dmm.add_to_menus(menu)
             assert date(2019, 12, 6) in dmm
 
-        def test_multiples_menus(self, dmm):
+        def test_multiples_menus(self):
+            dmm = DailyMenusManager()
+
             menu1 = DailyMenu(6, 12, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
             menu2 = DailyMenu(6, 11, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
             menu3 = DailyMenu(6, 10, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
@@ -114,6 +118,60 @@ class TestDailyMenusManager:
             assert date(2019, 10, 6) not in dmm
 
             dmm.add_to_menus([menu1, menu2, menu3])
+            assert date(2019, 12, 6) in dmm
+            assert date(2019, 11, 6) in dmm
+            assert date(2019, 10, 6) in dmm
+
+        def test_multiple_calls(self):
+            dmm = DailyMenusManager()
+
+            menu1 = DailyMenu(6, 12, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+            menu2 = DailyMenu(6, 11, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+            menu3 = DailyMenu(6, 10, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+
+            assert len(dmm) == 0
+            assert date(2019, 12, 6) not in dmm
+            assert date(2019, 11, 6) not in dmm
+            assert date(2019, 10, 6) not in dmm
+
+            dmm.add_to_menus(menu1)
+            assert len(dmm) == 1
+            assert date(2019, 12, 6) in dmm
+            assert date(2019, 11, 6) not in dmm
+            assert date(2019, 10, 6) not in dmm
+
+            dmm.add_to_menus(menu2)
+            assert len(dmm) == 2
+            assert date(2019, 12, 6) in dmm
+            assert date(2019, 11, 6) in dmm
+            assert date(2019, 10, 6) not in dmm
+
+            dmm.add_to_menus(menu3)
+            assert len(dmm) == 3
+            assert date(2019, 12, 6) in dmm
+            assert date(2019, 11, 6) in dmm
+            assert date(2019, 10, 6) in dmm
+
+        def test_add_duplicate_menus(self):
+            dmm = DailyMenusManager()
+
+            menu1 = DailyMenu(6, 12, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+            menu2 = DailyMenu(6, 11, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+            menu3 = DailyMenu(6, 10, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+
+            assert len(dmm) == 0
+            assert date(2019, 12, 6) not in dmm
+            assert date(2019, 11, 6) not in dmm
+            assert date(2019, 10, 6) not in dmm
+
+            dmm.add_to_menus([menu1, menu2, menu3])
+            assert len(dmm) == 3
+            assert date(2019, 12, 6) in dmm
+            assert date(2019, 11, 6) in dmm
+            assert date(2019, 10, 6) in dmm
+
+            dmm.add_to_menus([menu1, menu2, menu3])
+            assert len(dmm) == 3
             assert date(2019, 12, 6) in dmm
             assert date(2019, 11, 6) in dmm
             assert date(2019, 10, 6) in dmm
