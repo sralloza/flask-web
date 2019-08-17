@@ -19,7 +19,10 @@ class DailyMenusManager:
         self._lock = Lock()
 
     def __str__(self):
-        return '\n'.join([repr(x) for x in self.menus])
+        return self.to_string()
+
+    def __repr__(self):
+        return self.to_string()
 
     def __contains__(self, item: date):
         if not isinstance(item, date):
@@ -64,8 +67,7 @@ class DailyMenusManager:
 
     @classmethod
     def load(cls, force=False):
-        self = DailyMenusManager.__new__(cls)
-        self.__init__()
+        self = DailyMenusManager()
         self.load_from_database()
 
         today = datetime.today().date()
@@ -129,7 +131,6 @@ class DailyMenusManager:
 
         s = Soup(r.text, 'html.parser')
         container = s.find('article', {'class': 'j-blog'})
-        container = self.patch_urls(url, container.text)
         text = '\n'.join(x.strip() for x in container.splitlines() if x.strip())
         text = Patterns.fix_dates_pattern_1.sub(r'\1 \2', text)
         text = Patterns.fix_dates_pattern_2.sub(r'\1 \2', text)
@@ -142,15 +143,6 @@ class DailyMenusManager:
         self._process_texts(texts)
 
         return self
-
-    @staticmethod
-    def patch_urls(url, text):
-        if url != 'https://www.residenciasantiago.es/2019/04/01/semana-del-2-al-8-de-abril-2019/':
-            return text
-        text = text.replace('06 DE MARZO DE 2019', '06 DE ABRIL DE 2019')
-        text = text.replace('07 DE MARZO DE 2019', '07 DE ABRIL DE 2019')
-        text = text.replace('1ER PLATO:\n\n\nBARBACOA', '1ER PLATO: BARBACOA')
-        return text
 
     def _process_texts(self, texts):
         logger.debug('Processing texts')
