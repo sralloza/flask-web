@@ -6,6 +6,7 @@ import pytest
 
 from app.menus.core.daily_menus_manager import DailyMenusManager
 from app.menus.core.structure import DailyMenu, Meal
+from app.menus.models import DailyMenuDB
 
 
 class TestDailyMenusManager:
@@ -253,13 +254,49 @@ class TestDailyMenusManager:
         real_json = dmm.to_json()
         assert real_json == expected_json
 
-    @pytest.mark.skip
-    def test_load_from_database(self):
-        pass
+    @mock.patch('app.menus.core.daily_menus_manager.DailyMenuDB')
+    @mock.patch('app.menus.core.daily_menus_manager.DailyMenusManager.add_to_menus')
+    def test_load_from_database(self, atm_mock, dmdb_mock):
+        dmdb_mock.query.all.return_value = [DailyMenuDB(
+            id=20190101, day=1, month=1, year=2019, lunch1='L1', lunch2='L2', dinner1='D1',
+            dinner2='D2')]
 
-    @pytest.mark.skip
-    def test_save_to_database(self):
-        pass
+        dmm = DailyMenusManager()
+        dmm.load_from_database()
+
+        dmdb_mock.query.all.assert_called_once_with()
+        atm_mock.assert_called_with([DailyMenu(1, 1, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))])
+
+    @pytest.fixture
+    def save_to_database_mocks(self):
+        glu_mock = mock.patch(
+            'app.menus.core.daily_menus_manager.UpdateControl.get_last_update').start()
+        should_update_mock = mock.patch(
+            'app.menus.core.daily_menus_manager.UpdateControl.should_update').start()
+        logger_mock = mock.patch('app.menus.core.daily_menus_manager.logger').start()
+
+        yield glu_mock, should_update_mock, logger_mock
+
+        mock.patch.stopall()
+
+    @pytest.mark.parametrize('should_update', [True, False])
+    def test_save_to_database(self, should_update, save_to_database_mocks):
+        glu_mock, should_update_mock, logger_mock = save_to_database_mocks
+
+        should_update_mock.return_value = should_update
+        glu_mock.return_value = '[info]'
+        menu_mock = mock.Mock()
+
+        dmm = DailyMenusManager()
+        dmm.add_to_menus([menu_mock, menu_mock])
+        dmm.save_to_database()
+
+        if should_update:
+            menu_mock.to_database.assert_called()
+            assert menu_mock.to_database.call_count == 2
+            logger_mock.debug.assert_called_with('Saving menus to database')
+        else:
+            logger_mock.info.assert_called_with('Permission denied by UpdateControl (%s)', '[info]')
 
     @pytest.mark.skip
     def test_load_from_menus_urls(self):
