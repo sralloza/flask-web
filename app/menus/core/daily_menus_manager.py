@@ -2,7 +2,6 @@ import logging
 import re
 from datetime import datetime, date
 from threading import Lock
-from typing import List
 
 import requests
 from bs4 import BeautifulSoup as Soup
@@ -51,13 +50,17 @@ class DailyMenusManager:
     def to_html(self):
         return '<br>'.join([x.to_html() for x in self.menus])
 
-    def add_to_menus(self, menus: List[DailyMenu]):
+    def add_to_menus(self, menus):
         with self._lock:
+            if isinstance(menus, DailyMenu):
+                self.menus.append(menus)
+                return
+
             foo = {x.date: x for x in self.menus}
             for menu in menus:
                 foo[menu.date] = menu
 
-            self.menus = list(foo.values())
+            self.menus += list(foo.values())
 
     @classmethod
     def load(cls, force=False):
