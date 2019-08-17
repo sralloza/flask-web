@@ -24,6 +24,9 @@ class DailyMenusManager:
     def __repr__(self):
         return self.to_string()
 
+    def __len__(self):
+        return len(self.menus)
+
     def __contains__(self, item: date):
         if not isinstance(item, date):
             raise TypeError(f'Contains does only work with dates, not {type(item).__name__}')
