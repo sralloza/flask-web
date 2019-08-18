@@ -298,9 +298,33 @@ class TestDailyMenusManager:
         else:
             logger_mock.info.assert_called_with('Permission denied by UpdateControl (%s)', '[info]')
 
-    @pytest.mark.skip
-    def test_load_from_menus_urls(self):
-        pass
+    @pytest.fixture
+    def load_from_menus_urls_mocks(self):
+        gmu_mock = mock.patch('app.menus.core.daily_menus_manager.get_menus_urls').start()
+        worker_mock = mock.patch('app.menus.core.daily_menus_manager.Worker').start()
+        logger_mock = mock.patch('app.menus.core.daily_menus_manager.logger').start()
+
+        yield gmu_mock, worker_mock, logger_mock
+
+        mock.patch.stopall()
+
+    def test_load_from_menus_urls(self, load_from_menus_urls_mocks):
+        gmu_mock, worker_mock, logger_mock = load_from_menus_urls_mocks
+
+        gmu_mock.return_value = ['url-1', 'url-2', 'url-3', 'url-4']
+
+        dmm = DailyMenusManager()
+        dmm.load_from_menus_urls()
+
+        logger_mock.debug.assert_called_with('Loading from menus urls')
+        worker_mock.assert_any_call('url-1', dmm)
+        worker_mock.assert_any_call('url-2', dmm)
+        worker_mock.assert_any_call('url-3', dmm)
+        worker_mock.assert_any_call('url-4', dmm)
+        worker_mock.return_value.start.assert_called()
+        assert worker_mock.return_value.start.call_count == 4
+        worker_mock.return_value.join.assert_called()
+        assert worker_mock.return_value.join.call_count == 4
 
     @pytest.mark.skip
     def test_process_url(self):
