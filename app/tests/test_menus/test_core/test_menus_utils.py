@@ -208,6 +208,8 @@ class TestPatterns:
         ('día: 06 de junio de 2019 (martes)', True),
         ('día: 04 de 2019 de marzo (martes', False),
         ('día: 4 de 2019 de marzo (martes', False),
+        ('día:04 de marzo de 2019 (martes)', True),
+        ('día:04demarzode2019(martes)', True),
         ('day: 15 of 1562, june', False),
         ('buffet: leche, café, colacao, bizcocho, galletas, tostadas, pan,', False),
         ('día: 06 de marzo de 2019 (miercoles)', True),
@@ -227,13 +229,45 @@ class TestPatterns:
         else:
             assert pattern_match is None
 
-    @pytest.mark.skip
-    def test_semi_day_pattern_1(self):
-        pass
+    semi_day_pattern_1_data = (
+        ('día: 25 de diciembre', True),
+        ('día: 01 de febrero', True),
+        ('Día: 31 de octubre', True),
+        ('Día:    12   \t  de    octubre', True),
+        ('Día:\t1\tde\tagosto', True),
+        ('día:12deoctubre', True),
+        ('cena: cóctel español', False)
+    )
 
-    @pytest.mark.skip
-    def test_semi_day_pattern_2(self):
-        pass
+    @pytest.mark.parametrize('string, match_code', semi_day_pattern_1_data)
+    def test_semi_day_pattern_1(self, string, match_code):
+        pattern_match = Patterns.semi_day_pattern_1.search(string)
+
+        if match_code:
+            assert pattern_match is not None
+            assert pattern_match.group() == string
+        else:
+            assert pattern_match is None
+
+    semi_day_pattern_2_data = (
+        ('2019 (martes)', True),
+        ('2019 (  martes  )', True),
+        ('2019(martes)', True),
+        ('2019\t\t(martes)', True),
+        ('2019    (martes)', True),
+        ('2019    (  martes  )', True),
+        ('cóctel', False)
+    )
+
+    @pytest.mark.parametrize('string, match_code', semi_day_pattern_2_data)
+    def test_semi_day_pattern_2(self, string, match_code):
+        pattern_match = Patterns.semi_day_pattern_2.search(string)
+
+        if match_code:
+            assert pattern_match is not None
+            assert pattern_match.group() == string
+        else:
+            assert pattern_match is None
 
     @pytest.mark.skip
     def test_fix_dates_patterns_1(self):
