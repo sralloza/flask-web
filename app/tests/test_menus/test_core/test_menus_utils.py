@@ -269,12 +269,25 @@ class TestPatterns:
         else:
             assert pattern_match is None
 
-    @pytest.mark.skip
-    def test_fix_dates_patterns_1(self):
-        pass
+    fix_dates_patterns_1_data = (
+        ('febrero\n2019', False),
+        ('febrero  \n \n 2019', False),
+        ('febrero2019', False),
+        ('febrero\n201', False)
+    )
+
+    @pytest.mark.parametrize('string, match_code', fix_dates_patterns_1_data)
+    def test_fix_dates_pattern_1(self, string, match_code):
+        pattern_match = Patterns.fix_dates_pattern_1.search(string)
+
+        if match_code:
+            assert pattern_match is not None
+            assert pattern_match.group() == string
+        else:
+            assert pattern_match is None
 
     @pytest.mark.skip
-    def test_fix_dates_patterns_2(self):
+    def test_fix_dates_pattern_2(self):
         pass
 
     @pytest.mark.skip

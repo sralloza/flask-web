@@ -107,7 +107,7 @@ class Patterns:
     semi_day_pattern_1 = re.compile(r'día:\s*(?P<day>\d*)\s*de\s*(?P<month>\w+)$', re.I)
     semi_day_pattern_2 = re.compile(r'(?P<year>\d{4})\s*\(\s*(?P<weekday>\w+)\s*\)', re.I)
 
-    fix_dates_pattern_1 = re.compile(r'(\w+)\n(\d{4})', re.I)
+    fix_dates_pattern_1 = re.compile(r'(\w+)[\n\s]*(\d{4})', re.I)
     fix_dates_pattern_2 = re.compile(r'(día:)[\s\n]+(\d+)', re.I)
 
     ignore_patters = (
