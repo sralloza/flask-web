@@ -45,6 +45,13 @@ class Index:
             f' date={self.date!r}, state={self.state!r})'
 
     def set_combined(self, meal_combined):
+        """Indicates that meal_combined is Combinated.
+
+        Args:
+            meal_combined (str): must be LUNCH or DINNER.
+
+        """
+
         if meal_combined not in ('LUNCH', 'DINNER'):
             raise MealError(f'Invalid meal: {meal_combined}')
 
@@ -53,10 +60,12 @@ class Index:
 
     @property
     def lunch(self):
+        """Returns the lunch."""
         return self._lunch
 
     @property
     def dinner(self):
+        """Returns the dinner."""
         return self._dinner
 
     @property
@@ -65,10 +74,12 @@ class Index:
 
     @property
     def date(self):
+        """Returns the date."""
         return self._date
 
     @property
     def state(self):
+        """Returns the current state."""
         return self._state
 
     def commit(self):
@@ -228,6 +239,7 @@ class Index:
 
 
 class Meal:
+    """Represents a meal, which consists of two plates."""
     def __init__(self, p1=None, p2=None):
         self.p1 = p1
         self.p2 = p2
@@ -241,9 +253,18 @@ class Meal:
         return self.p1 == other.p1 and self.p2 == other.p2
 
     def is_empty(self):
+        """Checks that no plate is configured."""
         return self.p1 is None and self.p2 is None
 
     def update(self, **kwargs):
+        """Updates plates.
+
+        Keyword Args:
+            p1 (str): first plate.
+            p2 (str): second plate.
+
+        """
+
         p1 = kwargs.pop('p1', None)
         p2 = kwargs.pop('p2', None)
 
@@ -258,6 +279,7 @@ class Meal:
         self.strip()
 
     def strip(self):
+        """Strips plates."""
         if self.p1:
             self.p1 = self.p1.strip()
 
@@ -266,6 +288,7 @@ class Meal:
 
 
 class Combined(Meal):
+    """Meal which only has one plate."""
     def __init__(self, p1=None):
         super().__init__(p1=p1)
         self.p1 = p1
@@ -274,9 +297,16 @@ class Combined(Meal):
         self.strip()
 
     def is_empty(self):
+        """Checks if the combined is empty."""
         return self.p1 is None
 
     def update(self, **kwargs):
+        """Updates plates.
+
+        Keyword Args:
+            p1 (str): fist and only plate.
+        """
+
         self.p1 = self.p1 or kwargs.pop('p1', None)
 
         if kwargs:
@@ -332,12 +362,18 @@ class DailyMenu:
         return str(self)
 
     def is_empty(self):
+        """Checks if lunch and dinner are emtpy."""
         try:
             return self.lunch.is_empty() and self.dinner.is_empty()
         except AttributeError:
             return False
 
     def set_combined(self, meal: str):
+        """Specifies which meal should be a Combined.
+
+        Args:
+            meal: meal which should be a combined.
+        """
         if meal not in ('LUNCH', 'DINNER'):
             raise ValueError(f'meal must be LUNCH or DINNER, not {meal}')
 
@@ -419,7 +455,7 @@ class DailyMenu:
         """Creates a DailyMenu given its datetime.
 
         Args:
-            dt (datetime, str, date): datetime of the menu.
+            dt: datetime of the menu.
         """
 
         self = DailyMenu.__new__(DailyMenu)
@@ -444,7 +480,18 @@ class DailyMenu:
         return self.e_to_s(self.date.strftime('%d de %B de %Y (%A)'))
 
     def update(self, **kwargs):
-        """Updates values of the menu."""
+        """Updates values of the menu.
+
+        Keyword Args:
+            lunch (Meal): whole lunch as Meal.
+            dinner (Meal): whole dinner as Meal.
+            lunch1 (str): first plate of lunch.
+            lunch2 (str): second plate of lunch.
+            dinner1 (str): first plate of dinner.
+            dinner2 (str): second plate of dinner.
+
+        """
+        
         lunch = kwargs.pop('lunch', None)
         dinner = kwargs.pop('dinner', None)
 
