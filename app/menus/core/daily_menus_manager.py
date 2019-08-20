@@ -2,6 +2,7 @@ import logging
 import re
 from datetime import datetime, date
 from threading import Lock
+from typing import List, Union
 
 import requests
 from bs4 import BeautifulSoup as Soup
@@ -14,6 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class DailyMenusManager:
+    """Represents a controller of a list of menus."""
     def __init__(self):
         self.menus = []
         self._lock = Lock()
@@ -47,16 +49,26 @@ class DailyMenusManager:
         raise KeyError(f'No menu found: {item}')
 
     def sort(self):
+        """Sorts menus by date."""
         logger.debug('Sorting menus')
         self.menus.sort(key=lambda x: x.date, reverse=True)
 
     def to_string(self):
+        """Returns string representation of the menus."""
         return '\n'.join([x.to_string() for x in self.menus])
 
     def to_html(self):
+        """Returns html representation of the menus."""
         return '<br>'.join([x.to_html() for x in self.menus])
 
-    def add_to_menus(self, menus):
+    def add_to_menus(self, menus: Union[DailyMenu, List[DailyMenu]]):
+        """Adds menus to the database.
+
+        Args:
+            menus: menus to add.
+
+        """
+
         with self._lock:
             if isinstance(menus, DailyMenu):
                 menus = [menus, ]
@@ -71,6 +83,13 @@ class DailyMenusManager:
 
     @classmethod
     def load(cls, force=False):
+        """Loads the menus, from the database and from the menus web server.
+
+        Args:
+            force (bool): if True, download menus from the web server even if today is
+                in the database. Defaults to False.
+        """
+
         self = DailyMenusManager()
         self.load_from_database()
 
@@ -83,8 +102,9 @@ class DailyMenusManager:
         return self
 
     def to_json(self):
-        output = []
+        """Returns the json representation of the menus."""
 
+        output = []
         for menu in self:
             foo = {}
             day = re.search(r'\((\w+)\)', menu.format_date()).group(1).capitalize()
@@ -97,10 +117,12 @@ class DailyMenusManager:
         return output
 
     def load_from_database(self):
+        """Loads the menus from the database."""
         logger.debug('Loading from database')
         self.add_to_menus([x.to_normal_daily_menu() for x in DailyMenuDB.query.all()])
 
     def save_to_database(self):
+        """Saves the menus from the database, if UpdateControl authorizes it."""
         if not UpdateControl.should_update():
             logger.info('Permission denied by UpdateControl (%s)', UpdateControl.get_last_update())
             return
@@ -110,6 +132,7 @@ class DailyMenusManager:
             menu.to_database()
 
     def load_from_menus_urls(self):
+        """Loads menus from menus urls."""
         logger.debug('Loading from menus urls')
         threads = []
         for u in get_menus_urls():
@@ -121,6 +144,7 @@ class DailyMenusManager:
             thread.join()
 
     def process_url(self, url, retries=5):
+        """Processes url in search from menus."""
         logger.debug('Processing url %r', url)
         r = None
         while retries:
@@ -149,6 +173,7 @@ class DailyMenusManager:
         return self
 
     def _process_texts(self, texts):
+        """Processes texts retrieved from url."""
         logger.debug('Processing texts')
         index = Index()
         for text in texts:
