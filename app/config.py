@@ -1,15 +1,20 @@
+import platform
+from pathlib import Path
+
+
 class Config(object):
-    DEBUG = False
+    ROOT_PATH = Path(__file__).parent
+    TEST_DATA_PATH = ROOT_PATH / 'tests' / 'data'
     TESTING = False
-    PARSE_MAIN_WEB = True
-    LAST_URL = 'https://www.residenciasantiago.es/2019/03/04/semana-del-5-al-11-de-marzo-2019/'
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///../flask.db'
+    DATABASE_PATH = ROOT_PATH.parent.joinpath('flask.db').as_posix()
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + DATABASE_PATH
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    IS_LINUX = platform.system() == 'Linux'
 
 
 class TestingConfig(Config):
-    DEBUG = False
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///flask_tmp.db'
+    DATABASE_PATH = ':memory:'
+    SQLALCHEMY_DATABASE_URI = 'sqlite://'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SERVER_NAME = 'sralloza.sytes.net'
+    SERVER_NAME = 'menus.sralloza.es'

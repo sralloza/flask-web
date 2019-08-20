@@ -1,21 +1,23 @@
 import logging
-import os
+from pathlib import Path
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
 
-from .base import base
-from .menus import menus
+from .base import base_blueprint
+from .menus import menus_blueprint
 from .menus.models import db
 
-logging.basicConfig(filename=os.path.join(os.path.dirname(__file__), 'flask-app.log'),
-                    level=logging.DEBUG,
-                    format='%(asctime)s] %(levelname)s - %(module)s:%(lineno)s - %(message)s')
+logging.basicConfig(
+    filename=Path(__file__).parent.parent / 'flask-app.log',
+    level=logging.DEBUG,
+    format='%(asctime)s] %(levelname)s - %(module)s:%(lineno)s - %(message)s')
 
 werkzeug = logging.getLogger('werkzeug')
 werkzeug.handlers = []
-werkzeug_handler = logging.FileHandler(os.path.join(os.path.dirname(__file__), 'flask-access.log'),
-                                       encoding='utf-8')
+werkzeug_handler = logging.FileHandler(
+    Path(__file__).parent.parent / 'flask-access.log',
+    encoding='utf-8')
 werkzeug_handler.setFormatter(logging.Formatter(fmt='%(asctime)s] %(levelname)s - %(message)s'))
 werkzeug.addHandler(werkzeug_handler)
 
@@ -35,8 +37,8 @@ def create_app(config_filename=None, config_object=None, settings_override=None)
     db.init_app(flask_app)
 
     Bootstrap(flask_app)
-    flask_app.register_blueprint(base)
-    flask_app.register_blueprint(menus)
+    flask_app.register_blueprint(base_blueprint)
+    flask_app.register_blueprint(menus_blueprint)
 
     db.create_all(app=flask_app)
 

@@ -1,14 +1,14 @@
 import logging
 
-from flask import redirect, current_app, url_for, request
+from flask import redirect, url_for, request
 
-from . import base
 from app.utils import get_last_menus_page
+from . import base_blueprint
 
 logger = logging.getLogger(__name__)
 
 
-@base.before_request
+@base_blueprint.before_request
 def before_request():
     if request.headers.get('User-Agent') is None:
         return 'A user agent must be provided', 401
@@ -25,41 +25,40 @@ def before_request():
         return 'A user agent must be provided', 401
 
 
-@base.route('/favicon.ico')
+@base_blueprint.route('/favicon.ico')
 def favicon():
-    return redirect(url_for('static', filename='favicon.png'))
+    return redirect(url_for('static', filename='images/favicon.png'), code=301)
 
 
-@base.route('/')
+@base_blueprint.route('/')
 def index():
-    return redirect(url_for('menus.today'))
+    return redirect(url_for('menus_blueprint.today_js_view'))
 
 
-@base.route('/s')
+@base_blueprint.route('/s')
 def redirect_source():
-    return redirect('source')
+    return redirect(url_for('base_blueprint.source'), code=301)
 
 
 # noinspection PyBroadException
-@base.route('/source')
+@base_blueprint.route('/source')
 def source():
-    if not current_app.config['PARSE_MAIN_WEB']:
-        return redirect(current_app.config['LAST_URL'])
-
     return redirect(get_last_menus_page())
 
 
-@base.route('/feedback')
+@base_blueprint.route('/feedback')
 def feedback():
     return '<h1>Send feedback to sralloza@gmail.com</h1>'
 
 
-@base.route('/aemet')
+@base_blueprint.route('/a')
+def redirect_aemet():
+    return redirect(url_for('base_blueprint.aemet'), code=301)
+
+
+@base_blueprint.route('/aemet')
 def aemet():
     return redirect(
-        'http://www.aemet.es/es/eltiempo/prediccion/municipios/horas/tabla/valladolid-id47186')
-
-
-@base.route('/a')
-def redirect_aemet():
-    return redirect('aemet')
+        'http://www.aemet.es/es/eltiempo/prediccion/municipios/horas/tabla/valladolid-id47186',
+        code=301
+    )

@@ -4,23 +4,24 @@ from datetime import datetime, timedelta
 
 from flask import render_template, redirect, url_for, request
 
-from app.menus.core import DailyMenusManager, DailyMenu
-from app.utils import get_last_menus_page
-from . import menus
+from app.utils import get_last_menus_page, today
+from . import menus_blueprint
+from .core.daily_menus_manager import DailyMenusManager
+from .core.structure import DailyMenu
 
 
-@menus.route('/menus')
+@menus_blueprint.route('/menus')
 def menus_view():
-    dmm = DailyMenusManager.load()
-
-    last_url = get_last_menus_page()
     _all = request.args.get('all') is not None
     beta = request.args.get('beta') is not None
 
-    show = dmm.menus
-
     if _all and beta:
         return redirect('/menus?beta')
+
+    dmm = DailyMenusManager.load()
+
+    last_url = get_last_menus_page()
+    show = dmm.menus
 
     if not _all and not beta:
         show = dmm.menus[:15]
@@ -33,38 +34,75 @@ def menus_view():
     return render_template(template_name, menus=show, last_url=last_url)
 
 
-@menus.route('/n')
-@menus.route('/new_menus')
-@menus.route('/new-menus')
+@menus_blueprint.route('/n')
+@menus_blueprint.route('/new_menus')
+@menus_blueprint.route('/new-menus')
 def menus_redirect():
-    return redirect('menus')
+    return redirect('menus', code=301)
 
 
-@menus.route('/menus/reload')
+@menus_blueprint.route('/menus/reload')
 def menus_reload():
     dmm = DailyMenusManager.load(force=True)
 
     for menu in dmm:
         menu.to_database()
 
-    return redirect(url_for('menus.menus_view', _external=True))
+    return redirect(url_for('menus_blueprint.menus_view', _external=True))
 
 
-@menus.route('/hoy')
-def today():
+@menus_blueprint.route('/h')
+def today_redirect():
+    return redirect('hoy', code=301)
+
+
+@menus_blueprint.route('/hoy/reload')
+def today_reload():
+    # TODO: instead of having endpoint '/menus/reload', add argument in request 'force'
+    dmm = DailyMenusManager.load(force=True)
+
+    for menu in dmm:
+        menu.to_database()
+
+    return redirect(url_for('menus_blueprint.today_js_view', _external=True))
+
+
+@menus_blueprint.route('/hoy')
+def today_js_view():
+    force = request.args.get('force') is not None or request.args.get('f') is not None
+    dmm = DailyMenusManager.load(force=force)
+    data = json.dumps(dmm.to_json())
+    return render_template('today-js.html', menus=data)
+
+
+@menus_blueprint.route('/api/menus')
+def api_menus():
+    force = request.args.get('force') is not None or request.args.get('f') is not None
+    dmm = DailyMenusManager.load(force=force)
+    data = dmm.to_json()
+    return json.dumps(data), 200
+
+
+@menus_blueprint.route('/old/hoy')
+def today_old_view():
     dmm = DailyMenusManager.load()
     day = request.args.get('day')
 
-    asked = datetime.today()
+    asked = None
     code = 200
 
     try:
         if day in (None, ''):
-            menu = dmm[datetime.today().date()]
+            asked = today()
+            menu = dmm[asked.date()]
         else:
             asked = datetime.strptime(day, '%Y-%m-%d')
             menu = dmm[asked.date()]
-    except (KeyError, ValueError):
+    except ValueError:
+        asked = today()
+        menu = DailyMenu(asked.day, asked.month, asked.year)
+        code = 404
+    except KeyError:
         menu = DailyMenu(asked.day, asked.month, asked.year)
         code = 404
 
@@ -81,31 +119,16 @@ def today():
     disabled_tomorrow = 'disabled'
 
     if yesterday.date() in dmm:
-        yesterday_url = url_for('menus.today', _external=True) + '?day=' + str(yesterday.date())
+        yesterday_url = url_for('menus_blueprint.today_old_view', _external=True) + '?day=' + str(
+            yesterday.date())
         disabled_yesterday = ''
     if tomorrow.date() in dmm:
-        tomorrow_url = url_for('menus.today', _external=True) + '?day=' + str(tomorrow.date())
+        tomorrow_url = url_for('menus_blueprint.today_old_view', _external=True) + '?day=' + str(
+            tomorrow.date())
         disabled_tomorrow = ''
 
     return render_template(
-        'today.html', menu=menu, day=day, title_url=get_last_menus_page(),
+        'today-old.html', menu=menu, day=day, title_url=get_last_menus_page(),
         yesterday_url=yesterday_url, tomorrow_url=tomorrow_url,
         disabled_yesterday=disabled_yesterday, disabled_tomorrow=disabled_tomorrow
     ), code
-
-
-@menus.route('/api/menus')
-def api_menus():
-    dmm = DailyMenusManager.load()
-    out = []
-
-    for menu in dmm:
-        foo = {}
-        day = re.search(r'\((\w+)\)', menu.format_date()).group(1).capitalize()
-        foo["day"] = f'{day} {menu.date.day}'
-        foo["lunch"] = {"p1": menu.lunch.p1, "p2": menu.lunch.p2}
-        foo["dinner"] = {"p1": menu.dinner.p1, "p2": menu.dinner.p2}
-        out.append(foo)
-
-    return json.dumps(out), 200
-
