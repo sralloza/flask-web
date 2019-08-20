@@ -7,7 +7,7 @@ import requests
 from bs4 import BeautifulSoup as Soup
 
 from app.menus.models import DailyMenuDB, UpdateControl
-from .structure import _Index, DailyMenu
+from .structure import Index, DailyMenu
 from .utils import get_menus_urls, filter_data, has_day, Patterns, Worker
 
 logger = logging.getLogger(__name__)
@@ -150,7 +150,7 @@ class DailyMenusManager:
 
     def _process_texts(self, texts):
         logger.debug('Processing texts')
-        index = _Index()
+        index = Index()
         for text in texts:
             text = text.replace('_', ' ').lower()
             if Patterns.day_pattern.search(text) is not None:
@@ -192,7 +192,7 @@ class DailyMenusManager:
         if index.commit():
             self._update_menu(index)
 
-    def _update_menu(self, index: _Index):
+    def _update_menu(self, index: Index):
         logger.debug('Updating menu')
         with self._lock:
             for i, menu in enumerate(self.menus):

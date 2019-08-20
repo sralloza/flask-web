@@ -4,7 +4,7 @@ import itertools
 import pytest
 
 from app.menus.core.structure import Meal, MealError, DailyMenu, MealWarning, Combined
-from app.menus.core.structure import _Index as Index
+from app.menus.core.structure import Index as Index
 
 # Test data
 mydate = (datetime.date(2019, 1, 1), None)

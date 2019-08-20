@@ -12,7 +12,7 @@ from .exceptions import MealError, MealWarning
 logger = logging.getLogger(__name__)
 
 
-class _Index:
+class Index:
     """Represents the interface to store temporal values of a DailyMenu."""
     _valid_states = ('LUNCH', 'DINNER')
 
@@ -26,9 +26,10 @@ class _Index:
             lunch (Meal): lunch of the DailyMenu
             dinner (Meal: dinner of the DailyMenu
             dt (date): date of the DailyMenu
-            state (str): current state of the _Index. Its valid states are declared in
-                _Index._valid_states.
+            state (str): current state of the Index. Its valid states are declared in
+                Index._valid_states.
         """
+
         self._date = dt
         self._lunch = lunch or Meal()
         self._dinner = dinner or Meal()
@@ -71,7 +72,7 @@ class _Index:
         return self._state
 
     def commit(self):
-        """Decides if the _Index is ready to be stored in a database.
+        """Decides if the Index is ready to be stored in a database.
         The conditions are:
          - Have a date
          - Have a state
@@ -88,7 +89,7 @@ class _Index:
         return False
 
     def reset(self):
-        """Deletes all the temporal values of the _Index."""
+        """Deletes all the temporal values of the Index."""
         self.__init__()
 
     def set_date(self, new_date: date):
@@ -122,7 +123,7 @@ class _Index:
                 algorithm couldn't make a decition.
 
         Raises:
-            MealError: if no state is configured (via _Index.is_current_meal_empty)
+            MealError: if no state is configured (via Index.is_current_meal_empty)
 
         Returns:
             bool: True if everything went right, false otherwise.
