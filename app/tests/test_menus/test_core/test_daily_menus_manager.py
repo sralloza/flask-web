@@ -4,6 +4,7 @@ from unittest import mock
 
 import pytest
 
+from app.config import Config
 from app.menus.core.daily_menus_manager import DailyMenusManager
 from app.menus.core.structure import DailyMenu, Meal
 from app.menus.models import DailyMenuDB
@@ -329,17 +330,47 @@ class TestDailyMenusManager:
     @pytest.fixture
     def process_url_mocks(self):
         logger_mock = mock.patch('app.menus.core.daily_menus_manager.logger').start()
-        requests_mock = mock.patch('app.menus.core.daily_menus_manager.request').start()
-        soup_mock = mock.patch('app.menus.core.daily_menus_manager.Soup').start()
+        requests_mock = mock.patch('app.menus.core.daily_menus_manager.requests').start()
 
-        yield logger_mock, requests_mock, soup_mock
+        yield logger_mock, requests_mock
 
         mock.patch.stopall()
 
-    @pytest.mark.skip
-    def test_process_url(self, process_url_mocks):
-        logger_mock, requests_mock, soup_mock = process_url_mocks
-        soup_mock.return_value.find.return_value = ''
+    @pytest.fixture(params=[1, 2, 3, 4, 5, 6])
+    def file_content(self, request):
+        path = Config.TEST_DATA_PATH / 'menus-html' / f'{request.param}.html'
+        with path.open(encoding='utf-8') as f:
+            return f.read(), request.param
+
+    process_url_data = [
+        ('1.html', (date(2019, 6, 14), date(2019, 6, 15), date(2019, 6, 16), date(2019, 6, 17))),
+        ('2.html', (date(2019, 6, 25), date(2019, 6, 26), date(2019, 6, 27), date(2019, 6, 28))),
+        ('3.html', (date(2019, 5, 7), date(2019, 5, 8), date(2019, 5, 9), date(2019, 5, 10),
+                    date(2019, 5, 11), date(2019, 5, 12), date(2019, 5, 13))),
+        ('4.html', (date(2019, 4, 23), date(2019, 4, 24), date(2019, 4, 25), date(2019, 4, 26),
+                    date(2019, 4, 27), date(2019, 4, 28), date(2019, 4, 29))),
+        ('5.html', (date(2019, 1, 29), date(2019, 1, 30), date(2019, 1, 31), date(2019, 2, 1),
+                    date(2019, 2, 2), date(2019, 2, 3), date(2019, 2, 4))),
+        ('6.html', (date(2019, 4, 30), date(2019, 5, 1), date(2019, 5, 2), date(2019, 5, 3),
+                    date(2019, 5, 4), date(2019, 5, 5), date(2019, 5, 6))),
+    ]
+
+    @pytest.mark.parametrize('filename, dates', process_url_data)
+    def test_process_url(self, process_url_mocks, filename, dates):
+        path = Config.TEST_DATA_PATH / 'menus-html' / filename
+        with path.open(encoding='utf-8') as f:
+            file_content = f.read()
+
+        logger_mock, requests_mock = process_url_mocks
+        requests_mock.get.return_value.text = file_content
+
+        dmm = DailyMenusManager()
+        dmm.process_url('')
+
+        for dt in dates:
+            assert dt in dmm
+
+        assert len(dates) == len(dmm)
 
     @pytest.mark.skip
     def test_process_texts(self):

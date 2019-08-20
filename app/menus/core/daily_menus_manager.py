@@ -159,7 +159,7 @@ class DailyMenusManager:
 
         s = Soup(r.text, 'html.parser')
         container = s.find('article', {'class': 'j-blog'})
-        text = '\n'.join(x.strip() for x in container.splitlines() if x.strip())
+        text = '\n'.join(x.strip() for x in container.text.splitlines() if x.strip())
         text = Patterns.fix_dates_pattern_1.sub(r'\1 \2', text)
         text = Patterns.fix_dates_pattern_2.sub(r'\1 \2', text)
         texts = [x.strip() for x in text.splitlines() if x.strip()]
