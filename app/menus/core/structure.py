@@ -319,10 +319,11 @@ class DailyMenu:
 
     def __eq__(self, other):
         if not isinstance(other, DailyMenu):
-            raise TypeError(f'other must be DailyMenu, not {type(other).__name__!r} ({other!r})')
+            raise TypeError(
+                f"'==' must be used with DailyMenu, not {type(other).__name__!r} ({other!r})")
 
-        return self.day == other.day and self.month == other.month and self.year == other.year \
-               and self.lunch == other.lunch and self.dinner == other.dinner
+        return (self.day == other.day and self.month == other.month and self.year == other.year
+                and self.lunch == other.lunch and self.dinner == other.dinner)
 
     def __str__(self):
         return self.format_date()
