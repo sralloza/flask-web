@@ -2,6 +2,7 @@ import logging
 import re
 import warnings
 from datetime import datetime, date
+from enum import Enum, unique
 from typing import Union
 
 from sqlalchemy.exc import IntegrityError
@@ -12,12 +13,18 @@ from .exceptions import MealError, MealWarning
 logger = logging.getLogger(__name__)
 
 
+@unique
+class LunchState(Enum):
+    LUNCH = 'LUNCH'
+    DINNER = 'DINNER'
+
+
 class Index:
     """Represents the interface to store temporal values of a DailyMenu."""
-    _valid_states = ('LUNCH', 'DINNER')
 
     def __init__(self, lunch=None, dinner=None, dt=None, state=None):
         """
+
         Notes:
             All args in this class are meant to be changed dinamically. They are not meant to be
             declared (it is only for testing purposes).
@@ -69,10 +76,6 @@ class Index:
         return self._dinner
 
     @property
-    def meal_type(self):
-        return self._state
-
-    @property
     def date(self):
         """Returns the date."""
         return self._date
@@ -89,13 +92,13 @@ class Index:
          - Have a state
          - Have at least a non empty dinner or launch.
         """
-        if not self._date:
+        if not self.date:
             return False
-        if not self._state:
+        if not self.state:
             return False
-        if not self._lunch.is_empty():
+        if not self.lunch.is_empty():
             return True
-        if not self._dinner.is_empty():
+        if not self.dinner.is_empty():
             return True
         return False
 
@@ -115,12 +118,12 @@ class Index:
             MealError: if an invalid value is set for meal_type.
         """
 
-        if self._state == 'LUNCH':
-            return self._lunch.is_empty()
-        elif self._state == 'DINNER':
-            return self._dinner.is_empty()
-        elif self._state is None:
-            raise MealError('Meal_type is None while checking for emtpyness')
+        if self.state == LunchState.LUNCH:
+            return self.lunch.is_empty()
+        elif self.state == LunchState.DINNER:
+            return self.dinner.is_empty()
+        elif self.state is None:
+            raise MealError('meal_type is None while checking for emtpyness')
         raise MealError(f'Invalid value for meal_type: {self._state}')
 
     def decide(self, text: str):
@@ -155,8 +158,12 @@ class Index:
             ValueError: if the meal_type is invalid.
         """
 
-        if meal_type not in self._valid_states:
-            raise ValueError('Invalid meal type: %s from %r'.format(meal_type, self._valid_states))
+        if not isinstance(meal_type, LunchState):
+            try:
+                meal_type = LunchState(meal_type)
+            except ValueError:
+                raise ValueError('Invalid meal type: {} from'.format(meal_type))
+
         self._state = meal_type
 
     def set_first(self, first):
@@ -172,13 +179,13 @@ class Index:
         if not first:
             return
 
-        if not self._state:
+        if not self.state:
             raise RuntimeError('Meal type not set')
 
-        if self._state == 'LUNCH':
-            self._lunch.p1 = first
-        elif self.meal_type == 'DINNER':
-            self._dinner.p1 = first
+        if self.state == LunchState.LUNCH:
+            self.lunch.p1 = first
+        elif self.state == LunchState.DINNER:
+            self.dinner.p1 = first
         else:
             raise ValueError(f'Invalid meal type: {self._state}')
 
@@ -189,10 +196,10 @@ class Index:
             ValueError: if the meal_type is invalid.
         """
 
-        if self._state == 'LUNCH':
-            return self._lunch.p1
-        elif self.meal_type == 'DINNER':
-            return self._dinner.p1
+        if self.state == LunchState.LUNCH:
+            return self.lunch.p1
+        elif self.state == LunchState.DINNER:
+            return self.dinner.p1
         else:
             raise ValueError(f'Invalid meal type: {self._state}')
 
@@ -209,13 +216,13 @@ class Index:
         if not second:
             return
 
-        if not self._state:
+        if not self.state:
             raise RuntimeError('Meal type not set')
 
-        if self._state == 'LUNCH':
-            self._lunch.p2 = second
-        elif self._state == 'DINNER':
-            self._dinner.p2 = second
+        if self.state == LunchState.LUNCH:
+            self.lunch.p2 = second
+        elif self.state == LunchState.DINNER:
+            self.dinner.p2 = second
         else:
             raise ValueError(f'Invalid meal type: {self._state}')
 
@@ -226,16 +233,16 @@ class Index:
             ValueError: if the meal_type is invalid.
         """
 
-        if self._state == 'LUNCH':
-            return self._lunch.p2
-        elif self._state == 'DINNER':
-            return self._dinner.p2
+        if self.state == LunchState.LUNCH:
+            return self.lunch.p2
+        elif self.state == LunchState.DINNER:
+            return self.dinner.p2
         else:
             raise ValueError(f'Invalid meal type: {self._state}')
 
     def to_dict(self):
         """Returns the lunch and dinner info as a dict."""
-        return {'lunch': self._lunch, 'dinner': self._dinner}
+        return {'lunch': self.lunch, 'dinner': self.dinner}
 
 
 class Meal:
@@ -290,9 +297,7 @@ class Meal:
 class Combined(Meal):
     """Meal which only has one plate."""
     def __init__(self, p1=None):
-        super().__init__(p1=p1)
-        self.p1 = p1
-        self.p2 = None
+        super().__init__(p1=p1, p2=None)
 
         self.strip()
 
@@ -376,11 +381,17 @@ class DailyMenu:
         """
         if meal not in ('LUNCH', 'DINNER'):
             raise ValueError(f'meal must be LUNCH or DINNER, not {meal}')
+    def set_combined(self, meal: LunchState):
+        if not isinstance(meal, LunchState):
+            try:
+                meal = LunchState(meal)
+            except ValueError:
+                raise ValueError(f'meal must be LunchState, not {type(meal).__name__}')
 
-        if meal == 'LUNCH':
+        if meal == LunchState.LUNCH:
             self.lunch.p1 = Combined()
 
-        if meal == 'DINNER':
+        if meal == LunchState.DINNER:
             self.dinner.p1 = Combined()
 
     def to_database(self):
