@@ -3,8 +3,8 @@ import itertools
 
 import pytest
 
-from app.menus.core.structure import Meal, MealError, DailyMenu, MealWarning, Combined
 from app.menus.core.structure import Index as Index
+from app.menus.core.structure import Meal, MealError, DailyMenu, MealWarning, Combined, LunchState
 
 # Test data
 mydate = (datetime.date(2019, 1, 1), None)
@@ -31,7 +31,7 @@ class TestIndex:
     @pytest.mark.parametrize('index, empty', list(zip(gen_indexes(), _emtpy)))
     def test_is_actual_meal_empty(self, index, empty):
         if empty == 2:
-            with pytest.raises(MealError, match='Meal_type is None'):
+            with pytest.raises(MealError, match='meal_type is None'):
                 assert index.is_current_meal_empty()
         else:
             assert index.is_current_meal_empty() == bool(empty)
@@ -39,7 +39,7 @@ class TestIndex:
     @pytest.mark.parametrize('index, decide', list(zip(gen_indexes(), _decide)))
     def test_decide(self, index, decide):
         if decide == 2:
-            with pytest.raises(MealError, match='Meal_type is None'):
+            with pytest.raises(MealError, match='meal_type is None'):
                 assert index.is_current_meal_empty()
         elif decide == 1:
             assert index.decide('hello-world')
@@ -48,13 +48,13 @@ class TestIndex:
             with pytest.warns(MealWarning, match='Could not decide: hello-world'):
                 assert not index.decide('hello-world')
 
-    def test_set_meal_type(self):
+    def test_set_state(self):
         i = Index()
         i.set_state('LUNCH')
-        assert i.meal_type == 'LUNCH'
+        assert i.state == LunchState.LUNCH
 
         i.set_state('DINNER')
-        assert i.meal_type == 'DINNER'
+        assert i.state == LunchState.DINNER
 
         with pytest.raises(ValueError, match='Invalid meal type'):
             i.set_state('DUMMY')
