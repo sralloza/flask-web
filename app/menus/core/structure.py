@@ -51,16 +51,19 @@ class Index:
         return f'Index(lunch={self.lunch!r}, dinner={self.dinner!r},' \
             f' date={self.date!r}, state={self.state!r})'
 
-    def set_combined(self, meal_combined):
+    def set_combined(self, meal_combined: Union[LunchState, str]):
         """Indicates that meal_combined is Combinated.
 
         Args:
-            meal_combined (str): must be LUNCH or DINNER.
+            meal_combined: must be LUNCH or DINNER.
 
         """
 
-        if meal_combined not in ('LUNCH', 'DINNER'):
-            raise MealError(f'Invalid meal: {meal_combined}')
+        if not isinstance(meal_combined, LunchState):
+            try:
+                meal_combined = LunchState(meal_combined)
+            except ValueError:
+                raise MealError(f'Invalid meal: {meal_combined}')
 
         self.is_combinated = True
         self.meal_combined = meal_combined
