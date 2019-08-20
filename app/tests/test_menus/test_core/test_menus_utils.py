@@ -160,41 +160,41 @@ class TestFilterData:
             filter_data(object)
 
     def test_normal(self):
-        input = ['1er plato:  ', '   1 plato:   ', '2º plato:   ', '2o plato:', '2 plato:',
-                 'desayuno', 'CoMiDa  ', 'cena', 'combinado', 'cóctel', 'coctel', '', '', '', '',
-                 'día: 29 de febrero de 2019 (viernes)']
+        input_data = ['1er plato:  ', '   1 plato:   ', '2º plato:   ', '2o plato:', '2 plato:',
+                      'desayuno', 'CoMiDa  ', 'cena', 'combinado', 'cóctel', 'coctel', '', '', '',
+                      '', 'día: 29 de febrero de 2019 (viernes)']
         expected = ['1er plato:', '1er plato:', '2º plato:', '2º plato:', '2º plato:', 'comida',
                     'cena', 'combinado', 'cóctel', 'cóctel', 'día: 29 de febrero de 2019 (viernes)']
-        real = filter_data(input)
+        real = filter_data(input_data)
 
         assert real == expected
 
     def test_separate_date(self):
-        input = ['Día: 23 de diciembre', 'de 2018 (martes)']
+        input_data = ['Día: 23 de diciembre', 'de 2018 (martes)']
         expected = ['día: 23 de diciembre de 2018 (martes)']
-        real = filter_data(input)
+        real = filter_data(input_data)
 
         assert real == expected
 
     class TestCombined:
         def test_easy(self):
-            input = ['1er plato: combinado: jamón y queso']
+            input_data = ['1er plato: combinado: jamón y queso']
             expected = ['combinado: jamón y queso']
-            real = filter_data(input)
+            real = filter_data(input_data)
 
             assert real == expected
 
         def test_split(self):
-            input = ['1er plato: combinado: jamón', 'y queso']
+            input_data = ['1er plato: combinado: jamón', 'y queso']
             expected = ['combinado: jamón y queso']
-            real = filter_data(input)
+            real = filter_data(input_data)
 
             assert real == expected
 
         def test_with_second(self):
-            input = ['1er plato: combinado: jamón', '2 plato: y queso']
+            input_data = ['1er plato: combinado: jamón', '2 plato: y queso']
             expected = ['combinado: jamón y queso']
-            real = filter_data(input)
+            real = filter_data(input_data)
 
             assert real == expected
 
@@ -208,6 +208,8 @@ class TestPatterns:
         ('día: 06 de junio de 2019 (martes)', True),
         ('día: 04 de 2019 de marzo (martes', False),
         ('día: 4 de 2019 de marzo (martes', False),
+        ('día:04 de marzo de 2019 (martes)', True),
+        ('día:04demarzode2019(martes)', True),
         ('day: 15 of 1562, june', False),
         ('buffet: leche, café, colacao, bizcocho, galletas, tostadas, pan,', False),
         ('día: 06 de marzo de 2019 (miercoles)', True),
@@ -227,25 +229,114 @@ class TestPatterns:
         else:
             assert pattern_match is None
 
-    @pytest.mark.skip
-    def test_semi_day_pattern_1(self):
-        pass
+    semi_day_pattern_1_data = (
+        ('día: 25 de diciembre', True),
+        ('día: 01 de febrero', True),
+        ('Día: 31 de octubre', True),
+        ('Día:    12   \t  de    octubre', True),
+        ('Día:\t1\tde\tagosto', True),
+        ('día:12deoctubre', True),
+        ('cena: cóctel español', False)
+    )
 
-    @pytest.mark.skip
-    def test_semi_day_pattern_2(self):
-        pass
+    @pytest.mark.parametrize('string, match_code', semi_day_pattern_1_data)
+    def test_semi_day_pattern_1(self, string, match_code):
+        pattern_match = Patterns.semi_day_pattern_1.search(string)
 
-    @pytest.mark.skip
-    def test_fix_dates_patterns_1(self):
-        pass
+        if match_code:
+            assert pattern_match is not None
+            assert pattern_match.group() == string
+        else:
+            assert pattern_match is None
 
-    @pytest.mark.skip
-    def test_fix_dates_patterns_2(self):
-        pass
+    semi_day_pattern_2_data = (
+        ('2019 (martes)', True),
+        ('2019 (  martes  )', True),
+        ('2019(martes)', True),
+        ('2019\t\t(martes)', True),
+        ('2019    (martes)', True),
+        ('2019    (  martes  )', True),
+        ('cóctel', False)
+    )
 
-    @pytest.mark.skip
-    def test_ignore_patterns(self):
-        pass
+    @pytest.mark.parametrize('string, match_code', semi_day_pattern_2_data)
+    def test_semi_day_pattern_2(self, string, match_code):
+        pattern_match = Patterns.semi_day_pattern_2.search(string)
+
+        if match_code:
+            assert pattern_match is not None
+            assert pattern_match.group() == string
+        else:
+            assert pattern_match is None
+
+    fix_dates_patterns_1_data = (
+        ('febrero\n2019', True, 'febrero 2019'),
+        ('febrero \n 2019', True, 'febrero 2019'),
+        ('febrero2019', True, 'febrero 2019'),
+        ('febrerode\n201', False, None),
+    )
+
+    @pytest.mark.parametrize('string, match_code, expected_sub', fix_dates_patterns_1_data)
+    def test_fix_dates_pattern_1(self, string, match_code, expected_sub):
+        real_sub = Patterns.fix_dates_pattern_1.sub(r'\1 \2', string)
+        pattern_match = Patterns.fix_dates_pattern_1.search(string)
+
+        if match_code:
+            assert pattern_match is not None
+            assert real_sub == expected_sub
+        else:
+            assert pattern_match is None
+
+    fix_dates_patterns_2_data = (
+        ('día:     20', True, 'día: 20'),
+        ('día:  \t\t20', True, 'día: 20'),
+        ('día:20', True, 'día: 20'),
+        ('día:\n\t\n\t20', True, 'día: 20'),
+        ('day: 20', False, None)
+    )
+
+    @pytest.mark.parametrize('string, match_code, expected_sub', fix_dates_patterns_2_data)
+    def test_fix_dates_pattern_2(self, string, match_code, expected_sub):
+        real_sub = Patterns.fix_dates_pattern_2.sub(r'\1 \2', string)
+        pattern_match = Patterns.fix_dates_pattern_2.search(string)
+
+        if match_code:
+            assert pattern_match is not None
+            assert real_sub == expected_sub
+        else:
+            assert pattern_match is None
+
+    ignore_patterns_data = (
+        ('20. septiembre 2019', True),
+        ('02. septiembre 2019', True),
+        ('2. septiembre 2019', True),
+        ('semana del 20 al 29 de junio', True),
+        ('semana del 2 al 2 de junio', True),
+        ('semana del 02 al 02 de junio', True),
+        ('semana del 20 de mayo al 20 de junio 2019', True),
+        ('semana del 02 de mayo al 02 de junio 2019', True),
+        ('semana del 2 de mayo al 2 de junio 2019', True),
+        ('desayuno: bacalao con tomate', False),
+        ('comida: patatas con patatas', False)
+    )
+
+    @pytest.mark.parametrize('string, match_code', ignore_patterns_data)
+    def test_ignore_patterns(self, string, match_code):
+        def match(any_string):
+            for pattern in Patterns.ignore_patters:
+                if pattern.search(any_string) is not None:
+                    return True
+            return False
+
+        pattern_match = match(string)
+        if match_code:
+            assert pattern_match is True
+        else:
+            assert pattern_match is False
+
+        # '\d+\.\s\w+\s\d+'
+        # 'semana del \d+ al \d+ de \w+'
+        # 'semana del \d+ de \w+ al \d+ de \w+ \d+'
 
 
 class TestWorker:
