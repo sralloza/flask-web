@@ -326,9 +326,20 @@ class TestDailyMenusManager:
         worker_mock.return_value.join.assert_called()
         assert worker_mock.return_value.join.call_count == 4
 
+    @pytest.fixture
+    def process_url_mocks(self):
+        logger_mock = mock.patch('app.menus.core.daily_menus_manager.logger').start()
+        requests_mock = mock.patch('app.menus.core.daily_menus_manager.request').start()
+        soup_mock = mock.patch('app.menus.core.daily_menus_manager.Soup').start()
+
+        yield logger_mock, requests_mock, soup_mock
+
+        mock.patch.stopall()
+
     @pytest.mark.skip
-    def test_process_url(self):
-        pass
+    def test_process_url(self, process_url_mocks):
+        logger_mock, requests_mock, soup_mock = process_url_mocks
+        soup_mock.return_value.find.return_value = ''
 
     @pytest.mark.skip
     def test_process_texts(self):
