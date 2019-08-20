@@ -356,7 +356,7 @@ class TestDailyMenusManager:
     ]
 
     @pytest.mark.parametrize('filename, dates', process_url_data)
-    def test_process_url(self, process_url_mocks, filename, dates):
+    def test_process_url_process_text_update_menu(self, process_url_mocks, filename, dates):
         path = Config.TEST_DATA_PATH / 'menus-html' / filename
         with path.open(encoding='utf-8') as f:
             file_content = f.read()
@@ -365,17 +365,9 @@ class TestDailyMenusManager:
         requests_mock.get.return_value.text = file_content
 
         dmm = DailyMenusManager()
-        dmm.process_url('')
+        dmm.process_url('https://example.com')
 
         for dt in dates:
             assert dt in dmm
 
         assert len(dates) == len(dmm)
-
-    @pytest.mark.skip
-    def test_process_texts(self):
-        pass
-
-    @pytest.mark.skip
-    def test_update_menu(self):
-        pass
