@@ -151,7 +151,7 @@ class Index:
             warnings.warn(f'Could not decide: {text}', MealWarning, stacklevel=2)
             return False
 
-    def set_state(self, meal_type):
+    def set_state(self, meal_type: Union[LunchState, str]):
         """Sets the actual state.
 
         Raises:
@@ -373,15 +373,7 @@ class DailyMenu:
         except AttributeError:
             return False
 
-    def set_combined(self, meal: str):
-        """Specifies which meal should be a Combined.
-
-        Args:
-            meal: meal which should be a combined.
-        """
-        if meal not in ('LUNCH', 'DINNER'):
-            raise ValueError(f'meal must be LUNCH or DINNER, not {meal}')
-    def set_combined(self, meal: LunchState):
+    def set_combined(self, meal: Union[LunchState, str]):
         if not isinstance(meal, LunchState):
             try:
                 meal = LunchState(meal)
