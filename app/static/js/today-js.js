@@ -1,5 +1,4 @@
 var date_viewed = new Date();
-var menus = [];
 const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
 // Add loader
@@ -157,7 +156,8 @@ function get(name) {
     return queryDict[name];
 }
 
-window.onload = fetch_menus;
+//window.onload = fetch_menus;
+window.onload = update_interface;
 document.getElementById("next").onclick = tomorrow;
 document.getElementById("all").onclick = function() { window.location = '/menus' };
 document.getElementById("previous").onclick = yesterday;

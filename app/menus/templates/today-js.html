@@ -65,6 +65,10 @@
     document.getElementById('N/A').style.display = 'none';
     document.getElementById('lunch').style.display = 'none';
     document.getElementById('dinner').style.display = 'none';
+
+    {% autoescape false %}
+    var menus = {{ menus }};
+    {% endautoescape %}
 </script>
 
 {% endblock %}

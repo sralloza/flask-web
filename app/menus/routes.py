@@ -69,7 +69,10 @@ def today_reload():
 
 @menus_blueprint.route('/hoy')
 def today_js_view():
-    return render_template('today-js.html')
+    force = request.args.get('force') is not None or request.args.get('f') is not None
+    dmm = DailyMenusManager.load(force=force)
+    data = json.dumps(dmm.to_json())
+    return render_template('today-js.html', menus=data)
 
 
 @menus_blueprint.route('/api/menus')
