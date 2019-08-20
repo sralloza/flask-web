@@ -1,6 +1,7 @@
 import logging
 import re
 from threading import Thread
+from typing import List, Union
 
 import requests
 from bs4 import BeautifulSoup as Soup
@@ -11,6 +12,10 @@ PRINCIPAL_URL = 'https://www.residenciasantiago.es/menus-1/'
 
 
 def get_menus_urls(retries=5):
+    """Returns the url to retrieve menus from."""
+
+    # TODO: add option to retrieve all the urls.
+
     total_retries = retries
     logger.debug('Getting menus urls')
 
@@ -33,12 +38,23 @@ def get_menus_urls(retries=5):
 
 
 def has_day(x):
+    """Checks if the string is a date format."""
     x = x.lower()
 
     return Patterns.day_pattern.search(x) is not None
 
 
-def filter_data(data):
+def filter_data(data: Union[str, List[str]]):
+    """Prepares the menus data to be processed.
+
+    Args:
+        data: input data.
+
+    Returns:
+        Union[str, List[str]]: data processed. It will be the same type as the input.
+
+    """
+
     if not isinstance(data, (str, list)):
         raise TypeError(f'data must be str or list, not {type(data).__name__}')
 
@@ -99,6 +115,8 @@ def filter_data(data):
 
 
 class Patterns:
+    """Various patterns used in the core."""
+
     day_pattern = re.compile(
         r'día\s*:\s*(?P<day>\d+)\s*de\s*(?P<month>\w+)\s*'
         r'de\s*(?P<year>\d{4})\s*\((?P<weekday>\w+)\)',
@@ -118,12 +136,22 @@ class Patterns:
 
 
 class Worker(Thread):
+    """Thread to download data from menus urls."""
     def __init__(self, url, dmm, retries=5):
+        """
+
+        Args:
+            url (str): url to get the data from.
+            dmm (DailyMenusManager): DailyMenusManager which controls the data.
+            retries (int): max retries in case of connection error. Defaults to 5.
+
+        """
         super().__init__()
         self.url = url
         self.retries = retries
         self.dmm = dmm
 
     def run(self):
+        """Runs the thread."""
         logger.debug('Starting worker with url %s', self.url)
         self.dmm.process_url(self.url, self.retries)
