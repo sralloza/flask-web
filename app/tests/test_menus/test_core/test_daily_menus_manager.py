@@ -1,3 +1,4 @@
+import json
 import random
 from datetime import date, datetime
 from unittest import mock
@@ -336,29 +337,26 @@ class TestDailyMenusManager:
 
         mock.patch.stopall()
 
-    @pytest.fixture(params=[1, 2, 3, 4, 5, 6])
-    def file_content(self, request):
-        path = Config.TEST_DATA_PATH / 'menus-html' / f'{request.param}.html'
-        with path.open(encoding='utf-8') as f:
-            return f.read(), request.param
-
     process_url_data = [
-        ('1.html', (date(2019, 6, 14), date(2019, 6, 15), date(2019, 6, 16), date(2019, 6, 17))),
-        ('2.html', (date(2019, 6, 25), date(2019, 6, 26), date(2019, 6, 27), date(2019, 6, 28))),
-        ('3.html', (date(2019, 5, 7), date(2019, 5, 8), date(2019, 5, 9), date(2019, 5, 10),
-                    date(2019, 5, 11), date(2019, 5, 12), date(2019, 5, 13))),
-        ('4.html', (date(2019, 4, 23), date(2019, 4, 24), date(2019, 4, 25), date(2019, 4, 26),
-                    date(2019, 4, 27), date(2019, 4, 28), date(2019, 4, 29))),
-        ('5.html', (date(2019, 1, 29), date(2019, 1, 30), date(2019, 1, 31), date(2019, 2, 1),
-                    date(2019, 2, 2), date(2019, 2, 3), date(2019, 2, 4))),
-        ('6.html', (date(2019, 4, 30), date(2019, 5, 1), date(2019, 5, 2), date(2019, 5, 3),
-                    date(2019, 5, 4), date(2019, 5, 5), date(2019, 5, 6))),
+        ('1', (date(2019, 6, 14), date(2019, 6, 15), date(2019, 6, 16), date(2019, 6, 17))),
+        ('2', (date(2019, 6, 25), date(2019, 6, 26), date(2019, 6, 27), date(2019, 6, 28))),
+        ('3', (date(2019, 5, 7), date(2019, 5, 8), date(2019, 5, 9), date(2019, 5, 10),
+               date(2019, 5, 11), date(2019, 5, 12), date(2019, 5, 13))),
+        ('4', (date(2019, 4, 23), date(2019, 4, 24), date(2019, 4, 25), date(2019, 4, 26),
+               date(2019, 4, 27), date(2019, 4, 28), date(2019, 4, 29))),
+        ('5', (date(2019, 1, 29), date(2019, 1, 30), date(2019, 1, 31), date(2019, 2, 1),
+               date(2019, 2, 2), date(2019, 2, 3), date(2019, 2, 4))),
+        ('6', (date(2019, 4, 30), date(2019, 5, 1), date(2019, 5, 2), date(2019, 5, 3),
+               date(2019, 5, 4), date(2019, 5, 5), date(2019, 5, 6))),
     ]
 
-    @pytest.mark.parametrize('filename, dates', process_url_data)
-    def test_process_url_process_text_update_menu(self, process_url_mocks, filename, dates):
-        path = Config.TEST_DATA_PATH / 'menus-html' / filename
-        with path.open(encoding='utf-8') as f:
+    @pytest.mark.parametrize('number', [1, 2, 3, 4, 5, 6, 7])
+    def test_process_url_process_text_update_menu(self, process_url_mocks, number):
+        root_path = Config.TEST_DATA_PATH / 'menus-html' / f'{number}'
+        html_path = root_path / 'html.html'
+        json_path = root_path / 'data.json'
+
+        with html_path.open(encoding='utf-8') as f:
             file_content = f.read()
 
         logger_mock, requests_mock = process_url_mocks
@@ -366,8 +364,14 @@ class TestDailyMenusManager:
 
         dmm = DailyMenusManager()
         dmm.process_url('https://example.com')
+        real_json = dmm.to_json()
 
-        for dt in dates:
-            assert dt in dmm
+        with json_path.open('r', encoding='utf-8') as f:
+            json_expected = json.load(f)
 
-        assert len(dates) == len(dmm)
+        assert len(dmm) == len(json_expected)
+        assert real_json == json_expected
+
+        # path = Path('D:/') / (number + '.json')
+        # with path.open('wt', encoding='utf-8') as f:
+        #     f.write(json.dumps(dmm.to_json(), ensure_ascii=False))
