@@ -337,19 +337,6 @@ class TestDailyMenusManager:
 
         mock.patch.stopall()
 
-    process_url_data = [
-        ('1', (date(2019, 6, 14), date(2019, 6, 15), date(2019, 6, 16), date(2019, 6, 17))),
-        ('2', (date(2019, 6, 25), date(2019, 6, 26), date(2019, 6, 27), date(2019, 6, 28))),
-        ('3', (date(2019, 5, 7), date(2019, 5, 8), date(2019, 5, 9), date(2019, 5, 10),
-               date(2019, 5, 11), date(2019, 5, 12), date(2019, 5, 13))),
-        ('4', (date(2019, 4, 23), date(2019, 4, 24), date(2019, 4, 25), date(2019, 4, 26),
-               date(2019, 4, 27), date(2019, 4, 28), date(2019, 4, 29))),
-        ('5', (date(2019, 1, 29), date(2019, 1, 30), date(2019, 1, 31), date(2019, 2, 1),
-               date(2019, 2, 2), date(2019, 2, 3), date(2019, 2, 4))),
-        ('6', (date(2019, 4, 30), date(2019, 5, 1), date(2019, 5, 2), date(2019, 5, 3),
-               date(2019, 5, 4), date(2019, 5, 5), date(2019, 5, 6))),
-    ]
-
     @pytest.mark.parametrize('number', [1, 2, 3, 4, 5, 6, 7])
     def test_process_url_process_text_update_menu(self, process_url_mocks, number):
         root_path = Config.TEST_DATA_PATH / 'menus-html' / f'{number}'
