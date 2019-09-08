@@ -92,12 +92,13 @@ class DailyMenusManager:
                 in the database. Defaults to False.
         """
 
-        if not UpdateControl.should_update():
-            logger.info('Permission denied by UpdateControl (%s)', UpdateControl.get_last_update())
-            return
-
         self = DailyMenusManager()
         self.load_from_database()
+
+        if not UpdateControl.should_update():
+            logger.info('Permission denied by UpdateControl (%s)', UpdateControl.get_last_update())
+            self.sort()
+            return self
 
         today = datetime.today().date()
 
