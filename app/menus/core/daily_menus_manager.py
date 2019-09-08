@@ -6,7 +6,8 @@ from typing import List, Union
 
 from app.menus.core.parser.html_parser import HtmlParser
 from app.menus.core.utils import get_menus_urls
-from app.menus.models import DailyMenuDB, UpdateControl
+from app.menus.models import DailyMenuDB
+from app.menus.utils import UpdateControl
 from .structure import DailyMenu
 
 logger = logging.getLogger(__name__)
