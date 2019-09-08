@@ -1,6 +1,6 @@
 import logging
 from datetime import date, datetime
-from threading import Lock
+from threading import Lock, Thread
 from typing import Union, Iterable
 
 import requests
@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup as Soup
 
 from app.menus.core.parser import BaseParser
 from app.menus.core.structure import DailyMenu, Index
-from app.menus.core.utils import get_menus_urls, Worker, Patterns, filter_data, has_day
+from app.menus.core.utils import get_menus_urls, Patterns, filter_data, has_day
 
 logger = logging.getLogger(__name__)
 M = Union[DailyMenu, Iterable[DailyMenu]]
@@ -44,7 +44,12 @@ class HtmlParser(BaseParser):
 
     @classmethod
     def load(cls, dmm):
-        """Loads menus from menus urls."""
+        """Loads menus using HtmlParser.
+
+        Args:
+            dmm (DailyMenusManager): DailyMenusManager to save the menus.
+
+        """
 
         self = HtmlParser(dmm=dmm)
         logger.debug('Loading from menus urls')
@@ -57,9 +62,10 @@ class HtmlParser(BaseParser):
         for thread in threads:
             thread.join()
 
+        logger.debug('HtmlParser finished, copying menus to DailyMenusManager')
         self.dmm.add_to_menus(self.menus)
 
-    def process_url(self, url, retries=5):
+    def process_url(self, url: str, retries=5):
         """Processes url in search from menus."""
         logger.debug('Processing url %r', url)
         r = None
@@ -150,3 +156,26 @@ class HtmlParser(BaseParser):
 
                     self.menus[i].update(**index_info)
                     break
+
+
+class HtmlParserWorker(Thread):
+    """Thread to download data from menus urls."""
+
+    def __init__(self, url, html_parser, retries=5):
+        """
+
+        Args:
+            url (str): url to get the data from.
+            html_parser (HtmlParser): HtmlParser which controls the data.
+            retries (int): max retries in case of connection error. Defaults to 5.
+
+        """
+        super().__init__()
+        self.url = url
+        self.retries = retries
+        self.html_parser = html_parser
+
+    def run(self):
+        """Runs the thread."""
+        logger.debug('Starting worker with url %s', self.url)
+        self.html_parser.process_url(self.url, self.retries)

@@ -134,24 +134,3 @@ class Patterns:
         re.compile(r'semana del \d+ de \w+ al \d+ de \w+ \d+', re.IGNORECASE)
     )
 
-
-class Worker(Thread):
-    """Thread to download data from menus urls."""
-    def __init__(self, url, dmm, retries=5):
-        """
-
-        Args:
-            url (str): url to get the data from.
-            dmm (DailyMenusManager): DailyMenusManager which controls the data.
-            retries (int): max retries in case of connection error. Defaults to 5.
-
-        """
-        super().__init__()
-        self.url = url
-        self.retries = retries
-        self.dmm = dmm
-
-    def run(self):
-        """Runs the thread."""
-        logger.debug('Starting worker with url %s', self.url)
-        self.dmm.process_url(self.url, self.retries)
