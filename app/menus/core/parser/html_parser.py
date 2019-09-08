@@ -1,17 +1,18 @@
 import logging
 from datetime import date, datetime
-from threading import Lock, Thread
-from typing import Union, Iterable
+from threading import Lock
+from typing import Union, Iterable, List
 
 import requests
 from bs4 import BeautifulSoup as Soup
 
-from app.menus.core.parser import BaseParser
+from app.menus.core.parser import BaseParser, BaseWorker
 from app.menus.core.structure import DailyMenu, Index
 from app.menus.core.utils import get_menus_urls, Patterns, filter_data, has_day
 
 logger = logging.getLogger(__name__)
 M = Union[DailyMenu, Iterable[DailyMenu]]
+S = List[str]
 
 
 class HtmlParser(BaseParser):
@@ -164,24 +165,5 @@ class HtmlParser(BaseParser):
                     break
 
 
-class HtmlParserWorker(Thread):
+class HtmlParserWorker(BaseWorker):
     """Thread to download data from menus urls."""
-
-    def __init__(self, url, html_parser, retries=5):
-        """
-
-        Args:
-            url (str): url to get the data from.
-            html_parser (HtmlParser): HtmlParser which controls the data.
-            retries (int): max retries in case of connection error. Defaults to 5.
-
-        """
-        super().__init__()
-        self.url = url
-        self.retries = retries
-        self.html_parser = html_parser
-
-    def run(self):
-        """Runs the thread."""
-        logger.debug('Starting worker with url %s', self.url)
-        self.html_parser.process_url(self.url, self.retries)
