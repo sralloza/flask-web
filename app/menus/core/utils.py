@@ -1,6 +1,5 @@
 import logging
 import re
-from threading import Thread
 from typing import List, Union
 
 import requests
@@ -133,4 +132,3 @@ class Patterns:
         re.compile(r'semana del \d+ al \d+ de \w+', re.IGNORECASE),
         re.compile(r'semana del \d+ de \w+ al \d+ de \w+ \d+', re.IGNORECASE)
     )
-

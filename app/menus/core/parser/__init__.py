@@ -30,5 +30,5 @@ class BaseWorker(ABC, Thread):
 
     def run(self):
         """Runs the thread."""
-        logger.debug('Starting %s with url %s', type(self).__name__, self.url)
+        logger.debug('Starting %s with url %r', type(self).__name__, self.url)
         self.html_parser.process_url(self.url, self.retries)
