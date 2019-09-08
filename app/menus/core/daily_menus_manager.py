@@ -4,18 +4,18 @@ from datetime import datetime, date
 from threading import Lock
 from typing import List, Union
 
-import requests
-from bs4 import BeautifulSoup as Soup
-
+from app.menus.core.parser.html_parser import HtmlParser
+from app.menus.core.utils import get_menus_urls
 from app.menus.models import DailyMenuDB, UpdateControl
-from .structure import Index, DailyMenu
-from .utils import get_menus_urls, filter_data, has_day, Patterns, Worker
+from .structure import DailyMenu
 
 logger = logging.getLogger(__name__)
+M = Union[DailyMenu, List[DailyMenu]]
 
 
 class DailyMenusManager:
     """Represents a controller of a list of menus."""
+
     def __init__(self):
         self.menus = []
         self._lock = Lock()
@@ -61,7 +61,7 @@ class DailyMenusManager:
         """Returns html representation of the menus."""
         return '<br>'.join([x.to_html() for x in self.menus])
 
-    def add_to_menus(self, menus: Union[DailyMenu, List[DailyMenu]]):
+    def add_to_menus(self, menus: M):
         """Adds menus to the database.
 
         Args:
@@ -94,8 +94,11 @@ class DailyMenusManager:
         self.load_from_database()
 
         today = datetime.today().date()
+
         if today not in self or force:
-            self.load_from_menus_urls()
+            urls = get_menus_urls()
+            HtmlParser.load(self, urls=urls)
+            # PdfParser.load(self, urls=urls)
             self.save_to_database()
 
         self.sort()

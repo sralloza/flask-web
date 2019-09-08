@@ -43,19 +43,25 @@ class HtmlParser(BaseParser):
             self.menus += new_menus
 
     @classmethod
-    def load(cls, dmm):
+    def load(cls, dmm, urls: S=None):
         """Loads menus using HtmlParser.
 
         Args:
             dmm (DailyMenusManager): DailyMenusManager to save the menus.
+            urls (S): List of urls to parse. If None, urls will be determined
+                by get_menus_url().
 
         """
 
         self = HtmlParser(dmm=dmm)
         logger.debug('Loading from menus urls')
+
+        if not urls:
+            urls = get_menus_urls()
+
         threads = []
-        for u in get_menus_urls():
-            t = Worker(u, self)
+        for url in urls:
+            t = HtmlParserWorker(url, self)
             t.start()
             threads.append(t)
 
