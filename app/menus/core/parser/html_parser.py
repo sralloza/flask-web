@@ -167,3 +167,4 @@ class HtmlParser(BaseParser):
 
 class HtmlParserWorker(BaseWorker):
     """Thread to download data from menus urls."""
+    parser = HtmlParser
