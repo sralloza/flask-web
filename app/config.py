@@ -10,6 +10,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + DATABASE_PATH
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     IS_LINUX = platform.system() == 'Linux'
+    BASE_RESIDENCE_URL = 'https://www.residenciasantiago.es'
 
 
 class TestingConfig(Config):
