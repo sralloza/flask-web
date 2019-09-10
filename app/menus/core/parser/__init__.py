@@ -24,3 +24,15 @@ class Parsers:
                 continue
 
         raise ParserError('None of the parsers could parse url %r' % url)
+
+    @staticmethod
+    def _parse(url, dmm, retries=5):
+        for parser in Parsers.parsers:
+            try:
+                parser.process_url(dmm, url, retries=retries)
+                return
+            except Exception:
+                logger.exception('Exception using parser %r:', type(parser).__name__)
+                continue
+
+        raise ParserError('None of the parsers could parse url %r' % url)
