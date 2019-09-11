@@ -17,7 +17,7 @@ class BaseParser(ABC):
         raise NotImplementedError
 
 
-class BaseWorker(ABC, Thread):
+class BaseWorker(Thread):
     parser = BaseParser
 
     def __init__(self, dmm, url: str, retries: int = 5):
