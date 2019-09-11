@@ -103,8 +103,11 @@ class DailyMenusManager:
 
         if today not in self or force:
             urls = get_menus_urls()
+
             for url in urls:
                 Parsers.parse(url, self)
+
+            Parsers.join()
             self.save_to_database()
 
         self.sort()

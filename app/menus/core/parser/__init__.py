@@ -1,33 +1,42 @@
 import logging
+from threading import Thread, Lock
 from typing import List, Type
+
+import requests
 
 from app.menus.core.exceptions import ParserError
 from app.menus.core.parser.abc import BaseParser
-from app.menus.core.parser.html_parser import HtmlParser
-from app.menus.core.parser.pdf_parser import PdfParser
+from app.menus.core.parser.html_parser import HtmlParser, HtmlParserWorker
+from app.menus.core.parser.pdf_parser import PdfParser, PdfParserWorker
 
 logger = logging.getLogger(__name__)
 P = List[Type[BaseParser]]
 
+worker_map = {HtmlParser: HtmlParserWorker, PdfParser: PdfParserWorker}
+
 
 class Parsers:
-    parsers = [HtmlParser, PdfParser]
+    _parsers = [HtmlParser, PdfParser]
+    _workers = []
+    _lock = Lock()
 
     @staticmethod
     def parse(url, dmm, retries=5):
-        for parser in Parsers.parsers:
-            try:
-                parser.process_url(dmm, url, retries=retries)
-                return
-            except Exception:
-                logger.exception('Exception using parser %r:', type(parser).__name__)
-                continue
-
-        raise ParserError('None of the parsers could parse url %r' % url)
+        worker = BossWorker(url, dmm, retries)
+        worker.start()
+        Parsers._append(worker)
 
     @staticmethod
-    def _parse(url, dmm, retries=5):
-        for parser in Parsers.parsers:
+    def _append(worker):
+        assert isinstance(worker, BossWorker)
+        with Parsers._lock:
+            Parsers._workers.append(worker)
+
+    @staticmethod
+    def join():
+        for worker in Parsers._workers:
+            worker.join()
+
 
 class BossWorker(Thread):
     """Thread made to control."""
