@@ -87,7 +87,7 @@ class HtmlParser(BaseParser):
 
     @staticmethod
     def _update_menu(index: Index, menus: ML):
-        logger.debug('Updating menu')
+        # logger.debug('Updating menu')
         with HtmlParser._lock:
             for i, menu in enumerate(menus):
                 if menus[i].date == index.date:

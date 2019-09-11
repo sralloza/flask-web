@@ -37,6 +37,8 @@ class Parsers:
         for worker in Parsers._workers:
             worker.join()
 
+        logger.debug('Workers finished')
+
 
 class BossWorker(Thread):
     """Thread made to control."""
@@ -53,10 +55,12 @@ class BossWorker(Thread):
 
         for parser in Parsers._parsers:
             try:
+                logger.debug('Trying with parser %r', parser.__name__)
                 parser.process_url(dmm=self.dmm, text=response.text, retries=self.retries)
+                logger.info('URL parsed correcty with parser %r', parser.__name__)
                 return
             except Exception:
-                logger.exception('Exception using parser %r:', type(parser).__name__)
+                logger.exception('Exception using parser %r:', parser.__name__)
                 continue
 
         raise ParserError('None of the parsers could parse url %r' % self.url)

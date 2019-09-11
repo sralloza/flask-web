@@ -391,7 +391,7 @@ class DailyMenu:
 
     def to_database(self):
         """Saves the menu to the database."""
-        logger.debug('Saving menu %d to database', self.id)
+        # logger.debug('Saving menu %d to database', self.id)
         menu = DailyMenuDB(
             id=self.id, day=self.day, month=self.month, year=self.year, lunch1=self.lunch.p1,
             lunch2=self.lunch.p2, dinner1=self.dinner.p1, dinner2=self.dinner.p2)
