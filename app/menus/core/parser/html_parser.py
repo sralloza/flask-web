@@ -21,21 +21,9 @@ class HtmlParser(BaseParser):
     _lock = Lock()
 
     @staticmethod
-    def process_url(dmm, url: str, retries=5):
+    def process_url(dmm, text: str, retries=5):
         """Processes url in search from menus."""
-        logger.debug('Processing url %r', url)
-        r = None
-        while retries:
-            try:
-                r = requests.get(url)
-                break
-            except ConnectionError:
-                retries -= 1
-
-        if not retries:
-            return -1
-
-        s = Soup(r.text, 'html.parser')
+        s = Soup(text, 'html.parser')
         container = s.find('article', {'class': 'j-blog'})
         text = '\n'.join(x.strip() for x in container.text.splitlines() if x.strip())
         text = Patterns.fix_dates_pattern_1.sub(r'\1 \2', text)
