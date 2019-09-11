@@ -13,7 +13,7 @@ class BaseParser(ABC):
 
     @staticmethod
     @abstractmethod
-    def process_url(dmm, url: str, retries=5):
+    def process_url(dmm, text: str, retries=5):
         raise NotImplementedError
 
 
