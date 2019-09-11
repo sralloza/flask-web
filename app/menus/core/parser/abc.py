@@ -1,6 +1,5 @@
 import logging
 from abc import ABC, abstractmethod
-from threading import Thread
 from typing import List
 
 S = List[str]
@@ -15,18 +14,3 @@ class BaseParser(ABC):
     @abstractmethod
     def process_url(dmm, text: str, retries=5):
         raise NotImplementedError
-
-
-class BaseWorker(Thread):
-    parser = BaseParser
-
-    def __init__(self, dmm, url: str, retries: int = 5):
-        super().__init__()
-        self.dmm = dmm
-        self.url = url
-        self.retries = retries
-
-    def run(self):
-        """Runs the thread."""
-        logger.debug('Starting %s with url %r', type(self).__name__, self.url)
-        self.parser.process_url(self.dmm, self.url, retries=self.retries)

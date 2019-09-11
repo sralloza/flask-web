@@ -3,12 +3,11 @@ from datetime import date, datetime
 from threading import Lock
 from typing import Union, Iterable, List
 
-import requests
 from bs4 import BeautifulSoup as Soup
 
 from app.menus.core.structure import DailyMenu, Index
 from app.menus.core.utils import Patterns, filter_data, has_day
-from .abc import BaseParser, BaseWorker
+from .abc import BaseParser
 
 logger = logging.getLogger(__name__)
 M = Union[DailyMenu, Iterable[DailyMenu]]
@@ -103,8 +102,3 @@ class HtmlParser(BaseParser):
 
                     menus[i].update(**index_info)
                     break
-
-
-class HtmlParserWorker(BaseWorker):
-    """Thread to download data from menus urls."""
-    parser = HtmlParser

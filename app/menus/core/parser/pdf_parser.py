@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from app.config import Config
-from .abc import BaseParser, BaseWorker
+from .abc import BaseParser
 
 
 class PdfParser(BaseParser):
@@ -15,6 +15,7 @@ class PdfParser(BaseParser):
 
         pdf_bytes = requests.get(pdf_link).content
 
-
-class PdfParserWorker(BaseWorker):
-    pass
+        page: PageObject = pdf.getPage(0)
+        print(page.extractText())
+        Path('D:/a.pdf').write_bytes(pdf_bytes)
+        return pdf
