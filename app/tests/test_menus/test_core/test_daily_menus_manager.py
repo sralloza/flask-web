@@ -292,7 +292,7 @@ class TestDailyMenusManager:
 
     data = (
         ('no', False), ('si', True), ('sí', True), ('Yes', True), ('No', False), ('Si', True),
-        ('Sí', True), ('other', -1), ('0', False), ('1', True), ('asdfsadf', -1)
+        ('Sí', True), ('other', -1), ('0', False), ('1', True), ('asdfsadf', -1), ('quit', -2)
     )
 
     @pytest.mark.parametrize('arg, expect', data)
@@ -304,15 +304,21 @@ class TestDailyMenusManager:
         else:
             input_mock.return_value = arg
 
+        if expect == -2:
+            with pytest.raises(SystemExit):
+                DailyMenusManager._confirm('Whatever')
+            print_mock.assert_called_with('Cancelled')
+            return
+
         got = DailyMenusManager._confirm('Whatever')
 
         if expect == -1:
             print_mock.assert_called_with('Invalid response')
-            input_mock.assert_called_with('Whatever [y/n]\t')
+            input_mock.assert_called_with('Whatever [y/n/q]\t')
             assert input_mock.call_count == 2
         else:
             print_mock.assert_not_called()
-            input_mock.assert_called_once_with('Whatever [y/n]\t')
+            input_mock.assert_called_once_with('Whatever [y/n/q]\t')
             assert got == expect
 
     def test_to_json(self):

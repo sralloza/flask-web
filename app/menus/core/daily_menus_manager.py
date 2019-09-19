@@ -135,13 +135,16 @@ class DailyMenusManager:
 
     @staticmethod
     def _confirm(mesage: str) -> bool:
-        mesage = mesage.strip() + ' [y/n]\t'
+        mesage = mesage.strip() + ' [y/n/q]\t'
         while True:
             query = input(mesage)
             response = query[0].lower()
 
-            if query == '' or response not in ['y', 'n', '1', '0', 's']:
+            if query == '' or response not in ['y', 'n', '1', '0', 's', 'q']:
                 print('Invalid response')
+            elif response == 'q':
+                print('Cancelled')
+                exit(0)
             else:
                 return response in ['y', '1', 's']
 
