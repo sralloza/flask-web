@@ -250,6 +250,7 @@ class Index:
 
 class Meal:
     """Represents a meal, which consists of two plates."""
+
     def __init__(self, p1=None, p2=None):
         self.p1 = p1
         self.p2 = p2
@@ -299,6 +300,7 @@ class Meal:
 
 class Combined(Meal):
     """Meal which only has one plate."""
+
     def __init__(self, p1=None):
         super().__init__(p1=p1, p2=None)
 
@@ -367,7 +369,8 @@ class DailyMenu:
         return self.format_date()
 
     def __repr__(self):
-        return str(self)
+        return f'%s(%s, lunch=%r, dinner=%r)' % (
+        type(self).__name__, self.date, self.lunch, self.dinner)
 
     def is_empty(self):
         """Checks if lunch and dinner are emtpy."""
@@ -497,7 +500,7 @@ class DailyMenu:
             dinner2 (str): second plate of dinner.
 
         """
-        
+
         lunch = kwargs.pop('lunch', None)
         dinner = kwargs.pop('dinner', None)
 
