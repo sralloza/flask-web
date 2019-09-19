@@ -8,7 +8,7 @@ import requests
 from bs4 import BeautifulSoup as Soup
 
 from app.menus.models import DailyMenuDB, UpdateControl
-from .structure import Index, DailyMenu
+from .structure import Index, DailyMenu, Meal
 from .utils import get_menus_urls, filter_data, has_day, Patterns, Worker
 
 logger = logging.getLogger(__name__)
@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 class DailyMenusManager:
     """Represents a controller of a list of menus."""
+
     def __init__(self):
         self.menus = []
         self._lock = Lock()
@@ -101,6 +102,49 @@ class DailyMenusManager:
         self.sort()
         return self
 
+    @classmethod
+    def add_manual(cls):
+        self = cls()
+        daily_menu = self._add_manual()
+        self.add_to_menus(daily_menu)
+        self.save_to_database()
+
+    @classmethod
+    def _add_manual(cls):
+        while True:
+            try:
+                day = int(input('Day: '))
+                month = int(input('Month: '))
+                year = int(input('Year: '))
+                lunch_p1 = input('Lunch p1: ')
+                lunch_p2 = input('Lunch p2: ')
+                dinner_p1 = input('Dinner p1: ')
+                dinner_p2 = input('Dinner p2: ')
+                lunch = Meal(lunch_p1, lunch_p2)
+                dinner = Meal(dinner_p1, dinner_p2)
+
+                dm = DailyMenu(day=day, month=month, year=year, lunch=lunch, dinner=dinner)
+
+                if cls._confirm('Is correct %r?' % dm):
+                    print('Saving...')
+                    return dm
+
+                print('Restarting...\n')
+            except Exception as exc:
+                print('%s: %s' % (exc.__class__.__name__, ', '.join(exc.args)))
+
+    @staticmethod
+    def _confirm(mesage: str) -> bool:
+        mesage = mesage.strip() + ' [y/n]\t'
+        while True:
+            query = input(mesage)
+            response = query[0].lower()
+
+            if query == '' or response not in ['y', 'n', '1', '0', 's']:
+                print('Invalid response')
+            else:
+                return response in ['y', '1', 's']
+
     def to_json(self):
         """Returns the json representation of the menus."""
 
@@ -121,18 +165,20 @@ class DailyMenusManager:
         logger.debug('Loading from database')
         self.add_to_menus([x.to_normal_daily_menu() for x in DailyMenuDB.query.all()])
 
-    def save_to_database(self):
-        """Saves the menus from the database, if UpdateControl authorizes it."""
-        if not UpdateControl.should_update():
-            logger.info('Permission denied by UpdateControl (%s)', UpdateControl.get_last_update())
-            return
+    def save_to_database(self, ):
+        """Saves the menus from the database."""
 
         logger.debug('Saving menus to database')
         for menu in self:
             menu.to_database()
 
-    def load_from_menus_urls(self):
-        """Loads menus from menus urls."""
+    def load_from_menus_urls(self, force=False):
+        """Loads menus from menus urls, if UpdateControl authorizes it."""
+
+        if not UpdateControl.should_update() and not force:
+            logger.info('Permission denied by UpdateControl (%s)', UpdateControl.get_last_update())
+            return
+
         logger.debug('Loading from menus urls')
         threads = []
         for u in get_menus_urls():
