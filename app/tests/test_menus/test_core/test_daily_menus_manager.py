@@ -1,11 +1,9 @@
-import json
 import random
 from datetime import date, datetime
 from unittest import mock
 
 import pytest
 
-from app.config import Config
 from app.menus.core.daily_menus_manager import DailyMenusManager
 from app.menus.core.structure import DailyMenu, Meal
 from app.menus.models import DailyMenuDB
@@ -381,66 +379,3 @@ class TestDailyMenusManager:
             logger_mock.debug.assert_called_with('Saving menus to database')
         else:
             logger_mock.info.assert_called_with('Permission denied by UpdateControl (%s)', '[info]')
-
-    @pytest.fixture
-    def load_from_menus_urls_mocks(self):
-        gmu_mock = mock.patch('app.menus.core.daily_menus_manager.get_menus_urls').start()
-        worker_mock = mock.patch('app.menus.core.daily_menus_manager.Worker').start()
-        logger_mock = mock.patch('app.menus.core.daily_menus_manager.logger').start()
-
-        yield gmu_mock, worker_mock, logger_mock
-
-        mock.patch.stopall()
-
-    def test_load_from_menus_urls(self, load_from_menus_urls_mocks):
-        gmu_mock, worker_mock, logger_mock = load_from_menus_urls_mocks
-
-        gmu_mock.return_value = ['url-1', 'url-2', 'url-3', 'url-4']
-
-        dmm = DailyMenusManager()
-        dmm.load_from_menus_urls()
-
-        logger_mock.debug.assert_called_with('Loading from menus urls')
-        worker_mock.assert_any_call('url-1', dmm)
-        worker_mock.assert_any_call('url-2', dmm)
-        worker_mock.assert_any_call('url-3', dmm)
-        worker_mock.assert_any_call('url-4', dmm)
-        worker_mock.return_value.start.assert_called()
-        assert worker_mock.return_value.start.call_count == 4
-        worker_mock.return_value.join.assert_called()
-        assert worker_mock.return_value.join.call_count == 4
-
-    @pytest.fixture
-    def process_url_mocks(self):
-        logger_mock = mock.patch('app.menus.core.daily_menus_manager.logger').start()
-        requests_mock = mock.patch('app.menus.core.daily_menus_manager.requests').start()
-
-        yield logger_mock, requests_mock
-
-        mock.patch.stopall()
-
-    @pytest.mark.parametrize('number', [1, 2, 3, 4, 5, 6, 7])
-    def test_process_url_process_text_update_menu(self, process_url_mocks, number):
-        root_path = Config.TEST_DATA_PATH / 'menus-html' / f'{number}'
-        html_path = root_path / 'html.html'
-        json_path = root_path / 'data.json'
-
-        with html_path.open(encoding='utf-8') as f:
-            file_content = f.read()
-
-        logger_mock, requests_mock = process_url_mocks
-        requests_mock.get.return_value.text = file_content
-
-        dmm = DailyMenusManager()
-        dmm.process_url('https://example.com')
-        real_json = dmm.to_json()
-
-        with json_path.open('r', encoding='utf-8') as f:
-            json_expected = json.load(f)
-
-        assert len(dmm) == len(json_expected)
-        assert real_json == json_expected
-
-        # path = Path('D:/') / (number + '.json')
-        # with path.open('wt', encoding='utf-8') as f:
-        #     f.write(json.dumps(dmm.to_json(), ensure_ascii=False))
