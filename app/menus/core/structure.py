@@ -292,10 +292,10 @@ class Meal:
     def strip(self):
         """Strips plates."""
         if self.p1:
-            self.p1 = self.p1.strip()
+            self.p1 = self.p1.strip().lower()
 
         if self.p2:
-            self.p2 = self.p2.strip()
+            self.p2 = self.p2.strip().lower()
 
 
 class Combined(Meal):
