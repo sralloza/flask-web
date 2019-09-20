@@ -146,6 +146,7 @@ class TestHasDay:
 
 
 class TestFilterData:
+    # noinspection PyTypeChecker
     def test_argument_type(self):
         assert filter_data('hola\nadios') == ''
         assert filter_data(['hola', 'adios']) == []
@@ -333,26 +334,3 @@ class TestPatterns:
             assert pattern_match is True
         else:
             assert pattern_match is False
-
-        # '\d+\.\s\w+\s\d+'
-        # 'semana del \d+ al \d+ de \w+'
-        # 'semana del \d+ de \w+ al \d+ de \w+ \d+'
-
-
-@pytest.mark.skip
-class TestWorker:
-    def test_attributes(self):
-        worker = Worker('', '', '')
-        assert hasattr(worker, 'url')
-        assert hasattr(worker, 'retries')
-        assert hasattr(worker, 'dmm')
-
-    @mock.patch('app.menus.core.utils.logger.debug', spec=True)
-    def test_run(self, logger_mock):
-        dmm_mock = mock.Mock()
-        worker = Worker('http://example.com', dmm_mock)
-
-        worker.run()
-
-        logger_mock.assert_called_once_with('Starting worker with url %s', 'http://example.com')
-        dmm_mock.process_url.assert_called_once_with('http://example.com', 5)
