@@ -7,7 +7,7 @@ from typing import List, Union
 from app.menus.core.parser import Parsers
 from app.menus.core.utils import get_menus_urls
 from app.menus.models import DailyMenuDB, UpdateControl
-from .structure import DailyMenu
+from .structure import DailyMenu, Meal
 
 logger = logging.getLogger(__name__)
 M = Union[DailyMenu, List[DailyMenu]]

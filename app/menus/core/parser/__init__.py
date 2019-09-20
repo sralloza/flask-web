@@ -6,17 +6,15 @@ import requests
 
 from app.menus.core.exceptions import ParserError
 from app.menus.core.parser.abc import BaseParser
-from app.menus.core.parser.html_parser import HtmlParser, HtmlParserWorker
-from app.menus.core.parser.pdf_parser import PdfParser, PdfParserWorker
+from app.menus.core.parser.html_parser import HtmlParser
+from app.menus.core.parser.pdf_parser import PdfParser
 
 logger = logging.getLogger(__name__)
 P = List[Type[BaseParser]]
 
-worker_map = {HtmlParser: HtmlParserWorker, PdfParser: PdfParserWorker}
-
 
 class Parsers:
-    _parsers = [HtmlParser, PdfParser]
+    parsers = [HtmlParser, PdfParser]
     _workers = []
     _lock = Lock()
 
@@ -53,7 +51,7 @@ class BossWorker(Thread):
         logger.debug('Starting %s with url %r', type(self).__name__, self.url)
         response = requests.get(self.url)
 
-        for parser in Parsers._parsers:
+        for parser in Parsers.parsers:
             try:
                 logger.debug('Trying with parser %r', parser.__name__)
                 parser.process_url(dmm=self.dmm, text=response.text, retries=self.retries)
