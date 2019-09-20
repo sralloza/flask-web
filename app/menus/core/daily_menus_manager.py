@@ -113,6 +113,52 @@ class DailyMenusManager:
         self.sort()
         return self
 
+    @classmethod
+    def add_manual(cls):
+        self = cls()
+        daily_menu = self._add_manual()
+        self.add_to_menus(daily_menu)
+        self.save_to_database()
+
+    @classmethod
+    def _add_manual(cls):
+        while True:
+            try:
+                day = int(input('Day: '))
+                month = int(input('Month: '))
+                year = int(input('Year: '))
+                lunch_p1 = input('Lunch p1: ')
+                lunch_p2 = input('Lunch p2: ')
+                dinner_p1 = input('Dinner p1: ')
+                dinner_p2 = input('Dinner p2: ')
+                lunch = Meal(lunch_p1, lunch_p2)
+                dinner = Meal(dinner_p1, dinner_p2)
+
+                dm = DailyMenu(day=day, month=month, year=year, lunch=lunch, dinner=dinner)
+
+                if cls._confirm('Is correct %r?' % dm):
+                    print('Saving...')
+                    return dm
+
+                print('Restarting...\n')
+            except Exception as exc:
+                print('%s: %s' % (exc.__class__.__name__, ', '.join(exc.args)))
+
+    @staticmethod
+    def _confirm(mesage: str) -> bool:
+        mesage = mesage.strip() + ' [y/n/q]\t'
+        while True:
+            query = input(mesage)
+            response = query[0].lower()
+
+            if query == '' or response not in ['y', 'n', '1', '0', 's', 'q']:
+                print('Invalid response')
+            elif response == 'q':
+                print('Cancelled')
+                exit(0)
+            else:
+                return response in ['y', '1', 's']
+
     def to_json(self):
         """Returns the json representation of the menus."""
 

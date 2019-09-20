@@ -7,7 +7,7 @@ from flask import render_template, redirect, url_for, request
 from app.utils import get_last_menus_page, today
 from . import menus_blueprint
 from .core.daily_menus_manager import DailyMenusManager
-from .core.structure import DailyMenu
+from .core.structure import DailyMenu, Meal
 
 
 @menus_blueprint.route('/menus')
@@ -73,6 +73,44 @@ def today_js_view():
     dmm = DailyMenusManager.load(force=force)
     data = json.dumps(dmm.to_json())
     return render_template('today-js.html', menus=data)
+
+
+@menus_blueprint.route('/api/menus/add', methods=['POST'])
+def add_menu_api():
+    json_data = dict(request.form)
+    for key, value in json_data.items():
+        json_data[key] = value[0]
+
+    print(json_data)
+
+    try:
+        api_key = json_data['api_key']
+        day = int(json_data['day'])
+        month = int(json_data['month'])
+        year = int(json_data['year'])
+        lunch1 = json_data['lunch1']
+        lunch2 = json_data['lunch2']
+        dinner1 = json_data['dinner1']
+        dinner2 = json_data['dinner2']
+    except KeyError as key:
+        return 'Missing %s' % key, 403
+    except ValueError as v:
+        return 'ValueError: %r' % ', '.join(v.args), 403
+
+    real_api_key = datetime.today().strftime('%Y%m%d%H%M')
+
+    if real_api_key != api_key:
+        return 'Invalid api key', 403
+
+    lunch = Meal(lunch1, lunch2)
+    dinner = Meal(dinner1, dinner2)
+    menu = DailyMenu(day, month, year, lunch, dinner)
+
+    dmm = DailyMenusManager()
+    dmm.add_to_menus(menu)
+    dmm.save_to_database()
+    return repr(menu)
+
 
 
 @menus_blueprint.route('/api/menus')

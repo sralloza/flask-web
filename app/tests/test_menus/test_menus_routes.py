@@ -1,6 +1,9 @@
 import json
 import re
+import string
 from datetime import datetime
+from enum import Enum
+from random import choice
 from unittest import mock
 
 import pytest
@@ -136,6 +139,56 @@ def test_today(client):
     assert b'loader.css' in rv.data
     assert b'getElementById' in rv.data
     assert b'today-js.js' in rv.data
+
+
+class MenuApiDataCodes(Enum):
+    good = 1
+    exception = 2
+    no_api_key = 3
+    invalid_api_key = 4
+
+
+ADD_MENU_API_DATA_GOOD = dict(day=1, month=1, year=2019, lunch1='L1', lunch2='L2', dinner1='D1',
+                              dinner2='D2')
+add_menu_api_data = (
+    (ADD_MENU_API_DATA_GOOD, True, MenuApiDataCodes.good),
+    (dict(day='X', month=1, year=2019, lunch1='L1', lunch2='L2', dinner1='D1', dinner2='D2'),
+     'ValueError: "invalid literal for int() with base 10: \'X\'"', MenuApiDataCodes.exception),
+    (dict(day=1, month='Y', year=2019, lunch1='L1', lunch2='L2', dinner1='D1', dinner2='D2'),
+     'ValueError: "invalid literal for int() with base 10: \'Y\'"', MenuApiDataCodes.exception),
+    (dict(day=1, month=1, year='Z', lunch1='L1', lunch2='L2', dinner1='D1', dinner2='D2'),
+     'ValueError: "invalid literal for int() with base 10: \'Z\'"', MenuApiDataCodes.exception),
+    (dict(day=1, month=1, year=2019, lunch2='L2', dinner1='D1', dinner2='D2'),
+     "Missing 'lunch1'", MenuApiDataCodes.exception),
+    (dict(), "Missing 'api_key'", MenuApiDataCodes.no_api_key),
+    (ADD_MENU_API_DATA_GOOD, "Invalid api key", MenuApiDataCodes.invalid_api_key)
+)
+
+
+@pytest.mark.parametrize('data, exception, code', add_menu_api_data)
+def test_add_menu_api(client, data, exception, code):
+    url = '/api/menus/add'
+
+    try:
+        menu = DailyMenu(data['day'], data['month'], data['year'],
+                         Meal(data['lunch1'], data['lunch2']),
+                         Meal(data['dinner1'], data['dinner2']))
+    except (TypeError, KeyError):
+        menu = DailyMenu(1, 1, 2010)
+
+    if code is not MenuApiDataCodes.no_api_key:
+        data['api_key'] = datetime.today().strftime('%Y%m%d%H%M')
+
+    if code is MenuApiDataCodes.invalid_api_key:
+        data['api_key'] = ''.join([choice(string.digits) for _ in range(8)])
+
+    rv = client.post(url, data=data)
+    rv_data = rv.data.decode()
+
+    if code is MenuApiDataCodes.good:
+        assert repr(menu) == rv_data
+    else:
+        assert exception in rv_data
 
 
 @mock.patch('app.menus.routes.DailyMenusManager')

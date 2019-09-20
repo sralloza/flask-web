@@ -239,6 +239,88 @@ class TestDailyMenusManager:
             lfmu_mock.assert_called_with()
             std_mock.assert_called_with()
 
+    @mock.patch('app.menus.core.daily_menus_manager.DailyMenusManager.save_to_database')
+    @mock.patch('app.menus.core.daily_menus_manager.DailyMenusManager.add_to_menus')
+    @mock.patch('app.menus.core.daily_menus_manager.DailyMenusManager._add_manual')
+    def test_add_manual(self, am_mock, atm_mock, std_mock):
+        DailyMenusManager.add_manual()
+        am_mock.assert_called_once()
+        atm_mock.assert_called_once()
+        std_mock.assert_called_once()
+
+    @pytest.fixture
+    def hidden_add_manual_mocks(self):
+        input_mock = mock.patch('app.menus.core.daily_menus_manager.input').start()
+        print_mock = mock.patch('app.menus.core.daily_menus_manager.print').start()
+        confirm_mock = mock.patch(
+            'app.menus.core.daily_menus_manager.DailyMenusManager._confirm').start()
+
+        yield input_mock, print_mock, confirm_mock
+
+        mock.patch.stopall()
+
+    HIDDEN_ADD_MANUAL_GOOD = [1, 1, 2019, 'L1', 'L2', 'D1', 'D2']
+    hidden_add_manual_data = (
+        (HIDDEN_ADD_MANUAL_GOOD, True),
+        (['X', 1, 2019, 'L1', 'L2', 'D1', 'D2'],
+         "ValueError: invalid literal for int() with base 10: 'X'"),
+        ([1, 'Y', 2019, 'L1', 'L2', 'D1', 'D2'],
+         "ValueError: invalid literal for int() with base 10: 'Y'"),
+        ([1, 1, 'Z', 'L1', 'L2', 'D1', 'D2'],
+         "ValueError: invalid literal for int() with base 10: 'Z'"),
+    )
+
+    @pytest.mark.parametrize('input_side_effect, code', hidden_add_manual_data)
+    def test_hidden_add_manual(self, input_side_effect, code, hidden_add_manual_mocks):
+        input_mock, print_mock, confirm_mock = hidden_add_manual_mocks
+        all_right = code is True
+
+        if not all_right:
+            input_mock.side_effect = input_side_effect + self.HIDDEN_ADD_MANUAL_GOOD
+        else:
+            input_mock.side_effect = input_side_effect
+
+        menu = DailyMenusManager._add_manual()
+
+        assert isinstance(menu, DailyMenu)
+        input_mock.assert_called()
+
+        print_mock.has_call('Saving...')
+
+        if not all_right:
+            print_mock.has_call(code)
+
+    data = (
+        ('no', False), ('si', True), ('sí', True), ('Yes', True), ('No', False), ('Si', True),
+        ('Sí', True), ('other', -1), ('0', False), ('1', True), ('asdfsadf', -1), ('quit', -2)
+    )
+
+    @pytest.mark.parametrize('arg, expect', data)
+    @mock.patch('app.menus.core.daily_menus_manager.input')
+    @mock.patch('app.menus.core.daily_menus_manager.print')
+    def test_confirm(self, print_mock, input_mock, arg, expect):
+        if expect == -1:
+            input_mock.side_effect = (arg, 'Y')
+        else:
+            input_mock.return_value = arg
+
+        if expect == -2:
+            with pytest.raises(SystemExit):
+                DailyMenusManager._confirm('Whatever')
+            print_mock.assert_called_with('Cancelled')
+            return
+
+        got = DailyMenusManager._confirm('Whatever')
+
+        if expect == -1:
+            print_mock.assert_called_with('Invalid response')
+            input_mock.assert_called_with('Whatever [y/n/q]\t')
+            assert input_mock.call_count == 2
+        else:
+            print_mock.assert_not_called()
+            input_mock.assert_called_once_with('Whatever [y/n/q]\t')
+            assert got == expect
+
     def test_to_json(self):
         dmm = DailyMenusManager()
         menu1 = DailyMenu(6, 12, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
