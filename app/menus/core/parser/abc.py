@@ -7,8 +7,6 @@ logger = logging.getLogger(__name__)
 
 
 class BaseParser(ABC):
-    def __new__(cls, *args, **kwargs):
-        raise RuntimeError("Parsers can't be instanciated")
 
     @staticmethod
     @abstractmethod
