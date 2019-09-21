@@ -1,44 +1,17 @@
 import logging
+from collections import UserList
 from threading import Thread, Lock
-from typing import List, Type
 
 import requests
 
 from app.menus.core.exceptions import ParserError
 from app.menus.core.parser.abc import BaseParser
 from app.menus.core.parser.html_parser import HtmlParser
-from app.menus.core.parser.pdf_parser import PdfParser
 
 logger = logging.getLogger(__name__)
-P = List[Type[BaseParser]]
 
 
-class Parsers:
-    parsers = [HtmlParser, PdfParser]
-    _workers = []
-    _lock = Lock()
-
-    @staticmethod
-    def parse(url, dmm, retries=5):
-        worker = BossWorker(url, dmm, retries)
-        worker.start()
-        Parsers._append(worker)
-
-    @staticmethod
-    def _append(worker):
-        assert isinstance(worker, BossWorker)
-        with Parsers._lock:
-            Parsers._workers.append(worker)
-
-    @staticmethod
-    def join():
-        for worker in Parsers._workers:
-            worker.join()
-
-        logger.debug('Workers finished')
-
-
-class BossWorker(Thread):
+class ParserThread(Thread):
     """Thread made to control."""
 
     def __init__(self, url, dmm, retries=5):
@@ -61,4 +34,38 @@ class BossWorker(Thread):
                 logger.exception('Exception using parser %r:', parser.__name__)
                 continue
 
+        logger.error('None of the parsers could parse url %r', self.url)
         raise ParserError('None of the parsers could parse url %r' % self.url)
+
+
+class ParserThreadList(UserList):
+    def append(self, object: ParserThread):
+        if not isinstance(object, ParserThread):
+            raise TypeError('ParserThreadList can only contain ParserThread instances, not %r',
+                            type(ParserThread).__name__)
+
+        super(ParserThreadList, self).append(object)
+
+
+class Parsers:
+    parsers = [HtmlParser]
+    _threads = ParserThreadList()
+    _lock = Lock()
+
+    @staticmethod
+    def _append(thread: ParserThread):
+        with Parsers._lock:
+            Parsers._threads.append(thread)
+
+    @staticmethod
+    def parse(url, dmm, retries=5):
+        worker = ParserThread(url, dmm, retries)
+        worker.start()
+        Parsers._append(worker)
+
+    @staticmethod
+    def join():
+        for worker in Parsers._threads:
+            worker.join()
+
+        logger.debug('Threads finished')
