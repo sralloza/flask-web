@@ -7,8 +7,9 @@ from typing import List, Union
 from app.menus.core.parser import Parsers
 from app.menus.core.utils import get_menus_urls
 from app.menus.models import DailyMenuDB, UpdateControl
-from .structure import DailyMenu, Meal
 from app.utils import now
+from .structure import DailyMenu, Meal
+
 logger = logging.getLogger(__name__)
 M = Union[DailyMenu, List[DailyMenu]]
 
@@ -83,8 +84,7 @@ class DailyMenusManager:
 
     @classmethod
     def load(cls, force=False):
-        """Loads the menus, from the database and from the menus web server
-        (only if UpdateControl authorizes it).
+        """Loads the menus, from the database and from the menus web server.
 
         Args:
             force (bool): if True, download menus from the web server even if today is
@@ -93,11 +93,6 @@ class DailyMenusManager:
 
         self = DailyMenusManager()
         self.load_from_database()
-
-        if not UpdateControl.should_update():
-            logger.info('Permission denied by UpdateControl (%s)', UpdateControl.get_last_update())
-            self.sort()
-            return self
 
         today_date = now().date()
 
@@ -180,7 +175,11 @@ class DailyMenusManager:
         self.add_to_menus([x.to_normal_daily_menu() for x in DailyMenuDB.query.all()])
 
     def save_to_database(self):
-        """Saves the menus from the database."""
+        """Saves the menus from the database (only if UpdateControl authorizes it)."""
+
+        if not UpdateControl.should_update():
+            logger.info('Permission denied by UpdateControl (%s)', UpdateControl.get_last_update())
+            return self
 
         logger.debug('Saving menus to database')
         for menu in self:
