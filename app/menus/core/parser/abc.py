@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 class BaseParser(ABC):
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    def process_url(dmm, text: str, retries=5):
+    def process_url(cls, dmm, text: str, retries=5):
         raise NotImplementedError

@@ -19,8 +19,8 @@ class HtmlParser(BaseParser):
     """Represents a controller of a list of menus."""
     _lock = Lock()
 
-    @staticmethod
-    def process_url(dmm, text: str, retries=5):
+    @classmethod
+    def process_url(cls, dmm, text: str, retries=5):
         """Processes url in search from menus."""
         s = Soup(text, 'html.parser')
         container = s.find('article', {'class': 'j-blog'})
