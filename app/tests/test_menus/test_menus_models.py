@@ -21,10 +21,10 @@ class TestDailyMenuDB:
         assert hasattr(DailyMenuDB, 'dinner2')
 
     def test_to_normal_daily_menu(self):
-        menu_db = DailyMenuDB(id='2019-06-06', day=6, month=6, year=2019, lunch1='L1', lunch2='L2',
-                              dinner1='D1', dinner2='D2')
-        menu_normal = DailyMenu(day=6, month=6, year=2019, lunch=Meal('L1', 'L2'),
-                                dinner=Meal('D1', 'D2'))
+        menu_db = DailyMenuDB(id='2019-06-06', day=6, month=6, year=2019, lunch1='lunch-1',
+                              lunch2='lunch-2', dinner1='dinner-1', dinner2='dinner-2')
+        menu_normal = DailyMenu(day=6, month=6, year=2019, lunch=Meal('lunch-1', 'lunch-2'),
+                                dinner=Meal('dinner-1', 'dinner-2'))
 
         assert menu_db.to_normal_daily_menu() == menu_normal
 

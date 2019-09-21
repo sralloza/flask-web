@@ -10,15 +10,16 @@ import pytest
 
 from app.menus.core.daily_menus_manager import DailyMenusManager
 from app.menus.core.structure import DailyMenu, Meal
+from app.utils import now
 
 
 @pytest.fixture
 def menu_mock():
     m = mock.Mock()
-    m.lunch.p1 = 'L1'
-    m.lunch.p2 = 'L2'
-    m.dinner.p1 = 'D1'
-    m.dinner.p2 = 'D2'
+    m.lunch.p1 = 'lunch-1'
+    m.lunch.p2 = 'lunch-2'
+    m.dinner.p1 = 'dinner-1'
+    m.dinner.p2 = 'dinner-2'
     m.date.day = 1
     return m
 
@@ -148,17 +149,20 @@ class MenuApiDataCodes(Enum):
     invalid_api_key = 4
 
 
-ADD_MENU_API_DATA_GOOD = dict(day=1, month=1, year=2019, lunch1='L1', lunch2='L2', dinner1='D1',
-                              dinner2='D2')
+ADD_MENU_API_DATA_GOOD = dict(day=1, month=1, year=2019, lunch1='lunch-1', lunch2='lunch2',
+                              dinner1='dinner-1', dinner2='dinner-2')
 add_menu_api_data = (
     (ADD_MENU_API_DATA_GOOD, True, MenuApiDataCodes.good),
-    (dict(day='X', month=1, year=2019, lunch1='L1', lunch2='L2', dinner1='D1', dinner2='D2'),
+    (dict(day='X', month=1, year=2019, lunch1='lunch-1', lunch2='lunch-2', dinner1='dinner-1',
+          dinner2='dinner-2'),
      'ValueError: "invalid literal for int() with base 10: \'X\'"', MenuApiDataCodes.exception),
-    (dict(day=1, month='Y', year=2019, lunch1='L1', lunch2='L2', dinner1='D1', dinner2='D2'),
+    (dict(day=1, month='Y', year=2019, lunch1='lunch-1', lunch2='lunch-2', dinner1='dinner-1',
+          dinner2='dinner-2'),
      'ValueError: "invalid literal for int() with base 10: \'Y\'"', MenuApiDataCodes.exception),
-    (dict(day=1, month=1, year='Z', lunch1='L1', lunch2='L2', dinner1='D1', dinner2='D2'),
+    (dict(day=1, month=1, year='Z', lunch1='lunch-1', lunch2='lunch-2', dinner1='dinner-1',
+          dinner2='dinner-2'),
      'ValueError: "invalid literal for int() with base 10: \'Z\'"', MenuApiDataCodes.exception),
-    (dict(day=1, month=1, year=2019, lunch2='L2', dinner1='D1', dinner2='D2'),
+    (dict(day=1, month=1, year=2019, lunch2='lunch-2', dinner1='dinner-1', dinner2='dinner-2'),
      "Missing 'lunch1'", MenuApiDataCodes.exception),
     (dict(), "Missing 'api_key'", MenuApiDataCodes.no_api_key),
     (ADD_MENU_API_DATA_GOOD, "Invalid api key", MenuApiDataCodes.invalid_api_key)
@@ -194,15 +198,15 @@ def test_add_menu_api(client, data, exception, code):
 @mock.patch('app.menus.routes.DailyMenusManager')
 class TestApiMenus:
     def test_without_force(self, dmm_mock, client):
-        menu = DailyMenu(28, 6, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+        menu = DailyMenu(28, 6, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))
 
         dmm = DailyMenusManager()
         dmm.menus = [menu] * 6
         dmm_mock.load.return_value = dmm
 
         expected_json = [{'id': 20190628, 'day': 'Viernes 28',
-                          'lunch': {'p1': 'L1', 'p2': 'L2'},
-                          'dinner': {'p1': 'D1', 'p2': 'D2'}}
+                          'lunch': {'p1': 'lunch-1', 'p2': 'lunch-2'},
+                          'dinner': {'p1': 'dinner-1', 'p2': 'dinner-2'}}
                          ] * 6
 
         rv = client.get('/api/menus')
@@ -213,15 +217,15 @@ class TestApiMenus:
         dmm_mock.load.assert_called_once_with(force=False)
 
     def test_with_force(self, dmm_mock, client):
-        menu = DailyMenu(28, 6, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+        menu = DailyMenu(28, 6, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))
 
         dmm = DailyMenusManager()
         dmm.menus = [menu] * 6
         dmm_mock.load.return_value = dmm
 
         expected_json = [{'id': 20190628, 'day': 'Viernes 28',
-                          'lunch': {'p1': 'L1', 'p2': 'L2'},
-                          'dinner': {'p1': 'D1', 'p2': 'D2'}}
+                          'lunch': {'p1': 'lunch-1', 'p2': 'lunch-2'},
+                          'dinner': {'p1': 'dinner-1', 'p2': 'dinner-2'}}
                          ] * 6
 
         rv = client.get('/api/menus?force')
@@ -309,10 +313,10 @@ class TestTodayOld:
             assert b'Martes 1' in rv.data
             assert b'Comida' in rv.data
             assert b'Cena' in rv.data
-            assert b'L1' in rv.data
-            assert b'L2' in rv.data
-            assert b'D1' in rv.data
-            assert b'D2' in rv.data
+            assert b'lunch-1' in rv.data
+            assert b'lunch-2' in rv.data
+            assert b'dinner-1' in rv.data
+            assert b'dinner-2' in rv.data
 
         if db_available == 'none':
             assert TestTodayOld.disabled_yesterday_pattern.search(rv.data.decode())

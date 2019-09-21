@@ -188,20 +188,20 @@ class TestMeal:
 
     def test_force_update(self):
         meal = Meal()
-        meal.update(p1='P1', p2='P2')
-        assert meal.p1 == 'P1'
-        assert meal.p2 == 'P2'
+        meal.update(p1='p1', p2='p2')
+        assert meal.p1 == 'p1'
+        assert meal.p2 == 'p2'
 
         meal.update(p1='new-1', p2='new-2')
         assert meal.p1 == 'new-1'
         assert meal.p2 == 'new-2'
 
     def test_strip(self):
-        m = Meal(p1=' p1 ', p2='   p2   ')
+        m = Meal(p1=' mEaL-1 ', p2='   MeaL-2   ')
         m.strip()
 
-        assert m.p1 == 'p1'
-        assert m.p2 == 'p2'
+        assert m.p1 == 'meal-1'
+        assert m.p2 == 'meal-2'
 
 
 class TestCombined:
@@ -226,8 +226,8 @@ class TestCombined:
 
 
 def gen_daily_menus():
-    lunch = (Meal(), Meal(p1='L1'), Meal(p1='L1', p2='L2'))
-    dinner = (Meal(), Meal(p1='D1'), Meal(p1='D1', p2='D2'))
+    lunch = (Meal(), Meal(p1='lunch-1'), Meal(p1='lunch-1', p2='lunch-2'))
+    dinner = (Meal(), Meal(p1='dinner-1'), Meal(p1='dinner-1', p2='dinner-2'))
 
     product = list(itertools.product(lunch, dinner))
     dates = [(x, 1, 2019) for x in range(1, len(product) + 1)]
@@ -327,17 +327,17 @@ class TestDailyMenu:
         lunch_str = ''
         if lunch_code != 0:
             lunch_str += ' - Comida\n'
-            lunch_str += '   - L1\n'
+            lunch_str += '   - lunch-1\n'
         if lunch_code == 2:
-            lunch_str += '   - L2\n'
+            lunch_str += '   - lunch-2\n'
 
         dinner_code = int(dinner_code)
         dinner_str = ''
         if dinner_code != 0:
             dinner_str += ' - Cena\n'
-            dinner_str += '   - D1\n'
+            dinner_str += '   - dinner-1\n'
         if dinner_code == 2:
-            dinner_str += '   - D2\n'
+            dinner_str += '   - dinner-2\n'
 
         total_str = day_str + lunch_str + dinner_str
 
@@ -357,17 +357,17 @@ class TestDailyMenu:
         lunch_str = ''
         if lunch_code != 0:
             lunch_str += ' - Comida<br>'
-            lunch_str += '   - L1<br>'
+            lunch_str += '   - lunch-1<br>'
         if lunch_code == 2:
-            lunch_str += '   - L2<br>'
+            lunch_str += '   - lunch-2<br>'
 
         dinner_code = int(dinner_code)
         dinner_str = ''
         if dinner_code != 0:
             dinner_str += ' - Cena<br>'
-            dinner_str += '   - D1<br>'
+            dinner_str += '   - dinner-1<br>'
         if dinner_code == 2:
-            dinner_str += '   - D2<br>'
+            dinner_str += '   - dinner-2<br>'
 
         total_str = day_str + lunch_str + dinner_str
 
@@ -384,8 +384,8 @@ class TestDailyMenu:
     def test_update(self):
         dm = DailyMenu(1, 1, 2019)
 
-        lunch = Meal('L1', 'L2')
-        dinner = Meal('D1', 'D2')
+        lunch = Meal('lunch-1', 'lunch-2')
+        dinner = Meal('dinner-1', 'dinner-2')
 
         dm.update(lunch=lunch, dinner=dinner)
 

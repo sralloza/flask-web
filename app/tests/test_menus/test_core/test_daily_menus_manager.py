@@ -14,8 +14,8 @@ class TestDailyMenusManager:
     @pytest.fixture
     def dmm(self):
         dmm = DailyMenusManager()
-        lunch = Meal('L1', 'L2')
-        dinner = Meal('D1', 'D2')
+        lunch = Meal('lunch-1', 'lunch-2')
+        dinner = Meal('dinner-1', 'dinner-2')
         for e in range(1, 13):
             menu = DailyMenu(e, e, 2019, lunch, dinner)
             dmm.menus.append(menu)
@@ -70,14 +70,14 @@ class TestDailyMenusManager:
         assert string1.count('(') == string1.count(')')
 
         assert string1.count('Comida') == 12
-        assert string1.count('L1') == 12
-        assert string1.count('L2') == 12
-        assert string1.count('Comida') == string1.count('L1')
+        assert string1.count('lunch-1') == 12
+        assert string1.count('lunch-2') == 12
+        assert string1.count('Comida') == string1.count('lunch-1')
 
         assert string1.count('Cena') == 12
-        assert string1.count('D1') == 12
-        assert string1.count('D2') == 12
-        assert string1.count('Cena') == string1.count('D1')
+        assert string1.count('dinner-1') == 12
+        assert string1.count('dinner-2') == 12
+        assert string1.count('Cena') == string1.count('dinner-1')
 
     def test_to_html(self, dmm):
         string = dmm.to_html()
@@ -89,20 +89,20 @@ class TestDailyMenusManager:
         assert string.count('(') == string.count(')')
 
         assert string.count('Comida') == 12
-        assert string.count('L1') == 12
-        assert string.count('L2') == 12
-        assert string.count('Comida') == string.count('L1')
+        assert string.count('lunch-1') == 12
+        assert string.count('lunch-2') == 12
+        assert string.count('Comida') == string.count('lunch-1')
 
         assert string.count('Cena') == 12
-        assert string.count('D1') == 12
-        assert string.count('D2') == 12
-        assert string.count('Cena') == string.count('D1')
+        assert string.count('dinner-1') == 12
+        assert string.count('dinner-2') == 12
+        assert string.count('Cena') == string.count('dinner-1')
 
     class TestAddToMenus:
         def test_one_menu(self):
             dmm = DailyMenusManager()
 
-            menu = DailyMenu(6, 12, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+            menu = DailyMenu(6, 12, 2019, Meal('lunch1', 'lunch2'), Meal('dinner-1', 'dinner-2'))
             assert date(2019, 12, 6) not in dmm
 
             dmm.add_to_menus(menu)
@@ -111,9 +111,9 @@ class TestDailyMenusManager:
         def test_multiples_menus(self):
             dmm = DailyMenusManager()
 
-            menu1 = DailyMenu(6, 12, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
-            menu2 = DailyMenu(6, 11, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
-            menu3 = DailyMenu(6, 10, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+            menu1 = DailyMenu(6, 12, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))
+            menu2 = DailyMenu(6, 11, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))
+            menu3 = DailyMenu(6, 10, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))
 
             assert date(2019, 12, 6) not in dmm
             assert date(2019, 11, 6) not in dmm
@@ -127,9 +127,9 @@ class TestDailyMenusManager:
         def test_multiple_calls(self):
             dmm = DailyMenusManager()
 
-            menu1 = DailyMenu(6, 12, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
-            menu2 = DailyMenu(6, 11, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
-            menu3 = DailyMenu(6, 10, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+            menu1 = DailyMenu(6, 12, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))
+            menu2 = DailyMenu(6, 11, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))
+            menu3 = DailyMenu(6, 10, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))
 
             assert len(dmm) == 0
             assert date(2019, 12, 6) not in dmm
@@ -157,9 +157,9 @@ class TestDailyMenusManager:
         def test_add_duplicate_menus(self):
             dmm = DailyMenusManager()
 
-            menu1 = DailyMenu(6, 12, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
-            menu2 = DailyMenu(6, 11, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
-            menu3 = DailyMenu(6, 10, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+            menu1 = DailyMenu(6, 12, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))
+            menu2 = DailyMenu(6, 11, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))
+            menu3 = DailyMenu(6, 10, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))
 
             assert len(dmm) == 0
             assert date(2019, 12, 6) not in dmm
@@ -258,14 +258,14 @@ class TestDailyMenusManager:
 
         mock.patch.stopall()
 
-    HIDDEN_ADD_MANUAL_GOOD = [1, 1, 2019, 'L1', 'L2', 'D1', 'D2']
+    HIDDEN_ADD_MANUAL_GOOD = [1, 1, 2019, 'lunch-1', 'lunch-2', 'dinner-1', 'dinner-2']
     hidden_add_manual_data = (
         (HIDDEN_ADD_MANUAL_GOOD, True),
-        (['X', 1, 2019, 'L1', 'L2', 'D1', 'D2'],
+        (['X', 1, 2019, 'lunch-1', 'lunch-2', 'dinner-1', 'dinner-2'],
          "ValueError: invalid literal for int() with base 10: 'X'"),
-        ([1, 'Y', 2019, 'L1', 'L2', 'D1', 'D2'],
+        ([1, 'Y', 2019, 'lunch-1', 'lunch-2', 'dinner-1', 'dinner-2'],
          "ValueError: invalid literal for int() with base 10: 'Y'"),
-        ([1, 1, 'Z', 'L1', 'L2', 'D1', 'D2'],
+        ([1, 1, 'Z', 'lunch-1', 'lunch-2', 'dinner-1', 'dinner-2'],
          "ValueError: invalid literal for int() with base 10: 'Z'"),
     )
 
@@ -322,16 +322,16 @@ class TestDailyMenusManager:
 
     def test_to_json(self):
         dmm = DailyMenusManager()
-        menu1 = DailyMenu(6, 12, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
-        menu2 = DailyMenu(6, 11, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+        menu1 = DailyMenu(6, 12, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))
+        menu2 = DailyMenu(6, 11, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))
 
         dmm.add_to_menus([menu1, menu2])
 
         expected_json = [
-            {"id": 20191206, "day": 'Viernes 6', "lunch": {"p1": 'L1', "p2": 'L2'},
-             "dinner": {"p1": 'D1', "p2": 'D2'}},
-            {"id": 20191106, "day": 'Miércoles 6', "lunch": {"p1": 'L1', "p2": 'L2'},
-             "dinner": {"p1": 'D1', "p2": 'D2'}}
+            {"id": 20191206, "day": 'Viernes 6', "lunch": {"p1": 'lunch-1', "p2": 'lunch-2'},
+             "dinner": {"p1": 'dinner-1', "p2": 'dinner-2'}},
+            {"id": 20191106, "day": 'Miércoles 6', "lunch": {"p1": 'lunch-1', "p2": 'lunch-2'},
+             "dinner": {"p1": 'dinner-1', "p2": 'dinner-2'}}
         ]
 
         real_json = dmm.to_json()
@@ -341,24 +341,24 @@ class TestDailyMenusManager:
     @mock.patch('app.menus.core.daily_menus_manager.DailyMenusManager.add_to_menus')
     def test_load_from_database(self, atm_mock, dmdb_mock):
         dmdb_mock.query.all.return_value = [DailyMenuDB(
-            id=20190101, day=1, month=1, year=2019, lunch1='L1', lunch2='L2', dinner1='D1',
-            dinner2='D2')]
+            id=20190101, day=1, month=1, year=2019, lunch1='lunch1', lunch2='lunch2',
+            dinner1='dinner-1', dinner2='dinner-2')]
 
         dmm = DailyMenusManager()
         dmm.load_from_database()
 
         dmdb_mock.query.all.assert_called_once_with()
-        atm_mock.assert_called_with([DailyMenu(1, 1, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))])
+        atm_mock.assert_called_with(
+            [DailyMenu(1, 1, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))])
 
     @pytest.fixture
     def save_to_database_mocks(self):
         glu_mock = mock.patch(
             'app.menus.core.daily_menus_manager.UpdateControl.get_last_update').start()
-        should_update_mock = mock.patch(
-            'app.menus.core.daily_menus_manager.UpdateControl.should_update').start()
+        sum = mock.patch('app.menus.core.daily_menus_manager.UpdateControl.should_update').start()
         logger_mock = mock.patch('app.menus.core.daily_menus_manager.logger').start()
 
-        yield glu_mock, should_update_mock, logger_mock
+        yield glu_mock, sum, logger_mock
 
         mock.patch.stopall()
 
@@ -369,6 +369,7 @@ class TestDailyMenusManager:
         should_update_mock.return_value = should_update
         glu_mock.return_value = '[info]'
         menu_mock = mock.Mock()
+        menu_mock.to_string.return_value = 'DailyMenu(mock)'
 
         dmm = DailyMenusManager()
         dmm.add_to_menus([menu_mock, menu_mock])
