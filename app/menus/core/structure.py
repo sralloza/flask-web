@@ -8,6 +8,7 @@ from typing import Union
 from sqlalchemy.exc import IntegrityError
 
 from app.menus.models import DailyMenuDB, db
+from app.utils import now
 from .exceptions import MealError, MealWarning
 
 logger = logging.getLogger(__name__)
@@ -46,6 +47,9 @@ class Index:
 
         if state:
             self.set_state(state)
+
+    def __str__(self):
+        return repr(self)
 
     def __repr__(self):
         return f'Index(lunch={self.lunch!r}, dinner={self.dinner!r},' \
@@ -354,7 +358,7 @@ class DailyMenu:
         self.date = date(self.year, self.month, self.day)
         self.weekday = self._e_to_s_weekdays[self.date.strftime('%A').lower()]
         self.id = int(f'{self.year:04d}{self.month:02d}{self.day:02d}')
-        self.is_today = self.date == datetime.today().date()
+        self.is_today = self.date == now().date()
         self.code = 'dia' if self.is_today else ''
 
     def __eq__(self, other):
@@ -370,7 +374,7 @@ class DailyMenu:
 
     def __repr__(self):
         return f'%s(%s, lunch=%r, dinner=%r)' % (
-        type(self).__name__, self.date, self.lunch, self.dinner)
+            type(self).__name__, self.date, self.lunch, self.dinner)
 
     def is_empty(self):
         """Checks if lunch and dinner are emtpy."""

@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
 
 from app.config import Config
+from app.utils import now
 
 db = SQLAlchemy()
 logger = logging.getLogger(__name__)
@@ -57,10 +58,8 @@ class UpdateControl:
 
     @staticmethod
     def should_update(minutes=20):
-        # TODO: remove
-        return True
         last_update = UpdateControl.get_last_update()
-        today = datetime.today()
+        today = now()
         today.replace(microsecond=0)
         delta = timedelta(minutes=minutes)
         should_update = last_update + delta <= today
@@ -76,7 +75,7 @@ class UpdateControl:
     def set_last_update():
         # TODO: add argument dt
         with UpdateControl() as uc:
-            dt = datetime.today()
+            dt = now()
             dt_str = dt.strftime('%Y-%m-%d %H:%M:%S')
 
             last_update = uc.get_last_update()

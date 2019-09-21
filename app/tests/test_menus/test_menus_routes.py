@@ -177,7 +177,7 @@ def test_add_menu_api(client, data, exception, code):
         menu = DailyMenu(1, 1, 2010)
 
     if code is not MenuApiDataCodes.no_api_key:
-        data['api_key'] = datetime.today().strftime('%Y%m%d%H%M')
+        data['api_key'] = now().strftime('%Y%m%d%H%M')
 
     if code is MenuApiDataCodes.invalid_api_key:
         data['api_key'] = ''.join([choice(string.digits) for _ in range(8)])
@@ -246,13 +246,13 @@ class TestTodayOld:
     @pytest.fixture
     def today_mocks(self):
         dmm_mock = mock.patch('app.menus.routes.DailyMenusManager').start()
-        today_mock = mock.patch('app.menus.routes.today').start()
+        now_mock = mock.patch('app.menus.routes.now').start()
         search_mock = mock.patch('re.search').start()
         glmp_mock = mock.patch('app.menus.routes.get_last_menus_page',
                                return_value='http://example.com').start()
         daily_menu_mock = mock.patch('app.menus.routes.DailyMenu').start()
 
-        yield dmm_mock, today_mock, search_mock, glmp_mock, daily_menu_mock
+        yield dmm_mock, now_mock, search_mock, glmp_mock, daily_menu_mock
 
         mock.patch.stopall()
 
@@ -270,14 +270,14 @@ class TestTodayOld:
 
     def test_today_old(self, today_mocks, client, menu_mock, today_dt, day_request, db_available,
                        is_empty):
-        dmm_mock, today_mock, search_mock, glmp_mock, daily_menu_mock = today_mocks
+        dmm_mock, now_mock, search_mock, glmp_mock, daily_menu_mock = today_mocks
 
         daily_menu_mock.return_value = menu_mock
 
         dmm_mock.load.return_value.__getitem__.return_value = menu_mock
         menu_mock.is_empty.return_value = is_empty
 
-        today_mock.return_value = today_dt
+        now_mock.return_value = today_dt
         search_mock.return_value.group.return_value.capitalize.return_value = 'Martes'
 
         if db_available == 'none':
@@ -330,16 +330,16 @@ class TestTodayOld:
             assert 0, 'Invalid state'
 
         if day_request == 'invalid':
-            today_mock.assert_called_once_with()
+            now_mock.assert_called_once_with()
             dmm_mock.load.return_value.__getitem__.assert_not_called()
         elif not day_request:
             # If a date is passed in the request, datetime.now() should not be called
-            today_mock.assert_called_once_with()
+            now_mock.assert_called_once_with()
             dmm_mock.load.return_value.__getitem__.assert_called_with(today_dt.date())
         else:
             dmm_mock.load.return_value.__getitem__.assert_called_with(
                 datetime.strptime(day_request, '%Y-%m-%d').date())
-            today_mock.assert_not_called()
+            now_mock.assert_not_called()
 
         if day_request == 'invalid':
             daily_menu_mock.assert_called_once_with(today_dt.day, today_dt.month, today_dt.year)

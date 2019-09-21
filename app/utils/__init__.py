@@ -39,5 +39,5 @@ def get_last_menus_page(retries=5):
     return PRINCIPAL_URL
 
 
-def today():
+def now():
     return datetime.now()

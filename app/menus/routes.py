@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from flask import render_template, redirect, url_for, request
 
-from app.utils import get_last_menus_page, today
+from app.utils import get_last_menus_page, now
 from . import menus_blueprint
 from .core.daily_menus_manager import DailyMenusManager
 from .core.structure import DailyMenu, Meal
@@ -69,7 +69,10 @@ def today_reload():
 
 @menus_blueprint.route('/hoy')
 def today_js_view():
-    force = request.args.get('force') is not None or request.args.get('f') is not None
+    force = request.args.get('force') is not None \
+            or request.args.get('f') is not None \
+            or request.args.get('reload') is not None
+
     dmm = DailyMenusManager.load(force=force)
     data = json.dumps(dmm.to_json())
     return render_template('today-js.html', menus=data)
@@ -80,8 +83,6 @@ def add_menu_api():
     json_data = dict(request.form)
     for key, value in json_data.items():
         json_data[key] = value[0]
-
-    print(json_data)
 
     try:
         api_key = json_data['api_key']
@@ -97,7 +98,7 @@ def add_menu_api():
     except ValueError as v:
         return 'ValueError: %r' % ', '.join(v.args), 403
 
-    real_api_key = datetime.today().strftime('%Y%m%d%H%M')
+    real_api_key = now().strftime('%Y%m%d%H%M')
 
     if real_api_key != api_key:
         return 'Invalid api key', 403
@@ -110,7 +111,6 @@ def add_menu_api():
     dmm.add_to_menus(menu)
     dmm.save_to_database()
     return repr(menu)
-
 
 
 @menus_blueprint.route('/api/menus')
@@ -131,13 +131,13 @@ def today_old_view():
 
     try:
         if day in (None, ''):
-            asked = today()
+            asked = now()
             menu = dmm[asked.date()]
         else:
             asked = datetime.strptime(day, '%Y-%m-%d')
             menu = dmm[asked.date()]
     except ValueError:
-        asked = today()
+        asked = now()
         menu = DailyMenu(asked.day, asked.month, asked.year)
         code = 404
     except KeyError:

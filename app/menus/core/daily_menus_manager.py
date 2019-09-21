@@ -1,6 +1,6 @@
 import logging
 import re
-from datetime import datetime, date
+from datetime import date
 from threading import Lock
 from typing import List, Union
 
@@ -8,7 +8,7 @@ from app.menus.core.parser import Parsers
 from app.menus.core.utils import get_menus_urls
 from app.menus.models import DailyMenuDB, UpdateControl
 from .structure import DailyMenu, Meal
-
+from app.utils import now
 logger = logging.getLogger(__name__)
 M = Union[DailyMenu, List[DailyMenu]]
 
@@ -99,9 +99,9 @@ class DailyMenusManager:
             self.sort()
             return self
 
-        today = datetime.today().date()
+        today_date = now().date()
 
-        if today not in self or force:
+        if today_date not in self or force:
             urls = get_menus_urls()
 
             for url in urls:

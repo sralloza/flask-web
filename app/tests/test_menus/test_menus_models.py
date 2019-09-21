@@ -6,6 +6,7 @@ import pytest
 
 from app.menus.core.structure import DailyMenu, Meal
 from app.menus.models import DailyMenuDB, UpdateControl
+from app.utils import now
 
 
 class TestDailyMenuDB:
@@ -108,17 +109,17 @@ class TestUpdateControl:
             assert UpdateControl.should_update() is True
 
         def test_yes_2(self, gul_mock):
-            gul_mock.return_value = datetime.today() - timedelta(minutes=20)
+            gul_mock.return_value = now() - timedelta(minutes=20)
 
             assert UpdateControl.should_update() is True
 
         def test_yes_3(self, gul_mock):
-            gul_mock.return_value = datetime.today() - timedelta(minutes=21)
+            gul_mock.return_value = now() - timedelta(minutes=21)
 
             assert UpdateControl.should_update() is True
 
         def test_no(self, gul_mock):
-            gul_mock.return_value = datetime.today() - timedelta(minutes=19)
+            gul_mock.return_value = now() - timedelta(minutes=19)
 
             assert UpdateControl.should_update() is False
 
@@ -130,15 +131,15 @@ class TestUpdateControl:
             slu_mock.assert_called_once_with()
 
             glu_mock = mock.patch('app.menus.models.UpdateControl.get_last_update').start()
-            glu_mock.return_value = datetime.today()
+            glu_mock.return_value = now()
 
             assert UpdateControl.should_update() is False
             assert slu_mock.call_count == 1
 
-    @mock.patch('app.menus.models.datetime')
-    def test_set_last_update(self, today_mock):
+    @mock.patch('app.menus.models.now')
+    def test_set_last_update(self, now_mock):
         expected = '2019-05-18 17:25:15'
-        today_mock.datetime.today.return_value.strftime.return_value = expected
+        now_mock.return_value.strftime.return_value = expected
         with UpdateControl() as uc:
             uc.set_last_update()
             uc.cursor.execute('SELECT datetime FROM update_control')
@@ -149,4 +150,4 @@ class TestUpdateControl:
         with UpdateControl() as uc:
             uc.set_last_update()
             dt = uc.get_last_update()
-            assert dt.date() == datetime.today().date()
+            assert dt.date() == now().date()

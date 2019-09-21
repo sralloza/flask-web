@@ -1,5 +1,5 @@
 import random
-from datetime import date, datetime
+from datetime import date
 from unittest import mock
 
 import pytest
@@ -7,6 +7,7 @@ import pytest
 from app.menus.core.daily_menus_manager import DailyMenusManager
 from app.menus.core.structure import DailyMenu, Meal
 from app.menus.models import DailyMenuDB
+from app.utils import now
 
 
 class TestDailyMenusManager:
@@ -199,7 +200,7 @@ class TestDailyMenusManager:
 
             DailyMenusManager.load()
 
-            contains_mock.assert_called_with(datetime.today().date())
+            contains_mock.assert_called_with(now().date())
             lfd_mock.assert_called_with()
             lfmu_mock.assert_called_with()
             std_mock.assert_called_with()
@@ -210,7 +211,7 @@ class TestDailyMenusManager:
 
             DailyMenusManager.load()
 
-            contains_mock.assert_called_with(datetime.today().date())
+            contains_mock.assert_called_with(now().date())
             lfd_mock.assert_called_with()
             lfmu_mock.assert_not_called()
             std_mock.assert_not_called()
@@ -221,7 +222,7 @@ class TestDailyMenusManager:
 
             DailyMenusManager.load(force=True)
 
-            contains_mock.assert_called_with(datetime.today().date())
+            contains_mock.assert_called_with(now().date())
             lfd_mock.assert_called_with()
             lfmu_mock.assert_called_with()
             std_mock.assert_called_with()
@@ -232,7 +233,7 @@ class TestDailyMenusManager:
 
             DailyMenusManager.load(force=True)
 
-            contains_mock.assert_called_with(datetime.today().date())
+            contains_mock.assert_called_with(now().date())
             lfd_mock.assert_called_with()
             lfmu_mock.assert_called_with()
             std_mock.assert_called_with()
