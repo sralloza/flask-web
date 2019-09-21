@@ -2,21 +2,21 @@ import warnings
 
 import pytest
 
-from app.menus.core.exceptions import BaseMenusException, MealError, BaseMenusWarning, MealWarning
+from app.menus.core.exceptions import BaseMenusError, MealError, BaseMenusWarning, MealWarning
 
 
 def test_base_menus_exception():
-    with pytest.raises(BaseMenusException):
-        raise BaseMenusException
+    with pytest.raises(BaseMenusError):
+        raise BaseMenusError
 
-    assert issubclass(BaseMenusException, Exception)
+    assert issubclass(BaseMenusError, Exception)
 
 
 def test_meal_error():
     with pytest.raises(MealError):
         raise MealError
 
-    assert issubclass(MealError, BaseMenusException)
+    assert issubclass(MealError, BaseMenusError)
 
 
 def test_base_menus_warning():
