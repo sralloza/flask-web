@@ -183,59 +183,53 @@ class TestDailyMenusManager:
         def mocks(self):
             std_mock = mock.patch(
                 'app.menus.core.daily_menus_manager.DailyMenusManager.save_to_database').start()
-            lfmu_mock = mock.patch(
-                'app.menus.core.daily_menus_manager.DailyMenusManager.load_from_menus_urls').start()
             contains_mock = mock.patch(
                 'app.menus.core.daily_menus_manager.DailyMenusManager.__contains__').start()
             lfd_mock = mock.patch(
                 'app.menus.core.daily_menus_manager.DailyMenusManager.load_from_database').start()
 
-            yield std_mock, lfmu_mock, contains_mock, lfd_mock
+            yield std_mock, contains_mock, lfd_mock
 
             mock.patch.stopall()
 
         def test_today_not_found_without_force(self, mocks):
-            std_mock, lfmu_mock, contains_mock, lfd_mock = mocks
+            std_mock, contains_mock, lfd_mock = mocks
             contains_mock.return_value = False
 
             DailyMenusManager.load()
 
             contains_mock.assert_called_with(now().date())
             lfd_mock.assert_called_with()
-            lfmu_mock.assert_called_with()
             std_mock.assert_called_with()
 
         def test_today_found_without_force(self, mocks):
-            std_mock, lfmu_mock, contains_mock, lfd_mock = mocks
+            std_mock, contains_mock, lfd_mock = mocks
             contains_mock.return_value = True
 
             DailyMenusManager.load()
 
             contains_mock.assert_called_with(now().date())
             lfd_mock.assert_called_with()
-            lfmu_mock.assert_not_called()
             std_mock.assert_not_called()
 
         def test_today_not_found_with_force(self, mocks):
-            std_mock, lfmu_mock, contains_mock, lfd_mock = mocks
+            std_mock, contains_mock, lfd_mock = mocks
             contains_mock.return_value = False
 
             DailyMenusManager.load(force=True)
 
             contains_mock.assert_called_with(now().date())
             lfd_mock.assert_called_with()
-            lfmu_mock.assert_called_with()
             std_mock.assert_called_with()
 
         def test_today_found_with_force(self, mocks):
-            std_mock, lfmu_mock, contains_mock, lfd_mock = mocks
+            std_mock, contains_mock, lfd_mock = mocks
             contains_mock.return_value = True
 
             DailyMenusManager.load(force=True)
 
             contains_mock.assert_called_with(now().date())
             lfd_mock.assert_called_with()
-            lfmu_mock.assert_called_with()
             std_mock.assert_called_with()
 
     @mock.patch('app.menus.core.daily_menus_manager.DailyMenusManager.save_to_database')
@@ -348,17 +342,18 @@ class TestDailyMenusManager:
         dmm.load_from_database()
 
         dmdb_mock.query.all.assert_called_once_with()
-        atm_mock.assert_called_with(
-            [DailyMenu(1, 1, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))])
+        atm_mock.assert_has_calls(
+            [DailyMenu(1, 1, 2019, Meal('lunch-1', 'lunch-2'), Meal('dinner-1', 'dinner-2'))]
+        )
 
     @pytest.fixture
     def save_to_database_mocks(self):
         glu_mock = mock.patch(
             'app.menus.core.daily_menus_manager.UpdateControl.get_last_update').start()
-        sum = mock.patch('app.menus.core.daily_menus_manager.UpdateControl.should_update').start()
+        su = mock.patch('app.menus.core.daily_menus_manager.UpdateControl.should_update').start()
         logger_mock = mock.patch('app.menus.core.daily_menus_manager.logger').start()
 
-        yield glu_mock, sum, logger_mock
+        yield glu_mock, su, logger_mock
 
         mock.patch.stopall()
 
