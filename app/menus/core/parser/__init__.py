@@ -7,6 +7,7 @@ import requests
 from app.menus.core.exceptions import ParserError
 from app.menus.core.parser.abc import BaseParser
 from app.menus.core.parser.html_parser import HtmlParser
+from app.menus.core.parser.manual_parser import ManualParser
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +49,7 @@ class ParserThreadList(UserList):
 
 
 class Parsers:
-    parsers = [HtmlParser]
+    parsers = [HtmlParser, ManualParser]
     _threads = ParserThreadList()
     _lock = Lock()
 
