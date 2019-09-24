@@ -133,7 +133,9 @@ def test_today_reload(dmm_mock, client, menu_mock):
     assert menu_mock.to_database.call_count == 7
 
 
-def test_today(client):
+@mock.patch('app.menus.core.daily_menus_manager.UpdateControl.should_update')
+def test_today(su_mock, client):
+    su_mock.return_value = False
     rv = client.get('/hoy')
     assert rv.status_code == 200
     assert b'menus.css' in rv.data
