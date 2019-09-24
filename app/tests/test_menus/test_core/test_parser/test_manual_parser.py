@@ -8,16 +8,11 @@ from app.config import Config
 from app.menus.core.exceptions import ParserError
 from app.menus.core.parser.manual_parser import ManualParser
 
-# test data:
-# pdf: 11,12
-# photos: 21
-# html: 31,32,33
 
 manual_parser_data: Path = Config.TEST_DATA_PATH / 'parser_data' / 'manual_parser'
-pdf_paths = [manual_parser_data / '11.html', manual_parser_data / '12.html']
-photos_paths = [manual_parser_data / '21.html']
-html_paths = [manual_parser_data / '31.html', manual_parser_data / '32.html',
-              manual_parser_data / '33.html']
+pdf_paths = list(manual_parser_data.rglob('1*.html'))
+photos_paths = list(manual_parser_data.rglob('2*.html'))
+html_paths = list(manual_parser_data.rglob('3*.html'))
 
 
 class Paths(Enum):
