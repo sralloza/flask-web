@@ -11,7 +11,7 @@ class TestBaseParser:
 
     def test_process_url(self):
         with pytest.raises(NotImplementedError):
-            BaseParser.process_url('', '')
+            BaseParser.process_text('', '')
 
     def test_attributes(self):
         assert hasattr(BaseParser, 'process_url')

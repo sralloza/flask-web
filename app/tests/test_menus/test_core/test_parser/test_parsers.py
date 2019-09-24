@@ -27,8 +27,8 @@ class TestParserThread:
         thread.start()
         thread.join()
 
-        parser.process_url.assert_called()
-        assert parser.process_url.call_count == 1
+        parser.process_text.assert_called()
+        assert parser.process_text.call_count == 1
         get_mock.assert_called_with('url')
 
         logger_mock.debug.assert_called()
@@ -45,14 +45,14 @@ class TestParserThread:
         parsers_mock.parsers = [parser] * 5
         dmm = mock.MagicMock()
 
-        parser.process_url.side_effect = [ValueError, ValueError, True]
+        parser.process_text.side_effect = [ValueError, ValueError, True]
 
         thread = ParserThread('url', dmm)
         thread.start()
         thread.join()
 
-        parser.process_url.assert_called()
-        assert parser.process_url.call_count == 3
+        parser.process_text.assert_called()
+        assert parser.process_text.call_count == 3
         get_mock.assert_called_with('url')
         logger_mock.debug.assert_called()
         assert logger_mock.debug.call_count == 4
@@ -70,14 +70,14 @@ class TestParserThread:
         parsers_mock.parsers = [parser] * 5
         dmm = mock.MagicMock()
 
-        parser.process_url.side_effect = ValueError
+        parser.process_text.side_effect = ValueError
 
         thread = ParserThread('url', dmm)
         thread.start()
         thread.join()
 
-        parser.process_url.assert_called()
-        assert parser.process_url.call_count == 5
+        parser.process_text.assert_called()
+        assert parser.process_text.call_count == 5
         get_mock.assert_called_with('url')
 
         logger_mock.debug.assert_called()

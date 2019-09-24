@@ -28,7 +28,7 @@ class ParserThread(Thread):
         for parser in Parsers.parsers:
             try:
                 logger.debug('Trying with parser %r', parser.__name__)
-                parser.process_url(dmm=self.dmm, text=response.text, retries=self.retries)
+                parser.process_text(dmm=self.dmm, text=response.text, retries=self.retries)
                 logger.info('URL parsed correcty with parser %r', parser.__name__)
                 return
             except Exception:

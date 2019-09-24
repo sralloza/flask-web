@@ -10,5 +10,5 @@ class BaseParser(ABC):
 
     @classmethod
     @abstractmethod
-    def process_url(cls, dmm, text: str, retries=5):
+    def process_text(cls, dmm, text: str, retries=5):
         raise NotImplementedError
