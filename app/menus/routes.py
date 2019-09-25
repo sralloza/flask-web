@@ -1,6 +1,4 @@
 import json
-import re
-from datetime import datetime, timedelta
 
 from flask import render_template, redirect, url_for, request
 
@@ -119,54 +117,3 @@ def api_menus():
     dmm = DailyMenusManager.load(force=force)
     data = dmm.to_json()
     return json.dumps(data), 200
-
-
-@menus_blueprint.route('/old/hoy')
-def today_old_view():
-    dmm = DailyMenusManager.load()
-    day = request.args.get('day')
-
-    asked = None
-    code = 200
-
-    try:
-        if day in (None, ''):
-            asked = now()
-            menu = dmm[asked.date()]
-        else:
-            asked = datetime.strptime(day, '%Y-%m-%d')
-            menu = dmm[asked.date()]
-    except ValueError:
-        asked = now()
-        menu = DailyMenu(asked.day, asked.month, asked.year)
-        code = 404
-    except KeyError:
-        menu = DailyMenu(asked.day, asked.month, asked.year)
-        code = 404
-
-    delta = timedelta(days=1)
-    tomorrow = asked + delta
-    yesterday = asked - delta
-
-    day = re.search(r'\((\w+)\)', menu.format_date()).group(1).capitalize()
-    day = f'{day} {menu.date.day}'
-
-    yesterday_url = None
-    tomorrow_url = None
-    disabled_yesterday = 'disabled'
-    disabled_tomorrow = 'disabled'
-
-    if yesterday.date() in dmm:
-        yesterday_url = url_for('menus_blueprint.today_old_view', _external=True) + '?day=' + str(
-            yesterday.date())
-        disabled_yesterday = ''
-    if tomorrow.date() in dmm:
-        tomorrow_url = url_for('menus_blueprint.today_old_view', _external=True) + '?day=' + str(
-            tomorrow.date())
-        disabled_tomorrow = ''
-
-    return render_template(
-        'today-old.html', menu=menu, day=day, title_url=get_last_menus_page(),
-        yesterday_url=yesterday_url, tomorrow_url=tomorrow_url,
-        disabled_yesterday=disabled_yesterday, disabled_tomorrow=disabled_tomorrow
-    ), code
