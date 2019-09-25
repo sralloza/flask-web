@@ -10,9 +10,7 @@ def app():
 
 
 @pytest.fixture(scope='module')
-def client():
-    app = create_app(config_object='app.config.TestingConfig')
-
+def client(app):
     # Flask provides a way to test your application by exposing the Werkzeug
     # test Client and handling the context locals for you.
     testing_client = app.test_client()
