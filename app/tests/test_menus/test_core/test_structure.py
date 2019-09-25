@@ -433,3 +433,30 @@ class TestDailyMenu:
     @pytest.mark.parametrize('daily_menu, should_be_emtpy', data)
     def test_is_empty(self, daily_menu, should_be_emtpy):
         assert daily_menu.is_empty() == should_be_emtpy
+
+    def test_set_combined_str(self):
+        dm = DailyMenu(1, 1, 2000)
+        assert isinstance(dm.lunch, Meal)
+        assert isinstance(dm.dinner, Meal)
+
+        dm.set_combined('LUNCH')
+        assert isinstance(dm.lunch, Meal)
+
+        dm.set_combined('DINNER')
+        assert isinstance(dm.dinner, Meal)
+
+    def test_set_combined_enum(self):
+        dm = DailyMenu(1, 1, 2000)
+        assert isinstance(dm.lunch, Meal)
+        assert isinstance(dm.dinner, Meal)
+
+        dm.set_combined(LunchState.LUNCH)
+        assert isinstance(dm.lunch, Meal)
+
+        dm.set_combined(LunchState.DINNER)
+        assert isinstance(dm.dinner, Meal)
+
+    def test_set_combined_error(self):
+        dm = DailyMenu(1, 1, 2000)
+        with pytest.raises(MealError, match='meal must be LunchState'):
+            dm.set_combined('dummy')
