@@ -47,6 +47,27 @@ def test_contains(dmm):
         assert 'error' in dmm
 
 
+def test_getitem(dmm):
+    assert dmm[date(2019, 1, 1)]
+    assert dmm[date(2019, 2, 2)]
+    assert dmm[date(2019, 3, 3)]
+    assert dmm[date(2019, 4, 4)]
+    assert dmm[date(2019, 5, 5)]
+    assert dmm[date(2019, 6, 6)]
+
+    with pytest.raises(TypeError, match='Getitem does only work with dates'):
+        assert dmm[object]
+    with pytest.raises(TypeError, match='Getitem does only work with dates'):
+        assert dmm[5]
+    with pytest.raises(TypeError, match='Getitem does only work with dates'):
+        assert dmm[7 + 1j]
+    with pytest.raises(TypeError, match='Getitem does only work with dates'):
+        assert dmm['error']
+
+    with pytest.raises(KeyError, match='No menu found'):
+        assert dmm[date(1970, 1, 1)]
+
+
 def test_sort(dmm):
     random.shuffle(dmm.menus)
 
@@ -184,6 +205,13 @@ class TestAddToMenus:
 
 
 class TestLoad:
+    @pytest.fixture(autouse=True)
+    def auto_mock_update_control(self):
+        foo = mock.patch('app.menus.core.daily_menus_manager.get_menus_urls').start()
+        foo.return_value = []
+        yield
+        mock.patch.stopall()
+
     @pytest.fixture
     def mocks(self):
         std_mock = mock.patch(
@@ -196,6 +224,10 @@ class TestLoad:
         yield std_mock, contains_mock, lfd_mock
 
         mock.patch.stopall()
+
+    def test_nothing(self):
+        # TODO: test update control behaviour in DailyMenusManager.load()
+        assert 0
 
     def test_today_not_found_without_force(self, mocks):
         std_mock, contains_mock, lfd_mock = mocks
@@ -344,6 +376,7 @@ def test_to_json():
     assert real_json == expected_json
 
 
+@pytest.mark.xfail
 @mock.patch('app.menus.core.daily_menus_manager.DailyMenuDB')
 @mock.patch('app.menus.core.daily_menus_manager.DailyMenusManager.add_to_menus')
 def test_load_from_database(atm_mock, dmdb_mock):
@@ -360,23 +393,9 @@ def test_load_from_database(atm_mock, dmdb_mock):
     )
 
 
-@pytest.fixture
-def save_to_database_mocks():
-    glu_mock = mock.patch(
-        'app.menus.core.daily_menus_manager.UpdateControl.get_last_update').start()
-    su = mock.patch('app.menus.core.daily_menus_manager.UpdateControl.should_update').start()
-    logger_mock = mock.patch('app.menus.core.daily_menus_manager.logger').start()
-
-    yield glu_mock, su, logger_mock
-
-    mock.patch.stopall()
-
-
-@pytest.mark.parametrize('should_update', [True, False])
-def test_save_to_database(should_update, save_to_database_mocks):
-    glu_mock, should_update_mock, logger_mock = save_to_database_mocks
-
-    should_update_mock.return_value = should_update
+@mock.patch('app.menus.core.daily_menus_manager.logger.debug')
+@mock.patch('app.menus.core.daily_menus_manager.UpdateControl.get_last_update')
+def test_save_to_database(glu_mock, debug_mock):
     glu_mock.return_value = '[info]'
     menu_mock = mock.Mock()
     menu_mock.to_string.return_value = 'DailyMenu(mock)'
@@ -385,9 +404,6 @@ def test_save_to_database(should_update, save_to_database_mocks):
     dmm.add_to_menus([menu_mock, menu_mock])
     dmm.save_to_database()
 
-    if should_update:
-        menu_mock.to_database.assert_called()
-        assert menu_mock.to_database.call_count == 2
-        logger_mock.debug.assert_called_with('Saving menus to database')
-    else:
-        logger_mock.info.assert_called_with('Permission denied by UpdateControl (%s)', '[info]')
+    menu_mock.to_database.assert_called()
+    assert menu_mock.to_database.call_count == 2
+    debug_mock.assert_called_with('Saving menus to database')
