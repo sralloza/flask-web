@@ -107,7 +107,7 @@ def filter_data(data: Union[str, List[str]]):
                 out.append(foo)
         elif '2º plato' in data[i - 1] and data[i - 1].endswith('con'):
             out[-1] += ' ' + d
-        elif '1er plato' in data[i - 1] and '2º plato' in data[i + 1]:
+        elif '1er plato' in data[i - 1] and i + 1 < len(data) and '2º plato' in data[i + 1]:
             out[-1] += ' ' + d
         else:
             if 'combinado' in data[i - 1] and 'postre' not in d:
