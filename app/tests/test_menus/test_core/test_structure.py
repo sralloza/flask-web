@@ -24,6 +24,18 @@ class TestIndex:
     _decide = [0, 0, 2, 0, 0, 2, 0, 1, 2, 0, 1, 2, 1, 0, 2, 1, 0, 2, 1, 1, 2, 1, 1, 2]
     _dicts = [3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0]
 
+    def test_repr(self):
+        index = Index(Meal('a', 'b'), Meal('c', 'd'), datetime.date(2000, 1, 1), 'LUNCH')
+        repr_expected = ('Index(lunch=a - b, dinner=c - d, '
+                        'date=2000-01-01, state=LUNCH)')
+        assert repr(index) == repr_expected
+
+    def test_str(self):
+        index = Index(Meal('a', 'b'), Meal('c', 'd'), datetime.date(2000, 1, 1), 'LUNCH')
+        str_expected = ('Index(lunch=a - b, dinner=c - d, '
+                        'date=2000-01-01, state=LUNCH)')
+        assert str(index) == str_expected
+
     @pytest.mark.parametrize('index, commit', list(zip(gen_indexes(), _commit)))
     def test_commit(self, index, commit):
         assert index.commit() == bool(commit)
@@ -401,3 +413,19 @@ class TestDailyMenu:
         dm.update(lunch1='lunch1', lunch2='lunch2', dinner1='dinner1', dinner2='dinner2')
         assert dm.lunch == Meal('lunch1', 'lunch2')
         assert dm.dinner == Meal('dinner1', 'dinner2')
+
+    data = (
+        (DailyMenu(1, 1, 2000, Meal('a', 'b'), Meal('c', 'd')), False),
+        (DailyMenu(1, 1, 2000, Meal('a', 'b'), Meal('c')), False),
+        (DailyMenu(1, 1, 2000, Meal('a', 'b'), Meal()), False),
+        (DailyMenu(1, 1, 2000, Meal('a'), Meal('c', 'd')), False),
+        (DailyMenu(1, 1, 2000, Meal('a'), Meal('c')), False),
+        (DailyMenu(1, 1, 2000, Meal('a'), Meal()), False),
+        (DailyMenu(1, 1, 2000, Meal(), Meal('c', 'd')), False),
+        (DailyMenu(1, 1, 2000, Meal(), Meal('c')), False),
+        (DailyMenu(1, 1, 2000, Meal(), Meal()), True),
+
+    )
+    @pytest.mark.parametrize('daily_menu, should_be_emtpy', data)
+    def test_is_empty(self, daily_menu, should_be_emtpy):
+        assert daily_menu.is_empty() == should_be_emtpy

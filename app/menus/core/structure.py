@@ -53,7 +53,7 @@ class Index:
 
     def __repr__(self):
         return f'Index(lunch={self.lunch!r}, dinner={self.dinner!r},' \
-            f' date={self.date!r}, state={self.state!r})'
+            f' date={self.date}, state={self.state.value})'
 
     def set_combined(self, meal_combined: Union[LunchState, str]):
         """Indicates that meal_combined is Combinated.
