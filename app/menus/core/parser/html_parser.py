@@ -73,11 +73,7 @@ class HtmlParser(BaseParser):
             elif '2º' in text:
                 index.set_second(text.split(':')[1])
             else:
-                for pattern in Patterns.ignore_patters:
-                    if pattern.search(text) is not None:
-                        break
-                else:
-                    index.decide(text)
+                index.decide(text)
 
         if index.commit():
             HtmlParser._update_menu(index, menus)

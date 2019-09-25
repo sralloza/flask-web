@@ -132,9 +132,3 @@ class Patterns:
 
     fix_dates_pattern_1 = re.compile(r'(\w+)[\n\s]*(\d{4})', re.I)
     fix_dates_pattern_2 = re.compile(r'(día:)[\s\n]*(\d+)', re.I)
-
-    ignore_patters = (
-        re.compile(r'\d+\.\s\w+\s\d+', re.IGNORECASE),
-        re.compile(r'semana del \d+ al \d+ de \w+', re.IGNORECASE),
-        re.compile(r'semana del \d+ de \w+ al \d+ de \w+ \d+', re.IGNORECASE)
-    )

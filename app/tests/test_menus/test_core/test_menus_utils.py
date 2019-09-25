@@ -333,30 +333,30 @@ class TestPatterns:
         else:
             assert pattern_match is None
 
-    ignore_patterns_data = (
-        ('20. septiembre 2019', True),
-        ('02. septiembre 2019', True),
-        ('2. septiembre 2019', True),
-        ('semana del 20 al 29 de junio', True),
-        ('semana del 2 al 2 de junio', True),
-        ('semana del 02 al 02 de junio', True),
-        ('semana del 20 de mayo al 20 de junio 2019', True),
-        ('semana del 02 de mayo al 02 de junio 2019', True),
-        ('semana del 2 de mayo al 2 de junio 2019', True),
-        ('desayuno: bacalao con tomate', False),
-        ('comida: patatas con patatas', False)
-    )
+    # ignore_patterns_data = (
+    #     ('20. septiembre 2019', True),
+    #     ('02. septiembre 2019', True),
+    #     ('2. septiembre 2019', True),
+    #     ('semana del 20 al 29 de junio', True),
+    #     ('semana del 2 al 2 de junio', True),
+    #     ('semana del 02 al 02 de junio', True),
+    #     ('semana del 20 de mayo al 20 de junio 2019', True),
+    #     ('semana del 02 de mayo al 02 de junio 2019', True),
+    #     ('semana del 2 de mayo al 2 de junio 2019', True),
+    #     ('desayuno: bacalao con tomate', False),
+    #     ('comida: patatas con patatas', False)
+    # )
 
-    @pytest.mark.parametrize('string, match_code', ignore_patterns_data)
-    def test_ignore_patterns(self, string, match_code):
-        def match(any_string):
-            for pattern in Patterns.ignore_patters:
-                if pattern.search(any_string) is not None:
-                    return True
-            return False
-
-        pattern_match = match(string)
-        if match_code:
-            assert pattern_match is True
-        else:
-            assert pattern_match is False
+    # @pytest.mark.parametrize('string, match_code', ignore_patterns_data)
+    # def test_ignore_patterns(self, string, match_code):
+    #     def match(any_string):
+    #         for pattern in Patterns.ignore_patters:
+    #             if pattern.search(any_string) is not None:
+    #                 return True
+    #         return False
+    #
+    #     pattern_match = match(string)
+    #     if match_code:
+    #         assert pattern_match is True
+    #     else:
+    #         assert pattern_match is False
