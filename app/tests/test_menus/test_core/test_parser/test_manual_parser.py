@@ -1,33 +1,12 @@
-from enum import Enum
-from pathlib import Path
-
 import pytest
 from bs4 import BeautifulSoup
 
-from app.config import Config
 from app.menus.core.exceptions import ParserError
 from app.menus.core.parser.manual_parser import ManualParser
+from app.tests.data.data import Paths
 
-
-manual_parser_data: Path = Config.TEST_DATA_PATH / 'parser_data' / 'manual_parser'
-pdf_paths = list(manual_parser_data.rglob('1*.html'))
-photos_paths = list(manual_parser_data.rglob('2*.html'))
-html_paths = list(manual_parser_data.rglob('3*.html'))
-
-
-class Paths(Enum):
-    pdf = pdf_paths
-    photos = photos_paths
-    html = html_paths
-    not_pdf = photos_paths + html_paths
-    not_photos = pdf_paths + html_paths
-    not_html = pdf_paths + photos_paths
-
-
-# TODO: add more test data for situations where ManualParser is useless
 
 class TestManualParser:
-
     @pytest.mark.parametrize('data_path', Paths.not_html.value)
     def test_process_url_true(self, data_path):
         content = data_path.read_text(errors='ignore')
