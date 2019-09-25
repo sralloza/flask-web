@@ -41,7 +41,6 @@ class Index:
         self._lunch = lunch or Meal()
         self._dinner = dinner or Meal()
         self._state = None
-        self.is_combinated = False
         self.meal_combined = None
 
         if state:
@@ -53,6 +52,10 @@ class Index:
     def __repr__(self):
         return f'Index(lunch={self.lunch!r}, dinner={self.dinner!r},' \
             f' date={self.date}, state={self.state.value})'
+
+    @property
+    def is_combinated(self):
+        return self.meal_combined is not None
 
     def set_combined(self, meal_combined: Union[LunchState, str]):
         """Indicates that meal_combined is Combinated.
@@ -68,7 +71,6 @@ class Index:
             except ValueError:
                 raise MealError(f'Invalid meal: {meal_combined}')
 
-        self.is_combinated = True
         self.meal_combined = meal_combined
 
     @property

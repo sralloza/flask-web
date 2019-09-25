@@ -27,7 +27,7 @@ class TestIndex:
     def test_repr(self):
         index = Index(Meal('a', 'b'), Meal('c', 'd'), datetime.date(2000, 1, 1), 'LUNCH')
         repr_expected = ('Index(lunch=a - b, dinner=c - d, '
-                        'date=2000-01-01, state=LUNCH)')
+                         'date=2000-01-01, state=LUNCH)')
         assert repr(index) == repr_expected
 
     def test_str(self):
@@ -135,6 +135,37 @@ class TestIndex:
 
         i.set_second('')
         assert i.get_second() == 'test first dinner'
+
+    def test_set_combined_str(self):
+        i = Index()
+        assert not i.is_combinated
+        assert i.meal_combined is None
+
+        i.set_combined('LUNCH')
+        assert i.is_combinated
+        assert i.meal_combined == LunchState.LUNCH
+
+        i.set_combined('DINNER')
+        assert i.is_combinated
+        assert i.meal_combined == LunchState.DINNER
+
+    def test_set_combined_enum(self):
+        i = Index()
+        assert not i.is_combinated
+        assert i.meal_combined is None
+
+        i.set_combined(LunchState.LUNCH)
+        assert i.is_combinated
+        assert i.meal_combined == LunchState.LUNCH
+
+        i.set_combined(LunchState.DINNER)
+        assert i.is_combinated
+        assert i.meal_combined == LunchState.DINNER
+
+    def test_set_combined_error(self):
+        i = Index()
+        with pytest.raises(MealError, match='Invalid meal'):
+            i.set_combined('dummy')
 
     @pytest.mark.parametrize('index, dictcode', list(zip(gen_indexes(), _dicts)))
     def test_to_dict(self, index, dictcode):
@@ -247,7 +278,6 @@ def gen_daily_menus():
 
 
 class TestDailyMenu:
-
     datetimes = (
         ('Día: 13 de diciembre de 2016 (martes)', datetime.date(2016, 12, 13)),
         ('Día: 13 de enero de 2017 (viernes)', datetime.date(2017, 1, 13)),
@@ -297,7 +327,6 @@ class TestDailyMenu:
         '1-martes-0-0', '2-miércoles-0-1', '3-jueves-0-2', '4-viernes-1-0',
         '5-sábado-1-1', '6-domingo-1-2', '7-lunes-2-0', '8-martes-2-1', '9-miércoles-2-2'
     )
-
 
     @pytest.mark.parametrize('dm, str_code', list(zip(gen_daily_menus(), _to_str)))
     def test_to_string(self, dm, str_code):
@@ -400,6 +429,7 @@ class TestDailyMenu:
         (DailyMenu(1, 1, 2000, Meal(), Meal()), True),
 
     )
+
     @pytest.mark.parametrize('daily_menu, should_be_emtpy', data)
     def test_is_empty(self, daily_menu, should_be_emtpy):
         assert daily_menu.is_empty() == should_be_emtpy
