@@ -2,6 +2,11 @@ venv/
 .idea/
 __pycache__/
 
+htmlcov/
+.vscode/
+
+.coverage
+
 *.db
 *.log
 *.backup
