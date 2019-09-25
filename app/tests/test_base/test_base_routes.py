@@ -1,7 +1,14 @@
 from unittest import mock
 
+from flask.testing import FlaskClient
+from werkzeug.wrappers import BaseResponse
 
-def test_user_agent_filter(client):
+
+def test_user_agent_filter(app):
+    client = FlaskClient(app, BaseResponse)
+    del client.environ_base['HTTP_USER_AGENT']
+
+    assert client.get('/').status_code == 401
     assert client.get('/', headers={'User-Agent': 'python-requests/2.21.0'}).status_code == 401
     assert client.get('/', headers={'User-Agent': '-'}).status_code == 401
     assert client.get('/', headers={'User-Agent': 'Rift/2.0'}).status_code == 401
