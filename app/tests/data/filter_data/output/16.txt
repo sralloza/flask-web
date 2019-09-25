@@ -1,0 +1,49 @@
+día: 12 de marzo de 2019 (martes)
+comida:
+1er plato: macarrones con jijas
+2º plato: pescado con ensalada
+cena:
+1er plato: ensalada mixta
+2º plato: paninis variados
+día: 13 de marzo de 2019 (miercoles)
+comida:
+1er plato: menestra de verduras
+2º plato: muslos de pollo con patatas
+cena:
+1er plato: ensalada cesar
+2º plato: sajonia con pimientos
+día: 14 de marzo de 2019 (jueves)
+comida:
+1er plato: arroz tres delicias
+2º plato: escalope con patatas
+cena:
+1er plato: crema de verduras
+2º plato: huevo frito con salchichas y ensalada
+día: 15 de marzo de 2019 (viernes)
+comida:
+1er plato: alubias blancas con verduras
+2º plato: pescado en salsa
+cena:
+1er plato: sopa de verduras
+2º plato: pizzas y quesos
+día: 16 de marzo de 2019 (sabado)
+comida:
+1er plato: rissoto de setas y secreto
+2º plato: picantones en salsa
+cena:
+1er plato: sopa maravilla
+2º plato: baguettes variadas
+día: 17 de marzo de 2019 (domingo)
+comida:
+1er plato: patatas con pulpo
+2º plato: conejo guisado
+cena:
+1er plato: guisantes salteados
+2º plato: wrapp de pollo
+día: 18 de marzo de 2019 (lunes)
+comida:
+1er plato: lentejas estofadas
+2º plato: pollo relleno
+cena:
+1er plato: patatas sol y sombra
+2º plato: sandwich mixto

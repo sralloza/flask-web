@@ -1,11 +1,26 @@
 from pathlib import Path
+from typing import Tuple, List
 from unittest import mock
 
 import pytest
 from requests.exceptions import ConnectionError
 
+from app.config import Config
 from app.menus.core.utils import get_menus_urls, PRINCIPAL_URL, has_day, filter_data, \
     Patterns
+
+_inputs = Path(Config.TEST_DATA_PATH / 'filter_data' / 'input').glob('*.txt')
+_outputs = Path(Config.TEST_DATA_PATH / 'filter_data' / 'output').glob('*.txt')
+
+metadata_type = List[Tuple[Path, Path]]
+
+metadata_paths: metadata_type = []
+
+for _input_path in _inputs:
+    for _output_path in _outputs:
+        if _input_path.stem == _output_path.stem:
+            metadata_paths.append((_input_path, _output_path))
+            break
 
 
 @mock.patch('requests.get')
@@ -177,27 +192,38 @@ class TestFilterData:
 
         assert real == expected
 
-    class TestCombined:
-        def test_easy(self):
-            input_data = ['1er plato: combinado: jamón y queso']
-            expected = ['combinado: jamón y queso']
-            real = filter_data(input_data)
+    def test_combined_easy(self):
+        input_data = ['1er plato: combinado: jamón y queso']
+        expected = ['combinado: jamón y queso']
+        real = filter_data(input_data)
 
-            assert real == expected
+        assert real == expected
 
-        def test_split(self):
-            input_data = ['1er plato: combinado: jamón', 'y queso']
-            expected = ['combinado: jamón y queso']
-            real = filter_data(input_data)
+    def test_combined_split(self):
+        input_data = ['1er plato: combinado: jamón', 'y queso']
+        expected = ['combinado: jamón y queso']
+        real = filter_data(input_data)
 
-            assert real == expected
+        assert real == expected
 
-        def test_with_second(self):
-            input_data = ['1er plato: combinado: jamón', '2 plato: y queso']
-            expected = ['combinado: jamón y queso']
-            real = filter_data(input_data)
+    def test_combined_with_second(self):
+        input_data = ['1er plato: combinado: jamón', '2 plato: y queso']
+        expected = ['combinado: jamón y queso']
+        real = filter_data(input_data)
 
-            assert real == expected
+        assert real == expected
+
+    @pytest.mark.parametrize('input_path, output_path', metadata_paths)
+    def test_meta(self, input_path, output_path):
+        with input_path.open(encoding='utf-8') as fh:
+            input_data = fh.read().splitlines()
+
+        with output_path.open(encoding='utf-8') as fh:
+            output_data = fh.read().splitlines()
+
+        real_data = filter_data(input_data)
+
+        assert output_data == real_data
 
 
 class TestPatterns:
