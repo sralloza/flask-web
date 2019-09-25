@@ -76,6 +76,8 @@ def filter_data(data: Union[str, List[str]]):
             data[i] = data[i].replace('2o plato:', '2º plato:')
         elif '2 plato:' in data[i]:
             data[i] = data[i].replace('2 plato:', '2º plato:')
+        elif '.' in data[i]:
+            data[i] = data[i].replace('.', '')
 
     out = []
     for i, d in enumerate(data):
@@ -103,6 +105,10 @@ def filter_data(data: Union[str, List[str]]):
                 foo = Patterns.semi_day_pattern_1.search(data[i - 1]).group() + ' de ' + \
                       Patterns.semi_day_pattern_2.search(d).group()
                 out.append(foo)
+        elif '2º plato' in data[i - 1] and data[i - 1].endswith('con'):
+            out[-1] += ' ' + d
+        elif '1er plato' in data[i - 1] and '2º plato' in data[i + 1]:
+            out[-1] += ' ' + d
         else:
             if 'combinado' in data[i - 1] and 'postre' not in d:
                 out[-1] += ' ' + d
