@@ -1,4 +1,5 @@
 import logging
+import re
 from datetime import datetime
 
 import requests
@@ -12,6 +13,48 @@ PRINCIPAL_URL = 'https://www.residenciasantiago.es/menus-1/'
 
 class _Static:
     redirect_url = None
+
+
+class Translator:
+    _e_to_s_weekdays = {'monday': 'lunes', 'tuesday': 'martes', 'wednesday': 'miércoles',
+                        'thursday': 'jueves', 'friday': 'viernes', 'saturday': 'sábado',
+                        'sunday': 'domingo'}
+    _s_to_e_weekdays = {'lunes': 'monday', 'martes': 'tuesday', 'miércoles': 'wednesday',
+                        'jueves': 'thursday', 'viernes': 'friday', 'sábado': 'saturday',
+                        'domingo': 'sunday'}
+
+    _e_to_s_months = {'january': 'enero', 'february': 'febrero', 'march': 'marzo', 'april': 'abril',
+                      'may': 'mayo', 'june': 'junio', 'july': 'julio', 'august': 'agosto',
+                      'september': 'septiembre', 'october': 'octubre', 'november': 'noviembre',
+                      'december': 'diciembre'}
+    _s_to_e_months = {'enero': 'january', 'febrero': 'february', 'marzo': 'march', 'abril': 'april',
+                      'mayo': 'may', 'junio': 'june', 'julio': 'july', 'agosto': 'august',
+                      'septiembre': 'september', 'octubre': 'october', 'noviembre': 'november',
+                      'diciembre': 'december'}
+
+    @classmethod
+    def english_to_spanish(cls, text):
+        """Converts months and weekdays from english to spanish."""
+        text = text.lower()
+        for key, value in cls._e_to_s_months.items():
+            text = re.sub(key, value, text, re.I)
+
+        for key, value in cls._e_to_s_weekdays.items():
+            text = text.replace(key, value)
+
+        return text
+
+    @classmethod
+    def spanish_to_english(cls, text):
+        """Converts months and weekdays from spanish to english."""
+        text = text.lower()
+        for key, value in cls._s_to_e_months.items():
+            text = re.sub(key, value, text, re.I)
+
+        for key, value in cls._s_to_e_weekdays.items():
+            text = text.replace(key, value)
+
+        return text
 
 
 def get_last_menus_page(retries=5):

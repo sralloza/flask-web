@@ -1,5 +1,4 @@
 import logging
-import re
 import warnings
 from datetime import datetime, date
 from enum import Enum, unique
@@ -8,7 +7,7 @@ from typing import Union
 from sqlalchemy.exc import IntegrityError
 
 from app.menus.models import DailyMenuDB, db
-from app.utils import now
+from app.utils import now, Translator
 from .exceptions import MealError, MealWarning
 
 logger = logging.getLogger(__name__)
@@ -332,22 +331,6 @@ class Combined(Meal):
 class DailyMenu:
     """Represents the menu of a day."""
 
-    _e_to_s_weekdays = {'monday': 'lunes', 'tuesday': 'martes', 'wednesday': 'miércoles',
-                        'thursday': 'jueves', 'friday': 'viernes', 'saturday': 'sábado',
-                        'sunday': 'domingo'}
-    _s_to_e_weekdays = {'lunes': 'monday', 'martes': 'tuesday', 'miércoles': 'wednesday',
-                        'jueves': 'thursday', 'viernes': 'friday', 'sábado': 'saturday',
-                        'domingo': 'sunday'}
-
-    _e_to_s_months = {'january': 'enero', 'february': 'febrero', 'march': 'marzo', 'april': 'abril',
-                      'may': 'mayo', 'june': 'junio', 'july': 'julio', 'august': 'agosto',
-                      'september': 'septiembre', 'october': 'octubre', 'november': 'noviembre',
-                      'december': 'diciembre'}
-    _s_to_e_months = {'enero': 'january', 'febrero': 'february', 'marzo': 'march', 'abril': 'april',
-                      'mayo': 'may', 'junio': 'june', 'julio': 'july', 'agosto': 'august',
-                      'septiembre': 'september', 'octubre': 'october', 'noviembre': 'november',
-                      'diciembre': 'december'}
-
     def __init__(self, day: int, month: int, year: int, lunch: Meal = None, dinner: Meal = None):
         self.day = day
         self.month = month
@@ -356,7 +339,7 @@ class DailyMenu:
         self.dinner = dinner or Meal()
 
         self.date = date(self.year, self.month, self.day)
-        self.weekday = self._e_to_s_weekdays[self.date.strftime('%A').lower()]
+        self.weekday = Translator.english_to_spanish(self.date.strftime('%A').lower())
         self.id = int(f'{self.year:04d}{self.month:02d}{self.day:02d}')
         self.is_today = self.date == now().date()
         self.code = 'dia' if self.is_today else ''
@@ -439,30 +422,6 @@ class DailyMenu:
         """Returns the menu formatted as html."""
         return self.to_string().replace('\n', '<br>')
 
-    @staticmethod
-    def e_to_s(text):
-        """Converts months and weekdays from english to spanish."""
-        text = text.lower()
-        for key, value in DailyMenu._e_to_s_months.items():
-            text = re.sub(key, value, text, re.I)
-
-        for key, value in DailyMenu._e_to_s_weekdays.items():
-            text = text.replace(key, value)
-
-        return text
-
-    @staticmethod
-    def s_to_e(text):
-        """Converts months and weekdays from spanish to english."""
-        text = text.lower()
-        for key, value in DailyMenu._s_to_e_months.items():
-            text = re.sub(key, value, text, re.I)
-
-        for key, value in DailyMenu._s_to_e_weekdays.items():
-            text = text.replace(key, value)
-
-        return text
-
     @classmethod
     def from_datetime(cls, dt: Union[datetime, str, date]):
         """Creates a DailyMenu given its datetime.
@@ -477,7 +436,7 @@ class DailyMenu:
             dt = dt.lower()
             dt = dt.replace('miercoles', 'miércoles')
             dt = dt.replace('sabado', 'sábado')
-            dt = datetime.strptime(self.s_to_e(dt), 'día: %d de %B de %Y (%A)')
+            dt = datetime.strptime(Translator.spanish_to_english(dt), 'día: %d de %B de %Y (%A)')
 
         if not isinstance(dt, (datetime, date)):
             raise TypeError(f'dt must be datetime or str, not {type(dt).__name__}')
@@ -490,7 +449,7 @@ class DailyMenu:
         """Returns the day formatted of the menu."""
         if not long:
             return str(self.date)
-        return self.e_to_s(self.date.strftime('%d de %B de %Y (%A)'))
+        return Translator.english_to_spanish(self.date.strftime('%d de %B de %Y (%A)'))
 
     def update(self, **kwargs):
         """Updates values of the menu.

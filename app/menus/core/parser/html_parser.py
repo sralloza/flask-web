@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup as Soup
 
 from app.menus.core.structure import DailyMenu, Index
 from app.menus.core.utils import Patterns, filter_data, has_day
+from app.utils import Translator
 from .abc import BaseParser
 
 logger = logging.getLogger(__name__)
@@ -52,7 +53,7 @@ class HtmlParser(BaseParser):
 
                 day = int(search.group('day'))
                 month = search.group('month')
-                month = datetime.strptime(DailyMenu.s_to_e(month.lower()), '%B').month
+                month = datetime.strptime(Translator.spanish_to_english(month.lower()), '%B').month
                 year = int(search.group('year'))
 
                 index.set_date(date(year, month, day))

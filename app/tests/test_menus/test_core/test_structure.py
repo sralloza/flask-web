@@ -247,24 +247,6 @@ def gen_daily_menus():
 
 
 class TestDailyMenu:
-    esp_eng = (
-        ('12 febrero 2016 martes', '12 february 2016 tuesday'),
-        ('13 de diciembre de 2016 (martes)', '13 de december de 2016 (tuesday)'),
-        ('13 de diciembre de 2017 (miércoles)', '13 de december de 2017 (wednesday)'),
-        ('13 de enero de 2017 (viernes)', '13 de january de 2017 (friday)'),
-        ('14 de julio de 2017 (viernes)', '14 de july de 2017 (friday)'),
-        ('15 de agosto de 2017 (martes)', '15 de august de 2017 (tuesday)'),
-        ('16 de octubre de 2017 (lunes)', '16 de october de 2017 (monday)'),
-        ('16 enero viernes', '16 january friday'),
-        ('22 de septiembre de 2017 (viernes)', '22 de september de 2017 (friday)'),
-        ('23 de febrero de 2017 (jueves)', '23 de february de 2017 (thursday)'),
-        ('28 de junio de 2017 (miércoles)', '28 de june de 2017 (wednesday)'),
-        ('30 de mayo de 2017 (martes)', '30 de may de 2017 (tuesday)'),
-        ('6 de marzo de 2017 (lunes)', '6 de march de 2017 (monday)'),
-        ('7 de noviembre de 2017 (martes)', '7 de november de 2017 (tuesday)'),
-        ('9 de abril de 2017 (domingo)', '9 de april de 2017 (sunday)'),
-        ('día: 25 de febrero de 2019 (lunes)', 'día: 25 de february de 2019 (monday)'),
-    )
 
     datetimes = (
         ('Día: 13 de diciembre de 2016 (martes)', datetime.date(2016, 12, 13)),
@@ -313,17 +295,9 @@ class TestDailyMenu:
 
     _to_str = (
         '1-martes-0-0', '2-miércoles-0-1', '3-jueves-0-2', '4-viernes-1-0',
-        '5-sábado-1-1',
-        '6-domingo-1-2', '7-lunes-2-0', '8-martes-2-1', '9-miércoles-2-2'
+        '5-sábado-1-1', '6-domingo-1-2', '7-lunes-2-0', '8-martes-2-1', '9-miércoles-2-2'
     )
 
-    @pytest.mark.parametrize('esp, eng', esp_eng)
-    def test_e_to_s(self, esp, eng):
-        assert DailyMenu.e_to_s(eng) == esp
-
-    @pytest.mark.parametrize('esp, eng', esp_eng)
-    def test_s_to_e(self, esp, eng):
-        assert DailyMenu.s_to_e(esp) == eng
 
     @pytest.mark.parametrize('dm, str_code', list(zip(gen_daily_menus(), _to_str)))
     def test_to_string(self, dm, str_code):
