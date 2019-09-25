@@ -207,8 +207,7 @@ class TestAddToMenus:
 class TestLoad:
     @pytest.fixture(autouse=True)
     def auto_mock_update_control(self):
-        foo = mock.patch('app.menus.core.daily_menus_manager.get_menus_urls').start()
-        foo.return_value = []
+        mock.patch('app.menus.core.daily_menus_manager.Parsers.parse').start()
         yield
         mock.patch.stopall()
 

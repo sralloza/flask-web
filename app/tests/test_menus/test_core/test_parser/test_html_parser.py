@@ -30,10 +30,10 @@ class TestHtmlParser:
 
         assert json_real == json_expected
 
-    @pytest.mark.skip(reason='If test_process_text pass, this will too')
     def test_hidden_process_texts(self):
+        # If test_process_text pass, this will too
         pass
 
-    @pytest.mark.skip(reason='If test_process_text pass, this will too')
     def test_update_menu(self):
+        # If test_process_text pass, this will too
         pass

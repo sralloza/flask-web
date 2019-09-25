@@ -373,7 +373,7 @@ class DailyMenu:
             try:
                 meal = LunchState(meal)
             except ValueError:
-                raise ValueError(f'meal must be LunchState, not {type(meal).__name__}')
+                raise MealError(f'meal must be LunchState, not {type(meal).__name__}')
 
         if meal == LunchState.LUNCH:
             self.lunch.p1 = Combined()
