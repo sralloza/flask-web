@@ -1,0 +1,86 @@
+[
+    {
+        "id": 20190507,
+        "day": "Martes 7",
+        "lunch": {
+            "p1": "macarrones a la carbonara",
+            "p2": "pescado al horno con ensalada"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "chuleta de cerdo a la plancha con patatas / ensalada"
+        }
+    },
+    {
+        "id": 20190508,
+        "day": "Miércoles 8",
+        "lunch": {
+            "p1": "ensalada campera",
+            "p2": "costilla asada con puré"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "hamburguesa de crujiente de pollo"
+        }
+    },
+    {
+        "id": 20190509,
+        "day": "Jueves 9",
+        "lunch": {
+            "p1": "arroz a la zamorana",
+            "p2": "lenguado con ensalada"
+        },
+        "dinner": {
+            "p1": "cóctel",
+            "p2": null
+        }
+    },
+    {
+        "id": 20190510,
+        "day": "Viernes 10",
+        "lunch": {
+            "p1": "espárragos trigueros con jamón y crema de queso",
+            "p2": "pechuga de pollo a la plancha con patatas / ensalada"
+        },
+        "dinner": {
+            "p1": "PC: ensaladilla de cangrejo, tortilla de patatas, chorizo y empanadillas",
+            "p2": null
+        }
+    },
+    {
+        "id": 20190511,
+        "day": "Sábado 11",
+        "lunch": {
+            "p1": "ensalada de pasta",
+            "p2": "bacalao con piperrada / ensalada"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "albóndigas con tomate / ensalada"
+        }
+    },
+    {
+        "id": 20190512,
+        "day": "Domingo 12",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "solomillo a la plancha con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada césar",
+            "p2": "sandwich mixto con croquetas"
+        }
+    },
+    {
+        "id": 20190513,
+        "day": "Lunes 13",
+        "lunch": {
+            "p1": "patatas a la marinera",
+            "p2": "pollo asado con ensalada"
+        },
+        "dinner": {
+            "p1": "guisantes con jamón",
+            "p2": "pizzas variadas"
+        }
+    }
+]

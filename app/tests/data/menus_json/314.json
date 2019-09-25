@@ -1,0 +1,86 @@
+[
+    {
+        "id": 20190326,
+        "day": "Martes 26",
+        "lunch": {
+            "p1": "macarrones con chorizo",
+            "p2": "pescado en salsa"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "lomo con patatas"
+        }
+    },
+    {
+        "id": 20190327,
+        "day": "Miércoles 27",
+        "lunch": {
+            "p1": "patatas con bechamel",
+            "p2": "ragú de ternera"
+        },
+        "dinner": {
+            "p1": "ensalada tropical",
+            "p2": "huevo frito con salchichas y croquetas"
+        }
+    },
+    {
+        "id": 20190328,
+        "day": "Jueves 28",
+        "lunch": {
+            "p1": "fideuá de mejillones, calamares y gambas",
+            "p2": "albondigas"
+        },
+        "dinner": {
+            "p1": "guisantes salteados",
+            "p2": "hamburguesas con crujientes de corn flakes"
+        }
+    },
+    {
+        "id": 20190329,
+        "day": "Viernes 29",
+        "lunch": {
+            "p1": "alubias con vinagreta",
+            "p2": "salmón a la naranja"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "pizza margarita"
+        }
+    },
+    {
+        "id": 20190330,
+        "day": "Sábado 30",
+        "lunch": {
+            "p1": "ensalada de pasta",
+            "p2": "pollo al ajillo"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "baguettes variadas"
+        }
+    },
+    {
+        "id": 20190331,
+        "day": "Domingo 31",
+        "lunch": {
+            "p1": "patatas a la riojana",
+            "p2": "escalope con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "perrito caliente completo"
+        }
+    },
+    {
+        "id": 20190401,
+        "day": "Lunes 1",
+        "lunch": {
+            "p1": "mac and cheese",
+            "p2": "costilla bbq con patatas gajo"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "hamburguesa de buey"
+        }
+    }
+]

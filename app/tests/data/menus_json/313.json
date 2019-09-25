@@ -1,0 +1,86 @@
+[
+    {
+        "id": 20190402,
+        "day": "Martes 2",
+        "lunch": {
+            "p1": "arroz frito chino",
+            "p2": "cerdo agridulce con piña"
+        },
+        "dinner": {
+            "p1": "rollitos de primavera",
+            "p2": "pollo al limón"
+        }
+    },
+    {
+        "id": 20190403,
+        "day": "Miércoles 3",
+        "lunch": {
+            "p1": "nachos con salsa mejicana, guacamole y frijoles",
+            "p2": "bacalao estilo mexicano"
+        },
+        "dinner": {
+            "p1": "quesadillas con queso",
+            "p2": "alitas de pollo tex-mex"
+        }
+    },
+    {
+        "id": 20190404,
+        "day": "Jueves 4",
+        "lunch": {
+            "p1": "tortiglioni a la carbonara",
+            "p2": "tagliata de entrecote con tomate natural"
+        },
+        "dinner": {
+            "p1": "ensalada caprese",
+            "p2": "pizzas variadas"
+        }
+    },
+    {
+        "id": 20190405,
+        "day": "Viernes 5",
+        "lunch": {
+            "p1": "patatas gratin dauphinois",
+            "p2": "lenguado a la meunier"
+        },
+        "dinner": {
+            "p1": "ensalada parisienne",
+            "p2": "croque monsieur"
+        }
+    },
+    {
+        "id": 20190306,
+        "day": "Miércoles 6",
+        "lunch": {
+            "p1": "macarrones con jijas",
+            "p2": "muslos de pollo asados"
+        },
+        "dinner": {
+            "p1": "guisantes salteados",
+            "p2": "baguettes variadas"
+        }
+    },
+    {
+        "id": 20190307,
+        "day": "Jueves 7",
+        "lunch": {
+            "p1": "barbacoa",
+            "p2": null
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "libros con guarnición"
+        }
+    },
+    {
+        "id": 20190408,
+        "day": "Lunes 8",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "chuleta de cerdo con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "sandwich vegetal"
+        }
+    }
+]
