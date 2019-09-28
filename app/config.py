@@ -15,7 +15,7 @@ class Config(object):
 
 class TestingConfig(Config):
     TESTING = True
-    DATABASE_PATH = ':memory:'
+    DATABASE_PATH = Path(Config.DATABASE_PATH).with_name('test-flask.db').as_posix()
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SERVER_NAME = 'menus.sralloza.es'
