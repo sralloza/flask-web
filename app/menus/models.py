@@ -105,4 +105,5 @@ class UpdateControl:
                 return datetime.strptime(data[0][0], '%Y-%m-%d %H:%M:%S')
             except ValueError:
                 uc.cursor.execute('DELETE FROM update_control')
+                uc.commit()
                 return uc.MIN_DATETIME

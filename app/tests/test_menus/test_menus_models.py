@@ -1,12 +1,31 @@
+import os
 import sqlite3
 from datetime import datetime, timedelta
 from unittest import mock
 
 import pytest
 
+from app.config import TestingConfig
 from app.menus.core.structure import DailyMenu, Meal
 from app.menus.models import DailyMenuDB, UpdateControl
 from app.utils import now
+
+
+@pytest.fixture(scope='function', autouse=True)
+def mock_config_memory():
+    config_mock = mock.patch('app.menus.models.Config').start()
+
+    # todo random temp file
+    config_mock.DATABASE_PATH = TestingConfig.DATABASE_PATH
+
+    yield
+
+    mock.patch.stopall()
+
+    try:
+        os.remove(TestingConfig.DATABASE_PATH)
+    except FileNotFoundError:
+        pass
 
 
 class TestDailyMenuDB:
@@ -87,15 +106,9 @@ class TestUpdateControl:
     class TestShouldUpdate:
         @pytest.fixture(scope='function', autouse=True)
         def db_connection(self):
-            config_mock = mock.patch('app.menus.models.Config').start()
-            config_mock.DATABASE_PATH = ':memory:'
-
             connection = sqlite3.connect(':memory:')
-
             yield connection
-
             connection.close()
-            mock.patch.stopall()
 
         @pytest.fixture
         def gul_mock(self):
@@ -124,9 +137,7 @@ class TestUpdateControl:
             assert UpdateControl.should_update() is False
 
         @mock.patch('app.menus.models.UpdateControl.set_last_update')
-        def test_set_after(self, slu_mock, db_connection):
-            db_connection.close()
-
+        def test_set_after(self, slu_mock):
             assert UpdateControl.should_update() is True
             slu_mock.assert_called_once_with()
 
@@ -146,8 +157,30 @@ class TestUpdateControl:
             data = uc.cursor.fetchall()
             assert data[0][0] == expected
 
-    def test_get_last_update(self):
+    def test_get_last_update_good(self):
         with UpdateControl() as uc:
             uc.set_last_update()
             dt = uc.get_last_update()
             assert dt.date() == now().date()
+
+    def test_get_last_update_too_many_items(self):
+        with UpdateControl() as uc:
+            uc.cursor.execute('INSERT INTO update_control VALUES (?)', ['2000-01-01 10:10:10'])
+            uc.cursor.execute('INSERT INTO update_control VALUES (?)', ['2000-01-01 11:11:11'])
+            uc.session.commit()
+
+            with pytest.raises(sqlite3.DatabaseError, match='Too many datetimes stored'):
+                uc.get_last_update()
+
+    def test_get_last_update_invalid_format(self):
+        with UpdateControl() as uc:
+            uc.cursor.execute('INSERT INTO update_control VALUES (?)', ['invalid-format'])
+            uc.session.commit()
+
+        assert UpdateControl.get_last_update() == UpdateControl.MIN_DATETIME
+
+        with UpdateControl() as uc:
+            uc.session.commit()
+            uc.cursor.execute("SELECT * FROM update_control")
+            data = uc.cursor.fetchall()
+            assert data == []
