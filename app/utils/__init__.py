@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 PRINCIPAL_URL = 'https://www.residenciasantiago.es/menus-1/'
 
 
-class _Static:
+class _Cache:
     redirect_url = None
 
 
@@ -58,8 +58,8 @@ class Translator:
 
 
 def get_last_menus_page(retries=5):
-    if _Static.redirect_url:
-        return _Static.redirect_url
+    if _Cache.redirect_url:
+        return _Cache.redirect_url
 
     total_retries = retries
     logger.debug('Getting last menus url')
@@ -70,7 +70,9 @@ def get_last_menus_page(retries=5):
             soup = Soup(response.text, 'html.parser')
             container = soup.findAll('div', {'class': 'j-blog-meta'})
             urls = [x.a['href'] for x in container]
-            return urls[0]
+            url = urls[0]
+            _Cache.redirect_url = url
+            return url
         except ConnectionError:
             retries -= 1
             logger.warning('Connection error downloading principal url (%r) (%d retries left)',

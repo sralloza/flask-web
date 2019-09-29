@@ -5,12 +5,12 @@ import pytest
 from requests.exceptions import ConnectionError
 
 from app.utils import PRINCIPAL_URL
-from app.utils import get_last_menus_page, Translator
+from app.utils import get_last_menus_page, Translator, _Cache
 
 
 @mock.patch('requests.get')
 @mock.patch('app.utils.logger')
-class TestGetMenusUrls:
+class TestGetLastMenusPage:
     url_expected = 'https://www.residenciasantiago.es/2019/06/20/del-21-al-24-de-junio-2019/'
 
     warning_expected = 'Connection error downloading principal url (%r) (%d retries left)'
@@ -29,7 +29,9 @@ class TestGetMenusUrls:
         logger_mock.debug.assert_called_once_with('Getting last menus url')
         assert url == self.url_expected
 
-    def test_one_connection_error(self, logger_mock, requests_get_mock, test_content):
+    @mock.patch('app.utils._Cache')
+    def test_one_connection_error(self, static_mock, logger_mock, requests_get_mock, test_content):
+        static_mock.redirect_url = None
         foo_mock = mock.Mock()
         foo_mock.text = test_content
         requests_get_mock.side_effect = iter([ConnectionError, foo_mock])
@@ -41,7 +43,9 @@ class TestGetMenusUrls:
         ])
         assert url == self.url_expected
 
-    def test_two_connection_error(self, logger_mock, requests_get_mock, test_content):
+    @mock.patch('app.utils._Cache')
+    def test_two_connection_error(self, static_mock, logger_mock, requests_get_mock, test_content):
+        static_mock.redirect_url = None
         foo_mock = mock.Mock()
         foo_mock.text = test_content
         requests_get_mock.side_effect = iter([ConnectionError, ConnectionError, foo_mock])
@@ -55,7 +59,9 @@ class TestGetMenusUrls:
         assert logger_mock.warning.call_count == 2
         assert url == self.url_expected
 
-    def test_three_connection_error(self, logger_mock, requests_get_mock, test_content):
+    @mock.patch('app.utils._Cache')
+    def test_three_connection_error(self, static_mock, logger_mock, requests_get_mock, test_content):
+        static_mock.redirect_url = None
         foo_mock = mock.Mock()
         foo_mock.text = test_content
         requests_get_mock.side_effect = iter(
@@ -71,7 +77,9 @@ class TestGetMenusUrls:
         assert logger_mock.warning.call_count == 3
         assert url == self.url_expected
 
-    def test_four_connection_error(self, logger_mock, requests_get_mock, test_content):
+    @mock.patch('app.utils._Cache')
+    def test_four_connection_error(self, static_mock, logger_mock, requests_get_mock, test_content):
+        static_mock.redirect_url = None
         foo_mock = mock.Mock()
         foo_mock.text = test_content
         requests_get_mock.side_effect = iter(
@@ -88,7 +96,9 @@ class TestGetMenusUrls:
         assert logger_mock.warning.call_count == 4
         assert url == self.url_expected
 
-    def test_five_connection_error(self, logger_mock, requests_get_mock, test_content):
+    @mock.patch('app.utils._Cache')
+    def test_five_connection_error(self, static_mock, logger_mock, requests_get_mock, test_content):
+        static_mock.redirect_url = None
         foo_mock = mock.Mock()
         foo_mock.text = test_content
         requests_get_mock.side_effect = iter(
@@ -111,6 +121,21 @@ class TestGetMenusUrls:
             PRINCIPAL_URL, 5)
 
         assert url == PRINCIPAL_URL
+
+    def test_use_cache(self, logger_mock, requests_get_mock, test_content):
+        _Cache.redirect_url = None
+        foo_mock = mock.Mock()
+        foo_mock.text = test_content
+        requests_get_mock.return_value = foo_mock
+        url = get_last_menus_page()
+
+        logger_mock.debug.assert_called_once_with('Getting last menus url')
+        assert url == self.url_expected
+
+        url2 = get_last_menus_page()
+        assert url2 == self.url_expected
+        assert logger_mock.debug.call_count == 1
+        assert requests_get_mock.call_count == 1
 
 
 class TestTranslator:
