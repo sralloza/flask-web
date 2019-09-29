@@ -33,7 +33,6 @@ class TestMenusView:
     @mock.patch('app.menus.routes.get_last_menus_page', return_value='http://example.com')
     def test_without_args(self, glmp_mock, load_mock, client, menu_mock, argument):
         menus_mocks = iter([menu_mock] * 30)
-        # load_mock.return_value = menus_mocks
         load_mock.return_value.menus.__iter__.return_value = menus_mocks
         load_mock.return_value.menus.__getitem__.return_value = menus_mocks
         load_mock.menus = menus_mocks
@@ -65,8 +64,6 @@ class TestMenusView:
             assert b'table table-hover table-responsive table-striped' in rv.data
         elif argument == 'beta':
             assert b'href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css' in rv.data
-        else:
-            assert 0, 'Invalid argument'
 
         menu_mock.format_date.assert_called()
         if argument in (None, 'all'):
