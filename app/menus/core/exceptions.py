@@ -1,11 +1,16 @@
 # EXCEPTIONS
 
+
 class BaseMenusError(Exception):
     """Base menus exception."""
 
 
 class MealError(BaseMenusError):
     """Meal error."""
+
+
+class InvalidStateError(BaseMenusError):
+    """Invalid state error."""
 
 
 class ParserError(BaseMenusError):
