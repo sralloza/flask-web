@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block page_content %}
+<div class="container h-100 d-flex">
+    <div class="jumbotron col-sm-8 text-center mt-5 mb-1 mx-auto">
+        <h5 id="title" class="display-4 mb-4">Añadir datos</h5>
+        <form>
+            <div class="form-group">
+                <label for="date" class="text-left">Fecha</label>
+                <input type="date" class="form-control" placeholder="Fecha del menú" id="date">
+            </div>
+            <div class="form-group">
+                <label for="lunch-1">Comida - 1</label>
+                <input type="text" class="form-control" placeholder="Comida - plato 1" id="lunch-1">
+            </div>
+            <div class="form-group">
+                <label for="lunch-2">Comida - 2</label>
+                <input type="text" class="form-control" placeholder="Comida - plato 2" id="lunch-2">
+            </div>
+            <div class="form-group">
+                <label for="dinner-1">Cena - 1</label>
+                <input type="text" class="form-control" placeholder="Cena - plato 1" id="dinner-1">
+            </div>
+            <div class="form-group">
+                <label for="dinner-2">Cena - 2</label>
+                <input type="text" class="form-control" placeholder="Cena - plato 2" id="dinner-2">
+            </div>
+            <div class="form-group">
+                    <label for="token">Token</label>
+                    <input type="password" class="form-control" placeholder="Token" id="token">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}
