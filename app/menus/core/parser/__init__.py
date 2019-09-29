@@ -22,28 +22,42 @@ class ParserThread(Thread):
         self.retries = retries
 
     def run(self):
-        logger.debug('Starting %s with url %r', type(self).__name__, self.url)
-        response = requests.get(self.url)
+        logger.debug("Starting %s with url %r", type(self).__name__, self.url)
+
+        retries_left = self.retries
+        while retries_left:
+            try:
+                response = requests.get(self.url)
+                break
+            except Exception:
+                retries_left -= 1
+                if not retries_left:
+                    logger.error("Fatal connection error downloading %s", self.url)
+                    raise requests.exceptions.ConnectionError(
+                        "Fatal connection error downloading %s" % self.url
+                    )
 
         for parser in Parsers.parsers:
             try:
-                logger.debug('Trying with parser %r', parser.__name__)
-                parser.process_text(dmm=self.dmm, text=response.text, retries=self.retries)
-                logger.info('URL parsed correcty with parser %r', parser.__name__)
+                logger.debug("Trying with parser %r", parser.__name__)
+                parser.process_text(dmm=self.dmm, text=response.text)
+                logger.info("URL parsed correcty with parser %r", parser.__name__)
                 return
             except Exception:
-                logger.exception('Exception using parser %r:', parser.__name__)
+                logger.exception("Exception using parser %r:", parser.__name__)
                 continue
 
-        logger.error('None of the parsers could parse url %r', self.url)
-        raise ParserError('None of the parsers could parse url %r' % self.url)
+        logger.error("None of the parsers could parse url %r", self.url)
+        raise ParserError("None of the parsers could parse url %r" % self.url)
 
 
 class ParserThreadList(UserList):
     def append(self, object: ParserThread):
         if not isinstance(object, ParserThread):
-            raise TypeError('ParserThreadList can only contain ParserThread instances, not %r',
-                            type(ParserThread).__name__)
+            raise TypeError(
+                "ParserThreadList can only contain ParserThread instances, not %r",
+                type(ParserThread).__name__,
+            )
 
         super(ParserThreadList, self).append(object)
 
@@ -69,4 +83,4 @@ class Parsers:
         for worker in Parsers._threads:
             worker.join()
 
-        logger.debug('Threads finished')
+        logger.debug("Threads finished")
