@@ -213,3 +213,83 @@ def test_gen_token():
     assert len(token) == 12
     assert isinstance(token, str)
     assert token.isdigit()
+
+
+@mock.patch("app.utils.request")
+class TestGetPostArg:
+    data_req_strip = (
+        ({"data": "value"}, "value"),
+        ({"data": "  value  "}, "value"),
+        ({"data": "  value  \n"}, "value"),
+        ({"data": ""}, RuntimeError),
+        ({"data": "  "}, RuntimeError),
+        ({"data": " \n\n "}, RuntimeError),
+        ({}, RuntimeError),
+    )
+
+    data_not_req_strip = (
+        ({"data": "value"}, "value"),
+        ({"data": "  value  "}, "value"),
+        ({"data": "  value  \n"}, "value"),
+        ({"data": ""}, None),
+        ({"data": "  "}, None),
+        ({"data": " \n\n "}, None),
+        ({}, None),
+    )
+
+    data_req_not_strip = (
+        ({"data": "value"}, "value"),
+        ({"data": "  value  "}, "  value  "),
+        ({"data": "  value  \n"}, "  value  \n"),
+        ({"data": ""}, RuntimeError),
+        ({"data": "  "}, "  "),
+        ({"data": " \n\n "}, " \n\n "),
+        ({}, RuntimeError),
+    )
+
+    data_not_req_not_strip = (
+        ({"data": "value"}, "value"),
+        ({"data": "  value  "}, "  value  "),
+        ({"data": "  value  \n"}, "  value  \n"),
+        ({"data": ""}, ""),
+        ({"data": "  "}, "  "),
+        ({"data": " \n\n "}, " \n\n "),
+        ({}, None),
+    )
+
+    @pytest.mark.parametrize("request_data, expected", data_req_strip)
+    def test_req_strip(self, request_mock, request_data, expected):
+        request_mock.form = request_data
+        if expected == RuntimeError:
+            with pytest.raises(expected):
+                get_post_arg("data", required=True, strip=True)
+        else:
+            assert get_post_arg("data", required=True, strip=True) == expected
+
+    @pytest.mark.parametrize("request_data, expected", data_not_req_strip)
+    def test_not_req_strip(self, request_mock, request_data, expected):
+        request_mock.form = request_data
+        if expected == RuntimeError:
+            with pytest.raises(expected):
+                get_post_arg("data", required=False, strip=True)
+        else:
+            assert get_post_arg("data", required=False, strip=True) == expected
+
+    @pytest.mark.parametrize("request_data, expected", data_req_not_strip)
+    def test_req_not_strip(self, request_mock, request_data, expected):
+        request_mock.form = request_data
+        if expected == RuntimeError:
+            with pytest.raises(expected):
+                get_post_arg("data", required=True, strip=False)
+        else:
+            assert get_post_arg("data", required=True, strip=False) == expected
+
+    @pytest.mark.parametrize("request_data, expected", data_not_req_not_strip)
+    def test_not_req_not_strip(self, request_mock, request_data, expected):
+        request_mock.form = request_data
+        if expected == RuntimeError:
+            with pytest.raises(expected):
+                get_post_arg("data", required=False, strip=False)
+        else:
+            assert get_post_arg("data", required=False, strip=False) == expected
+

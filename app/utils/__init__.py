@@ -126,5 +126,19 @@ def now():
     return datetime.now()
 
 
+def get_post_arg(form_name, required=False, strip=False):
+    arg = request.form.get(form_name, None)
+
+    if strip and isinstance(arg, str):
+        arg = arg.strip()
+        if not arg:
+            arg = None
+
+    if required and not arg:
+        raise RuntimeError("%r is required (%r)" % (form_name, arg))
+
+    return arg
+
+
 def gen_token():
     return now().strftime("%Y%m%d%H%M")
