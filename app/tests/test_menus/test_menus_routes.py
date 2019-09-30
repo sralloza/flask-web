@@ -48,6 +48,8 @@ class TestMenusView:
             assert rv.status_code == 302
             assert rv.location == "http://menus.sralloza.es/menus?beta"
             load_mock.return_value.menus.__getitem__.assert_not_called()
+            menu_mock.format_date.assert_not_called()
+            glmp_mock.assert_not_called()
             return
 
         assert rv.status_code == 200
@@ -75,14 +77,10 @@ class TestMenusView:
         menu_mock.format_date.assert_called()
         if argument in (None, "all"):
             # Test before, with slice(None, 15, None)
-            pass
+            menu_mock.format_date.assert_called_with()
         else:
             assert menu_mock.format_date.call_count == 30
-
-            if argument == 'beta':
-                menu_mock.format_date.assert_called_with(long=False)
-            else:
-                menu_mock.format_date.assert_called_with()
+            menu_mock.format_date.assert_called_with(long=False)
 
 
 def test_menus_redirect(client):
