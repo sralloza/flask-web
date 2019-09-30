@@ -309,16 +309,19 @@ class TestAddMenuInterface:
         rv = client.get("/add")
 
         assert b"form" in rv.data
-        assert rv.data.count(b"h5") == 1  # One title
+        assert rv.data.count(b"<h5") == 1  # One title
+        assert rv.data.count(b"</h5") == 1  # One title
 
         # 6 inputs (1xdate, 2xlunch, 2xdinner, 1xtoken)
         assert rv.data.count(b'<div class="form-group">') == 6
         assert rv.data.count(b"placeholder") == 6
-        assert rv.data.count(b"label") == 6
-        assert rv.data.count(b"input") == 6
+        assert rv.data.count(b"<label") == 6
+        assert rv.data.count(b"</label") == 6
+        assert rv.data.count(b"<input") == 6
 
-        # 1 button (submit)
-        assert rv.data.count(b"button") == 1
+        # 2 button (submit and reset)
+        assert rv.data.count(b"<button") == 2
+        assert rv.data.count(b"</button") == 2
 
         # Texts
         assert "Añadir datos".encode() in rv.data  # Title
@@ -415,6 +418,7 @@ class TestAddMenuInterface:
             assert rv.status_code == 200
             assert b'Saved:\n' in rv.data
             assert b'DailyMenu(' in rv.data
+            assert b'meta http-equiv' in rv.data
         else:
             if data_arg == self.PostDataType.token_change:
                 assert b"Invalid token" in rv.data

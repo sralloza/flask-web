@@ -150,4 +150,6 @@ def add_menu_interface():
     dmm = DailyMenusManager.load(force=False)
     dmm.add_to_menus(menu)
     dmm.save_to_database()
-    return 'Saved:\n' + repr(menu), 200
+
+    meta = '<meta http-equiv="refresh" content="3; url=/">'
+    return 'Saved:\n' + repr(menu) + meta, 200
