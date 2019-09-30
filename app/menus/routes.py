@@ -1,8 +1,10 @@
 import json
+from datetime import datetime
 
-from flask import render_template, redirect, url_for, request
+from flask import Response, redirect, render_template, request, url_for
 
-from app.utils import get_last_menus_page, now
+from app.utils import get_last_menus_page, now, get_post_arg, gen_token
+
 from . import menus_blueprint
 from .core.daily_menus_manager import DailyMenusManager
 from .core.structure import DailyMenu, Meal
@@ -121,7 +123,31 @@ def api_menus():
     return json.dumps(data), 200
 
 
-@menus_blueprint.route("/add")
+@menus_blueprint.route("/add", methods=["GET", "POST"])
 def add_menu_interface():
-    return render_template("add-interface.html")
+    if request.method == "GET":
+        return render_template("add-interface.html")
+    
+    try:
+        date = get_post_arg("date", required=True, strip=True)
+        lunch1 = get_post_arg("lunch-1", required=True, strip=True)
+        lunch2 = get_post_arg("lunch-2", required=True, strip=True)
+        dinner1 = get_post_arg("dinner-1", required=True, strip=True)
+        dinner2 = get_post_arg("dinner-2", required=True, strip=True)
+        token = get_post_arg("token", required=True, strip=True)
+    except RuntimeError as err:
+        return str(err.args[0]), 403
+    
+    if token != gen_token():
+        return 'Invalid token', 403
 
+    try:
+        date = datetime.strptime(date, '%Y-%m-%d')
+    except ValueError as err:
+        return 'Invalid date format: ' + err.args[0], 403
+    
+    menu = DailyMenu(date.day, date.month, date.year, Meal(lunch1, lunch2), Meal(dinner1, dinner2))
+    dmm = DailyMenusManager.load(force=False)
+    dmm.add_to_menus(menu)
+    dmm.save_to_database()
+    return 'Saved:\n' + repr(menu), 200
