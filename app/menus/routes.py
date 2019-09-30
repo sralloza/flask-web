@@ -85,7 +85,7 @@ def add_menu_api():
         json_data[key] = value[0]
 
     try:
-        api_key = json_data["api_key"]
+        token = json_data["token"]
         day = int(json_data["day"])
         month = int(json_data["month"])
         year = int(json_data["year"])
@@ -98,10 +98,10 @@ def add_menu_api():
     except ValueError as v:
         return "ValueError: %r" % ", ".join(v.args), 403
 
-    real_api_key = now().strftime("%Y%m%d%H%M")
+    real_token = gen_token()
 
-    if real_api_key != api_key:
-        return "Invalid api key", 403
+    if real_token != token:
+        return "Invalid token", 403
 
     lunch = Meal(lunch1, lunch2)
     dinner = Meal(dinner1, dinner2)

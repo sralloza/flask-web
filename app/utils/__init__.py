@@ -4,11 +4,12 @@ from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup as Soup
+from flask import request
 from requests.exceptions import ConnectionError
 
 logger = logging.getLogger(__name__)
 
-PRINCIPAL_URL = 'https://www.residenciasantiago.es/menus-1/'
+PRINCIPAL_URL = "https://www.residenciasantiago.es/menus-1/"
 
 
 class _Cache:
@@ -16,21 +17,53 @@ class _Cache:
 
 
 class Translator:
-    _e_to_s_weekdays = {'monday': 'lunes', 'tuesday': 'martes', 'wednesday': 'miércoles',
-                        'thursday': 'jueves', 'friday': 'viernes', 'saturday': 'sábado',
-                        'sunday': 'domingo'}
-    _s_to_e_weekdays = {'lunes': 'monday', 'martes': 'tuesday', 'miércoles': 'wednesday',
-                        'jueves': 'thursday', 'viernes': 'friday', 'sábado': 'saturday',
-                        'domingo': 'sunday'}
+    _e_to_s_weekdays = {
+        "monday": "lunes",
+        "tuesday": "martes",
+        "wednesday": "miércoles",
+        "thursday": "jueves",
+        "friday": "viernes",
+        "saturday": "sábado",
+        "sunday": "domingo",
+    }
+    _s_to_e_weekdays = {
+        "lunes": "monday",
+        "martes": "tuesday",
+        "miércoles": "wednesday",
+        "jueves": "thursday",
+        "viernes": "friday",
+        "sábado": "saturday",
+        "domingo": "sunday",
+    }
 
-    _e_to_s_months = {'january': 'enero', 'february': 'febrero', 'march': 'marzo', 'april': 'abril',
-                      'may': 'mayo', 'june': 'junio', 'july': 'julio', 'august': 'agosto',
-                      'september': 'septiembre', 'october': 'octubre', 'november': 'noviembre',
-                      'december': 'diciembre'}
-    _s_to_e_months = {'enero': 'january', 'febrero': 'february', 'marzo': 'march', 'abril': 'april',
-                      'mayo': 'may', 'junio': 'june', 'julio': 'july', 'agosto': 'august',
-                      'septiembre': 'september', 'octubre': 'october', 'noviembre': 'november',
-                      'diciembre': 'december'}
+    _e_to_s_months = {
+        "january": "enero",
+        "february": "febrero",
+        "march": "marzo",
+        "april": "abril",
+        "may": "mayo",
+        "june": "junio",
+        "july": "julio",
+        "august": "agosto",
+        "september": "septiembre",
+        "october": "octubre",
+        "november": "noviembre",
+        "december": "diciembre",
+    }
+    _s_to_e_months = {
+        "enero": "january",
+        "febrero": "february",
+        "marzo": "march",
+        "abril": "april",
+        "mayo": "may",
+        "junio": "june",
+        "julio": "july",
+        "agosto": "august",
+        "septiembre": "september",
+        "octubre": "october",
+        "noviembre": "november",
+        "diciembre": "december",
+    }
 
     @classmethod
     def english_to_spanish(cls, text):
@@ -62,27 +95,36 @@ def get_last_menus_page(retries=5):
         return _Cache.redirect_url
 
     total_retries = retries
-    logger.debug('Getting last menus url')
+    logger.debug("Getting last menus url")
 
     while retries:
         try:
             response = requests.get(PRINCIPAL_URL)
-            soup = Soup(response.text, 'html.parser')
-            container = soup.findAll('div', {'class': 'j-blog-meta'})
-            urls = [x.a['href'] for x in container]
+            soup = Soup(response.text, "html.parser")
+            container = soup.findAll("div", {"class": "j-blog-meta"})
+            urls = [x.a["href"] for x in container]
             url = urls[0]
             _Cache.redirect_url = url
             return url
         except ConnectionError:
             retries -= 1
-            logger.warning('Connection error downloading principal url (%r) (%d retries left)',
-                           PRINCIPAL_URL, retries)
+            logger.warning(
+                "Connection error downloading principal url (%r) (%d retries left)",
+                PRINCIPAL_URL,
+                retries,
+            )
 
     logger.critical(
-        'Fatal connection error downloading principal url (%r) (%d retries)',
-        PRINCIPAL_URL, total_retries)
+        "Fatal connection error downloading principal url (%r) (%d retries)",
+        PRINCIPAL_URL,
+        total_retries,
+    )
     return PRINCIPAL_URL
 
 
 def now():
     return datetime.now()
+
+
+def gen_token():
+    return now().strftime("%Y%m%d%H%M")
