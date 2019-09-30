@@ -87,12 +87,13 @@ class DailyMenusManager:
             self.menus += new_menus
 
     @classmethod
-    def load(cls, force=False):
-        """Loads the menus, from the database and from the menus web server.
+    def load(cls, force=None):
+        """Loads the menus, from the database and from the menus web server (only if
+        UpdateControl authorizes it).
 
         Args:
             force (bool): if True, download menus from the web server even if today is
-                in the database. Defaults to False.
+                in the database. If False, it will no download anything. Defaults to None.
         """
 
         self = DailyMenusManager()
@@ -100,7 +101,19 @@ class DailyMenusManager:
 
         today_date = now().date()
 
-        if today_date not in self or force:
+        update = today_date not in self
+
+        update = force if force is not None else update
+
+        # UpdateControl is more important than force
+        if not UpdateControl.should_update():
+            logger.info(
+                "Permission denied by UpdateControl (%s)",
+                UpdateControl.get_last_update(),
+            )
+            update = False
+
+        if update:
             urls = get_menus_urls()
 
             for url in urls:
@@ -133,12 +146,8 @@ class DailyMenusManager:
         self.add_to_menus([x.to_normal_daily_menu() for x in DailyMenuDB.query.all()])
 
     def save_to_database(self):
-        """Saves the menus from the database (only if UpdateControl authorizes it)."""
+        """Saves the menus from the database."""
 
-        if not UpdateControl.should_update():
-            logger.info('Permission denied by UpdateControl (%s)', UpdateControl.get_last_update())
-            return self
-
-        logger.debug('Saving menus to database')
+        logger.debug("Saving menus to database")
         for menu in self:
             menu.to_database()

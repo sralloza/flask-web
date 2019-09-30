@@ -224,72 +224,68 @@ class TestAddToMenus:
         assert date(2019, 10, 6) in dmm
 
 
-class TestLoad:
-    @pytest.fixture(autouse=True)
-    def auto_mock_update_control(self):
-        mock.patch("app.menus.core.daily_menus_manager.Parsers.parse").start()
-        yield
-        mock.patch.stopall()
+@pytest.fixture
+def load_mocks():
+    std_mock = mock.patch(
+        "app.menus.core.daily_menus_manager.DailyMenusManager.save_to_database"
+    ).start()
+    contains_mock = mock.patch(
+        "app.menus.core.daily_menus_manager.DailyMenusManager.__contains__"
+    ).start()
+    lfd_mock = mock.patch(
+        "app.menus.core.daily_menus_manager.DailyMenusManager.load_from_database"
+    ).start()
+    su_mock = mock.patch(
+        "app.menus.core.daily_menus_manager.UpdateControl.should_update"
+    ).start()
+    parse_mock = mock.patch("app.menus.core.daily_menus_manager.Parsers.parse").start()
+    gmu_mock = mock.patch("app.menus.core.daily_menus_manager.get_menus_urls").start()
+    gmu_mock.return_value = ["https://1.example.com", "https://2.example.com"]
+    yield std_mock, contains_mock, lfd_mock, su_mock, parse_mock, gmu_mock
 
-    @pytest.fixture
-    def mocks(self):
-        std_mock = mock.patch(
-            "app.menus.core.daily_menus_manager.DailyMenusManager.save_to_database"
-        ).start()
-        contains_mock = mock.patch(
-            "app.menus.core.daily_menus_manager.DailyMenusManager.__contains__"
-        ).start()
-        lfd_mock = mock.patch(
-            "app.menus.core.daily_menus_manager.DailyMenusManager.load_from_database"
-        ).start()
+    mock.patch.stopall()
 
-        yield std_mock, contains_mock, lfd_mock
 
-        mock.patch.stopall()
+@pytest.fixture(params=[None, False, True])
+def force(request):
+    return request.param
 
-    def test_nothing(self):
-        # TODO: test update control behaviour in DailyMenusManager.load()
-        assert 0
 
-    def test_today_not_found_without_force(self, mocks):
-        std_mock, contains_mock, lfd_mock = mocks
-        contains_mock.return_value = False
+@pytest.fixture(params=[True, False])
+def today_in_database(request):
+    return request.param
 
-        DailyMenusManager.load()
 
-        contains_mock.assert_called_with(now().date())
-        lfd_mock.assert_called_with()
-        std_mock.assert_called_with()
+@pytest.fixture(params=[True, False])
+def should_update(request):
+    return request.param
 
-    def test_today_found_without_force(self, mocks):
-        std_mock, contains_mock, lfd_mock = mocks
-        contains_mock.return_value = True
 
-        DailyMenusManager.load()
+def test_load(load_mocks, force, today_in_database, should_update):
+    std_mock, contains_mock, lfd_mock, su_mock, parse_mock, gmu_mock = load_mocks
+    contains_mock.return_value = today_in_database
+    su_mock.return_value = should_update
 
-        contains_mock.assert_called_with(now().date())
-        lfd_mock.assert_called_with()
+    will_update = force if force is not None else not today_in_database
+    will_update = False if should_update is False else will_update
+
+    DailyMenusManager.load(force=force)
+
+    # Mocks
+    lfd_mock.assert_called_once_with()
+    contains_mock.assert_called_once_with(now().date())
+
+    if will_update:
+        gmu_mock.assert_called_once_with()
+        std_mock.assert_called_once_with()
+        parse_mock.assert_called()
+        assert (
+            parse_mock.call_count == 2
+        )  # gmu_mock returns 2 subdomains of example.com
+    else:
+        gmu_mock.assert_not_called()
         std_mock.assert_not_called()
-
-    def test_today_not_found_with_force(self, mocks):
-        std_mock, contains_mock, lfd_mock = mocks
-        contains_mock.return_value = False
-
-        DailyMenusManager.load(force=True)
-
-        contains_mock.assert_called_with(now().date())
-        lfd_mock.assert_called_with()
-        std_mock.assert_called_with()
-
-    def test_today_found_with_force(self, mocks):
-        std_mock, contains_mock, lfd_mock = mocks
-        contains_mock.return_value = True
-
-        DailyMenusManager.load(force=True)
-
-        contains_mock.assert_called_with(now().date())
-        lfd_mock.assert_called_with()
-        std_mock.assert_called_with()
+        parse_mock.assert_not_called()
 
 
 def test_to_json():
@@ -322,7 +318,6 @@ def test_to_json():
     assert real_json == expected_json
 
 
-@pytest.mark.xfail
 @mock.patch("app.menus.core.daily_menus_manager.DailyMenuDB")
 @mock.patch("app.menus.core.daily_menus_manager.DailyMenusManager.add_to_menus")
 def test_load_from_database(atm_mock, dmdb_mock):
@@ -332,25 +327,23 @@ def test_load_from_database(atm_mock, dmdb_mock):
             day=1,
             month=1,
             year=2019,
-            lunch1="lunch1",
-            lunch2="lunch2",
+            lunch1="lunch-1",
+            lunch2="lunch-2",
             dinner1="dinner-1",
             dinner2="dinner-2",
         )
     ] * 2
+    menu = DailyMenu(
+        1, 1, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+    )
 
     dmm = DailyMenusManager()
     dmm.load_from_database()
 
     dmdb_mock.query.all.assert_called_once_with()
-    atm_mock.assert_has_calls(
-        [
-            DailyMenu(
-                1, 1, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
-            )
-        ]
-        * 2
-    )
+    atm_mock.assert_called_once()
+
+    atm_mock.assert_has_calls([mock.call([menu, menu])], any_order=True)
 
 
 @mock.patch("app.menus.core.daily_menus_manager.logger.debug")
