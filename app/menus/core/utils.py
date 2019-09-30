@@ -1,6 +1,5 @@
 import logging
 import re
-from threading import Thread
 from typing import List, Union
 
 import requests
@@ -77,6 +76,8 @@ def filter_data(data: Union[str, List[str]]):
             data[i] = data[i].replace('2o plato:', '2º plato:')
         elif '2 plato:' in data[i]:
             data[i] = data[i].replace('2 plato:', '2º plato:')
+        elif '.' in data[i]:
+            data[i] = data[i].replace('.', '')
 
     out = []
     for i, d in enumerate(data):
@@ -104,6 +105,10 @@ def filter_data(data: Union[str, List[str]]):
                 foo = Patterns.semi_day_pattern_1.search(data[i - 1]).group() + ' de ' + \
                       Patterns.semi_day_pattern_2.search(d).group()
                 out.append(foo)
+        elif '2º plato' in data[i - 1] and data[i - 1].endswith('con'):
+            out[-1] += ' ' + d
+        elif '1er plato' in data[i - 1] and i + 1 < len(data) and '2º plato' in data[i + 1]:
+            out[-1] += ' ' + d
         else:
             if 'combinado' in data[i - 1] and 'postre' not in d:
                 out[-1] += ' ' + d
@@ -127,31 +132,3 @@ class Patterns:
 
     fix_dates_pattern_1 = re.compile(r'(\w+)[\n\s]*(\d{4})', re.I)
     fix_dates_pattern_2 = re.compile(r'(día:)[\s\n]*(\d+)', re.I)
-
-    ignore_patters = (
-        re.compile(r'\d+\.\s\w+\s\d+', re.IGNORECASE),
-        re.compile(r'semana del \d+ al \d+ de \w+', re.IGNORECASE),
-        re.compile(r'semana del \d+ de \w+ al \d+ de \w+ \d+', re.IGNORECASE)
-    )
-
-
-class Worker(Thread):
-    """Thread to download data from menus urls."""
-    def __init__(self, url, dmm, retries=5):
-        """
-
-        Args:
-            url (str): url to get the data from.
-            dmm (DailyMenusManager): DailyMenusManager which controls the data.
-            retries (int): max retries in case of connection error. Defaults to 5.
-
-        """
-        super().__init__()
-        self.url = url
-        self.retries = retries
-        self.dmm = dmm
-
-    def run(self):
-        """Runs the thread."""
-        logger.debug('Starting worker with url %s', self.url)
-        self.dmm.process_url(self.url, self.retries)

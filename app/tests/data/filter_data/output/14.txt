@@ -1,0 +1,49 @@
+día: 26 de marzo de 2019 (martes)
+comida:
+1er plato: macarrones con chorizo
+2º plato: pescado en salsa
+cena:
+1er plato: crema de verduras
+2º plato: lomo con patatas
+día: 27 de marzo de 2019 (miercoles)
+comida:
+1er plato: patatas con bechamel
+2º plato: ragú de ternera
+cena:
+1er plato: ensalada tropical
+2º plato: huevo frito con salchichas y croquetas
+día: 28 de marzo de 2019 (jueves)
+comida:
+1er plato: fideuá de mejillones, calamares y gambas
+2º plato: albondigas
+cena:
+1er plato: guisantes salteados
+2º plato: hamburguesas con crujientes de corn flakes
+día: 29 de marzo de 2019 (viernes)
+comida:
+1er plato: alubias con vinagreta
+2º plato: salmón a la naranja
+cena:
+1er plato: sopa de verduras
+2º plato: pizza margarita
+día: 30 de marzo de 2019 (sabado)
+comida:
+1er plato: ensalada de pasta
+2º plato: pollo al ajillo
+cena:
+1er plato: ensalada de queso fresco
+2º plato: baguettes variadas
+día: 31 de marzo de 2019 (domingo)
+comida:
+1er plato: patatas a la riojana
+2º plato: escalope con guarnición
+cena:
+1er plato: sopa maravilla
+2º plato: perrito caliente completo
+día: 01 de abril de 2019 (lunes)
+comida:
+1er plato: mac and cheese
+2º plato: costilla bbq con patatas gajo
+cena:
+1er plato: ensalada cesar
+2º plato: hamburguesa de buey

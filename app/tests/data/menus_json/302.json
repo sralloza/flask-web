@@ -1,0 +1,50 @@
+[
+    {
+        "id": 20190621,
+        "day": "Viernes 21",
+        "lunch": {
+            "p1": "garbanzos guisados",
+            "p2": "muslos de pollo asados con guarnición"
+        },
+        "dinner": {
+            "p1": "revuelto de patata, calabacín y chorizo",
+            "p2": "sandwich vegetal"
+        }
+    },
+    {
+        "id": 20190622,
+        "day": "Sábado 22",
+        "lunch": {
+            "p1": "calabacín relleno de queso de cabra",
+            "p2": "filete de ternera con patatas"
+        },
+        "dinner": {
+            "p1": "rollitos de primavera",
+            "p2": "baguettes de rabas"
+        }
+    },
+    {
+        "id": 20190623,
+        "day": "Domingo 23",
+        "lunch": {
+            "p1": "volovanes rellenos de langostinos y piña",
+            "p2": "merluza con ensalada"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "pizzas variadas"
+        }
+    },
+    {
+        "id": 20190624,
+        "day": "Lunes 24",
+        "lunch": {
+            "p1": "ensalada de pasta",
+            "p2": "lomo adobado con patatas"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "hamburguesa de ternera a la barbacoa"
+        }
+    }
+]

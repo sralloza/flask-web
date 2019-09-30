@@ -1,446 +1,362 @@
-import json
 import random
-from datetime import date, datetime
+from datetime import date
 from unittest import mock
 
 import pytest
 
-from app.config import Config
 from app.menus.core.daily_menus_manager import DailyMenusManager
 from app.menus.core.structure import DailyMenu, Meal
 from app.menus.models import DailyMenuDB
+from app.utils import now
 
 
-class TestDailyMenusManager:
-    @pytest.fixture
-    def dmm(self):
+@pytest.fixture
+def dmm():
+    dmm = DailyMenusManager()
+    lunch = Meal("lunch-1", "lunch-2")
+    dinner = Meal("dinner-1", "dinner-2")
+    for e in range(1, 13):
+        menu = DailyMenu(e, e, 2019, lunch, dinner)
+        dmm.menus.append(menu)
+
+    return dmm
+
+
+# noinspection PyTypeChecker
+def test_contains(dmm):
+    assert date(2019, 1, 1) in dmm
+    assert date(2019, 2, 2) in dmm
+    assert date(2019, 3, 3) in dmm
+    assert date(2019, 4, 4) in dmm
+    assert date(2019, 5, 5) in dmm
+    assert date(2019, 6, 6) in dmm
+    assert date(2019, 7, 7) in dmm
+    assert date(2019, 8, 8) in dmm
+    assert date(2019, 9, 9) in dmm
+    assert date(2019, 10, 10) in dmm
+    assert date(2019, 11, 11) in dmm
+    assert date(2019, 12, 12) in dmm
+
+    with pytest.raises(TypeError, match="Contains does only work with dates"):
+        assert object in dmm
+    with pytest.raises(TypeError, match="Contains does only work with dates"):
+        assert 5 in dmm
+    with pytest.raises(TypeError, match="Contains does only work with dates"):
+        assert 7 + 1j in dmm
+    with pytest.raises(TypeError, match="Contains does only work with dates"):
+        assert "error" in dmm
+
+
+def test_getitem(dmm):
+    assert dmm[date(2019, 1, 1)]
+    assert dmm[date(2019, 2, 2)]
+    assert dmm[date(2019, 3, 3)]
+    assert dmm[date(2019, 4, 4)]
+    assert dmm[date(2019, 5, 5)]
+    assert dmm[date(2019, 6, 6)]
+
+    with pytest.raises(TypeError, match="Getitem does only work with dates"):
+        assert dmm[object]
+    with pytest.raises(TypeError, match="Getitem does only work with dates"):
+        assert dmm[5]
+    with pytest.raises(TypeError, match="Getitem does only work with dates"):
+        assert dmm[7 + 1j]
+    with pytest.raises(TypeError, match="Getitem does only work with dates"):
+        assert dmm["error"]
+
+    with pytest.raises(KeyError, match="No menu found"):
+        assert dmm[date(1970, 1, 1)]
+
+
+def test_sort(dmm):
+    random.shuffle(dmm.menus)
+
+    ideal_dates = [x.date for x in dmm]
+    ideal_dates.sort(reverse=True)
+    dmm.sort()
+    real_dates = [x.date for x in dmm]
+
+    assert real_dates == ideal_dates
+
+
+def test_to_string(dmm):
+    string1 = dmm.to_string()
+    string2 = str(dmm)
+    string3 = repr(dmm)
+
+    assert string1 == string2 == string3
+
+    assert len(string1)
+    assert string1.count("\n") == 95
+    assert string1.count("(") == 12
+    assert string1.count(")") == 12
+    assert string1.count("(") == string1.count(")")
+
+    assert string1.count("Comida") == 12
+    assert string1.count("lunch-1") == 12
+    assert string1.count("lunch-2") == 12
+    assert string1.count("Comida") == string1.count("lunch-1")
+
+    assert string1.count("Cena") == 12
+    assert string1.count("dinner-1") == 12
+    assert string1.count("dinner-2") == 12
+    assert string1.count("Cena") == string1.count("dinner-1")
+
+
+def test_to_html(dmm):
+    string = dmm.to_html()
+
+    assert len(string)
+    assert string.count("<br>") == 95
+    assert string.count("(") == 12
+    assert string.count(")") == 12
+    assert string.count("(") == string.count(")")
+
+    assert string.count("Comida") == 12
+    assert string.count("lunch-1") == 12
+    assert string.count("lunch-2") == 12
+    assert string.count("Comida") == string.count("lunch-1")
+
+    assert string.count("Cena") == 12
+    assert string.count("dinner-1") == 12
+    assert string.count("dinner-2") == 12
+    assert string.count("Cena") == string.count("dinner-1")
+
+
+class TestAddToMenus:
+    def test_one_menu(self):
         dmm = DailyMenusManager()
-        lunch = Meal('L1', 'L2')
-        dinner = Meal('D1', 'D2')
-        for e in range(1, 13):
-            menu = DailyMenu(e, e, 2019, lunch, dinner)
-            dmm.menus.append(menu)
 
-        return dmm
+        menu = DailyMenu(
+            6, 12, 2019, Meal("lunch1", "lunch2"), Meal("dinner-1", "dinner-2")
+        )
+        assert date(2019, 12, 6) not in dmm
 
-    # noinspection PyTypeChecker
-    def test_contains(self, dmm):
-        assert date(2019, 1, 1) in dmm
-        assert date(2019, 2, 2) in dmm
-        assert date(2019, 3, 3) in dmm
-        assert date(2019, 4, 4) in dmm
-        assert date(2019, 5, 5) in dmm
-        assert date(2019, 6, 6) in dmm
-        assert date(2019, 7, 7) in dmm
-        assert date(2019, 8, 8) in dmm
-        assert date(2019, 9, 9) in dmm
-        assert date(2019, 10, 10) in dmm
-        assert date(2019, 11, 11) in dmm
-        assert date(2019, 12, 12) in dmm
+        dmm.add_to_menus(menu)
+        assert date(2019, 12, 6) in dmm
 
-        with pytest.raises(TypeError, match='Contains does only work with dates'):
-            assert object in dmm
-        with pytest.raises(TypeError, match='Contains does only work with dates'):
-            assert 5 in dmm
-        with pytest.raises(TypeError, match='Contains does only work with dates'):
-            assert 7 + 1j in dmm
-        with pytest.raises(TypeError, match='Contains does only work with dates'):
-            assert 'error' in dmm
+    def test_multiples_menus(self):
+        dmm = DailyMenusManager()
 
-    def test_sort(self, dmm):
-        random.shuffle(dmm.menus)
+        menu1 = DailyMenu(
+            6, 12, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+        )
+        menu2 = DailyMenu(
+            6, 11, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+        )
+        menu3 = DailyMenu(
+            6, 10, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+        )
 
-        ideal_dates = [x.date for x in dmm]
-        ideal_dates.sort(reverse=True)
-        dmm.sort()
-        real_dates = [x.date for x in dmm]
+        assert date(2019, 12, 6) not in dmm
+        assert date(2019, 11, 6) not in dmm
+        assert date(2019, 10, 6) not in dmm
 
-        assert real_dates == ideal_dates
+        dmm.add_to_menus([menu1, menu2, menu3])
+        assert date(2019, 12, 6) in dmm
+        assert date(2019, 11, 6) in dmm
+        assert date(2019, 10, 6) in dmm
 
-    def test_to_string(self, dmm):
-        string1 = dmm.to_string()
-        string2 = str(dmm)
-        string3 = repr(dmm)
+    def test_multiple_calls(self):
+        dmm = DailyMenusManager()
 
-        assert string1 == string2 == string3
+        menu1 = DailyMenu(
+            6, 12, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+        )
+        menu2 = DailyMenu(
+            6, 11, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+        )
+        menu3 = DailyMenu(
+            6, 10, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+        )
 
-        assert len(string1)
-        assert string1.count('\n') == 95
-        assert string1.count('(') == 12
-        assert string1.count(')') == 12
-        assert string1.count('(') == string1.count(')')
+        assert len(dmm) == 0
+        assert date(2019, 12, 6) not in dmm
+        assert date(2019, 11, 6) not in dmm
+        assert date(2019, 10, 6) not in dmm
 
-        assert string1.count('Comida') == 12
-        assert string1.count('L1') == 12
-        assert string1.count('L2') == 12
-        assert string1.count('Comida') == string1.count('L1')
+        dmm.add_to_menus(menu1)
+        assert len(dmm) == 1
+        assert date(2019, 12, 6) in dmm
+        assert date(2019, 11, 6) not in dmm
+        assert date(2019, 10, 6) not in dmm
 
-        assert string1.count('Cena') == 12
-        assert string1.count('D1') == 12
-        assert string1.count('D2') == 12
-        assert string1.count('Cena') == string1.count('D1')
+        dmm.add_to_menus(menu2)
+        assert len(dmm) == 2
+        assert date(2019, 12, 6) in dmm
+        assert date(2019, 11, 6) in dmm
+        assert date(2019, 10, 6) not in dmm
 
-    def test_to_html(self, dmm):
-        string = dmm.to_html()
+        dmm.add_to_menus(menu3)
+        assert len(dmm) == 3
+        assert date(2019, 12, 6) in dmm
+        assert date(2019, 11, 6) in dmm
+        assert date(2019, 10, 6) in dmm
 
-        assert len(string)
-        assert string.count('<br>') == 95
-        assert string.count('(') == 12
-        assert string.count(')') == 12
-        assert string.count('(') == string.count(')')
+    def test_add_duplicate_menus(self):
+        dmm = DailyMenusManager()
 
-        assert string.count('Comida') == 12
-        assert string.count('L1') == 12
-        assert string.count('L2') == 12
-        assert string.count('Comida') == string.count('L1')
+        menu1 = DailyMenu(
+            6, 12, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+        )
+        menu2 = DailyMenu(
+            6, 11, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+        )
+        menu3 = DailyMenu(
+            6, 10, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+        )
 
-        assert string.count('Cena') == 12
-        assert string.count('D1') == 12
-        assert string.count('D2') == 12
-        assert string.count('Cena') == string.count('D1')
+        assert len(dmm) == 0
+        assert date(2019, 12, 6) not in dmm
+        assert date(2019, 11, 6) not in dmm
+        assert date(2019, 10, 6) not in dmm
 
-    class TestAddToMenus:
-        def test_one_menu(self):
-            dmm = DailyMenusManager()
+        dmm.add_to_menus([menu1, menu2, menu3])
+        assert len(dmm) == 3
+        assert date(2019, 12, 6) in dmm
+        assert date(2019, 11, 6) in dmm
+        assert date(2019, 10, 6) in dmm
 
-            menu = DailyMenu(6, 12, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
-            assert date(2019, 12, 6) not in dmm
+        dmm.add_to_menus([menu1, menu2, menu3])
+        assert len(dmm) == 3
+        assert date(2019, 12, 6) in dmm
+        assert date(2019, 11, 6) in dmm
+        assert date(2019, 10, 6) in dmm
 
-            dmm.add_to_menus(menu)
-            assert date(2019, 12, 6) in dmm
 
-        def test_multiples_menus(self):
-            dmm = DailyMenusManager()
+@pytest.fixture
+def load_mocks():
+    std_mock = mock.patch(
+        "app.menus.core.daily_menus_manager.DailyMenusManager.save_to_database"
+    ).start()
+    contains_mock = mock.patch(
+        "app.menus.core.daily_menus_manager.DailyMenusManager.__contains__"
+    ).start()
+    lfd_mock = mock.patch(
+        "app.menus.core.daily_menus_manager.DailyMenusManager.load_from_database"
+    ).start()
+    su_mock = mock.patch(
+        "app.menus.core.daily_menus_manager.UpdateControl.should_update"
+    ).start()
+    parse_mock = mock.patch("app.menus.core.daily_menus_manager.Parsers.parse").start()
+    gmu_mock = mock.patch("app.menus.core.daily_menus_manager.get_menus_urls").start()
+    gmu_mock.return_value = ["https://1.example.com", "https://2.example.com"]
+    yield std_mock, contains_mock, lfd_mock, su_mock, parse_mock, gmu_mock
 
-            menu1 = DailyMenu(6, 12, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
-            menu2 = DailyMenu(6, 11, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
-            menu3 = DailyMenu(6, 10, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+    mock.patch.stopall()
 
-            assert date(2019, 12, 6) not in dmm
-            assert date(2019, 11, 6) not in dmm
-            assert date(2019, 10, 6) not in dmm
 
-            dmm.add_to_menus([menu1, menu2, menu3])
-            assert date(2019, 12, 6) in dmm
-            assert date(2019, 11, 6) in dmm
-            assert date(2019, 10, 6) in dmm
+@pytest.fixture(params=[None, False, True])
+def force(request):
+    return request.param
 
-        def test_multiple_calls(self):
-            dmm = DailyMenusManager()
 
-            menu1 = DailyMenu(6, 12, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
-            menu2 = DailyMenu(6, 11, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
-            menu3 = DailyMenu(6, 10, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+@pytest.fixture(params=[True, False])
+def today_in_database(request):
+    return request.param
 
-            assert len(dmm) == 0
-            assert date(2019, 12, 6) not in dmm
-            assert date(2019, 11, 6) not in dmm
-            assert date(2019, 10, 6) not in dmm
 
-            dmm.add_to_menus(menu1)
-            assert len(dmm) == 1
-            assert date(2019, 12, 6) in dmm
-            assert date(2019, 11, 6) not in dmm
-            assert date(2019, 10, 6) not in dmm
+@pytest.fixture(params=[True, False])
+def should_update(request):
+    return request.param
 
-            dmm.add_to_menus(menu2)
-            assert len(dmm) == 2
-            assert date(2019, 12, 6) in dmm
-            assert date(2019, 11, 6) in dmm
-            assert date(2019, 10, 6) not in dmm
 
-            dmm.add_to_menus(menu3)
-            assert len(dmm) == 3
-            assert date(2019, 12, 6) in dmm
-            assert date(2019, 11, 6) in dmm
-            assert date(2019, 10, 6) in dmm
+def test_load(load_mocks, force, today_in_database, should_update):
+    std_mock, contains_mock, lfd_mock, su_mock, parse_mock, gmu_mock = load_mocks
+    contains_mock.return_value = today_in_database
+    su_mock.return_value = should_update
 
-        def test_add_duplicate_menus(self):
-            dmm = DailyMenusManager()
+    will_update = force if force is not None else not today_in_database
+    will_update = False if should_update is False else will_update
 
-            menu1 = DailyMenu(6, 12, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
-            menu2 = DailyMenu(6, 11, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
-            menu3 = DailyMenu(6, 10, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+    DailyMenusManager.load(force=force)
 
-            assert len(dmm) == 0
-            assert date(2019, 12, 6) not in dmm
-            assert date(2019, 11, 6) not in dmm
-            assert date(2019, 10, 6) not in dmm
+    # Mocks
+    lfd_mock.assert_called_once_with()
+    contains_mock.assert_called_once_with(now().date())
 
-            dmm.add_to_menus([menu1, menu2, menu3])
-            assert len(dmm) == 3
-            assert date(2019, 12, 6) in dmm
-            assert date(2019, 11, 6) in dmm
-            assert date(2019, 10, 6) in dmm
+    if will_update:
+        gmu_mock.assert_called_once_with()
+        std_mock.assert_called_once_with()
+        parse_mock.assert_called()
+        assert (
+            parse_mock.call_count == 2
+        )  # gmu_mock returns 2 subdomains of example.com
+    else:
+        gmu_mock.assert_not_called()
+        std_mock.assert_not_called()
+        parse_mock.assert_not_called()
 
-            dmm.add_to_menus([menu1, menu2, menu3])
-            assert len(dmm) == 3
-            assert date(2019, 12, 6) in dmm
-            assert date(2019, 11, 6) in dmm
-            assert date(2019, 10, 6) in dmm
 
-    class TestLoad:
-        @pytest.fixture
-        def mocks(self):
-            std_mock = mock.patch(
-                'app.menus.core.daily_menus_manager.DailyMenusManager.save_to_database').start()
-            lfmu_mock = mock.patch(
-                'app.menus.core.daily_menus_manager.DailyMenusManager.load_from_menus_urls').start()
-            contains_mock = mock.patch(
-                'app.menus.core.daily_menus_manager.DailyMenusManager.__contains__').start()
-            lfd_mock = mock.patch(
-                'app.menus.core.daily_menus_manager.DailyMenusManager.load_from_database').start()
-
-            yield std_mock, lfmu_mock, contains_mock, lfd_mock
-
-            mock.patch.stopall()
-
-        def test_today_not_found_without_force(self, mocks):
-            std_mock, lfmu_mock, contains_mock, lfd_mock = mocks
-            contains_mock.return_value = False
-
-            DailyMenusManager.load()
-
-            contains_mock.assert_called_with(datetime.today().date())
-            lfd_mock.assert_called_with()
-            lfmu_mock.assert_called_with()
-            std_mock.assert_called_with()
-
-        def test_today_found_without_force(self, mocks):
-            std_mock, lfmu_mock, contains_mock, lfd_mock = mocks
-            contains_mock.return_value = True
-
-            DailyMenusManager.load()
-
-            contains_mock.assert_called_with(datetime.today().date())
-            lfd_mock.assert_called_with()
-            lfmu_mock.assert_not_called()
-            std_mock.assert_not_called()
-
-        def test_today_not_found_with_force(self, mocks):
-            std_mock, lfmu_mock, contains_mock, lfd_mock = mocks
-            contains_mock.return_value = False
-
-            DailyMenusManager.load(force=True)
-
-            contains_mock.assert_called_with(datetime.today().date())
-            lfd_mock.assert_called_with()
-            lfmu_mock.assert_called_with()
-            std_mock.assert_called_with()
-
-        def test_today_found_with_force(self, mocks):
-            std_mock, lfmu_mock, contains_mock, lfd_mock = mocks
-            contains_mock.return_value = True
-
-            DailyMenusManager.load(force=True)
-
-            contains_mock.assert_called_with(datetime.today().date())
-            lfd_mock.assert_called_with()
-            lfmu_mock.assert_called_with()
-            std_mock.assert_called_with()
-
-    @mock.patch('app.menus.core.daily_menus_manager.DailyMenusManager.save_to_database')
-    @mock.patch('app.menus.core.daily_menus_manager.DailyMenusManager.add_to_menus')
-    @mock.patch('app.menus.core.daily_menus_manager.DailyMenusManager._add_manual')
-    def test_add_manual(self, am_mock, atm_mock, std_mock):
-        DailyMenusManager.add_manual()
-        am_mock.assert_called_once()
-        atm_mock.assert_called_once()
-        std_mock.assert_called_once()
-
-    @pytest.fixture
-    def hidden_add_manual_mocks(self):
-        input_mock = mock.patch('app.menus.core.daily_menus_manager.input').start()
-        print_mock = mock.patch('app.menus.core.daily_menus_manager.print').start()
-        confirm_mock = mock.patch(
-            'app.menus.core.daily_menus_manager.DailyMenusManager._confirm').start()
-
-        yield input_mock, print_mock, confirm_mock
-
-        mock.patch.stopall()
-
-    HIDDEN_ADD_MANUAL_GOOD = [1, 1, 2019, 'L1', 'L2', 'D1', 'D2']
-    hidden_add_manual_data = (
-        (HIDDEN_ADD_MANUAL_GOOD, True),
-        (['X', 1, 2019, 'L1', 'L2', 'D1', 'D2'],
-         "ValueError: invalid literal for int() with base 10: 'X'"),
-        ([1, 'Y', 2019, 'L1', 'L2', 'D1', 'D2'],
-         "ValueError: invalid literal for int() with base 10: 'Y'"),
-        ([1, 1, 'Z', 'L1', 'L2', 'D1', 'D2'],
-         "ValueError: invalid literal for int() with base 10: 'Z'"),
+def test_to_json():
+    dmm = DailyMenusManager()
+    menu1 = DailyMenu(
+        6, 12, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+    )
+    menu2 = DailyMenu(
+        6, 11, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
     )
 
-    @pytest.mark.parametrize('input_side_effect, code', hidden_add_manual_data)
-    def test_hidden_add_manual(self, input_side_effect, code, hidden_add_manual_mocks):
-        input_mock, print_mock, confirm_mock = hidden_add_manual_mocks
-        all_right = code is True
+    dmm.add_to_menus([menu1, menu2])
 
-        if not all_right:
-            input_mock.side_effect = input_side_effect + self.HIDDEN_ADD_MANUAL_GOOD
-        else:
-            input_mock.side_effect = input_side_effect
+    expected_json = [
+        {
+            "id": 20191206,
+            "day": "Viernes 6",
+            "lunch": {"p1": "lunch-1", "p2": "lunch-2"},
+            "dinner": {"p1": "dinner-1", "p2": "dinner-2"},
+        },
+        {
+            "id": 20191106,
+            "day": "Miércoles 6",
+            "lunch": {"p1": "lunch-1", "p2": "lunch-2"},
+            "dinner": {"p1": "dinner-1", "p2": "dinner-2"},
+        },
+    ]
 
-        menu = DailyMenusManager._add_manual()
+    real_json = dmm.to_json()
+    assert real_json == expected_json
 
-        assert isinstance(menu, DailyMenu)
-        input_mock.assert_called()
 
-        print_mock.has_call('Saving...')
-
-        if not all_right:
-            print_mock.has_call(code)
-
-    data = (
-        ('no', False), ('si', True), ('sí', True), ('Yes', True), ('No', False), ('Si', True),
-        ('Sí', True), ('other', -1), ('0', False), ('1', True), ('asdfsadf', -1), ('quit', -2)
+@mock.patch("app.menus.core.daily_menus_manager.DailyMenuDB")
+@mock.patch("app.menus.core.daily_menus_manager.DailyMenusManager.add_to_menus")
+def test_load_from_database(atm_mock, dmdb_mock):
+    dmdb_mock.query.all.return_value = [
+        DailyMenuDB(
+            id=20190101,
+            day=1,
+            month=1,
+            year=2019,
+            lunch1="lunch-1",
+            lunch2="lunch-2",
+            dinner1="dinner-1",
+            dinner2="dinner-2",
+        )
+    ] * 2
+    menu = DailyMenu(
+        1, 1, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
     )
 
-    @pytest.mark.parametrize('arg, expect', data)
-    @mock.patch('app.menus.core.daily_menus_manager.input')
-    @mock.patch('app.menus.core.daily_menus_manager.print')
-    def test_confirm(self, print_mock, input_mock, arg, expect):
-        if expect == -1:
-            input_mock.side_effect = (arg, 'Y')
-        else:
-            input_mock.return_value = arg
+    dmm = DailyMenusManager()
+    dmm.load_from_database()
 
-        if expect == -2:
-            with pytest.raises(SystemExit):
-                DailyMenusManager._confirm('Whatever')
-            print_mock.assert_called_with('Cancelled')
-            return
+    dmdb_mock.query.all.assert_called_once_with()
+    atm_mock.assert_called_once()
 
-        got = DailyMenusManager._confirm('Whatever')
+    atm_mock.assert_has_calls([mock.call([menu, menu])], any_order=True)
 
-        if expect == -1:
-            print_mock.assert_called_with('Invalid response')
-            input_mock.assert_called_with('Whatever [y/n/q]\t')
-            assert input_mock.call_count == 2
-        else:
-            print_mock.assert_not_called()
-            input_mock.assert_called_once_with('Whatever [y/n/q]\t')
-            assert got == expect
 
-    def test_to_json(self):
-        dmm = DailyMenusManager()
-        menu1 = DailyMenu(6, 12, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
-        menu2 = DailyMenu(6, 11, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))
+@mock.patch("app.menus.core.daily_menus_manager.logger.debug")
+@mock.patch("app.menus.core.daily_menus_manager.UpdateControl.get_last_update")
+def test_save_to_database(glu_mock, debug_mock):
+    glu_mock.return_value = "[info]"
+    menu_mock = mock.Mock()
+    menu_mock.to_string.return_value = "DailyMenu(mock)"
 
-        dmm.add_to_menus([menu1, menu2])
+    dmm = DailyMenusManager()
+    dmm.add_to_menus([menu_mock, menu_mock])
+    dmm.save_to_database()
 
-        expected_json = [
-            {"id": 20191206, "day": 'Viernes 6', "lunch": {"p1": 'L1', "p2": 'L2'},
-             "dinner": {"p1": 'D1', "p2": 'D2'}},
-            {"id": 20191106, "day": 'Miércoles 6', "lunch": {"p1": 'L1', "p2": 'L2'},
-             "dinner": {"p1": 'D1', "p2": 'D2'}}
-        ]
-
-        real_json = dmm.to_json()
-        assert real_json == expected_json
-
-    @mock.patch('app.menus.core.daily_menus_manager.DailyMenuDB')
-    @mock.patch('app.menus.core.daily_menus_manager.DailyMenusManager.add_to_menus')
-    def test_load_from_database(self, atm_mock, dmdb_mock):
-        dmdb_mock.query.all.return_value = [DailyMenuDB(
-            id=20190101, day=1, month=1, year=2019, lunch1='L1', lunch2='L2', dinner1='D1',
-            dinner2='D2')]
-
-        dmm = DailyMenusManager()
-        dmm.load_from_database()
-
-        dmdb_mock.query.all.assert_called_once_with()
-        atm_mock.assert_called_with([DailyMenu(1, 1, 2019, Meal('L1', 'L2'), Meal('D1', 'D2'))])
-
-    @pytest.fixture
-    def save_to_database_mocks(self):
-        glu_mock = mock.patch(
-            'app.menus.core.daily_menus_manager.UpdateControl.get_last_update').start()
-        should_update_mock = mock.patch(
-            'app.menus.core.daily_menus_manager.UpdateControl.should_update').start()
-        logger_mock = mock.patch('app.menus.core.daily_menus_manager.logger').start()
-
-        yield glu_mock, should_update_mock, logger_mock
-
-        mock.patch.stopall()
-
-    @pytest.mark.parametrize('should_update', [True, False])
-    def test_save_to_database(self, should_update, save_to_database_mocks):
-        glu_mock, should_update_mock, logger_mock = save_to_database_mocks
-
-        should_update_mock.return_value = should_update
-        glu_mock.return_value = '[info]'
-        menu_mock = mock.Mock()
-
-        dmm = DailyMenusManager()
-        dmm.add_to_menus([menu_mock, menu_mock])
-        dmm.save_to_database()
-
-        if should_update:
-            menu_mock.to_database.assert_called()
-            assert menu_mock.to_database.call_count == 2
-            logger_mock.debug.assert_called_with('Saving menus to database')
-        else:
-            logger_mock.info.assert_called_with('Permission denied by UpdateControl (%s)', '[info]')
-
-    @pytest.fixture
-    def load_from_menus_urls_mocks(self):
-        gmu_mock = mock.patch('app.menus.core.daily_menus_manager.get_menus_urls').start()
-        worker_mock = mock.patch('app.menus.core.daily_menus_manager.Worker').start()
-        logger_mock = mock.patch('app.menus.core.daily_menus_manager.logger').start()
-
-        yield gmu_mock, worker_mock, logger_mock
-
-        mock.patch.stopall()
-
-    def test_load_from_menus_urls(self, load_from_menus_urls_mocks):
-        gmu_mock, worker_mock, logger_mock = load_from_menus_urls_mocks
-
-        gmu_mock.return_value = ['url-1', 'url-2', 'url-3', 'url-4']
-
-        dmm = DailyMenusManager()
-        dmm.load_from_menus_urls()
-
-        logger_mock.debug.assert_called_with('Loading from menus urls')
-        worker_mock.assert_any_call('url-1', dmm)
-        worker_mock.assert_any_call('url-2', dmm)
-        worker_mock.assert_any_call('url-3', dmm)
-        worker_mock.assert_any_call('url-4', dmm)
-        worker_mock.return_value.start.assert_called()
-        assert worker_mock.return_value.start.call_count == 4
-        worker_mock.return_value.join.assert_called()
-        assert worker_mock.return_value.join.call_count == 4
-
-    @pytest.fixture
-    def process_url_mocks(self):
-        logger_mock = mock.patch('app.menus.core.daily_menus_manager.logger').start()
-        requests_mock = mock.patch('app.menus.core.daily_menus_manager.requests').start()
-
-        yield logger_mock, requests_mock
-
-        mock.patch.stopall()
-
-    @pytest.mark.parametrize('number', [1, 2, 3, 4, 5, 6, 7])
-    def test_process_url_process_text_update_menu(self, process_url_mocks, number):
-        root_path = Config.TEST_DATA_PATH / 'menus-html' / f'{number}'
-        html_path = root_path / 'html.html'
-        json_path = root_path / 'data.json'
-
-        with html_path.open(encoding='utf-8') as f:
-            file_content = f.read()
-
-        logger_mock, requests_mock = process_url_mocks
-        requests_mock.get.return_value.text = file_content
-
-        dmm = DailyMenusManager()
-        dmm.process_url('https://example.com')
-        real_json = dmm.to_json()
-
-        with json_path.open('r', encoding='utf-8') as f:
-            json_expected = json.load(f)
-
-        assert len(dmm) == len(json_expected)
-        assert real_json == json_expected
-
-        # path = Path('D:/') / (number + '.json')
-        # with path.open('wt', encoding='utf-8') as f:
-        #     f.write(json.dumps(dmm.to_json(), ensure_ascii=False))
+    menu_mock.to_database.assert_called()
+    assert menu_mock.to_database.call_count == 2
+    debug_mock.assert_called_with("Saving menus to database")

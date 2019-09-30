@@ -1,0 +1,62 @@
+[
+    {
+        "id": 20190409,
+        "day": "Martes 9",
+        "lunch": {
+            "p1": "patatas con costilla",
+            "p2": "pechuga de pollo"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "hamburguesa de buey a la plancha"
+        }
+    },
+    {
+        "id": 20190410,
+        "day": "Miércoles 10",
+        "lunch": {
+            "p1": "macarrones salteados con setas",
+            "p2": "escalope con guarnición"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "merluza a la romana con ensalada"
+        }
+    },
+    {
+        "id": 20190411,
+        "day": "Jueves 11",
+        "lunch": {
+            "p1": "menestra de verduras",
+            "p2": "ragu de ternera"
+        },
+        "dinner": {
+            "p1": "ensalada tropical",
+            "p2": "alas de pollo al horno con patatas"
+        }
+    },
+    {
+        "id": 20190412,
+        "day": "Viernes 12",
+        "lunch": {
+            "p1": "arroz a la cubana",
+            "p2": "bacalao en salsa"
+        },
+        "dinner": {
+            "p1": "PC:",
+            "p2": null
+        }
+    },
+    {
+        "id": 20190313,
+        "day": "Miércoles 13",
+        "lunch": {
+            "p1": null,
+            "p2": null
+        },
+        "dinner": {
+            "p1": null,
+            "p2": null
+        }
+    }
+]

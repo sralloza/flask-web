@@ -1,11 +1,26 @@
 from pathlib import Path
+from typing import Tuple, List
 from unittest import mock
 
 import pytest
 from requests.exceptions import ConnectionError
 
-from app.menus.core.utils import get_menus_urls, PRINCIPAL_URL, Worker, has_day, filter_data, \
+from app.config import Config
+from app.menus.core.utils import get_menus_urls, PRINCIPAL_URL, has_day, filter_data, \
     Patterns
+
+_inputs = Path(Config.TEST_DATA_PATH / 'filter_data' / 'input').glob('*.txt')
+_outputs = Path(Config.TEST_DATA_PATH / 'filter_data' / 'output').glob('*.txt')
+
+metadata_type = List[Tuple[Path, Path]]
+
+metadata_paths: metadata_type = []
+
+for _input_path in _inputs:
+    for _output_path in _outputs:
+        if _input_path.stem == _output_path.stem:
+            metadata_paths.append((_input_path, _output_path))
+            break
 
 
 @mock.patch('requests.get')
@@ -146,6 +161,7 @@ class TestHasDay:
 
 
 class TestFilterData:
+    # noinspection PyTypeChecker
     def test_argument_type(self):
         assert filter_data('hola\nadios') == ''
         assert filter_data(['hola', 'adios']) == []
@@ -176,27 +192,38 @@ class TestFilterData:
 
         assert real == expected
 
-    class TestCombined:
-        def test_easy(self):
-            input_data = ['1er plato: combinado: jamón y queso']
-            expected = ['combinado: jamón y queso']
-            real = filter_data(input_data)
+    def test_combined_easy(self):
+        input_data = ['1er plato: combinado: jamón y queso']
+        expected = ['combinado: jamón y queso']
+        real = filter_data(input_data)
 
-            assert real == expected
+        assert real == expected
 
-        def test_split(self):
-            input_data = ['1er plato: combinado: jamón', 'y queso']
-            expected = ['combinado: jamón y queso']
-            real = filter_data(input_data)
+    def test_combined_split(self):
+        input_data = ['1er plato: combinado: jamón', 'y queso']
+        expected = ['combinado: jamón y queso']
+        real = filter_data(input_data)
 
-            assert real == expected
+        assert real == expected
 
-        def test_with_second(self):
-            input_data = ['1er plato: combinado: jamón', '2 plato: y queso']
-            expected = ['combinado: jamón y queso']
-            real = filter_data(input_data)
+    def test_combined_with_second(self):
+        input_data = ['1er plato: combinado: jamón', '2 plato: y queso']
+        expected = ['combinado: jamón y queso']
+        real = filter_data(input_data)
 
-            assert real == expected
+        assert real == expected
+
+    @pytest.mark.parametrize('input_path, output_path', metadata_paths)
+    def test_meta(self, input_path, output_path):
+        with input_path.open(encoding='utf-8') as fh:
+            input_data = fh.read().splitlines()
+
+        with output_path.open(encoding='utf-8') as fh:
+            output_data = fh.read().splitlines()
+
+        real_data = filter_data(input_data)
+
+        assert output_data == real_data
 
 
 class TestPatterns:
@@ -306,52 +333,30 @@ class TestPatterns:
         else:
             assert pattern_match is None
 
-    ignore_patterns_data = (
-        ('20. septiembre 2019', True),
-        ('02. septiembre 2019', True),
-        ('2. septiembre 2019', True),
-        ('semana del 20 al 29 de junio', True),
-        ('semana del 2 al 2 de junio', True),
-        ('semana del 02 al 02 de junio', True),
-        ('semana del 20 de mayo al 20 de junio 2019', True),
-        ('semana del 02 de mayo al 02 de junio 2019', True),
-        ('semana del 2 de mayo al 2 de junio 2019', True),
-        ('desayuno: bacalao con tomate', False),
-        ('comida: patatas con patatas', False)
-    )
+    # ignore_patterns_data = (
+    #     ('20. septiembre 2019', True),
+    #     ('02. septiembre 2019', True),
+    #     ('2. septiembre 2019', True),
+    #     ('semana del 20 al 29 de junio', True),
+    #     ('semana del 2 al 2 de junio', True),
+    #     ('semana del 02 al 02 de junio', True),
+    #     ('semana del 20 de mayo al 20 de junio 2019', True),
+    #     ('semana del 02 de mayo al 02 de junio 2019', True),
+    #     ('semana del 2 de mayo al 2 de junio 2019', True),
+    #     ('desayuno: bacalao con tomate', False),
+    #     ('comida: patatas con patatas', False)
+    # )
 
-    @pytest.mark.parametrize('string, match_code', ignore_patterns_data)
-    def test_ignore_patterns(self, string, match_code):
-        def match(any_string):
-            for pattern in Patterns.ignore_patters:
-                if pattern.search(any_string) is not None:
-                    return True
-            return False
-
-        pattern_match = match(string)
-        if match_code:
-            assert pattern_match is True
-        else:
-            assert pattern_match is False
-
-        # '\d+\.\s\w+\s\d+'
-        # 'semana del \d+ al \d+ de \w+'
-        # 'semana del \d+ de \w+ al \d+ de \w+ \d+'
-
-
-class TestWorker:
-    def test_attributes(self):
-        worker = Worker('', '', '')
-        assert hasattr(worker, 'url')
-        assert hasattr(worker, 'retries')
-        assert hasattr(worker, 'dmm')
-
-    @mock.patch('app.menus.core.utils.logger.debug', spec=True)
-    def test_run(self, logger_mock):
-        dmm_mock = mock.Mock()
-        worker = Worker('http://example.com', dmm_mock)
-
-        worker.run()
-
-        logger_mock.assert_called_once_with('Starting worker with url %s', 'http://example.com')
-        dmm_mock.process_url.assert_called_once_with('http://example.com', 5)
+    # @pytest.mark.parametrize('string, match_code', ignore_patterns_data)
+    # def test_ignore_patterns(self, string, match_code):
+    #     def match(any_string):
+    #         for pattern in Patterns.ignore_patters:
+    #             if pattern.search(any_string) is not None:
+    #                 return True
+    #         return False
+    #
+    #     pattern_match = match(string)
+    #     if match_code:
+    #         assert pattern_match is True
+    #     else:
+    #         assert pattern_match is False

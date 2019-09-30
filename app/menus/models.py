@@ -1,11 +1,14 @@
-import datetime
+import logging
 import sqlite3
+from datetime import datetime, timedelta
 
 from flask_sqlalchemy import SQLAlchemy
 
 from app.config import Config
+from app.utils import now
 
 db = SQLAlchemy()
+logger = logging.getLogger(__name__)
 
 
 # noinspection PyUnresolvedReferences
@@ -31,7 +34,7 @@ class DailyMenuDB(db.Model):
 
 
 class UpdateControl:
-    MIN_DATETIME = datetime.datetime.min
+    MIN_DATETIME = datetime.min
 
     def __init__(self):
         self.session = sqlite3.connect(Config.DATABASE_PATH)
@@ -56,13 +59,15 @@ class UpdateControl:
     @staticmethod
     def should_update(minutes=20):
         last_update = UpdateControl.get_last_update()
-        today = datetime.datetime.today()
+        today = now()
         today.replace(microsecond=0)
-        delta = datetime.timedelta(minutes=minutes)
+        delta = timedelta(minutes=minutes)
         should_update = last_update + delta <= today
 
         if should_update:
             UpdateControl.set_last_update()
+
+        logger.debug('Should Update decision: %s (%s)', should_update, last_update)
 
         return should_update
 
@@ -70,7 +75,7 @@ class UpdateControl:
     def set_last_update():
         # TODO: add argument dt
         with UpdateControl() as uc:
-            dt = datetime.datetime.today()
+            dt = now()
             dt_str = dt.strftime('%Y-%m-%d %H:%M:%S')
 
             last_update = uc.get_last_update()
@@ -97,7 +102,8 @@ class UpdateControl:
                 raise sqlite3.DatabaseError(f'Too many datetimes stored ({len(data)})')
 
             try:
-                return datetime.datetime.strptime(data[0][0], '%Y-%m-%d %H:%M:%S')
+                return datetime.strptime(data[0][0], '%Y-%m-%d %H:%M:%S')
             except ValueError:
                 uc.cursor.execute('DELETE FROM update_control')
+                uc.commit()
                 return uc.MIN_DATETIME

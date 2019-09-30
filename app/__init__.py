@@ -11,7 +11,7 @@ from .menus.models import db
 logging.basicConfig(
     filename=Path(__file__).parent.parent / 'flask-app.log',
     level=logging.DEBUG,
-    format='%(asctime)s] %(levelname)s - %(module)s:%(lineno)s - %(message)s')
+    format='%(asctime)s] %(levelname)s - %(name)s:%(lineno)s - %(message)s')
 
 werkzeug = logging.getLogger('werkzeug')
 werkzeug.handlers = []
@@ -22,17 +22,10 @@ werkzeug_handler.setFormatter(logging.Formatter(fmt='%(asctime)s] %(levelname)s 
 werkzeug.addHandler(werkzeug_handler)
 
 
-def create_app(config_filename=None, config_object=None, settings_override=None):
+def create_app(config_object):
     flask_app = Flask(__name__)
 
-    if config_filename:
-        flask_app.config.from_pyfile(config_filename)
-    elif config_object:
-        flask_app.config.from_object(config_object)
-    elif settings_override:
-        flask_app.config.from_json(settings_override)
-    else:
-        raise RuntimeError('Select config source (file or object)')
+    flask_app.config.from_object(config_object)
 
     db.init_app(flask_app)
 

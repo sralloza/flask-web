@@ -2,6 +2,13 @@ venv/
 .idea/
 __pycache__/
 
+htmlcov/
+.vscode/
+
+*.egg-info/
+
+.coverage
+
 *.db
 *.log
 *.backup

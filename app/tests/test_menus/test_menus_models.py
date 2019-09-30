@@ -1,11 +1,31 @@
+import os
 import sqlite3
 from datetime import datetime, timedelta
 from unittest import mock
 
 import pytest
 
+from app.config import TestingConfig
 from app.menus.core.structure import DailyMenu, Meal
 from app.menus.models import DailyMenuDB, UpdateControl
+from app.utils import now
+
+
+@pytest.fixture(scope='function', autouse=True)
+def mock_config_memory():
+    config_mock = mock.patch('app.menus.models.Config').start()
+
+    # todo random temp file
+    config_mock.DATABASE_PATH = TestingConfig.DATABASE_PATH
+
+    yield
+
+    mock.patch.stopall()
+
+    try:
+        os.remove(TestingConfig.DATABASE_PATH)
+    except FileNotFoundError:
+        pass
 
 
 class TestDailyMenuDB:
@@ -20,10 +40,10 @@ class TestDailyMenuDB:
         assert hasattr(DailyMenuDB, 'dinner2')
 
     def test_to_normal_daily_menu(self):
-        menu_db = DailyMenuDB(id='2019-06-06', day=6, month=6, year=2019, lunch1='L1', lunch2='L2',
-                              dinner1='D1', dinner2='D2')
-        menu_normal = DailyMenu(day=6, month=6, year=2019, lunch=Meal('L1', 'L2'),
-                                dinner=Meal('D1', 'D2'))
+        menu_db = DailyMenuDB(id='2019-06-06', day=6, month=6, year=2019, lunch1='lunch-1',
+                              lunch2='lunch-2', dinner1='dinner-1', dinner2='dinner-2')
+        menu_normal = DailyMenu(day=6, month=6, year=2019, lunch=Meal('lunch-1', 'lunch-2'),
+                                dinner=Meal('dinner-1', 'dinner-2'))
 
         assert menu_db.to_normal_daily_menu() == menu_normal
 
@@ -86,15 +106,9 @@ class TestUpdateControl:
     class TestShouldUpdate:
         @pytest.fixture(scope='function', autouse=True)
         def db_connection(self):
-            config_mock = mock.patch('app.menus.models.Config').start()
-            config_mock.DATABASE_PATH = ':memory:'
-
             connection = sqlite3.connect(':memory:')
-
             yield connection
-
             connection.close()
-            mock.patch.stopall()
 
         @pytest.fixture
         def gul_mock(self):
@@ -108,45 +122,65 @@ class TestUpdateControl:
             assert UpdateControl.should_update() is True
 
         def test_yes_2(self, gul_mock):
-            gul_mock.return_value = datetime.today() - timedelta(minutes=20)
+            gul_mock.return_value = now() - timedelta(minutes=20)
 
             assert UpdateControl.should_update() is True
 
         def test_yes_3(self, gul_mock):
-            gul_mock.return_value = datetime.today() - timedelta(minutes=21)
+            gul_mock.return_value = now() - timedelta(minutes=21)
 
             assert UpdateControl.should_update() is True
 
         def test_no(self, gul_mock):
-            gul_mock.return_value = datetime.today() - timedelta(minutes=19)
+            gul_mock.return_value = now() - timedelta(minutes=19)
 
             assert UpdateControl.should_update() is False
 
         @mock.patch('app.menus.models.UpdateControl.set_last_update')
-        def test_set_after(self, slu_mock, db_connection):
-            db_connection.close()
-
+        def test_set_after(self, slu_mock):
             assert UpdateControl.should_update() is True
             slu_mock.assert_called_once_with()
 
             glu_mock = mock.patch('app.menus.models.UpdateControl.get_last_update').start()
-            glu_mock.return_value = datetime.today()
+            glu_mock.return_value = now()
 
             assert UpdateControl.should_update() is False
             assert slu_mock.call_count == 1
 
-    @mock.patch('app.menus.models.datetime')
-    def test_set_last_update(self, today_mock):
+    @mock.patch('app.menus.models.now')
+    def test_set_last_update(self, now_mock):
         expected = '2019-05-18 17:25:15'
-        today_mock.datetime.today.return_value.strftime.return_value = expected
+        now_mock.return_value.strftime.return_value = expected
         with UpdateControl() as uc:
             uc.set_last_update()
             uc.cursor.execute('SELECT datetime FROM update_control')
             data = uc.cursor.fetchall()
             assert data[0][0] == expected
 
-    def test_get_last_update(self):
+    def test_get_last_update_good(self):
         with UpdateControl() as uc:
             uc.set_last_update()
             dt = uc.get_last_update()
-            assert dt.date() == datetime.today().date()
+            assert dt.date() == now().date()
+
+    def test_get_last_update_too_many_items(self):
+        with UpdateControl() as uc:
+            uc.cursor.execute('INSERT INTO update_control VALUES (?)', ['2000-01-01 10:10:10'])
+            uc.cursor.execute('INSERT INTO update_control VALUES (?)', ['2000-01-01 11:11:11'])
+            uc.session.commit()
+
+            with pytest.raises(sqlite3.DatabaseError, match='Too many datetimes stored'):
+                uc.get_last_update()
+
+    def test_get_last_update_invalid_format(self):
+        with UpdateControl() as uc:
+            uc.cursor.execute('INSERT INTO update_control VALUES (?)', ['invalid-format'])
+            uc.session.commit()
+
+        assert UpdateControl.get_last_update() == UpdateControl.MIN_DATETIME
+
+        with UpdateControl() as uc:
+            uc.session.commit()
+            uc.cursor.execute("SELECT * FROM update_control")
+            data = uc.cursor.fetchall()
+            assert data == []
