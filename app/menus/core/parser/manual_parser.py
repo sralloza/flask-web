@@ -30,9 +30,6 @@ class ManualParser(BaseParser):
             return False
 
     def detect_if_photo(self):
-        try:
-            container = self.soup.find('div', class_='post j-blog-content')
-            photo = container.find('img', alt='')
-            return photo is not None
-        except AttributeError:
-            return False
+        container = self.soup.find('div', class_='post j-blog-content')
+        photo = container.find('img', alt='')
+        return photo is not None
