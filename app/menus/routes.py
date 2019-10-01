@@ -152,4 +152,4 @@ def add_menu_interface():
     dmm.save_to_database()
 
     meta = '<meta http-equiv="refresh" content="15; url=/">'
-    return 'Saved:\n' + repr(menu) + meta, 200
+    return 'Saved:\n<br>' + repr(menu) + meta, 200

@@ -414,9 +414,9 @@ class TestAddMenuInterface:
         # Data
         if data_arg is self.PostDataType.good:
             assert rv.status_code == 200
-            assert b'Saved:\n' in rv.data
-            assert b'DailyMenu(' in rv.data
-            assert b'meta http-equiv' in rv.data
+            assert b"Saved:\n<br>" in rv.data
+            assert b"DailyMenu(" in rv.data
+            assert b"meta http-equiv" in rv.data
         else:
             if data_arg == self.PostDataType.token_change:
                 assert b"Invalid token" in rv.data
