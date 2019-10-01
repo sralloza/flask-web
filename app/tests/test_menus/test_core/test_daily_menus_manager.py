@@ -5,8 +5,9 @@ from unittest import mock
 import pytest
 
 from app.menus.core.daily_menus_manager import DailyMenusManager
+from app.menus.core.parser import Parsers
 from app.menus.core.structure import DailyMenu, Meal
-from app.menus.models import DailyMenuDB
+from app.menus.models import DailyMenuDB, UpdateControl
 from app.utils import now
 
 
@@ -227,19 +228,25 @@ class TestAddToMenus:
 @pytest.fixture
 def load_mocks():
     std_mock = mock.patch(
-        "app.menus.core.daily_menus_manager.DailyMenusManager.save_to_database"
+        "app.menus.core.daily_menus_manager.DailyMenusManager.save_to_database",
     ).start()
     contains_mock = mock.patch(
         "app.menus.core.daily_menus_manager.DailyMenusManager.__contains__"
     ).start()
     lfd_mock = mock.patch(
-        "app.menus.core.daily_menus_manager.DailyMenusManager.load_from_database"
+        "app.menus.core.daily_menus_manager.DailyMenusManager.load_from_database",
+        autospec=True,
     ).start()
     su_mock = mock.patch(
-        "app.menus.core.daily_menus_manager.UpdateControl.should_update"
+        "app.menus.core.daily_menus_manager.UpdateControl.should_update",
+        spec_set=UpdateControl.should_update,
     ).start()
-    parse_mock = mock.patch("app.menus.core.daily_menus_manager.Parsers.parse").start()
-    gmu_mock = mock.patch("app.menus.core.daily_menus_manager.get_menus_urls").start()
+    parse_mock = mock.patch(
+        "app.menus.core.daily_menus_manager.Parsers.parse", spec_set=Parsers.parse
+    ).start()
+    gmu_mock = mock.patch(
+        "app.menus.core.daily_menus_manager.get_menus_urls", autospec=True
+    ).start()
     gmu_mock.return_value = ["https://1.example.com", "https://2.example.com"]
     yield std_mock, contains_mock, lfd_mock, su_mock, parse_mock, gmu_mock
 
@@ -261,7 +268,7 @@ def should_update(request):
     return request.param
 
 
-def test_load(load_mocks, force, today_in_database, should_update):
+def test_load(load_mocks, force, today_in_database, should_update, reset_database):
     std_mock, contains_mock, lfd_mock, su_mock, parse_mock, gmu_mock = load_mocks
     contains_mock.return_value = today_in_database
     su_mock.return_value = should_update
@@ -272,16 +279,14 @@ def test_load(load_mocks, force, today_in_database, should_update):
     DailyMenusManager.load(force=force)
 
     # Mocks
-    lfd_mock.assert_called_once_with()
     contains_mock.assert_called_once_with(now().date())
 
     if will_update:
         gmu_mock.assert_called_once_with()
         std_mock.assert_called_once_with()
         parse_mock.assert_called()
-        assert (
-            parse_mock.call_count == 2
-        )  # gmu_mock returns 2 subdomains of example.com
+        # gmu_mock returns 2 subdomains of example.com
+        assert parse_mock.call_count == 2
     else:
         gmu_mock.assert_not_called()
         std_mock.assert_not_called()
@@ -319,8 +324,10 @@ def test_to_json():
 
 
 @mock.patch("app.menus.core.daily_menus_manager.DailyMenuDB")
-@mock.patch("app.menus.core.daily_menus_manager.DailyMenusManager.add_to_menus")
-def test_load_from_database(atm_mock, dmdb_mock):
+@mock.patch(
+    "app.menus.core.daily_menus_manager.DailyMenusManager.add_to_menus"
+)
+def test_load_from_database(atm_mock, dmdb_mock, client):
     dmdb_mock.query.all.return_value = [
         DailyMenuDB(
             id=20190101,
@@ -333,9 +340,7 @@ def test_load_from_database(atm_mock, dmdb_mock):
             dinner2="dinner-2",
         )
     ] * 2
-    menu = DailyMenu(
-        1, 1, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
-    )
+    menu = DailyMenu(1, 1, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2"))
 
     dmm = DailyMenusManager()
     dmm.load_from_database()
@@ -346,8 +351,10 @@ def test_load_from_database(atm_mock, dmdb_mock):
     atm_mock.assert_has_calls([mock.call([menu, menu])], any_order=True)
 
 
-@mock.patch("app.menus.core.daily_menus_manager.logger.debug")
-@mock.patch("app.menus.core.daily_menus_manager.UpdateControl.get_last_update")
+@mock.patch("app.menus.core.daily_menus_manager.logger.debug", autospec=True)
+@mock.patch(
+    "app.menus.core.daily_menus_manager.UpdateControl.get_last_update", autospec=True
+)
 def test_save_to_database(glu_mock, debug_mock):
     glu_mock.return_value = "[info]"
     menu_mock = mock.Mock()

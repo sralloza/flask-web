@@ -1,11 +1,9 @@
-import os
 import sqlite3
 from datetime import datetime, timedelta
 from unittest import mock
 
 import pytest
 
-from app.config import TestingConfig
 from app.menus.core.structure import DailyMenu, Meal
 from app.menus.models import DailyMenuDB, UpdateControl
 from app.utils import now
@@ -45,6 +43,10 @@ class TestDailyMenuDB:
 
 
 class TestUpdateControl:
+    @pytest.fixture(autouse=True)
+    def auto_remove_database(self, reset_database):
+        yield
+
     @pytest.fixture
     def uc_sqlite(self):
         sqlite_mock = mock.patch("app.menus.models.sqlite3", autospec=True).start()
@@ -180,7 +182,7 @@ class TestUpdateControl:
             uc.session.commit()
 
             with pytest.raises(
-                sqlite3.DatabaseError, match="Too many datetimes stored"
+                    sqlite3.DatabaseError, match="Too many datetimes stored"
             ):
                 uc.get_last_update()
 

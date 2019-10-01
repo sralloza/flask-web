@@ -21,7 +21,7 @@ class TestParserThread:
         manual = mock.patch("app.menus.core.parser.ManualParser", autospec=True).start()
         get = mock.patch("app.menus.core.parser.requests.get", autospec=True).start()
 
-        parsers = mock.patch("app.menus.core.parser.Parsers").start()
+        parsers = mock.patch("app.menus.core.parser.Parsers", autospec=True).start()
 
         # In order of appearance in the real Parsers.parsers
         parsers.parsers = [html, manual]

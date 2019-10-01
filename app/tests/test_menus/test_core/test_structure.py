@@ -1,12 +1,13 @@
 import datetime
 import itertools
+from unittest import mock
 
 import pytest
 
-from app.menus.core.structure import Index as Index
-from app.menus.core.structure import Meal, DailyMenu, Combined, LunchState
 from app.menus.core.exceptions import InvalidStateError, MealError, MealWarning
-
+from app.menus.core.structure import Combined, DailyMenu
+from app.menus.core.structure import Index as Index
+from app.menus.core.structure import LunchState, Meal
 
 # Test data
 mydate = (datetime.date(2019, 1, 1), None)
@@ -528,3 +529,21 @@ class TestDailyMenu:
         dm = DailyMenu(1, 1, 2000)
         with pytest.raises(MealError, match="meal must be LunchState"):
             dm.set_combined("dummy")
+
+    @mock.patch("app.menus.core.structure.logger.info", autospec=True)
+    def test_to_database(self, info_mock, client):
+        menu = DailyMenu(31, 12, 2030)
+        result = menu.to_database()
+
+        info_mock.assert_called_once_with("Saved menu %d to database", 20301231)
+        assert result is True
+
+    @mock.patch("app.menus.core.structure.logger.info", autospec=True)
+    def test_to_database_error(self, info_mock, client):
+        menu = DailyMenu(31, 12, 2031)
+        result_1 = menu.to_database()
+        result_2 = menu.to_database()
+
+        assert result_1 is True
+        assert result_2 is False
+        info_mock.assert_called_once_with("Saved menu %d to database", 20311231)
