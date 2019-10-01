@@ -31,7 +31,9 @@ class TestMenusView:
 
     @mock.patch("app.menus.routes.DailyMenusManager.load")
     @mock.patch(
-        "app.menus.routes.get_last_menus_page", return_value="http://example.com"
+        "app.menus.routes.get_last_menus_page",
+        return_value="http://example.com",
+        autospec=True,
     )
     def test_without_args(self, glmp_mock, load_mock, client, menu_mock, argument):
         menus_mocks = iter([menu_mock] * 30)
@@ -97,7 +99,7 @@ def test_menus_redirect(client):
     assert rv.location == "http://menus.sralloza.es/menus"
 
 
-@mock.patch("app.menus.routes.DailyMenusManager")
+@mock.patch("app.menus.routes.DailyMenusManager", autospec=True)
 def test_menus_reload(dmm_mock, client):
     m = mock.Mock()
     dmm_mock.load.return_value.__iter__.return_value = iter([m, m, m, m, m])
@@ -118,7 +120,7 @@ def test_today_redirect(client):
     assert rv.location == "http://menus.sralloza.es/hoy"
 
 
-@mock.patch("app.menus.routes.DailyMenusManager")
+@mock.patch("app.menus.routes.DailyMenusManager", autospec=True)
 def test_today_reload(dmm_mock, client, menu_mock):
     dmm_mock.load.return_value.__iter__.return_value = iter(
         [menu_mock, menu_mock, menu_mock, menu_mock, menu_mock, menu_mock, menu_mock]
@@ -134,7 +136,9 @@ def test_today_reload(dmm_mock, client, menu_mock):
     assert menu_mock.to_database.call_count == 7
 
 
-@mock.patch("app.menus.core.daily_menus_manager.UpdateControl.should_update")
+@mock.patch(
+    "app.menus.core.daily_menus_manager.UpdateControl.should_update", autospec=True
+)
 def test_today(su_mock, client):
     su_mock.return_value = False
     rv = client.get("/hoy")
@@ -249,7 +253,7 @@ def test_add_menu_api(client, data, exception, code):
         assert exception in rv_data
 
 
-@mock.patch("app.menus.routes.DailyMenusManager")
+@mock.patch("app.menus.routes.DailyMenusManager", autospec=True)
 class TestApiMenus:
     def test_without_force(self, dmm_mock, client):
         menu = DailyMenu(
@@ -337,29 +341,25 @@ class TestAddMenuInterface:
         "dinner-2": "d2",
     }
 
+    class ActionType(Enum):
+        delete = "delete"
+        change = "change"
+
     class PostDataType(Enum):
         good = None
-        date_del = "date"
-        date_change = "date"
-        lunch_1_del = "lunch-1"
-        lunch_1_change = "lunch-1"
-        lunch_2_del = "lunch-2"
-        lunch_2_change = "lunch-2"
-        dinner_1_del = "dinner-1"
-        dinner_1_change = "dinner-1"
-        dinner_2_del = "dinner-2"
-        dinner_2_change = "dinner-2"
-        token_del = "token"
-        token_change = "token"
-
-        def is_change(self):
-            return self.name.endswith("change")
-
-        def is_del(self):
-            return self.name.endswith("del")
+        date = "date"
+        lunch_1 = "lunch-1"
+        lunch_2 = "lunch-2"
+        dinner_1 = "dinner-1"
+        dinner_2 = "dinner-2"
+        token = "token"
 
     @pytest.fixture(params=PostDataType)
-    def data_arg(self, request):
+    def data_type(self, request):
+        return request.param
+
+    @pytest.fixture(params=ActionType)
+    def action_type(self, request):
         return request.param
 
     @pytest.fixture
@@ -371,34 +371,29 @@ class TestAddMenuInterface:
 
         mock.patch.stopall()
 
-    def test_post(self, post_mocks, client, data_arg):
+    def test_post(self, post_mocks, client, data_type, action_type):
         token_mock, dmm_mock = post_mocks
         token_mock.return_value = "foo-token"
 
         post_data = self.POST_DATA_GOOD.copy()
         post_data["token"] = "foo-token"
 
-        if data_arg == self.PostDataType.good:
+        if data_type == self.PostDataType.good:
             pass
-        elif data_arg == self.PostDataType.date_change:
-            post_data["date"] = "invalid-date"
-        elif data_arg == self.PostDataType.date_del:
-            del post_data['date']
-        elif data_arg == self.PostDataType.token_change:
-            post_data['token'] = 'invalid-token'
-        elif data_arg == self.PostDataType.token_del:
-            del post_data['token']
-        elif data_arg == "invalid-token":
-            post_data["token"] = "invalid-token"
-        elif data_arg.is_change():
-            post_data[data_arg.value] = ''
-        elif data_arg.is_del():
-            del post_data[data_arg.value]
+        elif action_type == self.ActionType.change:
+            if data_type == self.PostDataType.date:
+                post_data["date"] = "invalid-date"
+            elif data_type == self.PostDataType.token:
+                post_data["token"] = "invalid-token"
+            else:
+                post_data[data_type.value] = ""
+        elif action_type == self.ActionType.delete:
+            del post_data[data_type.value]
 
         rv = client.post("/add", data=post_data)
 
         # Mocks
-        if data_arg is self.PostDataType.good:
+        if data_type is self.PostDataType.good:
             # Everything ok, DMM called
             dmm_mock.load.assert_called_once_with(force=False)
             real_dmm_mock = dmm_mock.load.return_value
@@ -412,16 +407,20 @@ class TestAddMenuInterface:
             real_dmm_mock.save_to_database.assert_not_called()
 
         # Data
-        if data_arg is self.PostDataType.good:
+        if data_type is self.PostDataType.good:
             assert rv.status_code == 200
             assert b"Saved:\n<br>" in rv.data
             assert b"DailyMenu(" in rv.data
             assert b"meta http-equiv" in rv.data
         else:
-            if data_arg == self.PostDataType.token_change:
-                assert b"Invalid token" in rv.data
-            elif data_arg == self.PostDataType.date_change:
-                assert b"Invalid date" in rv.data
-            else:
-                assert f"{data_arg.value!r} is required".encode() in rv.data
+            if action_type == self.ActionType.change:
+                if data_type == self.PostDataType.date:
+                    assert b"Invalid date" in rv.data
+                elif data_type == self.PostDataType.token:
+                    assert b"Invalid token" in rv.data
+                else:
+                    assert f"{data_type.value!r} is required".encode() in rv.data
+            elif action_type == self.ActionType.delete:
+                assert f"{data_type.value!r} is required".encode() in rv.data
+
             assert rv.status_code == 403
