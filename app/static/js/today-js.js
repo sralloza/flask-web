@@ -137,10 +137,12 @@ Date.prototype.print = function() {
     if (month < 10) {
         month = "0" + month;
     }
+    month = "" + month;
 
     if (day < 10) {
         day = "0" + day;
     }
+    day = "" + day;
 
     return parseInt(year + month + day);
 }
