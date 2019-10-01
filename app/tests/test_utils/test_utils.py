@@ -4,12 +4,12 @@ from unittest import mock
 import pytest
 from requests.exceptions import ConnectionError
 
-from app.utils import PRINCIPAL_URL
-from app.utils import get_last_menus_page, Translator, _Cache, gen_token, get_post_arg
+from app.utils import (PRINCIPAL_URL, Translator, _Cache, gen_token,
+                       get_last_menus_page, get_post_arg)
 
 
-@mock.patch("requests.get")
-@mock.patch("app.utils.logger")
+@mock.patch("requests.get", autospec=True)
+@mock.patch("app.utils.logger", autospec=True)
 class TestGetLastMenusPage:
     url_expected = (
         "https://www.residenciasantiago.es/2019/06/20/del-21-al-24-de-junio-2019/"
@@ -33,7 +33,7 @@ class TestGetLastMenusPage:
         logger_mock.debug.assert_called_once_with("Getting last menus url")
         assert url == self.url_expected
 
-    @mock.patch("app.utils._Cache")
+    @mock.patch("app.utils._Cache", autospec=True)
     def test_one_connection_error(
         self, static_mock, logger_mock, requests_get_mock, test_content
     ):
@@ -49,7 +49,7 @@ class TestGetLastMenusPage:
         )
         assert url == self.url_expected
 
-    @mock.patch("app.utils._Cache")
+    @mock.patch("app.utils._Cache", autospec=True)
     def test_two_connection_error(
         self, static_mock, logger_mock, requests_get_mock, test_content
     ):
@@ -71,7 +71,7 @@ class TestGetLastMenusPage:
         assert logger_mock.warning.call_count == 2
         assert url == self.url_expected
 
-    @mock.patch("app.utils._Cache")
+    @mock.patch("app.utils._Cache", autospec=True)
     def test_three_connection_error(
         self, static_mock, logger_mock, requests_get_mock, test_content
     ):
@@ -94,7 +94,7 @@ class TestGetLastMenusPage:
         assert logger_mock.warning.call_count == 3
         assert url == self.url_expected
 
-    @mock.patch("app.utils._Cache")
+    @mock.patch("app.utils._Cache", autospec=True)
     def test_four_connection_error(
         self, static_mock, logger_mock, requests_get_mock, test_content
     ):
@@ -124,7 +124,7 @@ class TestGetLastMenusPage:
         assert logger_mock.warning.call_count == 4
         assert url == self.url_expected
 
-    @mock.patch("app.utils._Cache")
+    @mock.patch("app.utils._Cache", autospec=True)
     def test_five_connection_error(
         self, static_mock, logger_mock, requests_get_mock, test_content
     ):
@@ -215,7 +215,7 @@ def test_gen_token():
     assert token.isdigit()
 
 
-@mock.patch("app.utils.request")
+@mock.patch("app.utils.request", autospec=True)
 class TestGetPostArg:
     data_req_strip = (
         ({"data": "value"}, "value"),
@@ -269,11 +269,7 @@ class TestGetPostArg:
     @pytest.mark.parametrize("request_data, expected", data_not_req_strip)
     def test_not_req_strip(self, request_mock, request_data, expected):
         request_mock.form = request_data
-        if expected == RuntimeError:
-            with pytest.raises(expected):
-                get_post_arg("data", required=False, strip=True)
-        else:
-            assert get_post_arg("data", required=False, strip=True) == expected
+        assert get_post_arg("data", required=False, strip=True) == expected
 
     @pytest.mark.parametrize("request_data, expected", data_req_not_strip)
     def test_req_not_strip(self, request_mock, request_data, expected):
@@ -287,9 +283,4 @@ class TestGetPostArg:
     @pytest.mark.parametrize("request_data, expected", data_not_req_not_strip)
     def test_not_req_not_strip(self, request_mock, request_data, expected):
         request_mock.form = request_data
-        if expected == RuntimeError:
-            with pytest.raises(expected):
-                get_post_arg("data", required=False, strip=False)
-        else:
-            assert get_post_arg("data", required=False, strip=False) == expected
-
+        assert get_post_arg("data", required=False, strip=False) == expected
