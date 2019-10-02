@@ -1,26 +1,15 @@
 import logging
 import sqlite3
+from collections import namedtuple
 from datetime import datetime, timedelta
 
-from flask_sqlalchemy import SQLAlchemy
+from flask import current_app
 
-from app.config import Config
 from app.utils import now
 
-db = SQLAlchemy()
 logger = logging.getLogger(__name__)
 
 
-# noinspection PyUnresolvedReferences
-class DailyMenuDB(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    day = db.Column(db.Integer, nullable=False)
-    month = db.Column(db.Integer, nullable=False)
-    year = db.Column(db.Integer, nullable=False)
-    lunch1 = db.Column(db.String(200))
-    lunch2 = db.Column(db.String(200))
-    dinner1 = db.Column(db.String(200))
-    dinner2 = db.Column(db.String(200))
 class DailyMenusDatabaseController:
     def __init__(self):
         self.connection = DatabaseConnection()
@@ -37,13 +26,6 @@ class DailyMenusDatabaseController:
             )
             return [MenuInterface(x) for x in connection.fetch_all()]
 
-    def to_normal_daily_menu(self):
-        from .core.structure import DailyMenu as NormalDailyMenu, Meal
-        day = int(self.day)
-        month = int(self.month)
-        year = int(self.year)
-        lunch = Meal(self.lunch1, self.lunch2)
-        dinner = Meal(self.dinner1, self.dinner2)
     def ensure_database(self):
         self.connection.execute()
 
@@ -77,7 +59,6 @@ class DatabaseConnection:
         self.cursor = self.connection.cursor()
         self.ensure_tables()
 
-        return NormalDailyMenu(day=day, month=month, year=year, lunch=lunch, dinner=dinner)
     def __enter__(self):
         return self
 
@@ -126,11 +107,7 @@ class UpdateControl:
     MIN_DATETIME = datetime.min
 
     def __init__(self):
-        self.session = sqlite3.connect(Config.DATABASE_PATH)
-        self.cursor = self.session.cursor()
-        self.cursor.execute(""" CREATE TABLE IF NOT EXISTS update_control (
-                datetime TEXT NOT NULL
-                )""")
+        self.connection = DatabaseConnection()
 
     def __enter__(self):
         return self
@@ -139,11 +116,10 @@ class UpdateControl:
         self.close()
 
     def close(self):
-        self.cursor.close()
-        self.session.close()
+        self.connection.close()
 
     def commit(self):
-        self.session.commit()
+        self.connection.commit()
 
     @staticmethod
     def should_update(minutes=20):
@@ -156,7 +132,7 @@ class UpdateControl:
         if should_update:
             UpdateControl.set_last_update()
 
-        logger.debug('Should Update decision: %s (%s)', should_update, last_update)
+        logger.debug("Should Update decision: %s (%s)", should_update, last_update)
 
         return should_update
 
@@ -165,14 +141,16 @@ class UpdateControl:
         # TODO: add argument dt
         with UpdateControl() as uc:
             dt = now()
-            dt_str = dt.strftime('%Y-%m-%d %H:%M:%S')
+            dt_str = dt.strftime("%Y-%m-%d %H:%M:%S")
 
             last_update = uc.get_last_update()
 
             if last_update is UpdateControl.MIN_DATETIME:
-                uc.cursor.execute('INSERT INTO update_control VALUES (?)', (dt_str,))
+                uc.connection.execute(
+                    "INSERT INTO update_control VALUES (?)", (dt_str,)
+                )
             else:
-                uc.cursor.execute('UPDATE update_control SET datetime=?', (dt_str,))
+                uc.connection.execute("UPDATE update_control SET datetime=?", (dt_str,))
 
             # To check that no more than one entry exists in the database
             uc.get_last_update()
@@ -181,18 +159,18 @@ class UpdateControl:
     @staticmethod
     def get_last_update():
         with UpdateControl() as uc:
-            uc.cursor.execute('select datetime from update_control')
-            data = uc.cursor.fetchall()
+            uc.connection.execute("select datetime from update_control")
+            data = uc.connection.fetch_all()
 
             if len(data) == 0:
                 return uc.MIN_DATETIME
 
             if len(data) > 1:
-                raise sqlite3.DatabaseError(f'Too many datetimes stored ({len(data)})')
+                raise sqlite3.DatabaseError(f"Too many datetimes stored ({len(data)})")
 
             try:
-                return datetime.strptime(data[0][0], '%Y-%m-%d %H:%M:%S')
+                return datetime.strptime(data[0][0], "%Y-%m-%d %H:%M:%S")
             except ValueError:
-                uc.cursor.execute('DELETE FROM update_control')
+                uc.connection.execute("DELETE FROM update_control")
                 uc.commit()
                 return uc.MIN_DATETIME

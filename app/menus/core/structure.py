@@ -6,7 +6,7 @@ from typing import Union
 
 from sqlalchemy.exc import IntegrityError
 
-from app.menus.models import DailyMenuDB, db
+from app.menus.models import DailyMenusDatabaseController
 from app.utils import Translator, now
 
 from .exceptions import InvalidStateError, MealError, MealWarning
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 class LunchState(Enum):
     LUNCH = "LUNCH"
     DINNER = "DINNER"
-    NONE = 'NONE'
+    NONE = "NONE"
 
     def __bool__(self):
         return self != LunchState.NONE
@@ -388,26 +388,10 @@ class DailyMenu:
     def to_database(self):
         """Saves the menu to the database."""
         # logger.debug('Saving menu %d to database', self.id)
-        menu = DailyMenuDB(
-            id=self.id,
-            day=self.day,
-            month=self.month,
-            year=self.year,
-            lunch1=self.lunch.p1,
-            lunch2=self.lunch.p2,
-            dinner1=self.dinner.p1,
-            dinner2=self.dinner.p2,
-        )
-        db.session.add(menu)
-        try:
-            db.session.commit()
+        result = DailyMenusDatabaseController.save_daily_menu(self)
+        if result is True:
             logger.info("Saved menu %d to database", self.id)
-            return True
-        except IntegrityError:
-            db.session.rollback()
-            return False
-        finally:
-            db.session.close()
+        return result
 
     def to_string(self):
         """Returns the menu formatted as a string."""

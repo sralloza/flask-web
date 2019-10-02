@@ -6,14 +6,16 @@ from typing import List, Union
 
 from app.menus.core.parser import Parsers
 from app.menus.core.utils import get_menus_urls
-from app.menus.models import DailyMenuDB, UpdateControl
+from app.menus.models import DailyMenusDatabaseController, UpdateControl
 from app.utils import now
+
 from .structure import DailyMenu, Meal
 
 logger = logging.getLogger(__name__)
 M = Union[DailyMenu, List[DailyMenu]]
 
 
+# TODO: subclass UserList
 class DailyMenusManager:
     """Represents a controller of a list of menus."""
 
@@ -143,7 +145,7 @@ class DailyMenusManager:
     def load_from_database(self):
         """Loads the menus from the database."""
         logger.debug("Loading from database")
-        self.add_to_menus([x.to_normal_daily_menu() for x in DailyMenuDB.query.all()])
+        self.add_to_menus(DailyMenusDatabaseController.list_menus())
 
     def save_to_database(self):
         """Saves the menus from the database."""
