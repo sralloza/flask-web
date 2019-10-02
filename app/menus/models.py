@@ -21,6 +21,21 @@ class DailyMenuDB(db.Model):
     lunch2 = db.Column(db.String(200))
     dinner1 = db.Column(db.String(200))
     dinner2 = db.Column(db.String(200))
+class DailyMenusDatabaseController:
+    def __init__(self):
+        self.connection = DatabaseConnection()
+        self.ensure_database()
+
+    @staticmethod
+    def list_menus():
+        MenuInterface = namedtuple(
+            "MenuInterface", "id, day, month, year, lunch1, lunch2, dinner1, dinner2"
+        )
+        with DatabaseConnection() as connection:
+            connection.execute(
+                "SELECT id, day, month, year, lunch1, lunch2, dinner1, dinner2 FROM dialy_menus"
+            )
+            return [MenuInterface(x) for x in connection.fetch_all()]
 
     def to_normal_daily_menu(self):
         from .core.structure import DailyMenu as NormalDailyMenu, Meal
@@ -29,8 +44,82 @@ class DailyMenuDB(db.Model):
         year = int(self.year)
         lunch = Meal(self.lunch1, self.lunch2)
         dinner = Meal(self.dinner1, self.dinner2)
+    def ensure_database(self):
+        self.connection.execute()
+
+    @classmethod
+    def save_daily_menu(cls, daily_menu):
+        with DatabaseConnection() as connection:
+            data = (
+                daily_menu.id,
+                daily_menu.day,
+                daily_menu.month,
+                daily_menu.year,
+                daily_menu.lunch.p1,
+                daily_menu.lunch.p2,
+                daily_menu.dinner.p1,
+                daily_menu.dinner.p2,
+            )
+
+            try:
+                connection.execute(
+                    "INSERT INTO daily_menus VALUES (?,?,?,?,?,?,?,?)", data
+                )
+                connection.commit()
+                return True
+            except sqlite3.IntegrityError:
+                return False
+
+
+class DatabaseConnection:
+    def __init__(self):
+        self.connection = sqlite3.connect(current_app.config["DATABASE_PATH"])
+        self.cursor = self.connection.cursor()
+        self.ensure_tables()
 
         return NormalDailyMenu(day=day, month=month, year=year, lunch=lunch, dinner=dinner)
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
+    def close(self):
+        self.connection.close()
+
+    def commit(self):
+        self.connection.commit()
+
+    def execute(self, *args, **kwargs):
+        return self.cursor.execute(*args, **kwargs)
+
+    def fetch_all(self):
+        return self.cursor.fetchall()
+
+    def ensure_tables(self):
+        self.execute(
+            """
+                CREATE TABLE IF NOT EXISTS 'daily_menus' (
+                'id'	INTEGER NOT NULL PRIMARY KEY,
+                'day'	INTEGER NOT NULL,
+                'month'	INTEGER NOT NULL,
+                'year'	INTEGER NOT NULL,
+                'lunch1'	VARCHAR ( 200 ),
+                'lunch2'	VARCHAR ( 200 ),
+                'dinner1'	VARCHAR ( 200 ),
+                'dinner2'	VARCHAR ( 200 )
+            );
+            """
+        )
+
+        self.execute(
+            """
+                CREATE TABLE IF NOT EXISTS 'update_control' (
+                'datetime' VARCHAR (200) NOT NULL
+            );
+            """
+        )
+        self.commit()
 
 
 class UpdateControl:
