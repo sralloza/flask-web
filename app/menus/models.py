@@ -17,14 +17,22 @@ class DailyMenusDatabaseController:
 
     @staticmethod
     def list_menus():
-        MenuInterface = namedtuple(
-            "MenuInterface", "id, day, month, year, lunch1, lunch2, dinner1, dinner2"
-        )
+        from app.menus.core.structure import DailyMenu, Meal
+
         with DatabaseConnection() as connection:
             connection.execute(
-                "SELECT id, day, month, year, lunch1, lunch2, dinner1, dinner2 FROM dialy_menus"
+                "SELECT day, month, year, lunch1, lunch2, dinner1, dinner2 FROM daily_menus"
             )
-            return [MenuInterface(x) for x in connection.fetch_all()]
+            return [
+                DailyMenu(
+                    data[0],
+                    data[1],
+                    data[2],
+                    Meal(*data[3:5]),
+                    Meal(*data[5:7]),
+                )
+                for data in connection.fetch_all()
+            ]
 
     def ensure_database(self):
         self.connection.execute()
@@ -66,6 +74,7 @@ class DatabaseConnection:
         self.close()
 
     def close(self):
+        self.cursor.close()
         self.connection.close()
 
     def commit(self):
