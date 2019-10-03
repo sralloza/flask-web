@@ -3,7 +3,7 @@ from unittest import mock
 
 import pytest
 
-from app import create_app, db
+from app import create_app
 from app.config import TestingConfig
 
 

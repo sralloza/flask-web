@@ -5,7 +5,7 @@ from unittest import mock
 import pytest
 
 from app.menus.core.structure import DailyMenu, Meal
-from app.menus.models import DailyMenuDB, UpdateControl
+from app.menus.models import DatabaseConnection, UpdateControl
 from app.utils import now
 
 

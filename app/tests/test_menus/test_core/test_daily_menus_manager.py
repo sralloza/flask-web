@@ -7,7 +7,7 @@ import pytest
 from app.menus.core.daily_menus_manager import DailyMenusManager
 from app.menus.core.parser import Parsers
 from app.menus.core.structure import DailyMenu, Meal
-from app.menus.models import DailyMenuDB, UpdateControl
+from app.menus.models import UpdateControl
 from app.utils import now
 
 
