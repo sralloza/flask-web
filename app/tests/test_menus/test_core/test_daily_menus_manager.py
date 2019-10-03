@@ -228,7 +228,7 @@ class TestAddToMenus:
 @pytest.fixture
 def load_mocks():
     std_mock = mock.patch(
-        "app.menus.core.daily_menus_manager.DailyMenusManager.save_to_database",
+        "app.menus.core.daily_menus_manager.DailyMenusManager.save_to_database"
     ).start()
     contains_mock = mock.patch(
         "app.menus.core.daily_menus_manager.DailyMenusManager.__contains__"
@@ -323,29 +323,22 @@ def test_to_json():
     assert real_json == expected_json
 
 
-@mock.patch("app.menus.core.daily_menus_manager.DailyMenuDB")
-@mock.patch(
-    "app.menus.core.daily_menus_manager.DailyMenusManager.add_to_menus"
-)
-def test_load_from_database(atm_mock, dmdb_mock, client):
-    dmdb_mock.query.all.return_value = [
-        DailyMenuDB(
-            id=20190101,
-            day=1,
-            month=1,
-            year=2019,
-            lunch1="lunch-1",
-            lunch2="lunch-2",
-            dinner1="dinner-1",
-            dinner2="dinner-2",
-        )
-    ] * 2
-    menu = DailyMenu(1, 1, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2"))
+@mock.patch("app.menus.core.daily_menus_manager.DailyMenusDatabaseController.list_menus")
+@mock.patch("app.menus.core.daily_menus_manager.DailyMenusManager.add_to_menus")
+def test_load_from_database(atm_mock, list_menus_mock, client):
+    
+        # logger.debug("Loading from database")
+    # self.add_to_menus(DailyMenusDatabaseController.list_menus())
+    menu = DailyMenu(
+        1, 1, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+    )
+    list_menus_mock.return_value = [menu, menu]
+    
 
     dmm = DailyMenusManager()
     dmm.load_from_database()
 
-    dmdb_mock.query.all.assert_called_once_with()
+    list_menus_mock.assert_called_once_with()
     atm_mock.assert_called_once()
 
     atm_mock.assert_has_calls([mock.call([menu, menu])], any_order=True)
