@@ -4,8 +4,6 @@ from datetime import date, datetime
 from enum import Enum, unique
 from typing import Union
 
-from sqlalchemy.exc import IntegrityError
-
 from app.menus.models import DailyMenusDatabaseController
 from app.utils import Translator, now
 
