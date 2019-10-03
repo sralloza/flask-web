@@ -9,39 +9,6 @@ from app.menus.models import DatabaseConnection, UpdateControl
 from app.utils import now
 
 
-class TestDailyMenuDB:
-    def test_attributes(self):
-        assert hasattr(DailyMenuDB, "id")
-        assert hasattr(DailyMenuDB, "day")
-        assert hasattr(DailyMenuDB, "month")
-        assert hasattr(DailyMenuDB, "year")
-        assert hasattr(DailyMenuDB, "lunch1")
-        assert hasattr(DailyMenuDB, "lunch2")
-        assert hasattr(DailyMenuDB, "dinner1")
-        assert hasattr(DailyMenuDB, "dinner2")
-
-    def test_to_normal_daily_menu(self):
-        menu_db = DailyMenuDB(
-            id="2019-06-06",
-            day=6,
-            month=6,
-            year=2019,
-            lunch1="lunch-1",
-            lunch2="lunch-2",
-            dinner1="dinner-1",
-            dinner2="dinner-2",
-        )
-        menu_normal = DailyMenu(
-            day=6,
-            month=6,
-            year=2019,
-            lunch=Meal("lunch-1", "lunch-2"),
-            dinner=Meal("dinner-1", "dinner-2"),
-        )
-
-        assert menu_db.to_normal_daily_menu() == menu_normal
-
-
 class TestUpdateControl:
     @pytest.fixture(autouse=True)
     def auto_remove_database(self, reset_database):
@@ -61,14 +28,11 @@ class TestUpdateControl:
 
     def test_attributes(self):
         uc = UpdateControl()
-        assert hasattr(uc, "session")
-        assert hasattr(uc, "cursor")
+        assert hasattr(uc, "connection")
 
-        assert type(uc.session) == sqlite3.Connection
-        assert type(uc.cursor) == sqlite3.Cursor
+        assert isinstance(uc.connection, DatabaseConnection)
 
-        uc.cursor.close()
-        uc.session.close()
+        uc.connection.close()
 
     def test_close(self, uc_sqlite):
         sqlite_mock, uc = uc_sqlite
@@ -82,7 +46,7 @@ class TestUpdateControl:
         sqlite_mock, uc = uc_sqlite
         uc.commit()
 
-        sqlite_mock.connect.return_value.commit.assert_called_once()
+        sqlite_mock.connect.return_value.commit.assert_called()
 
         uc.close()
 
@@ -161,8 +125,8 @@ class TestUpdateControl:
         now_mock.return_value.strftime.return_value = expected
         with UpdateControl() as uc:
             uc.set_last_update()
-            uc.cursor.execute("SELECT datetime FROM update_control")
-            data = uc.cursor.fetchall()
+            uc.connection.execute("SELECT datetime FROM update_control")
+            data = uc.connection.fetch_all()
             assert data[0][0] == expected
 
     def test_get_last_update_good(self):
@@ -173,30 +137,30 @@ class TestUpdateControl:
 
     def test_get_last_update_too_many_items(self):
         with UpdateControl() as uc:
-            uc.cursor.execute(
+            uc.connection.execute(
                 "INSERT INTO update_control VALUES (?)", ["2000-01-01 10:10:10"]
             )
-            uc.cursor.execute(
+            uc.connection.execute(
                 "INSERT INTO update_control VALUES (?)", ["2000-01-01 11:11:11"]
             )
-            uc.session.commit()
+            uc.connection.commit()
 
             with pytest.raises(
-                    sqlite3.DatabaseError, match="Too many datetimes stored"
+                sqlite3.DatabaseError, match="Too many datetimes stored"
             ):
                 uc.get_last_update()
 
     def test_get_last_update_invalid_format(self):
         with UpdateControl() as uc:
-            uc.cursor.execute(
+            uc.connection.execute(
                 "INSERT INTO update_control VALUES (?)", ["invalid-format"]
             )
-            uc.session.commit()
+            uc.connection.commit()
 
         assert UpdateControl.get_last_update() == UpdateControl.MIN_DATETIME
 
         with UpdateControl() as uc:
-            uc.session.commit()
-            uc.cursor.execute("SELECT * FROM update_control")
-            data = uc.cursor.fetchall()
+            uc.connection.commit()
+            uc.connection.execute("SELECT * FROM update_control")
+            data = uc.connection.fetch_all()
             assert data == []
