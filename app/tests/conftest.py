@@ -1,7 +1,9 @@
 import os
+import sqlite3
 from unittest import mock
 
 import pytest
+from flask.globals import current_app
 
 from app import create_app
 from app.config import TestingConfig
@@ -20,23 +22,16 @@ def client(app):
     testing_client = app.test_client()
 
     with app.app_context():
-        db.create_all()
         yield testing_client  # this is where the testing happens!
-        db.drop_all()
 
 
 @pytest.fixture(scope="function")
-def reset_database():
-    config_mock = mock.patch("app.menus.models.Config", autospec=True).start()
-
-    # todo random temp file
-    config_mock.DATABASE_PATH = TestingConfig.DATABASE_PATH
-
-    yield TestingConfig.DATABASE_PATH
-
-    mock.patch.stopall()
-
-    try:
-        os.remove(TestingConfig.DATABASE_PATH)
-    except FileNotFoundError:
-        pass
+def reset_database(client):
+    # TODO: random temp file
+    connection = sqlite3.connect(current_app.config["DATABASE_PATH"])
+    cursor = connection.cursor()
+    cursor.execute("DROP TABLE IF EXISTS 'update_control'")
+    cursor.execute("DROP TABLE IF EXISTS 'daily_menus'")
+    connection.commit()
+    connection.close()
+    yield
