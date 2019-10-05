@@ -145,6 +145,8 @@ class DailyMenusManager:
     def load_from_database(self):
         """Loads the menus from the database."""
         logger.debug("Loading from database")
+        DailyMenusDatabaseController.backwards_compatibility()
+
         self.add_to_menus(DailyMenusDatabaseController.list_menus())
 
     def save_to_database(self):
