@@ -6,7 +6,6 @@ from typing import Union
 
 from app.menus.models import DailyMenusDatabaseController
 from app.utils import Translator, now
-
 from .exceptions import InvalidStateError, MealError, MealWarning
 
 logger = logging.getLogger(__name__)
@@ -323,9 +322,8 @@ class Combined(Meal):
 class DailyMenu:
     """Represents the menu of a day."""
 
-    def __init__(
-        self, day: int, month: int, year: int, lunch: Meal = None, dinner: Meal = None
-    ):
+    def __init__(self, day: int, month: int, year: int,
+                 lunch: Meal = None, dinner: Meal = None):
         self.day = day
         self.month = month
         self.year = year
@@ -345,11 +343,11 @@ class DailyMenu:
             )
 
         return (
-            self.day == other.day
-            and self.month == other.month
-            and self.year == other.year
-            and self.lunch == other.lunch
-            and self.dinner == other.dinner
+                self.day == other.day
+                and self.month == other.month
+                and self.year == other.year
+                and self.lunch == other.lunch
+                and self.dinner == other.dinner
         )
 
     def __str__(self):
