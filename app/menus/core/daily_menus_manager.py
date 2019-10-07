@@ -9,7 +9,7 @@ from app.menus.core.utils import get_menus_urls
 from app.menus.models import DailyMenusDatabaseController, UpdateControl
 from app.utils import now
 
-from .structure import DailyMenu, Meal
+from .structure import DailyMenu
 
 logger = logging.getLogger(__name__)
 M = Union[DailyMenu, List[DailyMenu]]

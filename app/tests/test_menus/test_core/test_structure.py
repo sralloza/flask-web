@@ -6,7 +6,7 @@ import pytest
 
 from app.menus.core.exceptions import InvalidStateError, MealError, MealWarning
 from app.menus.core.structure import Combined, DailyMenu
-from app.menus.core.structure import Index as Index
+from app.menus.core.structure import Index
 from app.menus.core.structure import LunchState, Meal
 
 # Test data

@@ -35,7 +35,7 @@ class TestGetLastMenusPage:
 
     @mock.patch("app.utils._Cache", autospec=True)
     def test_one_connection_error(
-        self, static_mock, logger_mock, requests_get_mock, test_content
+            self, static_mock, logger_mock, requests_get_mock, test_content
     ):
         static_mock.redirect_url = None
         foo_mock = mock.Mock()
@@ -51,7 +51,7 @@ class TestGetLastMenusPage:
 
     @mock.patch("app.utils._Cache", autospec=True)
     def test_two_connection_error(
-        self, static_mock, logger_mock, requests_get_mock, test_content
+            self, static_mock, logger_mock, requests_get_mock, test_content
     ):
         static_mock.redirect_url = None
         foo_mock = mock.Mock()
@@ -73,7 +73,7 @@ class TestGetLastMenusPage:
 
     @mock.patch("app.utils._Cache", autospec=True)
     def test_three_connection_error(
-        self, static_mock, logger_mock, requests_get_mock, test_content
+            self, static_mock, logger_mock, requests_get_mock, test_content
     ):
         static_mock.redirect_url = None
         foo_mock = mock.Mock()
@@ -96,7 +96,7 @@ class TestGetLastMenusPage:
 
     @mock.patch("app.utils._Cache", autospec=True)
     def test_four_connection_error(
-        self, static_mock, logger_mock, requests_get_mock, test_content
+            self, static_mock, logger_mock, requests_get_mock, test_content
     ):
         static_mock.redirect_url = None
         foo_mock = mock.Mock()
@@ -126,7 +126,7 @@ class TestGetLastMenusPage:
 
     @mock.patch("app.utils._Cache", autospec=True)
     def test_five_connection_error(
-        self, static_mock, logger_mock, requests_get_mock, test_content
+            self, static_mock, logger_mock, requests_get_mock, test_content
     ):
         static_mock.redirect_url = None
         foo_mock = mock.Mock()

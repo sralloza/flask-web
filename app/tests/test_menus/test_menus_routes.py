@@ -360,17 +360,8 @@ class TestAddMenuInterface:
     def action_type(self, request):
         return request.param
 
-    @pytest.fixture
-    def post_mocks(self):
-        tm = mock.patch("app.menus.routes.gen_token", autospec=True).start()
-        dmm = mock.patch("app.menus.routes.DailyMenusManager", autospec=True).start()
-
-        yield tm, dmm
-
-        mock.patch.stopall()
-
-    def test_post(self, post_mocks, client, data_type, action_type):
-        token_mock, dmm_mock = post_mocks
+    @mock.patch("app.menus.routes.gen_token", autospec=True)
+    def test_post(self, token_mock, client, data_type, action_type, reset_database):
         token_mock.return_value = "foo-token"
 
         post_data = self.POST_DATA_GOOD.copy()
@@ -390,26 +381,15 @@ class TestAddMenuInterface:
 
         rv = client.post("/add", data=post_data)
 
-        # Mocks
-        if data_type is self.PostDataType.good:
-            # Everything ok, DMM called
-            dmm_mock.load.assert_called_once_with(force=False)
-            real_dmm_mock = dmm_mock.load.return_value
-            real_dmm_mock.add_to_menus.assert_called_once()
-            real_dmm_mock.save_to_database.assert_called_once_with()
-        else:
-            # Something went wrong, DMM not called
-            dmm_mock.load.assert_not_called()
-            real_dmm_mock = dmm_mock.load.return_value
-            real_dmm_mock.add_to_menus.assert_not_called()
-            real_dmm_mock.save_to_database.assert_not_called()
-
         # Data
         if data_type is self.PostDataType.good:
             assert rv.status_code == 200
             assert b"Saved:\n<br>" in rv.data
             assert b"DailyMenu(" in rv.data
             assert b"meta http-equiv" in rv.data
+            assert b"Home" in rv.data
+            assert b"Add more" in rv.data
+            assert b"href" in rv.data
         else:
             if action_type == self.ActionType.change:
                 if data_type == self.PostDataType.date:
@@ -422,3 +402,20 @@ class TestAddMenuInterface:
                 assert f"{data_type.value!r} is required".encode() in rv.data
 
             assert rv.status_code == 403
+
+    @mock.patch("app.menus.routes.gen_token", autospec=True)
+    def test_post_repeating_date(self, token_mock, client, reset_database):
+        token_mock.return_value = "foo-token"
+
+        post_data = self.POST_DATA_GOOD.copy()
+        post_data["token"] = "foo-token"
+
+        rv = client.post("/add", data=post_data)
+        assert rv.status_code == 200
+        assert b"Saved" in rv.data
+        assert b"Not saved" not in rv.data
+
+        rv = client.post("/add", data=post_data)
+        assert rv.status_code == 409
+        assert b"Saved" not in rv.data
+        assert b"Not saved" in rv.data
