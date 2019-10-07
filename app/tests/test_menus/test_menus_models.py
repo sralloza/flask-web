@@ -59,7 +59,10 @@ class TestDailyMenusDatabaseController:
             assert mock_save.call_count == 5
 
             if errors:
-                assert mock.call("DROP TABLE 'daily_menudb'") not in mock_connection.execute.call_args_list
+                assert (
+                    mock.call("DROP TABLE 'daily_menudb'")
+                    not in mock_connection.execute.call_args_list
+                )
             else:
                 mock_connection.execute.assert_called_with("DROP TABLE 'daily_menudb'")
 
@@ -95,10 +98,111 @@ class TestDailyMenusDatabaseController:
         else:
             mock_back_compat.assert_not_called()
 
+
+class TestDatabaseConnection:
+    @pytest.fixture(autouse=True)
+    def autouse_client(self, client):
+        yield client
+
+    @mock.patch("app.menus.models.DatabaseConnection.close")
+    @mock.patch("sqlite3.connect")
+    def test_context_manager(self, mock_sqlite_connect, mock_close):
+        assert hasattr(DatabaseConnection, "__enter__")
+        assert hasattr(DatabaseConnection, "__exit__")
+
+        with DatabaseConnection() as connection:
+            assert isinstance(connection, DatabaseConnection)
+
+        mock_sqlite_connect.assert_called()
+        mock_close.assert_called()
+
+    @mock.patch("sqlite3.connect")
+    def test_close(self, mock_sqlite_connect):
+        connection = DatabaseConnection()
+        mock_sqlite_connect.assert_called()
+
+        db_connection = mock_sqlite_connect.return_value
+        db_connection.close.assert_not_called()
+
+        connection.close()
+        db_connection.close.assert_called()
+
+    @mock.patch("sqlite3.connect")
+    def test_commit(self, mock_sqlite_connect):
+        connection = DatabaseConnection()
+        mock_sqlite_connect.assert_called()
+
+        db_connection = mock_sqlite_connect.return_value
+        db_connection.commit.reset_mock()
+
+        connection.commit()
+        db_connection.commit.assert_called()
+
+    @mock.patch("sqlite3.connect")
+    def test_execute(self, mock_sqlite_connect):
+        connection = DatabaseConnection()
+        mock_sqlite_connect.assert_called()
+
+        cursor_mock = mock_sqlite_connect.return_value.cursor.return_value
+        cursor_mock.execute.reset_mock()
+
+        connection.execute("query", ("arg1", "arg2"))
+        cursor_mock.execute.assert_called_with("query", ("arg1", "arg2"))
+
+        connection.execute("query2", ("arg1", "arg2"))
+        cursor_mock.execute.assert_called_with("query2", ("arg1", "arg2"))
+
+    @mock.patch("sqlite3.connect")
+    def test_fetch_all(self, mock_sqlite_connect):
+        connection = DatabaseConnection()
+        mock_sqlite_connect.assert_called()
+
+        cursor = mock_sqlite_connect.return_value.cursor.return_value
+        cursor.fetchall.assert_not_called()
+
+        connection.fetch_all()
+        cursor.fetchall.assert_called()
+
+    @mock.patch("sqlite3.connect")
+    def test_ensure_tables(self, mock_sqlite_connect):
+        connection = DatabaseConnection()
+        mock_sqlite_connect.reset_mock()
+
+        mock_cursor = mock_sqlite_connect.return_value.cursor.return_value
+        connection.ensure_tables()
+
+        mock_cursor.execute.assert_called()
+        assert mock_cursor.execute.call_count == 2
+
+        # Three indexes: call number, args (0) or kwargs (1), call_args
+        table_1 = mock_cursor.execute.call_args_list[0][0][0].strip()
+        table_2 = mock_cursor.execute.call_args_list[1][0][0].strip()
+
+        assert "CREATE TABLE IF NOT EXISTS" in table_1
+        assert "CREATE TABLE IF NOT EXISTS" in table_2
+
+        assert "'daily_menus'" in table_1
+        assert "'update_control'" in table_2
+
+        assert "'id'" in table_1
+        assert "'day'" in table_1
+        assert "'month'" in table_1
+        assert "'year'" in table_1
+        assert "'lunch1'" in table_1
+        assert "'lunch2'" in table_1
+        assert "'dinner1'" in table_1
+        assert "'dinner2'" in table_1
+
+        assert "'datetime'" in table_2
+
+        assert ";" in table_1
+        assert ";" in table_2
+
+
 class TestUpdateControl:
     @pytest.fixture(autouse=True)
     def auto_remove_database(self, reset_database):
-        yield
+        yield reset_database
 
     @pytest.fixture
     def uc_sqlite(self):
@@ -118,7 +222,7 @@ class TestUpdateControl:
 
         assert isinstance(uc.connection, DatabaseConnection)
 
-        uc.connection.close()
+        uc.connection.commit()
 
     def test_close(self, uc_sqlite):
         sqlite_mock, uc = uc_sqlite
