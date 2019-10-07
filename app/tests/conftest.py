@@ -1,6 +1,5 @@
 import os
 import sqlite3
-from unittest import mock
 
 import pytest
 from flask.globals import current_app
@@ -22,6 +21,9 @@ def client(app):
     testing_client = app.test_client()
 
     with app.app_context():
+        # Check if DATABASE_PATH config is TestingConfig.DATABASE_PATH
+        assert current_app.config["DATABASE_PATH"] == TestingConfig.DATABASE_PATH
+
         yield testing_client  # this is where the testing happens!
 
 
@@ -35,3 +37,11 @@ def reset_database(client):
     connection.commit()
     connection.close()
     yield
+
+
+@pytest.fixture(scope="session", autouse=True)
+def remove_testing_database():
+    yield
+
+    if TestingConfig.DATABASE_PATH.is_file():
+        TestingConfig.DATABASE_PATH.unlink()
