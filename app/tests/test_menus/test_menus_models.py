@@ -6,10 +6,7 @@ import pytest
 
 from app.menus.core.structure import DailyMenu, Meal
 from app.menus.models import (
-    DailyMenusDatabaseController,
-    DatabaseConnection,
-    UpdateControl,
-)
+    DailyMenusDatabaseController, DatabaseConnection, UpdateControl)
 from app.utils import now
 
 
@@ -103,6 +100,17 @@ class TestDatabaseConnection:
     @pytest.fixture(autouse=True)
     def autouse_client(self, client):
         yield client
+
+    @mock.patch("sqlite3.connect")
+    def test_init_python36(self, mock_sqlite_connect):
+        # In python < 3.7 sqlite3.connect(pathlib.Path) raises TypeError
+        connection_mock = mock.MagicMock()
+        mock_sqlite_connect.side_effect = [TypeError, connection_mock]
+        DatabaseConnection()
+
+        mock_sqlite_connect.assert_called()
+        assert mock_sqlite_connect.call_count == 2
+        connection_mock.cursor.assert_called_once()
 
     @mock.patch("app.menus.models.DatabaseConnection.close")
     @mock.patch("sqlite3.connect")

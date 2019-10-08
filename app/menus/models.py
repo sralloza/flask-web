@@ -46,9 +46,9 @@ class DailyMenusDatabaseController:
 
             if all(results):
                 connection.execute("DROP TABLE 'daily_menudb'")
-                logger.info('Dropped table daily_menudb')
+                logger.info("Dropped table daily_menudb")
             else:
-                logger.warning('Can not drop table daily_menudb')
+                logger.warning("Can not drop table daily_menudb")
 
     @classmethod
     def save_daily_menu(cls, daily_menu, backwards_compatibility=True):
@@ -79,7 +79,13 @@ class DailyMenusDatabaseController:
 
 class DatabaseConnection:
     def __init__(self):
-        self.connection = sqlite3.connect(current_app.config["DATABASE_PATH"])
+        try:
+            self.connection = sqlite3.connect(current_app.config["DATABASE_PATH"])
+        except TypeError:
+            self.connection = sqlite3.connect(
+                current_app.config["DATABASE_PATH"].as_posix()
+            )
+
         self.cursor = self.connection.cursor()
         self.ensure_tables()
 
