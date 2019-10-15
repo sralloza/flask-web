@@ -398,6 +398,14 @@ class TestAddMenuInterface:
         dinner_2 = "dinner-2"
         token = "token"
 
+        def is_meal(self):
+            return self in (
+                self.__class__.lunch_1,
+                self.__class__.lunch_2,
+                self.__class__.dinner_1,
+                self.__class__.dinner_2,
+            )
+
     @pytest.fixture(params=PostDataType)
     def data_type(self, request):
         return request.param
@@ -427,8 +435,8 @@ class TestAddMenuInterface:
 
         rv = client.post("/add", data=post_data)
 
-        # Data
-        if data_type is self.PostDataType.good:
+        # Meals (lunch1, lunch2, dinner1 and dinner2) are not required
+        if data_type is self.PostDataType.good or data_type.is_meal():
             assert rv.status_code == 200
             assert b"Saved:\n<br>" in rv.data
             assert b"DailyMenu(" in rv.data

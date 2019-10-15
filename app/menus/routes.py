@@ -130,10 +130,10 @@ def add_menu_interface():
 
     try:
         date = get_post_arg("date", required=True, strip=True)
-        lunch1 = get_post_arg("lunch-1", required=True, strip=True)
-        lunch2 = get_post_arg("lunch-2", required=True, strip=True)
-        dinner1 = get_post_arg("dinner-1", required=True, strip=True)
-        dinner2 = get_post_arg("dinner-2", required=True, strip=True)
+        lunch1 = get_post_arg("lunch-1", required=False, strip=True)
+        lunch2 = get_post_arg("lunch-2", required=False, strip=True)
+        dinner1 = get_post_arg("dinner-1", required=False, strip=True)
+        dinner2 = get_post_arg("dinner-2", required=False, strip=True)
         token = get_post_arg("token", required=True, strip=True)
     except RuntimeError as err:
         return str(err.args[0]), 403
@@ -149,7 +149,7 @@ def add_menu_interface():
     menu = DailyMenu(
         date.day, date.month, date.year, Meal(lunch1, lunch2), Meal(dinner1, dinner2)
     )
-    
+
     result = menu.to_database()
     meta = '<meta http-equiv="refresh" content="15; url=/">'
     meta += '<br><a href="/">Home</a><br><a href="/add">Add more</a>'
