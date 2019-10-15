@@ -547,3 +547,14 @@ class TestDailyMenu:
         assert result_1 is True
         assert result_2 is False
         info_mock.assert_called_once_with("Saved menu %d to database", 20311231)
+
+    @mock.patch("app.menus.core.structure.logger.info", autospec=True)
+    def test_remove_from_database(self, info_mock, client):
+        menu = DailyMenu(5, 12, 2025)
+        result_1 = menu.remove_from_database()
+
+        menu.to_database()
+        result_2 = menu.remove_from_database()
+
+        assert result_1 is False
+        assert result_2 is True

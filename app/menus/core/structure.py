@@ -389,6 +389,13 @@ class DailyMenu:
             logger.info("Saved menu %d to database", self.id)
         return result
 
+    def remove_from_database(self):
+        """Removes the menu from the database."""
+        result = DailyMenusDatabaseController.remove_daily_menu(self)
+        if result is True:
+            logger.info("removed menu %d from the database", self.id)
+        return result
+
     def to_string(self):
         """Returns the menu formatted as a string."""
 
