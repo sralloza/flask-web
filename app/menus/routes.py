@@ -149,7 +149,7 @@ def add_menu_interface():
     menu = DailyMenu(
         date.day, date.month, date.year, Meal(lunch1, lunch2), Meal(dinner1, dinner2)
     )
-    
+
     result = menu.to_database()
     meta = '<meta http-equiv="refresh" content="15; url=/">'
     meta += '<br><a href="/">Home</a><br><a href="/add">Add more</a>'
@@ -158,3 +158,34 @@ def add_menu_interface():
     code = 200 if result else 409
 
     return f"{status}:\n<br>" + repr(menu) + meta, code
+
+
+@menus_blueprint.route("/del", methods=["GET", "POST"])
+def del_menu_interface():
+    if request.method == "GET":
+        return render_template("del-interface.html")
+
+    try:
+        date = get_post_arg("date", required=True, strip=True)
+        token = get_post_arg("token", required=True, strip=True)
+    except RuntimeError as err:
+        return str(err.args[0]), 403
+
+    if token != gen_token():
+        return "Invalid token", 403
+
+    try:
+        date = datetime.strptime(date, "%Y-%m-%d")
+    except ValueError as err:
+        return "Invalid date format: " + err.args[0], 403
+
+    menu = DailyMenu(date.day, date.month, date.year)
+    result = menu.remove_from_database()
+
+    meta = '<meta http-equiv="refresh" content="15; url=/">'
+    meta += '<br><a href="/">Home</a><br><a href="/del">Del more</a>'
+
+    status = "Deleted" if result else "Not deleted"
+    code = 200 if result else 409
+
+    return f"{status}:\n<br>" + menu.format_date() + meta, code

@@ -425,3 +425,93 @@ class TestAddMenuInterface:
         assert rv.status_code == 409
         assert b"Saved" not in rv.data
         assert b"Not saved" in rv.data
+
+
+class TestDelMenuInterface:
+    def test_get(self, client):
+        rv = client.get("/del")
+
+        assert b"form" in rv.data
+        assert rv.data.count(b"<h5") == 1  # One title
+        assert rv.data.count(b"</h5") == 1  # One title
+
+        # 2 inputs (1xdate, 1xtoken)
+        assert rv.data.count(b'<div class="form-group">') == 2
+        assert rv.data.count(b"placeholder") == 2
+        assert rv.data.count(b"<label") == 2
+        assert rv.data.count(b"</label") == 2
+        assert rv.data.count(b"<input") == 2
+
+        # 2 button (submit and reset)
+        assert rv.data.count(b"<button") == 2
+        assert rv.data.count(b"</button") == 2
+
+        # Texts
+        assert b"Eliminar datos" in rv.data  # Title
+        assert b"Comida - 1" not in rv.data  # Check against /add
+        assert b"Comida - 2" not in rv.data  # Check against /add
+        assert b"Cena - 1" not in rv.data  # Check against /add
+        assert b"Cena - 2" not in rv.data  # Check against /add
+        assert b"Token" in rv.data
+
+    POST_DATA_GOOD = {"date": "2000-12-31"}
+
+    class ActionType(Enum):
+        good = "good"
+        invalid_token = "invalid_token"
+        missing_token = "missing_token"
+        missing_date = "missing_date"
+        invalid_date = "invalid_date"
+
+    @pytest.fixture(params=ActionType)
+    def action(self, request):
+        return request.param
+
+    @pytest.fixture(params=[True, False])
+    def is_ok(self, request):
+        return request.param
+
+    @mock.patch("app.menus.routes.DailyMenu.remove_from_database", autospec=True)
+    @mock.patch("app.menus.routes.gen_token", autospec=True)
+    def test_post(self, token_mock, rfd_mock, is_ok, client, action, reset_database):
+        rfd_mock.return_value = is_ok
+        token_mock.return_value = "foo-token"
+
+        post_data = self.POST_DATA_GOOD.copy()
+        post_data["token"] = "foo-token"
+
+        if action is self.ActionType.good:
+            pass
+        elif action is self.ActionType.invalid_token:
+            post_data["token"] = "invalid token"
+        elif action is self.ActionType.missing_token:
+            del post_data["token"]
+        elif action is self.ActionType.invalid_date:
+            post_data["date"] = "invalid date"
+        elif action is self.ActionType.missing_date:
+            del post_data["date"]
+
+        rv = client.post("/del", data=post_data)
+
+        # Data
+        if action is self.ActionType.good:
+            if is_ok:
+                assert b"Deleted:\n<br>" in rv.data
+                assert rv.status_code == 200
+            else:
+                assert b"Not deleted:\n<br>" in rv.data
+                assert rv.status_code == 409
+            assert b"meta http-equiv" in rv.data
+            assert b"Home" in rv.data
+            assert b"Del more" in rv.data
+            assert b"href" in rv.data
+        else:
+            assert rv.status_code == 403
+        if action is self.ActionType.invalid_token:
+            assert b"Invalid token" in rv.data
+        elif action is self.ActionType.missing_token:
+            assert b"'token' is required" in rv.data
+        elif action is self.ActionType.invalid_date:
+            assert b"Invalid date" in rv.data
+        elif action is self.ActionType.missing_date:
+            assert b"'date' is required" in rv.data
