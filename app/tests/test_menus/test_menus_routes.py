@@ -160,69 +160,109 @@ class MenuApiDataCodes(Enum):
     invalid_token = 4
 
 
-ADD_MENU_API_DATA_GOOD = dict(
-    day=1,
-    month=1,
-    year=2019,
-    lunch1="lunch-1",
-    lunch2="lunch2",
-    dinner1="dinner-1",
-    dinner2="dinner-2",
-)
+ADD_MENU_API_DATA_GOOD = {
+    "day": 1,
+    "month": 1,
+    "year": 2019,
+    "lunch-1": "lunch-1",
+    "lunch-2": "lunch-2",
+    "dinner-1": "dinner-1",
+    "dinner-2": "dinner-2",
+}
 add_menu_api_data = (
     (ADD_MENU_API_DATA_GOOD, True, MenuApiDataCodes.good),
     (
-        dict(
-            day="X",
-            month=1,
-            year=2019,
-            lunch1="lunch-1",
-            lunch2="lunch-2",
-            dinner1="dinner-1",
-            dinner2="dinner-2",
-        ),
+        {
+            "day": "X",
+            "month": 1,
+            "year": 2019,
+            "lunch-1": "lunch-1",
+            "lunch-2": "lunch-2",
+            "dinner-1": "dinner-1",
+            "dinner-2": "dinner-2",
+        },
         "ValueError: \"invalid literal for int() with base 10: 'X'\"",
         MenuApiDataCodes.exception,
     ),
     (
-        dict(
-            day=1,
-            month="Y",
-            year=2019,
-            lunch1="lunch-1",
-            lunch2="lunch-2",
-            dinner1="dinner-1",
-            dinner2="dinner-2",
-        ),
+        {
+            "day": 1,
+            "month": "Y",
+            "year": 2019,
+            "lunch-1": "lunch-1",
+            "lunch-2": "lunch-2",
+            "dinner-1": "dinner-1",
+            "dinner-2": "dinner-2",
+        },
         "ValueError: \"invalid literal for int() with base 10: 'Y'\"",
         MenuApiDataCodes.exception,
     ),
     (
-        dict(
-            day=1,
-            month=1,
-            year="Z",
-            lunch1="lunch-1",
-            lunch2="lunch-2",
-            dinner1="dinner-1",
-            dinner2="dinner-2",
-        ),
+        {
+            "day": 1,
+            "month": 1,
+            "year": "Z",
+            "lunch-1": "lunch-1",
+            "lunch-2": "lunch-2",
+            "dinner-1": "dinner-1",
+            "dinner-2": "dinner-2",
+        },
         "ValueError: \"invalid literal for int() with base 10: 'Z'\"",
         MenuApiDataCodes.exception,
     ),
     (
-        dict(
-            day=1,
-            month=1,
-            year=2019,
-            lunch2="lunch-2",
-            dinner1="dinner-1",
-            dinner2="dinner-2",
-        ),
-        "Missing 'lunch1'",
-        MenuApiDataCodes.exception,
+        {
+            "day": 1,
+            "month": 1,
+            "year": 2019,
+            "lunch-1": None,
+            "lunch-2": "lunch-2",
+            "dinner-1": "dinner-1",
+            "dinner-2": "dinner-2",
+        },
+        True,
+        MenuApiDataCodes.good,
     ),
-    (dict(), "Missing 'token'", MenuApiDataCodes.no_token),
+    (
+        {
+            "day": 1,
+            "month": 1,
+            "year": 2019,
+            "lunch-1": "lunch-1",
+            "lunch-2": None,
+            "dinner-1": "dinner-1",
+            "dinner-2": "dinner-2",
+        },
+        True,
+        MenuApiDataCodes.good,
+    ),
+    (
+        {
+            "day": 1,
+            "month": 1,
+            "year": 2019,
+            "lunch-1": "lunch-1",
+            "lunch-2": "lunch-2",
+            "dinner-1": None,
+            "dinner-2": "dinner-2",
+        },
+        True,
+        MenuApiDataCodes.good,
+    ),
+    (
+        {
+            "day": 1,
+            "month": 1,
+            "year": 2019,
+            "lunch-1": "lunch-1",
+            "lunch-2": "lunch-2",
+            "dinner-1": "dinner-1",
+            "dinner-2": None,
+        },
+        True,
+        MenuApiDataCodes.good,
+    ),
+    (dict(), "'token' is required (None)", MenuApiDataCodes.no_token),
     (ADD_MENU_API_DATA_GOOD, "Invalid token", MenuApiDataCodes.invalid_token),
 )
 
@@ -236,8 +276,8 @@ def test_add_menu_api(client, data, exception, code):
             data["day"],
             data["month"],
             data["year"],
-            Meal(data["lunch1"], data["lunch2"]),
-            Meal(data["dinner1"], data["dinner2"]),
+            Meal(data["lunch-1"], data["lunch-2"]),
+            Meal(data["dinner-1"], data["dinner-2"]),
         )
     except (TypeError, KeyError):
         menu = DailyMenu(1, 1, 2010)
@@ -358,6 +398,14 @@ class TestAddMenuInterface:
         dinner_2 = "dinner-2"
         token = "token"
 
+        def is_meal(self):
+            return self in (
+                self.__class__.lunch_1,
+                self.__class__.lunch_2,
+                self.__class__.dinner_1,
+                self.__class__.dinner_2,
+            )
+
     @pytest.fixture(params=PostDataType)
     def data_type(self, request):
         return request.param
@@ -387,8 +435,8 @@ class TestAddMenuInterface:
 
         rv = client.post("/add", data=post_data)
 
-        # Data
-        if data_type is self.PostDataType.good:
+        # Meals (lunch1, lunch2, dinner1 and dinner2) are not required
+        if data_type is self.PostDataType.good or data_type.is_meal():
             assert rv.status_code == 200
             assert b"Saved:\n<br>" in rv.data
             assert b"DailyMenu(" in rv.data
