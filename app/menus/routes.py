@@ -87,18 +87,18 @@ def add_menu_api():
         json_data[key] = value[0]
 
     try:
-        token = json_data["token"]
-        day = int(json_data["day"])
-        month = int(json_data["month"])
-        year = int(json_data["year"])
-        lunch1 = json_data["lunch1"]
-        lunch2 = json_data["lunch2"]
-        dinner1 = json_data["dinner1"]
-        dinner2 = json_data["dinner2"]
-    except KeyError as key:
-        return "Missing %s" % key, 403
-    except ValueError as v:
-        return "ValueError: %r" % ", ".join(v.args), 403
+        token = get_post_arg("token", required=True, strip=True)
+        day = int(get_post_arg("day", required=True, strip=True))
+        month = int(get_post_arg("month", required=True, strip=True))
+        year = int(get_post_arg("year", required=True, strip=True))
+        lunch1 = get_post_arg("lunch-1", required=False, strip=True)
+        lunch2 = get_post_arg("lunch-2", required=False, strip=True)
+        dinner1 = get_post_arg("dinner-1", required=False, strip=True)
+        dinner2 = get_post_arg("dinner-2", required=False, strip=True)
+    except ValueError as err:
+        return "ValueError: %r" % str(err.args[0]), 403
+    except RuntimeError as err:
+        return str(err.args[0]), 403
 
     real_token = gen_token()
 
