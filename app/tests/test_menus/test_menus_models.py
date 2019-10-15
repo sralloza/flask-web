@@ -6,7 +6,10 @@ import pytest
 
 from app.menus.core.structure import DailyMenu, Meal
 from app.menus.models import (
-    DailyMenusDatabaseController, DatabaseConnection, UpdateControl)
+    DailyMenusDatabaseController,
+    DatabaseConnection,
+    UpdateControl,
+)
 from app.utils import now
 
 
@@ -94,6 +97,34 @@ class TestDailyMenusDatabaseController:
             mock_back_compat.assert_called()
         else:
             mock_back_compat.assert_not_called()
+
+    @pytest.mark.parametrize("menus_number", [0, 1])
+    def test_remove_daily_menu(self, mock_db, menus_number):
+        menu = DailyMenu(1, 2, 2003, Meal("a", "b"), Meal("c", "d"))
+        # Use of context manager (__enter__)
+        mock_connection = mock_db.return_value.__enter__.return_value
+        mock_connection.fetch_all.return_value = [[menus_number]]
+
+        result = DailyMenusDatabaseController.remove_daily_menu(menu)
+
+        mock_connection.execute.assert_any_call(
+            "SELECT COUNT(*) FROM 'daily_menus' WHERE id=?", [menu.id]
+        )
+
+        if menus_number:
+            mock_connection.execute.assert_called_with(
+                "DELETE FROM 'daily_menus' WHERE id=?", [menu.id]
+            )
+            assert mock_connection.execute.call_count == 2
+        else:
+            assert mock_connection.execute.call_count == 1
+
+        if menus_number:
+            assert result is True
+            mock_connection.commit.assert_called()
+        else:
+            assert result is False
+            mock_connection.commit.assert_not_called()
 
 
 class TestDatabaseConnection:

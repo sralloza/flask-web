@@ -76,6 +76,21 @@ class DailyMenusDatabaseController:
             except sqlite3.IntegrityError:
                 return False
 
+    @classmethod
+    def remove_daily_menu(cls, daily_menu):
+        with DatabaseConnection() as connection:
+            connection.execute(
+                "SELECT COUNT(*) FROM 'daily_menus' WHERE id=?", [daily_menu.id]
+            )
+            menus_number = connection.fetch_all()[0][0]
+
+            if not menus_number:
+                return False
+
+            connection.execute("DELETE FROM 'daily_menus' WHERE id=?", [daily_menu.id])
+            connection.commit()
+            return True
+
 
 class DatabaseConnection:
     def __init__(self):
