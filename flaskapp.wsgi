@@ -1,4 +1,4 @@
-#!/home/server/www/venv/bin/python
+#!/srv/www/venv/bin/python
 
 activate_this = "/srv/www/venv/bin/activate_this.py"
 with open(activate_this) as file_:
