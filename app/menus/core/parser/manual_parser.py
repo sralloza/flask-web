@@ -10,7 +10,7 @@ class ManualParser(BaseParser):
 
     @classmethod
     def process_text(cls, dmm, text: str):
-        soup = BeautifulSoup(text, 'html.parser')
+        soup = BeautifulSoup(text, "html.parser")
 
         self = cls(soup)
 
@@ -24,12 +24,12 @@ class ManualParser(BaseParser):
 
     def detect_if_pdf(self):
         try:
-            pdf = self.soup.find('div', class_='cc-m-download-file-link').a['href']
+            pdf = self.soup.find("div", class_="cc-m-download-file-link").a["href"]
             return pdf is not None
         except AttributeError:
             return False
 
     def detect_if_photo(self):
-        container = self.soup.find('div', class_='post j-blog-content')
-        photo = container.find('img', alt='')
+        container = self.soup.find("div", class_="post j-blog-content")
+        photo = container.find("img", alt="")
         return photo is not None

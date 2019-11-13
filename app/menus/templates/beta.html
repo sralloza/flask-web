@@ -8,24 +8,24 @@
         <div>
             <table class="display" id="menus_table" style="width:100%">
                 <thead>
-                <tr>
-                    <th>Día</th>
-                    <th>Comida plato 1</th>
-                    <th>Comida plato 2</th>
-                    <th>Cena plato 1</th>
-                    <th>Cena plato 2</th>
-                </tr>
+                    <tr>
+                        <th>Día</th>
+                        <th>Comida plato 1</th>
+                        <th>Comida plato 2</th>
+                        <th>Cena plato 1</th>
+                        <th>Cena plato 2</th>
+                    </tr>
                 </thead>
                 <tbody>
-                {% for menu in menus %}
-                <tr class="{{ menu.code }}">
-                    <td>{{ menu.format_date(long=False) }}</td>
-                    <td>{{ menu.lunch.p1 or '-' }}</td>
-                    <td>{{ menu.lunch.p2 or '-' }}</td>
-                    <td>{{ menu.dinner.p1 or '-' }}</td>
-                    <td>{{ menu.dinner.p2 or '-' }}</td>
-                </tr>
-                {% endfor %}
+                    {% for menu in menus %}
+                    <tr class="{{ menu.code }}">
+                        <td>{{ menu.format_date(long=False) }}</td>
+                        <td>{{ menu.lunch.p1 or '-' }}</td>
+                        <td>{{ menu.lunch.p2 or '-' }}</td>
+                        <td>{{ menu.dinner.p1 or '-' }}</td>
+                        <td>{{ menu.dinner.p2 or '-' }}</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -36,8 +36,7 @@
 {% block styles %}
 {{ super() }}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/menus.css') }}">
-<link rel="stylesheet" type="text/css"
-      href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 {% endblock %}
 
 {% block scripts %}
@@ -45,4 +44,3 @@
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="{{ url_for('static', filename='js/beta-datatable-menus.js') }}"></script>
 {% endblock %}
-

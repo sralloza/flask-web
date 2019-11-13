@@ -322,8 +322,9 @@ class Combined(Meal):
 class DailyMenu:
     """Represents the menu of a day."""
 
-    def __init__(self, day: int, month: int, year: int,
-                 lunch: Meal = None, dinner: Meal = None):
+    def __init__(
+        self, day: int, month: int, year: int, lunch: Meal = None, dinner: Meal = None
+    ):
         self.day = day
         self.month = month
         self.year = year
@@ -343,11 +344,11 @@ class DailyMenu:
             )
 
         return (
-                self.day == other.day
-                and self.month == other.month
-                and self.year == other.year
-                and self.lunch == other.lunch
-                and self.dinner == other.dinner
+            self.day == other.day
+            and self.month == other.month
+            and self.year == other.year
+            and self.lunch == other.lunch
+            and self.dinner == other.dinner
         )
 
     def __str__(self):
@@ -428,7 +429,7 @@ class DailyMenu:
 
         Args:
             dt: datetime of the menu.
-            
+
         """
 
         self = DailyMenu.__new__(DailyMenu)

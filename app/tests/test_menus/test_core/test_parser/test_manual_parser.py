@@ -7,37 +7,37 @@ from app.tests.data.data import Paths
 
 
 class TestManualParser:
-    @pytest.mark.parametrize('data_path', Paths.not_html.value)
+    @pytest.mark.parametrize("data_path", Paths.not_html.value)
     def test_process_url_true(self, data_path):
-        content = data_path.read_text(errors='ignore')
+        content = data_path.read_text(errors="ignore")
         assert ManualParser.process_text(None, content)
 
-    @pytest.mark.parametrize('data_path', Paths.html.value)
+    @pytest.mark.parametrize("data_path", Paths.html.value)
     def test_process_url_false(self, data_path):
-        content = data_path.read_text(errors='ignore')
+        content = data_path.read_text(errors="ignore")
         with pytest.raises(ParserError):
             ManualParser.process_text(None, content)
 
-    @pytest.mark.parametrize('data_path', Paths.pdf.value)
+    @pytest.mark.parametrize("data_path", Paths.pdf.value)
     def test_detect_if_pdf_true(self, data_path):
-        content = data_path.read_text(errors='ignore')
-        manual_parser = ManualParser(BeautifulSoup(content, 'html.parser'))
+        content = data_path.read_text(errors="ignore")
+        manual_parser = ManualParser(BeautifulSoup(content, "html.parser"))
         assert manual_parser.detect_if_pdf()
 
-    @pytest.mark.parametrize('data_path', Paths.not_pdf.value)
+    @pytest.mark.parametrize("data_path", Paths.not_pdf.value)
     def test_detect_if_pdf_false(self, data_path):
-        content = data_path.read_text(errors='ignore')
-        manual_parser = ManualParser(BeautifulSoup(content, 'html.parser'))
+        content = data_path.read_text(errors="ignore")
+        manual_parser = ManualParser(BeautifulSoup(content, "html.parser"))
         assert not manual_parser.detect_if_pdf()
 
-    @pytest.mark.parametrize('data_path', Paths.photos.value)
+    @pytest.mark.parametrize("data_path", Paths.photos.value)
     def test_detect_if_photo_true(self, data_path):
-        content = data_path.read_text(errors='ignore')
-        manual_parser = ManualParser(BeautifulSoup(content, 'html.parser'))
+        content = data_path.read_text(errors="ignore")
+        manual_parser = ManualParser(BeautifulSoup(content, "html.parser"))
         assert manual_parser.detect_if_photo()
 
-    @pytest.mark.parametrize('data_path', Paths.not_photos.value)
+    @pytest.mark.parametrize("data_path", Paths.not_photos.value)
     def test_detect_if_photo_false(self, data_path):
-        content = data_path.read_text(errors='ignore')
-        manual_parser = ManualParser(BeautifulSoup(content, 'html.parser'))
+        content = data_path.read_text(errors="ignore")
+        manual_parser = ManualParser(BeautifulSoup(content, "html.parser"))
         assert not manual_parser.detect_if_photo()

@@ -6,8 +6,13 @@ import pytest
 from requests.exceptions import ConnectionError
 
 from app.config import Config
-from app.menus.core.utils import (PRINCIPAL_URL, Patterns, filter_data,
-                                  get_menus_urls, has_day)
+from app.menus.core.utils import (
+    PRINCIPAL_URL,
+    Patterns,
+    filter_data,
+    get_menus_urls,
+    has_day,
+)
 
 _inputs = Path(Config.TEST_DATA_PATH / "filter_data" / "input").glob("*.txt")
 _outputs = Path(Config.TEST_DATA_PATH / "filter_data" / "output").glob("*.txt")

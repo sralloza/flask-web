@@ -8,22 +8,22 @@ document.getElementById("dinner").style.display = "none";
 
 function fetch_menus() {
     var force = get('force') || get('f')
-    console.log('force: ' +force);
+    console.log('force: ' + force);
 
     var url = '/api/menus'
     if (force) url += '?force';
 
     fetch(url)
-    .then(response => {
-        return response.json()
-    })
-    .then(data => {
-        menus = data;
-        update_interface()
-    })
-    .catch(err => {
-        console.log(err)
-    })
+        .then(response => {
+            return response.json()
+        })
+        .then(data => {
+            menus = data;
+            update_interface()
+        })
+        .catch(err => {
+            console.log(err)
+        })
 }
 
 function get_day_title() {
@@ -115,21 +115,21 @@ function update_buttons() {
     }
 }
 
-tomorrow = function() {
+tomorrow = function () {
     date_viewed.setDate(date_viewed.getDate() + 1);
     update_interface();
     update_buttons();
     console.log(date_viewed.print());
 }
 
-yesterday = function() {
+yesterday = function () {
     date_viewed.setDate(date_viewed.getDate() - 1);
     update_interface();
     update_buttons();
     console.log(date_viewed.print());
 }
 
-Date.prototype.print = function() {
+Date.prototype.print = function () {
     var year = this.getFullYear();
     var month = this.getMonth() + 1;
     var day = this.getDate();
@@ -151,7 +151,7 @@ function get(name) {
     if (name == '') return false;
     queryDict = {};
     queryDict[name] = false;
-    location.search.substr(1).split('&').forEach(function(item) {
+    location.search.substr(1).split('&').forEach(function (item) {
         queryDict[item.split('=')[0]] = true
     })
 
@@ -161,5 +161,5 @@ function get(name) {
 //window.onload = fetch_menus;
 window.onload = update_interface;
 document.getElementById("next").onclick = tomorrow;
-document.getElementById("all").onclick = function() { window.location = '/menus' };
+document.getElementById("all").onclick = function () { window.location = '/menus' };
 document.getElementById("previous").onclick = yesterday;

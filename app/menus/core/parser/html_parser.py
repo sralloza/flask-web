@@ -18,16 +18,17 @@ S = List[str]
 
 class HtmlParser(BaseParser):
     """Represents a controller of a list of menus."""
+
     _lock = Lock()
 
     @classmethod
     def process_text(cls, dmm, text: str):
         """Processes url in search from menus."""
-        s = Soup(text, 'html.parser')
-        container = s.find('article', {'class': 'j-blog'})
-        text = '\n'.join(x.strip() for x in container.text.splitlines() if x.strip())
-        text = Patterns.fix_dates_pattern_1.sub(r'\1 \2', text)
-        text = Patterns.fix_dates_pattern_2.sub(r'\1 \2', text)
+        s = Soup(text, "html.parser")
+        container = s.find("article", {"class": "j-blog"})
+        text = "\n".join(x.strip() for x in container.text.splitlines() if x.strip())
+        text = Patterns.fix_dates_pattern_1.sub(r"\1 \2", text)
+        text = Patterns.fix_dates_pattern_2.sub(r"\1 \2", text)
         texts = [x.strip() for x in text.splitlines() if x.strip()]
 
         texts = filter_data(texts)
@@ -40,10 +41,10 @@ class HtmlParser(BaseParser):
     @staticmethod
     def _process_texts(texts: S, menus: ML):
         """Processes texts retrieved from url."""
-        logger.debug('Processing texts')
+        logger.debug("Processing texts")
         index = Index()
         for text in texts:
-            text = text.replace('_', ' ').lower()
+            text = text.replace("_", " ").lower()
             if Patterns.day_pattern.search(text) is not None:
                 if index.commit():
                     HtmlParser._update_menu(index, menus)
@@ -51,28 +52,30 @@ class HtmlParser(BaseParser):
                 index.reset()
                 search = Patterns.day_pattern.search(text)
 
-                day = int(search.group('day'))
-                month = search.group('month')
-                month = datetime.strptime(Translator.spanish_to_english(month.lower()), '%B').month
-                year = int(search.group('year'))
+                day = int(search.group("day"))
+                month = search.group("month")
+                month = datetime.strptime(
+                    Translator.spanish_to_english(month.lower()), "%B"
+                ).month
+                year = int(search.group("year"))
 
                 index.set_date(date(year, month, day))
                 continue
 
-            if 'combinado' in text:
+            if "combinado" in text:
                 index.set_combined(index.state)
-                foo = text.split(':')[-1].strip()
-                index.set_first('PC: ' + foo)
-            elif 'coctel' in text or 'cóctel' in text:
-                index.set_first('cóctel')
-            elif 'comida' in text:
-                index.set_state('LUNCH')
-            elif 'cena' in text:
-                index.set_state('DINNER')
-            elif '1er' in text:
-                index.set_first(text.split(':')[1])
-            elif '2º' in text:
-                index.set_second(text.split(':')[1])
+                foo = text.split(":")[-1].strip()
+                index.set_first("PC: " + foo)
+            elif "coctel" in text or "cóctel" in text:
+                index.set_first("cóctel")
+            elif "comida" in text:
+                index.set_state("LUNCH")
+            elif "cena" in text:
+                index.set_state("DINNER")
+            elif "1er" in text:
+                index.set_first(text.split(":")[1])
+            elif "2º" in text:
+                index.set_second(text.split(":")[1])
             else:
                 index.decide(text)
 
@@ -91,11 +94,11 @@ class HtmlParser(BaseParser):
                         menus[i].set_combined(index.meal_combined)
 
                     index_info = index.to_dict()
-                    index_info.pop('day', None)
-                    index_info.pop('month', None)
-                    index_info.pop('year', None)
-                    index_info.pop('date', None)
-                    index_info.pop('weekday', None)
+                    index_info.pop("day", None)
+                    index_info.pop("month", None)
+                    index_info.pop("year", None)
+                    index_info.pop("date", None)
+                    index_info.pop("weekday", None)
 
                     menus[i].update(**index_info)
                     break

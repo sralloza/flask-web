@@ -323,17 +323,16 @@ def test_to_json():
     assert real_json == expected_json
 
 
-@mock.patch("app.menus.core.daily_menus_manager.DailyMenusDatabaseController.list_menus")
+@mock.patch(
+    "app.menus.core.daily_menus_manager.DailyMenusDatabaseController.list_menus"
+)
 @mock.patch("app.menus.core.daily_menus_manager.DailyMenusManager.add_to_menus")
 def test_load_from_database(atm_mock, list_menus_mock, client):
-    
-        # logger.debug("Loading from database")
-    # self.add_to_menus(DailyMenusDatabaseController.list_menus())
+
     menu = DailyMenu(
         1, 1, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
     )
     list_menus_mock.return_value = [menu, menu]
-    
 
     dmm = DailyMenusManager()
     dmm.load_from_database()
