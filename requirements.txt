@@ -1,6 +1,6 @@
+git+https://github.com/pallets/jinja.git
 Bootstrap-Flask
 bs4
 Flask
-git+https://github.com/pallets/jinja.git
-pytest==5.0.1
+pytest
 requests
