@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 
 def get_version():
-    path = Path(__file__).with_name("VERSION")
+    path = Path(__file__).with_name("app").joinpath("VERSION")
     return path.read_text().strip()
 
 
