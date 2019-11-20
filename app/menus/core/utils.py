@@ -4,6 +4,7 @@ from typing import List, Union
 
 import requests
 from bs4 import BeautifulSoup as Soup
+from flask import current_app
 from requests.exceptions import ConnectionError
 
 logger = logging.getLogger(__name__)
@@ -12,6 +13,10 @@ PRINCIPAL_URL = "https://www.residenciasantiago.es/menus-1/"
 
 def get_menus_urls(retries=5):
     """Returns the url to retrieve menus from."""
+
+    if current_app.config["OFFLINE"]:
+        logger.info("Server set to offline, returning emtpy list as menus urls")
+        return []
 
     # TODO: add option to retrieve all the urls.
 
