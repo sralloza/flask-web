@@ -450,8 +450,6 @@ class TestAddMenuInterface:
                     assert b"Invalid date" in rv.data
                 elif data_type == self.PostDataType.token:
                     assert b"Invalid token" in rv.data
-                else:
-                    assert f"{data_type.value!r} is required".encode() in rv.data
             elif action_type == self.ActionType.delete:
                 assert f"{data_type.value!r} is required".encode() in rv.data
 
