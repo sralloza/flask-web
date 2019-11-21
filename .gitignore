@@ -12,3 +12,5 @@ htmlcov/
 *.db
 *.log
 *.backup
+
+TODO.md

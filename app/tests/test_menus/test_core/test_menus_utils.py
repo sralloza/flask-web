@@ -3,6 +3,7 @@ from typing import List, Tuple
 from unittest import mock
 
 import pytest
+from flask import current_app
 from requests.exceptions import ConnectionError
 
 from app.config import Config
@@ -40,6 +41,11 @@ class TestGetMenusUrls:
         "Connection error downloading principal url (%r) (%d retries left)"
     )
 
+    @pytest.fixture(autouse=True, scope="class")
+    def autouse_client(self, client):
+        # client must be used always becaulse get_menus_urls uses flask's config.
+        return
+
     @pytest.fixture(scope="class")
     def test_content(self):
         path = Path(__file__).parent.parent.parent / "data" / "get_urls.txt"
@@ -48,33 +54,46 @@ class TestGetMenusUrls:
             return f.read()
 
     def test_ok(self, logger_mock, requests_get_mock, test_content):
+        current_app.config["OFFLINE"] = False
+
         requests_get_mock.return_value.text = test_content
         urls = get_menus_urls()
 
-        logger_mock.debug.assert_called_once_with("Getting menus urls")
         assert len(urls) == 2
         assert urls == self.urls_expected
 
+        logger_mock.debug.assert_called_once_with("Getting menus urls")
+
     def test_one_connection_error(self, logger_mock, requests_get_mock, test_content):
+        current_app.config["OFFLINE"] = False
+
         foo_mock = mock.Mock()
         foo_mock.text = test_content
         requests_get_mock.side_effect = iter([ConnectionError, foo_mock])
         urls = get_menus_urls()
 
+        assert len(urls) == 2
+        assert urls == self.urls_expected
+
         logger_mock.debug.assert_called_once_with("Getting menus urls")
         logger_mock.warning.assert_has_calls(
             [mock.call(self.warning_expected, PRINCIPAL_URL, 4)]
         )
-        assert len(urls) == 2
-        assert urls == self.urls_expected
 
     def test_two_connection_error(self, logger_mock, requests_get_mock, test_content):
+        current_app.config["OFFLINE"] = False
+
         foo_mock = mock.Mock()
         foo_mock.text = test_content
         requests_get_mock.side_effect = iter(
             [ConnectionError, ConnectionError, foo_mock]
         )
         urls = get_menus_urls()
+
+        assert len(urls) == 2
+        assert urls == self.urls_expected
+
+        assert logger_mock.warning.call_count == 2
 
         logger_mock.debug.assert_called_once_with("Getting menus urls")
         logger_mock.warning.assert_has_calls(
@@ -83,17 +102,21 @@ class TestGetMenusUrls:
                 mock.call(self.warning_expected, PRINCIPAL_URL, 3),
             ]
         )
-        assert logger_mock.warning.call_count == 2
-        assert len(urls) == 2
-        assert urls == self.urls_expected
 
     def test_three_connection_error(self, logger_mock, requests_get_mock, test_content):
+        current_app.config["OFFLINE"] = False
+
         foo_mock = mock.Mock()
         foo_mock.text = test_content
         requests_get_mock.side_effect = iter(
             [ConnectionError, ConnectionError, ConnectionError, foo_mock]
         )
         urls = get_menus_urls()
+
+        assert len(urls) == 2
+        assert urls == self.urls_expected
+
+        assert logger_mock.warning.call_count == 3
 
         logger_mock.debug.assert_called_once_with("Getting menus urls")
         logger_mock.warning.assert_has_calls(
@@ -103,11 +126,10 @@ class TestGetMenusUrls:
                 mock.call(self.warning_expected, PRINCIPAL_URL, 2),
             ]
         )
-        assert logger_mock.warning.call_count == 3
-        assert len(urls) == 2
-        assert urls == self.urls_expected
 
     def test_four_connection_error(self, logger_mock, requests_get_mock, test_content):
+        current_app.config["OFFLINE"] = False
+
         foo_mock = mock.Mock()
         foo_mock.text = test_content
         requests_get_mock.side_effect = iter(
@@ -120,6 +142,11 @@ class TestGetMenusUrls:
             ]
         )
         urls = get_menus_urls()
+
+        assert len(urls) == 2
+        assert urls == self.urls_expected
+
+        assert logger_mock.warning.call_count == 4
 
         logger_mock.debug.assert_called_once_with("Getting menus urls")
         logger_mock.warning.assert_has_calls(
@@ -130,11 +157,10 @@ class TestGetMenusUrls:
                 mock.call(self.warning_expected, PRINCIPAL_URL, 1),
             ]
         )
-        assert logger_mock.warning.call_count == 4
-        assert len(urls) == 2
-        assert urls == self.urls_expected
 
     def test_five_connection_error(self, logger_mock, requests_get_mock, test_content):
+        current_app.config["OFFLINE"] = False
+
         foo_mock = mock.Mock()
         foo_mock.text = test_content
         requests_get_mock.side_effect = iter(
@@ -148,6 +174,9 @@ class TestGetMenusUrls:
             ]
         )
         urls = get_menus_urls()
+
+        assert len(urls) == 0
+        assert urls == []
 
         logger_mock.debug.assert_called_once_with("Getting menus urls")
         logger_mock.warning.assert_has_calls(
@@ -167,8 +196,12 @@ class TestGetMenusUrls:
             5,
         )
 
-        assert len(urls) == 0
-        assert urls == []
+    def test_offline(self, logger_mock, requests_get_mock):
+        current_app.config["OFFLINE"] = True
+
+        assert get_menus_urls() == []
+        requests_get_mock.assert_not_called()
+        logger_mock.info.assert_called_once()
 
 
 class TestHasDay:
