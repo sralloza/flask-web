@@ -26,6 +26,15 @@ def before_request():
     if "yandex" in lowercase_user_agent:
         logger.debug("Detected Yandex as user agent (%r)", user_agent)
         return "Yandex bots are not allowed", 401
+    if "smtbot" in lowercase_user_agent:
+        logger.debug("Detected SMT as user agent (%r)", user_agent)
+        return "SMT Bots are not allowed", 401
+    if "nimbostratus" in lowercase_user_agent:
+        logger.debug("Detected Nimbostratus as user agent (%r)", user_agent)
+        return "Nimbostratus bots are not allowed", 401
+    if "bot" in lowercase_user_agent:
+        logger.warning("Detected unkown bot as user agent (%r)", user_agent)
+        return "Bots are not allowed", 401
     if user_agent == "-":
         logger.debug("Not user agent provided (%r)", user_agent)
         return "A user agent must be provided", 401

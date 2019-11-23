@@ -16,6 +16,9 @@ def test_user_agent_filter(app):
     assert client.get("/", headers={"User-Agent": "-"}).status_code == 401
     assert client.get("/", headers={"User-Agent": "Rift/2.0"}).status_code == 401
     assert client.get("/", headers={"User-Agent": "YandexBot/3.0"}).status_code == 401
+    assert client.get("/", headers={"User-Agent": "SMTBot/1.0"}).status_code == 401
+    assert client.get("/", headers={"User-Agent": "Nimbostratus-Bot/v1.3.2"}).status_code == 401
+    assert client.get("/", headers={"User-Agent": "My-Custom-Bot"}).status_code == 401
 
 
 def test_redirect_favicon(client):
