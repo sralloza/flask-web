@@ -250,6 +250,10 @@ class TestFilterData:
             "   1 plato:   ",
             "2º plato:   ",
             "2o plato:",
+            "2o plato:",
+            "2oa plato:",
+            "233 plato:",
+            "2\xa0 plato:",
             "2 plato:",
             "desayuno",
             "CoMiDa  ",
@@ -262,10 +266,16 @@ class TestFilterData:
             "",
             "",
             "día: 29 de febrero de 2019 (viernes)",
+            "1er plato: macarrones con patatas.",
+            "2º plato: pollo asado con bechamel."
         ]
         expected = [
             "1er plato:",
             "1er plato:",
+            "2º plato:",
+            "2º plato:",
+            "2º plato:",
+            "2º plato:",
             "2º plato:",
             "2º plato:",
             "2º plato:",
@@ -275,6 +285,8 @@ class TestFilterData:
             "cóctel",
             "cóctel",
             "día: 29 de febrero de 2019 (viernes)",
+            "1er plato: macarrones con patatas",
+            "2º plato: pollo asado con bechamel"
         ]
         real = filter_data(input_data)
 

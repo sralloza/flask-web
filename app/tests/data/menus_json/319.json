@@ -1,0 +1,86 @@
+[
+    {
+        "id": 20200127,
+        "day": "Lunes 27",
+        "lunch": {
+            "p1": "alubias pintas con arroz",
+            "p2": "solomillo en salsa con patatas"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "tortilla de patatas"
+        }
+    },
+    {
+        "id": 20200128,
+        "day": "Martes 28",
+        "lunch": {
+            "p1": "patatas con bechamel gratinadas",
+            "p2": "lenguado con ensalada"
+        },
+        "dinner": {
+            "p1": "menestra de verduras",
+            "p2": "lomo adobado con patatas"
+        }
+    },
+    {
+        "id": 20200129,
+        "day": "Miércoles 29",
+        "lunch": {
+            "p1": "judias verdes",
+            "p2": "codillo asado"
+        },
+        "dinner": {
+            "p1": "revuelto de champiñón",
+            "p2": "pincho moruno"
+        }
+    },
+    {
+        "id": 20200130,
+        "day": "Jueves 30",
+        "lunch": {
+            "p1": "cocido castellano",
+            "p2": null
+        },
+        "dinner": {
+            "p1": "crema de calabacín",
+            "p2": "lubina al horno"
+        }
+    },
+    {
+        "id": 20200131,
+        "day": "Viernes 31",
+        "lunch": {
+            "p1": "fideua de marisco",
+            "p2": "conejo guisado"
+        },
+        "dinner": {
+            "p1": "pasta con tomate",
+            "p2": "pechuga de pollo a la plancha"
+        }
+    },
+    {
+        "id": 20200201,
+        "day": "Sábado 1",
+        "lunch": {
+            "p1": "rissoto de setas",
+            "p2": "bacalao en salsa"
+        },
+        "dinner": {
+            "p1": "crema de puerros",
+            "p2": "huevo frito con empanadilla y patatas"
+        }
+    },
+    {
+        "id": 20200202,
+        "day": "Domingo 2",
+        "lunch": {
+            "p1": "milhojas de verduras",
+            "p2": "entrecot con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "pizzas variadas"
+        }
+    }
+]
