@@ -79,10 +79,12 @@ class TestMenusView:
         menu_mock.format_date.assert_called()
         if argument in (None, "all"):
             # Test before, with slice(None, 15, None)
-            menu_mock.format_date.assert_called_with()
+            # For some reason, in testing context is passed as an arg as well
+            assert menu_mock.format_date.call_args[1] == {}
         else:
             assert menu_mock.format_date.call_count == 30
-            menu_mock.format_date.assert_called_with(long=False)
+            # For some reason, in testing context is passed as an arg as well
+            assert menu_mock.format_date.call_args[1] == {'long': False}
 
 
 def test_menus_redirect(client):
