@@ -29,6 +29,7 @@ class HtmlParser(BaseParser):
         text = "\n".join(x.strip() for x in container.text.splitlines() if x.strip())
         text = Patterns.fix_dates_pattern_1.sub(r"\1 \2", text)
         text = Patterns.fix_dates_pattern_2.sub(r"\1 \2", text)
+        text = Patterns.fix_dates_pattern_3.sub(r"\1)", text)
         texts = [x.strip() for x in text.splitlines() if x.strip()]
 
         texts = filter_data(texts)

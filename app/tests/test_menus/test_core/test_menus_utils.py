@@ -267,7 +267,7 @@ class TestFilterData:
             "",
             "día: 29 de febrero de 2019 (viernes)",
             "1er plato: macarrones con patatas.",
-            "2º plato: pollo asado con bechamel."
+            "2º plato: pollo asado con bechamel.",
         ]
         expected = [
             "1er plato:",
@@ -286,7 +286,7 @@ class TestFilterData:
             "cóctel",
             "día: 29 de febrero de 2019 (viernes)",
             "1er plato: macarrones con patatas",
-            "2º plato: pollo asado con bechamel"
+            "2º plato: pollo asado con bechamel",
         ]
         real = filter_data(input_data)
 
@@ -444,30 +444,24 @@ class TestPatterns:
         else:
             assert pattern_match is None
 
-    # ignore_patterns_data = (
-    #     ('20. septiembre 2019', True),
-    #     ('02. septiembre 2019', True),
-    #     ('2. septiembre 2019', True),
-    #     ('semana del 20 al 29 de junio', True),
-    #     ('semana del 2 al 2 de junio', True),
-    #     ('semana del 02 al 02 de junio', True),
-    #     ('semana del 20 de mayo al 20 de junio 2019', True),
-    #     ('semana del 02 de mayo al 02 de junio 2019', True),
-    #     ('semana del 2 de mayo al 2 de junio 2019', True),
-    #     ('desayuno: bacalao con tomate', False),
-    #     ('comida: patatas con patatas', False)
-    # )
+    fix_dates_patterns_3_data = (
+        ("día: 27 de enero de 2020 (sábado)", False, None),
+        (
+            "día: 25 de abril de 2020 (viernes",
+            True,
+            "día: 25 de abril de 2020 (viernes)",
+        ),
+    )
 
-    # @pytest.mark.parametrize('string, match_code', ignore_patterns_data)
-    # def test_ignore_patterns(self, string, match_code):
-    #     def match(any_string):
-    #         for pattern in Patterns.ignore_patters:
-    #             if pattern.search(any_string) is not None:
-    #                 return True
-    #         return False
-    #
-    #     pattern_match = match(string)
-    #     if match_code:
-    #         assert pattern_match is True
-    #     else:
-    #         assert pattern_match is False
+    @pytest.mark.parametrize(
+        "string, match_code, expected_sub", fix_dates_patterns_3_data
+    )
+    def test_fix_dates_pattern_2(self, string, match_code, expected_sub):
+        real_sub = Patterns.fix_dates_pattern_3.sub(r"\1)", string)
+        pattern_match = Patterns.fix_dates_pattern_3.search(string)
+
+        if match_code:
+            assert pattern_match is not None
+            assert real_sub == expected_sub
+        else:
+            assert pattern_match is None
