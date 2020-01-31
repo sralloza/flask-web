@@ -14,7 +14,8 @@ process_text_data: ptd_type = []
 
 for html_path in Paths.html.value:
     for json_path in Paths.json.value:
-        if html_path.stem == json_path.stem:
+        # Due to naming convention
+        if html_path.stem == json_path.stem + ".html":
             process_text_data.append((html_path, json_path))
             break
 
