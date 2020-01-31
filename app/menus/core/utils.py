@@ -80,12 +80,13 @@ def filter_data(data: Union[str, List[str]]):
         data[i] = data[i].lower().strip()
 
     for i in range(len(data)):
-        if "1 plato:" in data[i]:
-            data[i] = data[i].replace("1 plato:", "1er plato:")
-        elif "2o plato:" in data[i]:
-            data[i] = data[i].replace("2o plato:", "2º plato:")
-        elif "2 plato:" in data[i]:
-            data[i] = data[i].replace("2 plato:", "2º plato:")
+        if "." in data[i]:
+            data[i] = data[i].replace(".", "")
+
+        if re.search(r"1.*\splato:", data[i]):
+            data[i] = re.sub(r"1.*\splato:", "1er plato:", data[i])
+        elif re.search(r"2.*\splato:", data[i]):
+            data[i] = re.sub(r"2.*\splato:", "2º plato:", data[i])
         elif "." in data[i]:
             data[i] = data[i].replace(".", "")
 
