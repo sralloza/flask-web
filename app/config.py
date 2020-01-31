@@ -9,7 +9,7 @@ class Config(object):
     DATABASE_PATH: Path = ROOT_PATH.parent.joinpath("flask.db")
     IS_LINUX: bool = platform.system() == "Linux"
     BASE_RESIDENCE_URL: str = "https://www.residenciasantiago.es"
-    OFFLINE = True
+    OFFLINE = False
 
 
 class TestingConfig(Config):
