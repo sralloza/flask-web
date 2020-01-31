@@ -4,9 +4,9 @@ from pathlib import Path
 from app.config import Config
 
 web_data: Path = Config.TEST_DATA_PATH / "web_data"
-pdf_paths = list(web_data.rglob("1*.html"))
-photos_paths = list(web_data.rglob("2*.html"))
-html_paths = list(web_data.rglob("3*.html"))
+pdf_paths = list(web_data.rglob("1*.html.data"))
+photos_paths = list(web_data.rglob("2*.html.data"))
+html_paths = list(web_data.rglob("3*.html.data"))
 
 menus_json: Path = Config.TEST_DATA_PATH / "menus_json"
 json_paths = list(menus_json.rglob("3*.json"))

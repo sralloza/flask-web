@@ -95,7 +95,7 @@ class DailyMenusManager:
 
         Args:
             force (bool): if True, download menus from the web server even if today is
-                in the database. If False, it will no download anything. Defaults to None.
+                in the database. Otherwise, it won't affect. Defaults to None.
         """
 
         self = DailyMenusManager()
@@ -105,7 +105,8 @@ class DailyMenusManager:
 
         update = today_date not in self
 
-        update = force if force is not None else update
+        if force:
+            update = True
 
         # UpdateControl is more important than force
         if not UpdateControl.should_update():

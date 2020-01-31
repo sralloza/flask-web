@@ -273,8 +273,11 @@ def test_load(load_mocks, force, today_in_database, should_update, reset_databas
     contains_mock.return_value = today_in_database
     su_mock.return_value = should_update
 
-    will_update = force if force is not None else not today_in_database
-    will_update = False if should_update is False else will_update
+    will_update = not today_in_database
+    if force:
+        will_update = True
+    if not should_update:
+        will_update = False
 
     DailyMenusManager.load(force=force)
 

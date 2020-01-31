@@ -80,14 +80,13 @@ def filter_data(data: Union[str, List[str]]):
         data[i] = data[i].lower().strip()
 
     for i in range(len(data)):
-        if "1 plato:" in data[i]:
-            data[i] = data[i].replace("1 plato:", "1er plato:")
-        elif "2o plato:" in data[i]:
-            data[i] = data[i].replace("2o plato:", "2º plato:")
-        elif "2 plato:" in data[i]:
-            data[i] = data[i].replace("2 plato:", "2º plato:")
-        elif "." in data[i]:
+        if "." in data[i]:
             data[i] = data[i].replace(".", "")
+
+        if re.search(r"1.*\splato:", data[i]):
+            data[i] = re.sub(r"1.*\splato:", "1er plato:", data[i])
+        elif re.search(r"2.*\splato:", data[i]):
+            data[i] = re.sub(r"2.*\splato:", "2º plato:", data[i])
 
     out = []
     for i, d in enumerate(data):
@@ -152,3 +151,7 @@ class Patterns:
 
     fix_dates_pattern_1 = re.compile(r"(\w+)[\n\s]*(\d{4})", re.I)
     fix_dates_pattern_2 = re.compile(r"(día:)[\s\n]*(\d+)", re.I)
+    fix_dates_pattern_3 = re.compile(
+        r"(día\s*:\s*\d+\s*de\s*\w+\s*de\s*\d{4}\s*\(\w+(?![\)a-zA-ZáéíóúÁÉÍÓÚ]))",
+        re.IGNORECASE,
+    )
