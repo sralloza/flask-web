@@ -87,8 +87,6 @@ def filter_data(data: Union[str, List[str]]):
             data[i] = re.sub(r"1.*\splato:", "1er plato:", data[i])
         elif re.search(r"2.*\splato:", data[i]):
             data[i] = re.sub(r"2.*\splato:", "2º plato:", data[i])
-        elif "." in data[i]:
-            data[i] = data[i].replace(".", "")
 
     out = []
     for i, d in enumerate(data):
