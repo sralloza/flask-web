@@ -456,7 +456,7 @@ class TestPatterns:
     @pytest.mark.parametrize(
         "string, match_code, expected_sub", fix_dates_patterns_3_data
     )
-    def test_fix_dates_pattern_2(self, string, match_code, expected_sub):
+    def test_fix_dates_pattern_3(self, string, match_code, expected_sub):
         real_sub = Patterns.fix_dates_pattern_3.sub(r"\1)", string)
         pattern_match = Patterns.fix_dates_pattern_3.search(string)
 
