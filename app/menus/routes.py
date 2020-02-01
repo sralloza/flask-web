@@ -3,7 +3,8 @@ from datetime import datetime
 
 from flask import redirect, render_template, request, url_for
 
-from app.utils import get_last_menus_page, get_post_arg, gen_token
+from app.utils import Tokens, get_last_menus_page, get_post_arg
+
 from . import menus_blueprint
 from .core.daily_menus_manager import DailyMenusManager
 from .core.structure import DailyMenu, Meal
@@ -100,9 +101,7 @@ def add_menu_api():
     except RuntimeError as err:
         return str(err.args[0]), 403
 
-    real_token = gen_token()
-
-    if real_token != token:
+    if not Tokens.check_token(token):
         return "Invalid token", 403
 
     lunch = Meal(lunch1, lunch2)
@@ -138,7 +137,7 @@ def add_menu_interface():
     except RuntimeError as err:
         return str(err.args[0]), 403
 
-    if token != gen_token():
+    if not Tokens.check_token(token):
         return "Invalid token", 403
 
     try:
@@ -171,7 +170,7 @@ def del_menu_interface():
     except RuntimeError as err:
         return str(err.args[0]), 403
 
-    if token != gen_token():
+    if not Tokens.check_token(token):
         return "Invalid token", 403
 
     try:
