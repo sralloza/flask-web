@@ -160,10 +160,13 @@ class Tokens:
     def get_tokens_from_file(cls):
         cls.ensure_token_file_exists()
         raw_tokens = current_app.config["TOKEN_FILE_PATH"].read_text().splitlines()
-        tokens = [x for x in raw_tokens if x]
+        _tokens = [x for x in raw_tokens if x.strip()]
+        tokens = [x.strip() for x in _tokens]
 
         if len(raw_tokens) != len(tokens):
-            cls.update_tokens(tokens)
+            cls.update_tokens_file(tokens)
+        elif tokens != _tokens:  # Only needs to be called once
+            cls.update_tokens_file(tokens)
 
         return tokens
 
@@ -173,6 +176,6 @@ class Tokens:
             current_app.config["TOKEN_FILE_PATH"].touch()
 
     @classmethod
-    def update_tokens(cls, tokens):
+    def update_tokens_file(cls, tokens):
         to_write = "\n".join(tokens)
         current_app.config["TOKEN_FILE_PATH"].write_text(to_write)
