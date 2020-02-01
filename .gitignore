@@ -14,3 +14,4 @@ htmlcov/
 *.backup
 
 TODO.md
+app/VALID_TOKENS
