@@ -4,7 +4,7 @@ from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup as Soup
-from flask import request
+from flask import current_app, request
 from requests.exceptions import ConnectionError
 
 logger = logging.getLogger(__name__)
@@ -140,5 +140,39 @@ def get_post_arg(form_name, required=False, strip=False):
     return arg
 
 
-def gen_token():
-    return now().strftime("%Y%m%d%H%M")
+class Tokens:
+    @classmethod
+    def check_token(cls, web_token):
+        for token in cls.gen_tokens():
+            if token == web_token:
+                return True
+        return False
+
+    @classmethod
+    def gen_primary_token(cls):
+        return now().strftime("%Y%m%d%H%M")
+
+    @classmethod
+    def gen_tokens(cls):
+        return [cls.gen_primary_token()] + cls.get_tokens_from_file()
+
+    @classmethod
+    def get_tokens_from_file(cls):
+        cls.ensure_token_file_exists()
+        raw_tokens = current_app.config["TOKEN_FILE_PATH"].read_text().splitlines()
+        tokens = [x for x in raw_tokens if x]
+
+        if len(raw_tokens) != len(tokens):
+            cls.update_tokens(tokens)
+
+        return tokens
+
+    @classmethod
+    def ensure_token_file_exists(cls):
+        if not current_app.config["TOKEN_FILE_PATH"].exists():
+            current_app.config["TOKEN_FILE_PATH"].touch()
+
+    @classmethod
+    def update_tokens(cls, tokens):
+        to_write = "\n".join(tokens)
+        current_app.config["TOKEN_FILE_PATH"].write_text(to_write)
