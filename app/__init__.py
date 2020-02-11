@@ -15,13 +15,15 @@ logging.basicConfig(
 
 werkzeug = logging.getLogger("werkzeug")
 werkzeug.handlers = []
-werkzeug_handler = logging.FileHandler(
-    Path(__file__).parent.parent / "flask-access.log", encoding="utf-8"
-)
-werkzeug_handler.setFormatter(
-    logging.Formatter(fmt="%(asctime)s] %(levelname)s - %(message)s")
-)
-werkzeug.addHandler(werkzeug_handler)
+
+if system() != "Linux":
+    werkzeug_handler = logging.FileHandler(
+        Path(__file__).parent.parent / "flask-access.log", encoding="utf-8"
+    )
+    werkzeug_handler.setFormatter(
+        logging.Formatter(fmt="%(asctime)s] %(levelname)s - %(message)s")
+    )
+    werkzeug.addHandler(werkzeug_handler)
 
 
 def create_app(config_object):
