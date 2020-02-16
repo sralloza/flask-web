@@ -46,7 +46,9 @@ function update_interface() {
         document.getElementById("dinner").style.display = "none";
 
         document.getElementById("day-title-a").innerHTML = get_day_title();
+        document.getElementById("day-title-a").href = PRINCIPAL_URL;
         document.getElementById("day-title-b").innerHTML = get_day_title();
+        document.getElementById("day-title-b").href = PRINCIPAL_URL;
         return;
     }
 

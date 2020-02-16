@@ -90,6 +90,7 @@
     document.getElementById('dinner').style.display = 'none';
 
     {% autoescape false %}
+    var PRINCIPAL_URL = "{{ default }}";
     var menus = {{ menus }};
     {% endautoescape %}
 </script>

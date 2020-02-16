@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask import redirect, render_template, request, url_for
 
-from app.utils import Tokens, get_last_menus_page, get_post_arg
+from app.utils import PRINCIPAL_URL, Tokens, get_last_menus_page, get_post_arg
 
 from . import menus_blueprint
 from .core.daily_menus_manager import DailyMenusManager
@@ -71,7 +71,7 @@ def today_js_view():
 
     dmm = DailyMenusManager.load(force=force)
     data = json.dumps(dmm.to_json())
-    return render_template("today-js.html", menus=data)
+    return render_template("today-js.html", menus=data, default=PRINCIPAL_URL)
 
 
 @menus_blueprint.route("/api/menus/add", methods=["POST"])
