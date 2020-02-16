@@ -155,3 +155,11 @@ class Patterns:
         r"(día\s*:\s*\d+\s*de\s*\w+\s*de\s*\d{4}\s*\(\w+(?![\)a-zA-ZáéíóúÁÉÍÓÚ]))",
         re.IGNORECASE,
     )
+
+    fix_content_pattern_1 = re.compile(
+        # r"(?<!:)([\w\sÁÉÍÓÚÑ]+)\n([\w\sÁÉÍÓÚÑ]+)(?!\w*:)", re.IGNORECASE
+        r"(?<!:)([A-Z\sÁÉÍÓÚÑ]+)\n([A-Z\sÁÉÍÓÚÑ]{3,})(?!([\wº]*[:\d]))",
+        re.IGNORECASE,
+    )
+
+    fix_content_pattern_2 = re.compile(r"(\s){2,}", re.IGNORECASE)
