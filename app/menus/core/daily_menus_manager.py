@@ -116,6 +116,8 @@ class DailyMenusManager:
             )
             update = False
 
+        logger.info("Final decision: %s", update)
+
         if update:
             urls = get_menus_urls()
 
