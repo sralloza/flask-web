@@ -9,7 +9,8 @@
         "dinner": {
             "p1": "sopa de verduras",
             "p2": "chuleta de cerdo a la plancha con patatas / ensalada"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/05/07/semana-del-7-al-13-de-mayo-2019/"
     },
     {
         "id": 20190508,
@@ -21,7 +22,8 @@
         "dinner": {
             "p1": "patatas sol y sombra",
             "p2": "hamburguesa de crujiente de pollo"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/05/07/semana-del-7-al-13-de-mayo-2019/"
     },
     {
         "id": 20190509,
@@ -33,7 +35,8 @@
         "dinner": {
             "p1": "cóctel",
             "p2": null
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/05/07/semana-del-7-al-13-de-mayo-2019/"
     },
     {
         "id": 20190510,
@@ -45,7 +48,8 @@
         "dinner": {
             "p1": "PC: ensaladilla de cangrejo, tortilla de patatas, chorizo y empanadillas",
             "p2": null
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/05/07/semana-del-7-al-13-de-mayo-2019/"
     },
     {
         "id": 20190511,
@@ -57,7 +61,8 @@
         "dinner": {
             "p1": "sopa maravilla",
             "p2": "albóndigas con tomate / ensalada"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/05/07/semana-del-7-al-13-de-mayo-2019/"
     },
     {
         "id": 20190512,
@@ -69,7 +74,8 @@
         "dinner": {
             "p1": "ensalada césar",
             "p2": "sandwich mixto con croquetas"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/05/07/semana-del-7-al-13-de-mayo-2019/"
     },
     {
         "id": 20190513,
@@ -81,6 +87,7 @@
         "dinner": {
             "p1": "guisantes con jamón",
             "p2": "pizzas variadas"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/05/07/semana-del-7-al-13-de-mayo-2019/"
     }
 ]

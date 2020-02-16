@@ -9,7 +9,8 @@
         "dinner": {
             "p1": "PC: ensaladilla, filete de ternera, empanadillas y patatas chips",
             "p2": null
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/13/del-14-al-17-de-junio-2019/"
     },
     {
         "id": 20190615,
@@ -21,7 +22,8 @@
         "dinner": {
             "p1": "ensalada mixta",
             "p2": "san jacobo o libros de cerdo o chuleta de sajonia con pimientos"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/13/del-14-al-17-de-junio-2019/"
     },
     {
         "id": 20190616,
@@ -33,7 +35,8 @@
         "dinner": {
             "p1": "sopa de ave con fideos",
             "p2": "sandwich mixtos y croquetas"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/13/del-14-al-17-de-junio-2019/"
     },
     {
         "id": 20190617,
@@ -45,6 +48,7 @@
         "dinner": {
             "p1": "ensalada de queso fresco",
             "p2": "baguette de lomo con queso"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/13/del-14-al-17-de-junio-2019/"
     }
 ]

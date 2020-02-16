@@ -9,7 +9,8 @@
         "dinner": {
             "p1": "rollitos de primavera",
             "p2": "pollo al limón"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/01/semana-del-2-al-8-de-abril-2019/"
     },
     {
         "id": 20190403,
@@ -21,7 +22,8 @@
         "dinner": {
             "p1": "quesadillas con queso",
             "p2": "alitas de pollo tex-mex"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/01/semana-del-2-al-8-de-abril-2019/"
     },
     {
         "id": 20190404,
@@ -33,7 +35,8 @@
         "dinner": {
             "p1": "ensalada caprese",
             "p2": "pizzas variadas"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/01/semana-del-2-al-8-de-abril-2019/"
     },
     {
         "id": 20190405,
@@ -45,7 +48,8 @@
         "dinner": {
             "p1": "ensalada parisienne",
             "p2": "croque monsieur"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/01/semana-del-2-al-8-de-abril-2019/"
     },
     {
         "id": 20190306,
@@ -57,7 +61,8 @@
         "dinner": {
             "p1": "guisantes salteados",
             "p2": "baguettes variadas"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/01/semana-del-2-al-8-de-abril-2019/"
     },
     {
         "id": 20190307,
@@ -69,7 +74,8 @@
         "dinner": {
             "p1": "sopa de verduras",
             "p2": "libros con guarnición"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/01/semana-del-2-al-8-de-abril-2019/"
     },
     {
         "id": 20190408,
@@ -81,6 +87,7 @@
         "dinner": {
             "p1": "sopa de ave con fideos",
             "p2": "sandwich vegetal"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/01/semana-del-2-al-8-de-abril-2019/"
     }
 ]

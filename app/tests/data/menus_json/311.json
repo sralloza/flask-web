@@ -9,7 +9,8 @@
         "dinner": {
             "p1": "sopa de ave con fideos",
             "p2": "pizzas variadas"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/16/semana-del-23-al-29-de-abril-2019/"
     },
     {
         "id": 20190424,
@@ -21,7 +22,8 @@
         "dinner": {
             "p1": "ensalada con queso fresco",
             "p2": "lomo adobado con patatas"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/16/semana-del-23-al-29-de-abril-2019/"
     },
     {
         "id": 20190425,
@@ -33,7 +35,8 @@
         "dinner": {
             "p1": "crema de verduras",
             "p2": "san jacobo con pimientos y ensalada"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/16/semana-del-23-al-29-de-abril-2019/"
     },
     {
         "id": 20190426,
@@ -45,7 +48,8 @@
         "dinner": {
             "p1": "sopa de verduras",
             "p2": "hamburguesa de buey y ensalada"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/16/semana-del-23-al-29-de-abril-2019/"
     },
     {
         "id": 20190427,
@@ -57,7 +61,8 @@
         "dinner": {
             "p1": "PC: huevo frito, pechuga a la plancha, croquetas, patatas y ensalada",
             "p2": null
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/16/semana-del-23-al-29-de-abril-2019/"
     },
     {
         "id": 20190428,
@@ -69,7 +74,8 @@
         "dinner": {
             "p1": "ensalada mixta",
             "p2": "albondigas con tomate"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/16/semana-del-23-al-29-de-abril-2019/"
     },
     {
         "id": 20190429,
@@ -81,6 +87,7 @@
         "dinner": {
             "p1": "guisantes salteados",
             "p2": "alas de pollo al horno y ensalada"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/16/semana-del-23-al-29-de-abril-2019/"
     }
 ]
