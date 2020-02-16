@@ -302,8 +302,9 @@ def test_add_menu_api(client, data, exception, code):
 @mock.patch("app.menus.routes.DailyMenusManager", autospec=True)
 class TestApiMenus:
     def test_without_force(self, dmm_mock, client):
+        url = "https://example.com"
         menu = DailyMenu(
-            28, 6, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+            28, 6, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2"), url,
         )
 
         dmm = DailyMenusManager()
@@ -316,6 +317,7 @@ class TestApiMenus:
                 "day": "Viernes 28",
                 "lunch": {"p1": "lunch-1", "p2": "lunch-2"},
                 "dinner": {"p1": "dinner-1", "p2": "dinner-2"},
+                "url": "https://example.com",
             }
         ] * 6
 
@@ -327,8 +329,9 @@ class TestApiMenus:
         dmm_mock.load.assert_called_once_with(force=False)
 
     def test_with_force(self, dmm_mock, client):
+        url = "https://example.com"
         menu = DailyMenu(
-            28, 6, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+            28, 6, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2"), url,
         )
 
         dmm = DailyMenusManager()
@@ -341,6 +344,7 @@ class TestApiMenus:
                 "day": "Viernes 28",
                 "lunch": {"p1": "lunch-1", "p2": "lunch-2"},
                 "dinner": {"p1": "dinner-1", "p2": "dinner-2"},
+                "url": "https://example.com",
             }
         ] * 6
 

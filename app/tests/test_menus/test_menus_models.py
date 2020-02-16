@@ -18,17 +18,19 @@ class TestDailyMenusDatabaseController:
     def test_list_menus(self, mock_db_connection):
         # It should use a context manager (__enter__)
         mock_db_connection.return_value.__enter__.return_value.fetch_all.return_value = [
-            [1, 1, 1998, "cm-11", "cm-12", "cn-11", "cn-12"],
-            [2, 1, 1998, "cm-21", "cm-22", "cn-21", "cn-22"],
+            [1, 1, 1998, "cm-11", "cm-12", "cn-11", "cn-12", "url-1"],
+            [2, 1, 1998, "cm-21", "cm-22", "cn-21", "cn-22", "url-2"],
         ]
 
         menus = DailyMenusDatabaseController.list_menus()
         assert menus == [
-            DailyMenu(1, 1, 1998, Meal("cm-11", "cm-12"), Meal("cn-11", "cn-12")),
-            DailyMenu(2, 1, 1998, Meal("cm-21", "cm-22"), Meal("cn-21", "cn-22")),
+            DailyMenu(1, 1, 1998, Meal("cm-11", "cm-12"), Meal("cn-11", "cn-12"), "url-1"),
+            DailyMenu(2, 1, 1998, Meal("cm-21", "cm-22"), Meal("cn-21", "cn-22"), "url-2"),
         ]
 
     @pytest.mark.parametrize("error", [True, False])
+    def test_save_daily_menu(self, mock_db, error):
+        menu = DailyMenu(1, 2, 2003, Meal("a", "b"), Meal("c", "d"), "https://example.com")
         # Use of context manager (__enter__)
         mock_connection = mock_db.return_value.__enter__.return_value
 
@@ -38,8 +40,8 @@ class TestDailyMenusDatabaseController:
         result = DailyMenusDatabaseController.save_daily_menu(menu)
 
         mock_connection.execute.assert_called_with(
-            "INSERT INTO 'daily_menus' VALUES (?,?,?,?,?,?,?,?)",
-            (20030201, 1, 2, 2003, "a", "b", "c", "d"),
+            "INSERT INTO 'daily_menus' VALUES (?,?,?,?,?,?,?,?,?)",
+            (20030201, 1, 2, 2003, "a", "b", "c", "d", "https://example.com"),
         )
 
         if error:
