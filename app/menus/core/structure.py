@@ -323,13 +323,20 @@ class DailyMenu:
     """Represents the menu of a day."""
 
     def __init__(
-        self, day: int, month: int, year: int, lunch: Meal = None, dinner: Meal = None
+        self,
+        day: int,
+        month: int,
+        year: int,
+        lunch: Meal = None,
+        dinner: Meal = None,
+        url: str = None,
     ):
         self.day = day
         self.month = month
         self.year = year
         self.lunch = lunch or Meal()
         self.dinner = dinner or Meal()
+        self.url = url or ""
 
         self.date = date(self.year, self.month, self.day)
         self.weekday = Translator.english_to_spanish(self.date.strftime("%A").lower())
