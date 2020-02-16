@@ -70,9 +70,8 @@ def today_js_view():
     )
 
     dmm = DailyMenusManager.load(force=force)
-    last_url = get_last_menus_page()
     data = json.dumps(dmm.to_json())
-    return render_template("today-js.html", menus=data, title_url=last_url)
+    return render_template("today-js.html", menus=data)
 
 
 @menus_blueprint.route("/api/menus/add", methods=["POST"])
