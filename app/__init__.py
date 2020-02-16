@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from platform import system
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
