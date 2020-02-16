@@ -22,7 +22,7 @@ class HtmlParser(BaseParser):
     _lock = Lock()
 
     @classmethod
-    def process_text(cls, dmm, text: str):
+    def process_text(cls, dmm, text: str, url: str):
         """Processes url in search from menus."""
         s = Soup(text, "html.parser")
         container = s.find("article", {"class": "j-blog"})
