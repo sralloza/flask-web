@@ -135,13 +135,14 @@ class DailyMenusManager:
 
         output = []
         for menu in self:
-            foo = {}
+            menu_dict = {}
             day = re.search(r"\((\w+)\)", menu.format_date()).group(1).capitalize()
-            foo["id"] = menu.id
-            foo["day"] = f"{day} {menu.date.day}"
-            foo["lunch"] = {"p1": menu.lunch.p1, "p2": menu.lunch.p2}
-            foo["dinner"] = {"p1": menu.dinner.p1, "p2": menu.dinner.p2}
-            output.append(foo)
+            menu_dict["id"] = menu.id
+            menu_dict["day"] = f"{day} {menu.date.day}"
+            menu_dict["lunch"] = {"p1": menu.lunch.p1, "p2": menu.lunch.p2}
+            menu_dict["dinner"] = {"p1": menu.dinner.p1, "p2": menu.dinner.p2}
+            menu_dict["url"] = menu.url
+            output.append(menu_dict)
 
         return output
 
