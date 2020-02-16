@@ -37,6 +37,8 @@ class HtmlParser(BaseParser):
         assert menus
 
         HtmlParser._process_texts(texts, menus)
+        for menu in menus:
+            menu.url = url
         dmm.add_to_menus(menus)
 
     @staticmethod
