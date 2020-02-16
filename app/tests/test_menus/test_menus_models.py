@@ -28,58 +28,14 @@ class TestDailyMenusDatabaseController:
             DailyMenu(2, 1, 1998, Meal("cm-21", "cm-22"), Meal("cn-21", "cn-22")),
         ]
 
-    @pytest.mark.parametrize("table_exists", [True, False])
-    @pytest.mark.parametrize("errors", [True, False])
-    @mock.patch("app.menus.models.DailyMenusDatabaseController.save_daily_menu")
-    def test_backwards_compatibility(self, mock_save, mock_db, table_exists, errors):
-        # Use of context manager (__enter__)
-        mock_connection = mock_db.return_value.__enter__.return_value
-        mock_connection.fetch_all.return_value = [
-            [1, 1, 1998, "cm-11", "cm-12", "cn-11", "cn-12"],
-            [2, 1, 1998, "cm-21", "cm-22", "cn-21", "cn-22"],
-            [3, 1, 1998, "cm-21", "cm-22", "cn-21", "cn-22"],
-            [4, 1, 1998, "cm-21", "cm-22", "cn-21", "cn-22"],
-            [5, 1, 1998, "cm-21", "cm-22", "cn-21", "cn-22"],
-        ]
-        if not table_exists:
-            mock_connection.execute.side_effect = sqlite3.OperationalError
-
-        if errors:
-            mock_save.return_value = False
-        else:
-            mock_save.return_value = True
-
-        DailyMenusDatabaseController.backwards_compatibility()
-
-        if not table_exists:
-            mock_connection.fetch_all.assert_not_called()
-        else:
-            mock_connection.fetch_all.assert_called()
-            mock_save.assert_called()
-            assert mock_save.call_count == 5
-
-            if errors:
-                assert (
-                    mock.call("DROP TABLE 'daily_menudb'")
-                    not in mock_connection.execute.call_args_list
-                )
-            else:
-                mock_connection.execute.assert_called_with("DROP TABLE 'daily_menudb'")
-
-    @pytest.mark.parametrize("back_compat", [True, False])
     @pytest.mark.parametrize("error", [True, False])
-    @mock.patch("app.menus.models.DailyMenusDatabaseController.backwards_compatibility")
-    def test_save_daily_menu(self, mock_back_compat, mock_db, back_compat, error):
-        menu = DailyMenu(1, 2, 2003, Meal("a", "b"), Meal("c", "d"))
         # Use of context manager (__enter__)
         mock_connection = mock_db.return_value.__enter__.return_value
 
         if error:
             mock_connection.execute.side_effect = sqlite3.IntegrityError
 
-        result = DailyMenusDatabaseController.save_daily_menu(
-            menu, backwards_compatibility=back_compat
-        )
+        result = DailyMenusDatabaseController.save_daily_menu(menu)
 
         mock_connection.execute.assert_called_with(
             "INSERT INTO 'daily_menus' VALUES (?,?,?,?,?,?,?,?)",
@@ -92,11 +48,6 @@ class TestDailyMenusDatabaseController:
         else:
             assert result is True
             mock_connection.commit.assert_called()
-
-        if back_compat:
-            mock_back_compat.assert_called()
-        else:
-            mock_back_compat.assert_not_called()
 
     @pytest.mark.parametrize("menus_number", [0, 1])
     def test_remove_daily_menu(self, mock_db, menus_number):

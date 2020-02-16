@@ -23,38 +23,9 @@ class DailyMenusDatabaseController:
                 for data in connection.fetch_all()
             ]
 
-    @classmethod
-    def backwards_compatibility(cls):
-        from app.menus.core.structure import DailyMenu, Meal
-
-        with DatabaseConnection() as connection:
-            try:
-                connection.execute(
-                    "SELECT day, month, year, lunch1, lunch2, dinner1, dinner2 FROM 'daily_menudb'"
-                )
-            except sqlite3.OperationalError:
-                return
-
-            menus = [
-                DailyMenu(data[0], data[1], data[2], Meal(*data[3:5]), Meal(*data[5:7]))
-                for data in connection.fetch_all()
-            ]
-
-            results = set()
-            for menu in menus:
-                results.add(cls.save_daily_menu(menu, backwards_compatibility=False))
-
-            if all(results):
-                connection.execute("DROP TABLE 'daily_menudb'")
-                logger.info("Dropped table daily_menudb")
-            else:
-                logger.warning("Can not drop table daily_menudb")
 
     @classmethod
-    def save_daily_menu(cls, daily_menu, backwards_compatibility=True):
-        if backwards_compatibility:
-            cls.backwards_compatibility()
-
+    def save_daily_menu(cls, daily_menu):
         with DatabaseConnection() as connection:
             data = (
                 daily_menu.id,
