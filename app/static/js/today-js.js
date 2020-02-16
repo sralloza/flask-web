@@ -56,7 +56,9 @@ function update_interface() {
 
     // Day
     document.getElementById("day-title-a").innerHTML = menu["day"];
+    document.getElementById("day-title-a").href = menu["url"];
     document.getElementById("day-title-b").innerHTML = menu["day"];
+    document.getElementById("day-title-b").href = menu["url"];
 
     // Lunch
     document.getElementById("lunch-1a").innerHTML = menu["lunch"]["p1"];
