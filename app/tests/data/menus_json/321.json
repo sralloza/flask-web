@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20200210,
+        "day": "Lunes 10",
+        "lunch": {
+            "p1": "tortiglionis salteados con setas",
+            "p2": "lomo con patatas"
+        },
+        "dinner": {
+            "p1": "vichyssoise",
+            "p2": "fajitas de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/10/semana-del-10-al-16-de-febrero-2020/"
+    },
+    {
+        "id": 20200211,
+        "day": "Martes 11",
+        "lunch": {
+            "p1": "arroz a la zamorana",
+            "p2": "salmón a la naranja"
+        },
+        "dinner": {
+            "p1": "judias verdes salteadas",
+            "p2": "filetes rusos con tomate"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/10/semana-del-10-al-16-de-febrero-2020/"
+    },
+    {
+        "id": 20200212,
+        "day": "Miércoles 12",
+        "lunch": {
+            "p1": "cocido castellano",
+            "p2": null
+        },
+        "dinner": {
+            "p1": "alcachofas salteadas",
+            "p2": "pechuga de pollo a la plancha con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/10/semana-del-10-al-16-de-febrero-2020/"
+    },
+    {
+        "id": 20200213,
+        "day": "Jueves 13",
+        "lunch": {
+            "p1": "lasaña de atún",
+            "p2": "filete de ternera con guarnición"
+        },
+        "dinner": {
+            "p1": "revuelto de champiñones",
+            "p2": "lubina al horno"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/10/semana-del-10-al-16-de-febrero-2020/"
+    },
+    {
+        "id": 20200214,
+        "day": "Viernes 14",
+        "lunch": {
+            "p1": "tosta de espárragos trigueros con jamón y pimientos",
+            "p2": "chuleta de cerdo con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "baguette de rabas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/10/semana-del-10-al-16-de-febrero-2020/"
+    },
+    {
+        "id": 20200215,
+        "day": "Sábado 15",
+        "lunch": {
+            "p1": "langostinos al brandy",
+            "p2": "brochetas de pavo con patatas"
+        },
+        "dinner": {
+            "p1": "crema de calabaza",
+            "p2": "perrito caliente con cebolla, bacon y queso"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/10/semana-del-10-al-16-de-febrero-2020/"
+    },
+    {
+        "id": 20200216,
+        "day": "Domingo 16",
+        "lunch": {
+            "p1": "fabada asturiana",
+            "p2": "lenguado con ensalada"
+        },
+        "dinner": {
+            "p1": "pisto manchego",
+            "p2": "filete de maza de cerdo con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/10/semana-del-10-al-16-de-febrero-2020/"
+    }
+]
