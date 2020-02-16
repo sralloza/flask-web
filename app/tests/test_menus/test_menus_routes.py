@@ -84,7 +84,7 @@ class TestMenusView:
         else:
             assert menu_mock.format_date.call_count == 30
             # For some reason, in testing context is passed as an arg as well
-            assert menu_mock.format_date.call_args[1] == {'long': False}
+            assert menu_mock.format_date.call_args[1] == {"long": False}
 
 
 def test_menus_redirect(client):
@@ -130,12 +130,11 @@ def test_today_reload(dmm_mock, client, menu_mock):
 
     rv = client.get("/hoy/reload")
     assert rv.status_code == 302
-    assert rv.location == "http://menus.sralloza.es/hoy"
+    assert rv.location == "http://menus.sralloza.es/hoy?force"
 
-    dmm_mock.load.assert_called_once_with(force=True)
-    dmm_mock.load.return_value.__iter__.assert_called_once()
-    menu_mock.to_database.assert_called()
-    assert menu_mock.to_database.call_count == 7
+    dmm_mock.load.assert_not_called()
+    dmm_mock.load.return_value.__iter__.assert_not_called()
+    menu_mock.to_database.assert_not_called()
 
 
 @mock.patch(

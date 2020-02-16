@@ -58,13 +58,7 @@ def today_redirect():
 
 @menus_blueprint.route("/hoy/reload")
 def today_reload():
-    # TODO: instead of having endpoint '/menus/reload', add argument in request 'force'
-    dmm = DailyMenusManager.load(force=True)
-
-    for menu in dmm:
-        menu.to_database()
-
-    return redirect(url_for("menus_blueprint.today_js_view", _external=True))
+    return redirect(url_for("menus_blueprint.today_js_view", _external=True) + "?force")
 
 
 @menus_blueprint.route("/hoy")
