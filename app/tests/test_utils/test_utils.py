@@ -32,6 +32,21 @@ class TestGetLastMenusPage:
         with path.open() as f:
             return f.read()
 
+    def test_use_cache(self, logger_mock, requests_get_mock, test_content):
+        _Cache.redirect_url = None
+        foo_mock = mock.Mock()
+        foo_mock.text = test_content
+        requests_get_mock.return_value = foo_mock
+        url = get_last_menus_page()
+
+        logger_mock.debug.assert_called_once_with("Getting last menus url")
+        assert url == self.url_expected
+
+        url2 = get_last_menus_page()
+        assert url2 == self.url_expected
+        assert logger_mock.debug.call_count == 1
+        assert requests_get_mock.call_count == 1
+
     def test_ok(self, logger_mock, requests_get_mock, test_content):
         requests_get_mock.return_value.text = test_content
         url = get_last_menus_page()
@@ -168,21 +183,6 @@ class TestGetLastMenusPage:
         )
 
         assert url == PRINCIPAL_URL
-
-    def test_use_cache(self, logger_mock, requests_get_mock, test_content):
-        _Cache.redirect_url = None
-        foo_mock = mock.Mock()
-        foo_mock.text = test_content
-        requests_get_mock.return_value = foo_mock
-        url = get_last_menus_page()
-
-        logger_mock.debug.assert_called_once_with("Getting last menus url")
-        assert url == self.url_expected
-
-        url2 = get_last_menus_page()
-        assert url2 == self.url_expected
-        assert logger_mock.debug.call_count == 1
-        assert requests_get_mock.call_count == 1
 
 
 class TestTranslator:
