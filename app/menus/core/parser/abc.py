@@ -9,5 +9,5 @@ logger = logging.getLogger(__name__)
 class BaseParser(ABC):
     @classmethod
     @abstractmethod
-    def process_text(cls, dmm, text: str):
+    def process_text(cls, dmm, text: str, url: str):
         raise NotImplementedError

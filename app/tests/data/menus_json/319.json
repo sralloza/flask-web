@@ -9,7 +9,8 @@
         "dinner": {
             "p1": "sopa de ave con fideos",
             "p2": "tortilla de patatas"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/27/semana-del-27-de-enero-al-02-de-febrero-de-2020/"
     },
     {
         "id": 20200128,
@@ -21,7 +22,8 @@
         "dinner": {
             "p1": "menestra de verduras",
             "p2": "lomo adobado con patatas"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/27/semana-del-27-de-enero-al-02-de-febrero-de-2020/"
     },
     {
         "id": 20200129,
@@ -33,7 +35,8 @@
         "dinner": {
             "p1": "revuelto de champiñón",
             "p2": "pincho moruno"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/27/semana-del-27-de-enero-al-02-de-febrero-de-2020/"
     },
     {
         "id": 20200130,
@@ -45,7 +48,8 @@
         "dinner": {
             "p1": "crema de calabacín",
             "p2": "lubina al horno"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/27/semana-del-27-de-enero-al-02-de-febrero-de-2020/"
     },
     {
         "id": 20200131,
@@ -57,7 +61,8 @@
         "dinner": {
             "p1": "pasta con tomate",
             "p2": "pechuga de pollo a la plancha"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/27/semana-del-27-de-enero-al-02-de-febrero-de-2020/"
     },
     {
         "id": 20200201,
@@ -69,7 +74,8 @@
         "dinner": {
             "p1": "crema de puerros",
             "p2": "huevo frito con empanadilla y patatas"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/27/semana-del-27-de-enero-al-02-de-febrero-de-2020/"
     },
     {
         "id": 20200202,
@@ -81,6 +87,7 @@
         "dinner": {
             "p1": "sopa maravilla",
             "p2": "pizzas variadas"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/27/semana-del-27-de-enero-al-02-de-febrero-de-2020/"
     }
 ]

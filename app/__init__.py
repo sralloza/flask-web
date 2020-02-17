@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from platform import system
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
@@ -10,18 +11,20 @@ from .menus import menus_blueprint
 logging.basicConfig(
     filename=Path(__file__).parent.parent / "flask-app.log",
     level=logging.DEBUG,
-    format="[%(asctime)s] %(levelname)s - %(name)s:%(lineno)s - %(message)s",
+    format = "[%(asctime)s] %(levelname)s - %(threadName)s.%(module)s:%(lineno)s - %(message)s",
 )
 
 werkzeug = logging.getLogger("werkzeug")
 werkzeug.handlers = []
-werkzeug_handler = logging.FileHandler(
-    Path(__file__).parent.parent / "flask-access.log", encoding="utf-8"
-)
-werkzeug_handler.setFormatter(
-    logging.Formatter(fmt="%(asctime)s] %(levelname)s - %(message)s")
-)
-werkzeug.addHandler(werkzeug_handler)
+
+if system() != "Linux":
+    werkzeug_handler = logging.FileHandler(
+        Path(__file__).parent.parent / "flask-access.log", encoding="utf-8"
+    )
+    werkzeug_handler.setFormatter(
+        logging.Formatter(fmt="%(asctime)s] %(levelname)s - %(message)s")
+    )
+    werkzeug.addHandler(werkzeug_handler)
 
 
 def create_app(config_object):

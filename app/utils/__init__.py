@@ -91,11 +91,31 @@ class Translator:
 
 
 def get_last_menus_page(retries=5):
+    from app.menus.core.daily_menus_manager import DailyMenusManager
+
+    logger.debug("Getting last menus url")
+
     if _Cache.redirect_url:
+        logger.debug("Found in cache: %s", _Cache.redirect_url)
         return _Cache.redirect_url
 
+    dmm = DailyMenusManager()
+    dmm.load_from_database()
+    dmm.sort()
+
+    for menu in dmm:
+        if menu.url:
+            logger.debug("Retrieving url from last menu (%d): %s", menu.id, menu.url)
+            _Cache.redirect_url = menu.url
+            return menu.url
+
+    logger.warning(
+        "Could not retrieve url, trying to parse it by download principal url (%s)",
+        PRINCIPAL_URL,
+    )
+
     total_retries = retries
-    logger.debug("Getting last menus url")
+    logger.debug("Set retries=%d", retries)
 
     while retries:
         try:

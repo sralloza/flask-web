@@ -404,63 +404,88 @@ class TestPatterns:
             assert pattern_match is None
 
     fix_dates_patterns_1_data = (
-        ("febrero\n2019", True, "febrero 2019"),
-        ("febrero \n 2019", True, "febrero 2019"),
-        ("febrero2019", True, "febrero 2019"),
-        ("febrerode\n201", False, None),
+        ("febrero\n2019", "febrero 2019"),
+        ("febrero \n 2019", "febrero 2019"),
+        ("febrero2019", "febrero 2019"),
+        ("febrerode\n201", None),
     )
 
-    @pytest.mark.parametrize(
-        "string, match_code, expected_sub", fix_dates_patterns_1_data
-    )
-    def test_fix_dates_pattern_1(self, string, match_code, expected_sub):
+    @pytest.mark.parametrize("string, expected_sub", fix_dates_patterns_1_data)
+    def test_fix_dates_pattern_1(self, string, expected_sub):
         real_sub = Patterns.fix_dates_pattern_1.sub(r"\1 \2", string)
         pattern_match = Patterns.fix_dates_pattern_1.search(string)
 
-        if match_code:
+        if expected_sub:
             assert pattern_match is not None
             assert real_sub == expected_sub
         else:
             assert pattern_match is None
 
     fix_dates_patterns_2_data = (
-        ("día:     20", True, "día: 20"),
-        ("día:  \t\t20", True, "día: 20"),
-        ("día:20", True, "día: 20"),
-        ("día:\n\t\n\t20", True, "día: 20"),
-        ("day: 20", False, None),
+        ("día:     20", "día: 20"),
+        ("día:  \t\t20", "día: 20"),
+        ("día:20", "día: 20"),
+        ("día:\n\t\n\t20", "día: 20"),
+        ("day: 20", None),
     )
 
-    @pytest.mark.parametrize(
-        "string, match_code, expected_sub", fix_dates_patterns_2_data
-    )
-    def test_fix_dates_pattern_2(self, string, match_code, expected_sub):
+    @pytest.mark.parametrize("string, expected_sub", fix_dates_patterns_2_data)
+    def test_fix_dates_pattern_2(self, string, expected_sub):
         real_sub = Patterns.fix_dates_pattern_2.sub(r"\1 \2", string)
         pattern_match = Patterns.fix_dates_pattern_2.search(string)
 
-        if match_code:
+        if expected_sub:
             assert pattern_match is not None
             assert real_sub == expected_sub
         else:
             assert pattern_match is None
 
     fix_dates_patterns_3_data = (
-        ("día: 27 de enero de 2020 (sábado)", False, None),
-        (
-            "día: 25 de abril de 2020 (viernes",
-            True,
-            "día: 25 de abril de 2020 (viernes)",
-        ),
+        ("día: 27 de enero de 2020 (sábado)", None),
+        ("día: 25 de abril de 2020 (viernes", "día: 25 de abril de 2020 (viernes)"),
     )
 
-    @pytest.mark.parametrize(
-        "string, match_code, expected_sub", fix_dates_patterns_3_data
-    )
-    def test_fix_dates_pattern_3(self, string, match_code, expected_sub):
+    @pytest.mark.parametrize("string, expected_sub", fix_dates_patterns_3_data)
+    def test_fix_dates_pattern_3(self, string, expected_sub):
         real_sub = Patterns.fix_dates_pattern_3.sub(r"\1)", string)
         pattern_match = Patterns.fix_dates_pattern_3.search(string)
 
-        if match_code:
+        if expected_sub:
+            assert pattern_match is not None
+            assert real_sub == expected_sub
+        else:
+            assert pattern_match is None
+
+    fix_content_pattern_1 = (
+        ("cocido\ncompleto", "cocido completo"),
+        ("fruta\ndía:", None),
+    )
+
+    @pytest.mark.parametrize("string, expected_sub", fix_content_pattern_1)
+    def test_fix_content_pattern_1(self, string, expected_sub):
+        real_sub = Patterns.fix_content_pattern_1.sub(r"\1 \2", string)
+        pattern_match = Patterns.fix_content_pattern_1.search(string)
+
+        if expected_sub:
+            assert pattern_match is not None
+            assert real_sub == expected_sub
+        else:
+            assert pattern_match is None
+
+    fix_content_pattern_2 = (
+        ("    ", " "),
+        ("\t \t\t \t", " "),
+        ("\t", None),
+        ("\t\t", " "),
+        ("hola que tal estás", None),
+    )
+
+    @pytest.mark.parametrize("string, expected_sub", fix_content_pattern_2)
+    def test_fix_content_pattern_2(self, string, expected_sub):
+        real_sub = Patterns.fix_content_pattern_2.sub(r" ", string)
+        pattern_match = Patterns.fix_content_pattern_2.search(string)
+
+        if expected_sub:
             assert pattern_match is not None
             assert real_sub == expected_sub
         else:

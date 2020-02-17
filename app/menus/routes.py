@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask import redirect, render_template, request, url_for
 
-from app.utils import Tokens, get_last_menus_page, get_post_arg
+from app.utils import PRINCIPAL_URL, Tokens, get_last_menus_page, get_post_arg
 
 from . import menus_blueprint
 from .core.daily_menus_manager import DailyMenusManager
@@ -58,13 +58,7 @@ def today_redirect():
 
 @menus_blueprint.route("/hoy/reload")
 def today_reload():
-    # TODO: instead of having endpoint '/menus/reload', add argument in request 'force'
-    dmm = DailyMenusManager.load(force=True)
-
-    for menu in dmm:
-        menu.to_database()
-
-    return redirect(url_for("menus_blueprint.today_js_view", _external=True))
+    return redirect(url_for("menus_blueprint.today_js_view", _external=True) + "?force")
 
 
 @menus_blueprint.route("/hoy")
@@ -76,9 +70,8 @@ def today_js_view():
     )
 
     dmm = DailyMenusManager.load(force=force)
-    last_url = get_last_menus_page()
     data = json.dumps(dmm.to_json())
-    return render_template("today-js.html", menus=data, title_url=last_url)
+    return render_template("today-js.html", menus=data, default=PRINCIPAL_URL)
 
 
 @menus_blueprint.route("/api/menus/add", methods=["POST"])

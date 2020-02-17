@@ -9,7 +9,8 @@
         "dinner": {
             "p1": "PC: huevo con salchichas, patatas y ensalada",
             "p2": null
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/17/del-18-al-20-de-junio-2019/"
     },
     {
         "id": 20190619,
@@ -21,7 +22,8 @@
         "dinner": {
             "p1": "patatas dippers",
             "p2": "wrapp de fingers de pollo"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/17/del-18-al-20-de-junio-2019/"
     },
     {
         "id": 20190620,
@@ -33,6 +35,7 @@
         "dinner": {
             "p1": "guisantes salteados",
             "p2": "tortilla de patata, calamares y croquetas"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/17/del-18-al-20-de-junio-2019/"
     }
 ]

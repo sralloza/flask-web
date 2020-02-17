@@ -10,13 +10,13 @@ class TestManualParser:
     @pytest.mark.parametrize("data_path", Paths.not_html.value)
     def test_process_url_true(self, data_path):
         content = data_path.read_text(errors="ignore")
-        assert ManualParser.process_text(None, content)
+        assert ManualParser.process_text(None, content, "url")
 
     @pytest.mark.parametrize("data_path", Paths.html.value)
     def test_process_url_false(self, data_path):
         content = data_path.read_text(errors="ignore")
         with pytest.raises(ParserError):
-            ManualParser.process_text(None, content)
+            ManualParser.process_text(None, content, "url")
 
     @pytest.mark.parametrize("data_path", Paths.pdf.value)
     def test_detect_if_pdf_true(self, data_path):

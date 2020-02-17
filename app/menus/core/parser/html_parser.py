@@ -22,7 +22,7 @@ class HtmlParser(BaseParser):
     _lock = Lock()
 
     @classmethod
-    def process_text(cls, dmm, text: str):
+    def process_text(cls, dmm, text: str, url: str):
         """Processes url in search from menus."""
         s = Soup(text, "html.parser")
         container = s.find("article", {"class": "j-blog"})
@@ -30,6 +30,8 @@ class HtmlParser(BaseParser):
         text = Patterns.fix_dates_pattern_1.sub(r"\1 \2", text)
         text = Patterns.fix_dates_pattern_2.sub(r"\1 \2", text)
         text = Patterns.fix_dates_pattern_3.sub(r"\1)", text)
+        text = Patterns.fix_content_pattern_1.sub(r"\1 \2", text)
+        text = Patterns.fix_content_pattern_2.sub(r" ", text)
         texts = [x.strip() for x in text.splitlines() if x.strip()]
 
         texts = filter_data(texts)
@@ -37,6 +39,8 @@ class HtmlParser(BaseParser):
         assert menus
 
         HtmlParser._process_texts(texts, menus)
+        for menu in menus:
+            menu.url = url
         dmm.add_to_menus(menus)
 
     @staticmethod

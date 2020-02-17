@@ -9,7 +9,8 @@
         "dinner": {
             "p1": "PC: salchichas, chuletas de pavo, patatas y ensalada",
             "p2": null
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/03/semana-del-4-al-10-de-junio-2019/"
     },
     {
         "id": 20190605,
@@ -21,7 +22,8 @@
         "dinner": {
             "p1": "ensalada mixta",
             "p2": "pizzas variadas"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/03/semana-del-4-al-10-de-junio-2019/"
     },
     {
         "id": 20190606,
@@ -33,7 +35,8 @@
         "dinner": {
             "p1": "crema de calabaza",
             "p2": "lomo adobado con patatas y ensalada"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/03/semana-del-4-al-10-de-junio-2019/"
     },
     {
         "id": 20190607,
@@ -45,7 +48,8 @@
         "dinner": {
             "p1": "patatas dipper",
             "p2": "hamburguesa de buey"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/03/semana-del-4-al-10-de-junio-2019/"
     },
     {
         "id": 20190608,
@@ -57,7 +61,8 @@
         "dinner": {
             "p1": "ensalada cesar",
             "p2": "pescado a la romana"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/03/semana-del-4-al-10-de-junio-2019/"
     },
     {
         "id": 20190609,
@@ -69,7 +74,8 @@
         "dinner": {
             "p1": "crema de verduras",
             "p2": "perrito caliente completo con bacon queso y ensalada"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/03/semana-del-4-al-10-de-junio-2019/"
     },
     {
         "id": 20190610,
@@ -81,6 +87,7 @@
         "dinner": {
             "p1": "guisantes salteados",
             "p2": "sandwich vegetal con croquetas"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/03/semana-del-4-al-10-de-junio-2019/"
     }
 ]
