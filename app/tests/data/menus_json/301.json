@@ -9,7 +9,8 @@
         "dinner": {
             "p1": "guisantes salteados",
             "p2": "alas de pollo con guarnición"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/24/del-25-al-28-de-junio-2019/"
     },
     {
         "id": 20190626,
@@ -21,7 +22,8 @@
         "dinner": {
             "p1": "rollitos de primavera",
             "p2": "san jacobo, empanadillas, calamares y ensalada"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/24/del-25-al-28-de-junio-2019/"
     },
     {
         "id": 20190627,
@@ -33,7 +35,8 @@
         "dinner": {
             "p1": "patatas dipper",
             "p2": "perrito caliente con bacon y queso"
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/24/del-25-al-28-de-junio-2019/"
     },
     {
         "id": 20190628,
@@ -45,6 +48,7 @@
         "dinner": {
             "p1": "PC: huevo frito, fingers de pollo, patatas y ensalada",
             "p2": null
-        }
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/24/del-25-al-28-de-junio-2019/"
     }
 ]

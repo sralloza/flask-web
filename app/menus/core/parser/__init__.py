@@ -22,7 +22,7 @@ class ParserThread(Thread):
         self.retries = retries
 
     def run(self):
-        logger.debug("Starting %s with url %r", type(self).__name__, self.url)
+        logger.debug("Starting %s with url %r", self.name, self.url)
 
         retries_left = self.retries
         while retries_left:
@@ -40,11 +40,13 @@ class ParserThread(Thread):
         for parser in Parsers.parsers:
             try:
                 logger.debug("Trying with parser %r", parser.__name__)
-                parser.process_text(dmm=self.dmm, text=response.text)
+                parser.process_text(dmm=self.dmm, text=response.text, url=self.url)
                 logger.info("URL parsed correcty with parser %r", parser.__name__)
                 return
             except Exception:
-                logger.exception("Exception using parser %r:", parser.__name__)
+                logger.exception(
+                    "Exception parsing %r using parser %r:", self.url, parser.__name__
+                )
                 continue
 
         logger.error("None of the parsers could parse url %r", self.url)

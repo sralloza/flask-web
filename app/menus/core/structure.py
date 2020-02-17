@@ -5,7 +5,8 @@ from enum import Enum, unique
 from typing import Union
 
 from app.menus.models import DailyMenusDatabaseController
-from app.utils import Translator, now
+from app.utils import PRINCIPAL_URL, Translator, now
+
 from .exceptions import InvalidStateError, MealError, MealWarning
 
 logger = logging.getLogger(__name__)
@@ -323,13 +324,20 @@ class DailyMenu:
     """Represents the menu of a day."""
 
     def __init__(
-        self, day: int, month: int, year: int, lunch: Meal = None, dinner: Meal = None
+        self,
+        day: int,
+        month: int,
+        year: int,
+        lunch: Meal = None,
+        dinner: Meal = None,
+        url: str = None,
     ):
         self.day = day
         self.month = month
         self.year = year
         self.lunch = lunch or Meal()
         self.dinner = dinner or Meal()
+        self.url = url or PRINCIPAL_URL
 
         self.date = date(self.year, self.month, self.day)
         self.weekday = Translator.english_to_spanish(self.date.strftime("%A").lower())

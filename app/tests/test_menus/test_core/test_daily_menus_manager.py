@@ -299,10 +299,20 @@ def test_load(load_mocks, force, today_in_database, should_update, reset_databas
 def test_to_json():
     dmm = DailyMenusManager()
     menu1 = DailyMenu(
-        6, 12, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+        6,
+        12,
+        2019,
+        Meal("lunch-1", "lunch-2"),
+        Meal("dinner-1", "dinner-2"),
+        "https://url-1.example.com",
     )
     menu2 = DailyMenu(
-        6, 11, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+        6,
+        11,
+        2019,
+        Meal("lunch-1", "lunch-2"),
+        Meal("dinner-1", "dinner-2"),
+        "https://url-2.example.com",
     )
 
     dmm.add_to_menus([menu1, menu2])
@@ -313,12 +323,14 @@ def test_to_json():
             "day": "Viernes 6",
             "lunch": {"p1": "lunch-1", "p2": "lunch-2"},
             "dinner": {"p1": "dinner-1", "p2": "dinner-2"},
+            "url": "https://url-1.example.com",
         },
         {
             "id": 20191106,
             "day": "Miércoles 6",
             "lunch": {"p1": "lunch-1", "p2": "lunch-2"},
             "dinner": {"p1": "dinner-1", "p2": "dinner-2"},
+            "url": "https://url-2.example.com",
         },
     ]
 

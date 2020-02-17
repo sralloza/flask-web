@@ -84,7 +84,7 @@ class TestMenusView:
         else:
             assert menu_mock.format_date.call_count == 30
             # For some reason, in testing context is passed as an arg as well
-            assert menu_mock.format_date.call_args[1] == {'long': False}
+            assert menu_mock.format_date.call_args[1] == {"long": False}
 
 
 def test_menus_redirect(client):
@@ -130,21 +130,15 @@ def test_today_reload(dmm_mock, client, menu_mock):
 
     rv = client.get("/hoy/reload")
     assert rv.status_code == 302
-    assert rv.location == "http://menus.sralloza.es/hoy"
+    assert rv.location == "http://menus.sralloza.es/hoy?force"
 
-    dmm_mock.load.assert_called_once_with(force=True)
-    dmm_mock.load.return_value.__iter__.assert_called_once()
-    menu_mock.to_database.assert_called()
-    assert menu_mock.to_database.call_count == 7
+    dmm_mock.load.assert_not_called()
+    dmm_mock.load.return_value.__iter__.assert_not_called()
+    menu_mock.to_database.assert_not_called()
 
 
-@mock.patch(
-    "app.menus.routes.get_last_menus_page",
-    return_value="http://example.com",
-    autospec=True,
-)
 @mock.patch("app.menus.core.daily_menus_manager.UpdateControl.should_update")
-def test_today(su_mock, glmp_mock, client, reset_database):
+def test_today(su_mock, client, reset_database):
     su_mock.return_value = False
     rv = client.get("/hoy")
     assert rv.status_code == 200
@@ -152,7 +146,6 @@ def test_today(su_mock, glmp_mock, client, reset_database):
     assert b"loader.css" in rv.data
     assert b"getElementById" in rv.data
     assert b"today-js.js" in rv.data
-    assert b"http://example.com" in rv.data
 
 
 class MenuApiDataCodes(Enum):
@@ -302,8 +295,9 @@ def test_add_menu_api(client, data, exception, code):
 @mock.patch("app.menus.routes.DailyMenusManager", autospec=True)
 class TestApiMenus:
     def test_without_force(self, dmm_mock, client):
+        url = "https://example.com"
         menu = DailyMenu(
-            28, 6, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+            28, 6, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2"), url,
         )
 
         dmm = DailyMenusManager()
@@ -316,6 +310,7 @@ class TestApiMenus:
                 "day": "Viernes 28",
                 "lunch": {"p1": "lunch-1", "p2": "lunch-2"},
                 "dinner": {"p1": "dinner-1", "p2": "dinner-2"},
+                "url": "https://example.com",
             }
         ] * 6
 
@@ -327,8 +322,9 @@ class TestApiMenus:
         dmm_mock.load.assert_called_once_with(force=False)
 
     def test_with_force(self, dmm_mock, client):
+        url = "https://example.com"
         menu = DailyMenu(
-            28, 6, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2")
+            28, 6, 2019, Meal("lunch-1", "lunch-2"), Meal("dinner-1", "dinner-2"), url,
         )
 
         dmm = DailyMenusManager()
@@ -341,6 +337,7 @@ class TestApiMenus:
                 "day": "Viernes 28",
                 "lunch": {"p1": "lunch-1", "p2": "lunch-2"},
                 "dinner": {"p1": "dinner-1", "p2": "dinner-2"},
+                "url": "https://example.com",
             }
         ] * 6
 

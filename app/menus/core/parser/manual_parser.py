@@ -9,7 +9,7 @@ class ManualParser(BaseParser):
         self.soup = soup
 
     @classmethod
-    def process_text(cls, dmm, text: str):
+    def process_text(cls, dmm, text: str, url: str):
         soup = BeautifulSoup(text, "html.parser")
 
         self = cls(soup)

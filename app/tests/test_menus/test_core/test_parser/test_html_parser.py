@@ -16,15 +16,15 @@ for html_path in Paths.html.value:
     for json_path in Paths.json.value:
         # Due to naming convention
         if html_path.stem == json_path.stem + ".html":
-            process_text_data.append((html_path, json_path))
+            process_text_data.append((html_path, json_path, Paths.urls_dict.value.get(json_path.stem, None)))
             break
 
 
 class TestHtmlParser:
-    @pytest.mark.parametrize("html_path, json_path", process_text_data)
-    def test_process_text(self, html_path, json_path):
+    @pytest.mark.parametrize("html_path, json_path, url", process_text_data)
+    def test_process_text(self, html_path, json_path, url):
         dmm = DailyMenusManager()
-        HtmlParser.process_text(dmm, html_path.read_text(encoding="utf-8"))
+        HtmlParser.process_text(dmm, html_path.read_text(encoding="utf-8"), url)
 
         json_expected = json.loads(json_path.read_text(encoding="utf-8"))
         json_real = dmm.to_json()
