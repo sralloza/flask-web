@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup as Soup
 from flask import current_app, request
 from requests.exceptions import ConnectionError
 
-
 logger = logging.getLogger(__name__)
 
 PRINCIPAL_URL = "https://www.residenciasantiago.es/menus-1/"
@@ -110,7 +109,10 @@ def get_last_menus_page(retries=5):
             _Cache.redirect_url = menu.url
             return menu.url
 
-    logger.warning("Could not retrieve url, trying to parse it by download principal url (%s)", PRINCIPAL_URL)
+    logger.warning(
+        "Could not retrieve url, trying to parse it by download principal url (%s)",
+        PRINCIPAL_URL,
+    )
 
     total_retries = retries
     logger.debug("Set retries=%d", retries)
