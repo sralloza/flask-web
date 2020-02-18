@@ -219,15 +219,15 @@ function clickDetected(cursorXPercentage) {
 
 function clickPrevious() {
     console.log("Previous");
-    // document.getElementById("previous").click();
+    document.getElementById("previous").click();
 }
 
 function clickNext() {
     console.log("Next");
-    // document.getElementById("next").click();
+    document.getElementById("next").click();
 }
 
 function clickAll() {
     console.log("Middle");
-    // document.getElementById("all").click();
+    document.getElementById("all").click();
 }
