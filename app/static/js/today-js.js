@@ -1,4 +1,5 @@
-var date_viewed = new Date();
+// Global menus variables
+var dateViewed = new Date();
 const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
 // Add loader
@@ -6,7 +7,7 @@ document.getElementById("N/A").style.display = "none";
 document.getElementById("lunch").style.display = "none";
 document.getElementById("dinner").style.display = "none";
 
-function fetch_menus() {
+function fetchMenus() {
     var force = get('force') || get('f')
     console.log('force: ' + force);
 
@@ -19,20 +20,20 @@ function fetch_menus() {
         })
         .then(data => {
             menus = data;
-            update_interface()
+            updateInterface()
         })
         .catch(err => {
             console.log(err)
         })
 }
 
-function get_day_title() {
-    var day = days[date_viewed.getDay()];
-    return day + " " + date_viewed.getDate();
+function getDayTitle() {
+    var day = days[dateViewed.getDay()];
+    return day + " " + dateViewed.getDate();
 }
 
-function update_interface() {
-    var ask = date_viewed.print();
+function updateInterface() {
+    var ask = dateViewed.print();
     var menu = menus.find(menu => menu["id"] == ask);
 
     console.log('Día: ' + ask);
@@ -45,9 +46,9 @@ function update_interface() {
         document.getElementById("lunch").style.display = "none";
         document.getElementById("dinner").style.display = "none";
 
-        document.getElementById("day-title-a").innerHTML = get_day_title();
+        document.getElementById("day-title-a").innerHTML = getDayTitle();
         document.getElementById("day-title-a").href = PRINCIPAL_URL;
-        document.getElementById("day-title-b").innerHTML = get_day_title();
+        document.getElementById("day-title-b").innerHTML = getDayTitle();
         document.getElementById("day-title-b").href = PRINCIPAL_URL;
         return;
     }
@@ -92,27 +93,27 @@ function update_interface() {
         document.getElementById("dinner-2b").style.display = 'none';
     }
 
-    update_buttons();
+    updateButtons();
 
 }
 
-function update_buttons() {
+function updateButtons() {
     var yesterday = new Date();
     var tomorrow = new Date();
 
-    yesterday.setDate(date_viewed.getDate() - 1);
-    tomorrow.setDate(date_viewed.getDate() + 1);
+    yesterday.setDate(dateViewed.getDate() - 1);
+    tomorrow.setDate(dateViewed.getDate() + 1);
 
-    var yesterday_menu = menus.find(menu => menu["id"] == yesterday.print());
-    var tomorrow_menu = menus.find(menu => menu["id"] == tomorrow.print());
+    var yesterdayMenu = menus.find(menu => menu["id"] == yesterday.print());
+    var tomorrowMenu = menus.find(menu => menu["id"] == tomorrow.print());
 
-    if (yesterday_menu == null) {
+    if (yesterdayMenu == null) {
         document.getElementById("previous").disabled = true;
     } else {
         document.getElementById("previous").disabled = false;
     }
 
-    if (tomorrow_menu == null) {
+    if (tomorrowMenu == null) {
         document.getElementById("next").disabled = true;
     } else {
         document.getElementById("next").disabled = false;
@@ -120,17 +121,17 @@ function update_buttons() {
 }
 
 tomorrow = function () {
-    date_viewed.setDate(date_viewed.getDate() + 1);
-    update_interface();
-    update_buttons();
-    console.log(date_viewed.print());
+    dateViewed.setDate(dateViewed.getDate() + 1);
+    updateInterface();
+    updateButtons();
+    console.log(dateViewed.print());
 }
 
 yesterday = function () {
-    date_viewed.setDate(date_viewed.getDate() - 1);
-    update_interface();
-    update_buttons();
-    console.log(date_viewed.print());
+    dateViewed.setDate(dateViewed.getDate() - 1);
+    updateInterface();
+    updateButtons();
+    console.log(dateViewed.print());
 }
 
 Date.prototype.print = function () {
@@ -162,43 +163,98 @@ function get(name) {
     return queryDict[name];
 }
 
-//window.onload = fetch_menus;
-window.onload = update_interface;
+//window.onload = fetchMenus;
+window.onload = updateInterface;
 document.getElementById("next").onclick = tomorrow;
 document.getElementById("all").onclick = function () { window.location.href = '/menus' };
 document.getElementById("previous").onclick = yesterday;
 
-// console.log(document.documentElement.clientWidth);
-// console.log(window.innerWidth);
-
 const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-const height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+console.log("Calculated width: " + width);
 
 document.addEventListener("click", function (e) {
     let cursorX = e.pageX * 100 / width;
     if (cursorX == 0)
         return;
 
-    let prev_left = document.getElementById("previous").getBoundingClientRect()["left"] * 100 / width;
-    let prev_width = document.getElementById("previous").getBoundingClientRect()["width"] * 100 / width;
-    let all_width = document.getElementById("all").getBoundingClientRect()["width"] * 100 / width;
-
-    let x = (50 - prev_left - prev_width - all_width / 2) / 2;
-    let center_diff = all_width / 2 + x;
-
-    right_margin = 50 + center_diff;
-    left_margin = 50 - center_diff;
-
-    if (cursorX > right_margin) {
-        console.log("Next");
-        // document.getElementById("next").click();
-    }
-    else if (cursorX < left_margin) {
-        console.log("Previous");
-        // document.getElementById("previous").click();
-    }
-    else {
-        console.log("Middle");
-    }
+    console.log("Click detected on PC: " + cursorX.toFixed(2) + "%");
+    return clickDetected(cursorX);
 })
 
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchmove', handleTouchMove, false);
+
+var xDown = null;
+var yDown = null;
+
+function getTouches(evt) {
+    return evt.touches || evt.originalEvent.touches;
+}
+
+function handleTouchStart(evt) {
+    const firstTouch = getTouches(evt)[0];
+    cursorX = firstTouch.clientX * 100 / width;
+
+    console.log("Detected Touch: " + cursorX.toFixed(2) + "%");
+    return clickDetected(cursorX);
+};
+
+function handleTouchMove(evt) {
+    if (!xDown || !yDown) {
+        return;
+    }
+
+    var xUp = evt.touches[0].clientX;
+    var yUp = evt.touches[0].clientY;
+
+    var xDiff = xDown - xUp;
+    var yDiff = yDown - yUp;
+
+    if (Math.abs(xDiff) < Math.abs(yDiff))
+        return;
+
+    console.log("Detected swipe, xDiff=" + xDiff.toFixed(2))
+
+    // Reset values
+    xDown = null;
+    yDown = null;
+
+    if (xDiff > 0)
+        return clickNext();
+    return clickPrevious();
+
+};
+
+
+function clickDetected(cursorXPercentage) {
+    let prevLeft = document.getElementById("previous").getBoundingClientRect()["left"] * 100 / width;
+    let prevWidth = document.getElementById("previous").getBoundingClientRect()["width"] * 100 / width;
+    let allWidth = document.getElementById("all").getBoundingClientRect()["width"] * 100 / width;
+
+    let x = (50 - prevLeft - prevWidth - allWidth / 2) / 2;
+    let centerDiff = allWidth / 2 + x;
+
+    let rightMargin = 50 + centerDiff;
+    let leftMargin = 50 - centerDiff;
+
+    if (cursorXPercentage > rightMargin)
+        return clickNext();
+    if (cursorXPercentage < leftMargin)
+        return clickPrevious();
+    return clickAll();
+}
+
+function clickPrevious() {
+    console.log("Previous");
+    // document.getElementById("previous").click();
+}
+
+function clickNext() {
+    console.log("Next");
+    // document.getElementById("next").click();
+}
+
+function clickAll() {
+    console.log("Middle");
+    // document.getElementById("all").click();
+}
