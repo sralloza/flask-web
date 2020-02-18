@@ -165,5 +165,5 @@ function get(name) {
 //window.onload = fetch_menus;
 window.onload = update_interface;
 document.getElementById("next").onclick = tomorrow;
-document.getElementById("all").onclick = function () { window.location = '/menus' };
+document.getElementById("all").onclick = function () { window.location.href = '/menus' };
 document.getElementById("previous").onclick = yesterday;
