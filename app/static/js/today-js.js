@@ -167,3 +167,38 @@ window.onload = update_interface;
 document.getElementById("next").onclick = tomorrow;
 document.getElementById("all").onclick = function () { window.location.href = '/menus' };
 document.getElementById("previous").onclick = yesterday;
+
+// console.log(document.documentElement.clientWidth);
+// console.log(window.innerWidth);
+
+const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+const height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+document.addEventListener("click", function (e) {
+    let cursorX = e.pageX * 100 / width;
+    if (cursorX == 0)
+        return;
+
+    let prev_left = document.getElementById("previous").getBoundingClientRect()["left"] * 100 / width;
+    let prev_width = document.getElementById("previous").getBoundingClientRect()["width"] * 100 / width;
+    let all_width = document.getElementById("all").getBoundingClientRect()["width"] * 100 / width;
+
+    let x = (50 - prev_left - prev_width - all_width / 2) / 2;
+    let center_diff = all_width / 2 + x;
+
+    right_margin = 50 + center_diff;
+    left_margin = 50 - center_diff;
+
+    if (cursorX > right_margin) {
+        console.log("Next");
+        // document.getElementById("next").click();
+    }
+    else if (cursorX < left_margin) {
+        console.log("Previous");
+        // document.getElementById("previous").click();
+    }
+    else {
+        console.log("Middle");
+    }
+})
+
