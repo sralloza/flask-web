@@ -182,7 +182,6 @@ document.addEventListener("click", function (e) {
 })
 
 document.addEventListener('touchstart', handleTouchStart, false);
-document.addEventListener('touchmove', handleTouchMove, false);
 
 var xDown = null;
 var yDown = null;
@@ -197,32 +196,6 @@ function handleTouchStart(evt) {
 
     console.log("Detected Touch: " + cursorX.toFixed(2) + "%");
     return clickDetected(cursorX);
-};
-
-function handleTouchMove(evt) {
-    if (!xDown || !yDown) {
-        return;
-    }
-
-    var xUp = evt.touches[0].clientX;
-    var yUp = evt.touches[0].clientY;
-
-    var xDiff = xDown - xUp;
-    var yDiff = yDown - yUp;
-
-    if (Math.abs(xDiff) < Math.abs(yDiff))
-        return;
-
-    console.log("Detected swipe, xDiff=" + xDiff.toFixed(2))
-
-    // Reset values
-    xDown = null;
-    yDown = null;
-
-    if (xDiff > 0)
-        return clickNext();
-    return clickPrevious();
-
 };
 
 
