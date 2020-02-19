@@ -32,6 +32,6 @@ class TestJs:
         assert "charset=utf-8" in rv.headers["Content-Type"]
 
     def test_today_js(self, client):
-        rv = client.get(url_for("static", filename="js/today-js.js"))
+        rv = client.get(url_for("static", filename="js/today.js"))
         assert rv.status_code == 200
         assert "charset=utf-8" in rv.headers["Content-Type"]
