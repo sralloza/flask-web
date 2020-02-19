@@ -177,6 +177,11 @@ document.addEventListener("click", function (e) {
     if (cursorX == 0)
         return;
 
+    currentTime = new Date();
+
+    if (currentTime - lastTouch < 750)
+        return;
+
     console.log("Click detected on PC: " + cursorX.toFixed(2) + "%");
     return clickDetected(cursorX);
 })
@@ -185,6 +190,7 @@ document.addEventListener('touchstart', handleTouchStart, false);
 
 var xDown = null;
 var yDown = null;
+var lastTouch = new Date();
 
 function getTouches(evt) {
     return evt.touches || evt.originalEvent.touches;
@@ -195,6 +201,7 @@ function handleTouchStart(evt) {
     cursorX = firstTouch.clientX * 100 / width;
 
     console.log("Detected Touch: " + cursorX.toFixed(2) + "%");
+    lastTouch = new Date();
     return clickDetected(cursorX);
 };
 
