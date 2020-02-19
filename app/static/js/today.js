@@ -176,6 +176,9 @@ var xDown = null;
 var yDown = null;
 var lastTouch = new Date();
 
+// If true, a middle click will auto-click in the middle button (redirect to /menus)
+var enableMiddleClick = false;
+
 // Calculate width
 const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 console.log("Calculated width: " + width);
@@ -228,7 +231,9 @@ function clickDetected(cursorXPercentage) {
         return clickNext();
     if (cursorXPercentage < leftMargin)
         return clickPrevious();
-    return clickAll();
+
+    if (enableMiddleClick)
+        return clickAll();
 }
 
 function clickPrevious() {
