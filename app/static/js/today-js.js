@@ -9,7 +9,7 @@ document.getElementById("dinner").style.display = "none";
 
 function fetchMenus() {
     var force = get('force') || get('f')
-    console.log('force: ' + force);
+    console.log('fetch with force=' + force);
 
     var url = '/api/menus'
     if (force) url += '?force';
@@ -36,7 +36,7 @@ function updateInterface() {
     var ask = dateViewed.print();
     var menu = menus.find(menu => menu["id"] == ask);
 
-    console.log('Día: ' + ask);
+    console.log('Updating interface using day=' + ask);
     console.log(menu);
 
     document.getElementById("loader").style.display = "none";
@@ -124,14 +124,14 @@ tomorrow = function () {
     dateViewed.setDate(dateViewed.getDate() + 1);
     updateInterface();
     updateButtons();
-    console.log(dateViewed.print());
+    console.log("Changed day to tomorrow (" + dateViewed.print() + ")");
 }
 
 yesterday = function () {
     dateViewed.setDate(dateViewed.getDate() - 1);
     updateInterface();
     updateButtons();
-    console.log(dateViewed.print());
+    console.log("Changed day to yesterday (" + dateViewed.print() + ")");
 }
 
 Date.prototype.print = function () {
@@ -169,10 +169,23 @@ document.getElementById("next").onclick = tomorrow;
 document.getElementById("all").onclick = function () { window.location.href = '/menus' };
 document.getElementById("previous").onclick = yesterday;
 
+
+
+// CLICK DETECTION
+var xDown = null;
+var yDown = null;
+var lastTouch = new Date();
+
+// Calculate width
 const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 console.log("Calculated width: " + width);
 
-document.addEventListener("click", function (e) {
+// Events listeners
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener("click", handleClick);
+
+// Handlers
+function handleClick(e) {
     let cursorX = e.pageX * 100 / width;
     if (cursorX == 0)
         return;
@@ -184,13 +197,7 @@ document.addEventListener("click", function (e) {
 
     console.log("Click detected on PC: " + cursorX.toFixed(2) + "%");
     return clickDetected(cursorX);
-})
-
-document.addEventListener('touchstart', handleTouchStart, false);
-
-var xDown = null;
-var yDown = null;
-var lastTouch = new Date();
+}
 
 function getTouches(evt) {
     return evt.touches || evt.originalEvent.touches;
@@ -225,16 +232,16 @@ function clickDetected(cursorXPercentage) {
 }
 
 function clickPrevious() {
-    console.log("Previous");
+    console.log("Autoclicking left button (previous)");
     document.getElementById("previous").click();
 }
 
 function clickNext() {
-    console.log("Next");
+    console.log("Autoclicking right button (next)");
     document.getElementById("next").click();
 }
 
 function clickAll() {
-    console.log("Middle");
+    console.log("Autoclicking middle button (all)");
     document.getElementById("all").click();
 }
