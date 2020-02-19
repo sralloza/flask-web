@@ -180,8 +180,16 @@ var lastTouch = new Date();
 var enableMiddleClick = false;
 
 // Calculate width
-const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-console.log("Calculated width: " + width);
+function updateWindowWidth() {
+    newWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    if (newWidth == width)
+        return;
+
+    width = newWidth;
+    console.log("Calculated width: " + width);
+}
+width = 0;
+updateWindowWidth();
 
 // Events listeners
 document.addEventListener('touchstart', handleTouchStart, false);
@@ -189,13 +197,13 @@ document.addEventListener("click", handleClick);
 
 // Handlers
 function handleClick(e) {
-    let cursorX = e.pageX * 100 / width;
-    if (cursorX == 0)
+    currentTime = new Date();
+    if (currentTime - lastTouch < 750)
         return;
 
-    currentTime = new Date();
-
-    if (currentTime - lastTouch < 750)
+    updateWindowWidth();
+    let cursorX = e.pageX * 100 / width;
+    if (cursorX == 0)
         return;
 
     console.log("Click detected on PC: " + cursorX.toFixed(2) + "%");
@@ -207,6 +215,7 @@ function getTouches(evt) {
 }
 
 function handleTouchStart(evt) {
+    updateWindowWidth();
     const firstTouch = getTouches(evt)[0];
     cursorX = firstTouch.clientX * 100 / width;
 
