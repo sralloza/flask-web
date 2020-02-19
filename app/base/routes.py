@@ -47,7 +47,7 @@ def favicon():
 
 @base_blueprint.route("/")
 def index():
-    return redirect(url_for("menus_blueprint.today_js_view"))
+    return redirect(url_for("menus_blueprint.today_view"))
 
 
 @base_blueprint.route("/s")
