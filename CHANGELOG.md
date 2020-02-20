@@ -6,7 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+* In `/hoy` endopoint, clicking in `All` button will allow the user to go back (click enable instead of HTTP redirect).
+* Enabled use of keys and clicking in `/hoy` endpoint. Clicks on the left will auto-click `previous` button, and clicks on the right will auto-click `next` button. This can be done with keys `K` and `L`, respectively. Also, `left arrow` and `right arrow` work, too. `T` key will change the date view to today's date.
+* Clicks on mobile browser are also supported.
+
 ### Changed
+* Renamed `today-js.js` to `today.js`.
+* Renamed `today-js.html` to `today.html`
+
 ### Fixed
 ### Removed
 
