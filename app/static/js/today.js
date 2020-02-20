@@ -301,7 +301,9 @@ function detectKey(e) {
             // Letter T
             console.log("Letter T pressed");
             today = new Date();
-            dateViewed.setDate(today.getDate());
+            // console.log(today.getDate());
+            // dateViewed.setDate(today.getDate());
+            dateViewed = today;
             updateInterface();
             break;
     }
