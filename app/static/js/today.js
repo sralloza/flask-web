@@ -282,7 +282,7 @@ function detectArrows(e) {
 };
 
 function detectKey(e) {
-    // Detects letters J and K
+    // Detects letters J, K and T
     switch (e.keyCode) {
         case 106:
         case 74:
@@ -295,6 +295,14 @@ function detectKey(e) {
             // Letter K
             console.log("Letter K pressed")
             clickNext();
+            break;
+        case 116:
+        case 84:
+            // Letter T
+            console.log("Letter T pressed");
+            today = new Date();
+            dateViewed.setDate(today.getDate());
+            updateInterface();
             break;
     }
 }
