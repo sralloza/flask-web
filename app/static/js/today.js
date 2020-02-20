@@ -194,6 +194,8 @@ updateWindowWidth();
 // Events listeners
 document.addEventListener('touchstart', handleTouchStart, false);
 document.addEventListener("click", handleClick);
+document.onkeypress = detectKey;
+
 
 // Handlers
 function handleClick(e) {
@@ -258,4 +260,24 @@ function clickNext() {
 function clickAll() {
     console.log("Autoclicking middle button (all)");
     document.getElementById("all").click();
+}
+
+// Keys
+
+function detectKey(e) {
+    // Detects letters J and K
+    switch (e.keyCode) {
+        case 106:
+        case 74:
+            // Letter J
+            console.log("Letter J pressed");
+            clickPrevious();
+            break;
+        case 107:
+        case 75:
+            // Letter K
+            console.log("Letter K pressed")
+            clickNext();
+            break;
+    }
 }
