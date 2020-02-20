@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.1.0]
 ### Added
 * In `/hoy` endopoint, clicking in `All` button will allow the user to go back (click enable instead of HTTP redirect).
 * Enabled use of keys and clicking in `/hoy` endpoint. Clicks on the left will auto-click `previous` button, and clicks on the right will auto-click `next` button. This can be done with keys `K` and `L`, respectively. Also, `left arrow` and `right arrow` work, too. `T` key will change the date view to today's date.
@@ -68,7 +70,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.0] - 2019-11-21
 
-[Unreleased]: https://github.com/sralloza/flask-web/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/sralloza/flask-web/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/sralloza/flask-web/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/sralloza/flask-web/compare/v1.3.0...v2.0.0
 [1.3.0]: https://github.com/sralloza/flask-web/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/sralloza/flask-web/compare/v1.1.1...v1.2.0
