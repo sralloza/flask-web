@@ -58,11 +58,11 @@ def today_redirect():
 
 @menus_blueprint.route("/hoy/reload")
 def today_reload():
-    return redirect(url_for("menus_blueprint.today_js_view", _external=True) + "?force")
+    return redirect(url_for("menus_blueprint.today_view", _external=True) + "?force")
 
 
 @menus_blueprint.route("/hoy")
-def today_js_view():
+def today_view():
     force = (
         request.args.get("force") is not None
         or request.args.get("f") is not None
@@ -71,7 +71,7 @@ def today_js_view():
 
     dmm = DailyMenusManager.load(force=force)
     data = json.dumps(dmm.to_json())
-    return render_template("today-js.html", menus=data, default=PRINCIPAL_URL)
+    return render_template("today.html", menus=data, default=PRINCIPAL_URL)
 
 
 @menus_blueprint.route("/api/menus/add", methods=["POST"])

@@ -145,7 +145,7 @@ def test_today(su_mock, client, reset_database):
     assert b"menus.css" in rv.data
     assert b"loader.css" in rv.data
     assert b"getElementById" in rv.data
-    assert b"today-js.js" in rv.data
+    assert b"today.js" in rv.data
 
 
 class MenuApiDataCodes(Enum):
