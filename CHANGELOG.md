@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Renamed `today-js.html` to `today.html`
 
 ### Fixed
+* Fix Web Server Gateway Interface - `flaskapp.wsgi`
 ### Removed
 
 ## [2.0.0] - 2020-02-17
