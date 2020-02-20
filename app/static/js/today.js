@@ -194,6 +194,7 @@ updateWindowWidth();
 // Events listeners
 document.addEventListener('touchstart', handleTouchStart, false);
 document.addEventListener("click", handleClick);
+document.onkeydown = detectArrows;
 document.onkeypress = detectKey;
 
 
@@ -263,6 +264,22 @@ function clickAll() {
 }
 
 // Keys
+
+function detectArrows(e) {
+    // Detects left and right arrows
+    switch (e.keyCode) {
+        case 37:
+            // Left arrow
+            console.log("Left arrow pressed");
+            clickPrevious();
+            break;
+        case 39:
+            // Right arrow
+            console.log("Right arrow pressed");
+            clickNext();
+            break;
+    }
+};
 
 function detectKey(e) {
     // Detects letters J and K
