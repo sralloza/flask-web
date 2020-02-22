@@ -1,5 +1,6 @@
 import logging
 import re
+from itertools import count
 from typing import List, Union
 
 import requests
@@ -9,38 +10,51 @@ from requests.exceptions import ConnectionError
 
 logger = logging.getLogger(__name__)
 PRINCIPAL_URL = "https://www.residenciasantiago.es/menus-1/"
+TEMPLATE = "https://www.residenciasantiago.es/app/blogpage?page=%d&withinCms=&layout=0"
 
 
-def get_menus_urls(retries=5):
+def get_menus_urls(retries=5, request_all=False):
     """Returns the url to retrieve menus from."""
 
     if current_app.config["OFFLINE"]:
         logger.info("Server set to offline, returning emtpy list as menus urls")
         return []
 
-    # TODO: add option to retrieve all the urls.
-
     total_retries = retries
+
     logger.debug("Getting menus urls")
 
+    url = TEMPLATE % 0  # To avoid possible runtime errors
+    urls = []
+
     while retries:
-        try:
-            response = requests.get(PRINCIPAL_URL)
-            soup = Soup(response.text, "html.parser")
-            container = soup.findAll("div", {"class": "j-blog-meta"})
-            urls = [x.a["href"] for x in container]
-            return urls
-        except ConnectionError:
-            retries -= 1
-            logger.warning(
-                "Connection error downloading principal url (%r) (%d retries left)",
-                PRINCIPAL_URL,
-                retries,
-            )
+        for index in count(1):
+            try:
+                url = TEMPLATE % index
+                response = requests.get(url)
+                if "¡Esto es un blog!" in response.text:
+                    break
+
+                soup = Soup(response.text, "html.parser")
+                container = soup.findAll("div", {"class": "j-blog-meta"})
+                urls += [x.a["href"] for x in container]
+
+                if not request_all:
+                    return urls
+                index += 1
+            except ConnectionError:
+                retries -= 1
+                logger.warning(
+                    "Connection error downloading principal url (%r) (%d retries left)",
+                    url,
+                    retries,
+                )
+
+        return urls
 
     logger.critical(
         "Fatal connection error downloading principal url (%r) (%d retries)",
-        PRINCIPAL_URL,
+        url,
         total_retries,
     )
     return []
