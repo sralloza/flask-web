@@ -41,14 +41,16 @@ def before_request():
         return "A user agent must be provided", 401
 
 
+@base_blueprint.route("/")
+def index():
+    return redirect(url_for("menus_blueprint.today_view"))
+
+
 @base_blueprint.route("/favicon.ico")
 def favicon():
     return redirect(url_for("static", filename="images/favicon.png"), code=301)
 
 
-@base_blueprint.route("/")
-def index():
-    return redirect(url_for("menus_blueprint.today_view"))
 
 
 @base_blueprint.route("/s")
