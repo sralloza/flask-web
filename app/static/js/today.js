@@ -8,11 +8,11 @@ document.getElementById("lunch").style.display = "none";
 document.getElementById("dinner").style.display = "none";
 
 function fetchMenus() {
-    var force = get('force') || get('f')
-    console.log('fetch with force=' + force);
+    var forceUpdate = get('update')
+    console.log('fetch with update=' + forceUpdate);
 
     var url = '/api/menus'
-    if (force) url += '?force';
+    if (forceUpdate) url += '?update';
 
     fetch(url)
         .then(response => {
