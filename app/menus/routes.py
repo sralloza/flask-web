@@ -41,8 +41,8 @@ def menus_redirect():
     return redirect("menus", code=301)
 
 
-@menus_blueprint.route("/menus/reload")
-def menus_reload():
+@menus_blueprint.route("/menus/update")
+def menus_update():
     dmm = DailyMenusManager.load(force=True)
 
     for menu in dmm:
@@ -56,22 +56,21 @@ def today_redirect():
     return redirect("hoy", code=301)
 
 
-@menus_blueprint.route("/hoy/reload")
-def today_reload():
-    return redirect(url_for("menus_blueprint.today_view", _external=True) + "?force")
+@menus_blueprint.route("/hoy/update")
+def today_update():
+    return redirect(url_for("menus_blueprint.today_view", _external=True) + "?update")
 
 
 @menus_blueprint.route("/hoy")
 def today_view():
-    force = (
-        request.args.get("force") is not None
-        or request.args.get("f") is not None
-        or request.args.get("reload") is not None
-    )
+    update = request.args.get("update") is not None
 
-    dmm = DailyMenusManager.load(force=force)
+    dmm = DailyMenusManager.load(force=update)
     data = json.dumps(dmm.to_json())
-    return render_template("today.html", menus=data, default=PRINCIPAL_URL)
+    update = json.dumps(update)
+    return render_template(
+        "today.html", menus=data, default=PRINCIPAL_URL, update=update
+    )
 
 
 @menus_blueprint.route("/api/menus/add", methods=["POST"])
