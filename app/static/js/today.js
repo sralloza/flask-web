@@ -33,12 +33,18 @@ function getDayTitle() {
 }
 
 function updateInterface() {
+    var updateRequest = get("update");
     var ask = dateViewed.print();
     var menu = menus.find(menu => menu["id"] == ask);
 
     var nArguments = location.search.substr(1).split('&').length
 
     if (nArguments) {
+        if (updateRequest)
+            if (update)
+                console.log("Database update request accepted");
+            else
+                console.log("Database update request denied");
         filterUrl();
     }
 
