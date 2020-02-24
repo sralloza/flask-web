@@ -11,9 +11,12 @@ from .menus import menus_blueprint
 logging.basicConfig(
     filename=Path(__file__).parent.parent / "flask-app.log",
     level=logging.DEBUG,
+    format="[%(asctime)s] %(levelname)s - %(threadName)s.%(name)s:%(lineno)s - %(message)s",
 )
 
 werkzeug = logging.getLogger("werkzeug")
+werkzeug.setLevel(logging.INFO)
+werkzeug.propagate = False
 werkzeug.handlers = []
 
 if system() != "Linux":
@@ -23,6 +26,7 @@ if system() != "Linux":
     werkzeug_handler.setFormatter(
         logging.Formatter(fmt="%(asctime)s] %(levelname)s - %(message)s")
     )
+    werkzeug_handler.setLevel(logging.INFO)
     werkzeug.addHandler(werkzeug_handler)
 
 
