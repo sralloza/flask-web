@@ -8,11 +8,11 @@ document.getElementById("lunch").style.display = "none";
 document.getElementById("dinner").style.display = "none";
 
 function fetchMenus() {
-    var force = get('force') || get('f')
-    console.log('fetch with force=' + force);
+    var forceUpdate = get('update')
+    console.log('fetch with update=' + forceUpdate);
 
     var url = '/api/menus'
-    if (force) url += '?force';
+    if (forceUpdate) url += '?update';
 
     fetch(url)
         .then(response => {
@@ -33,8 +33,20 @@ function getDayTitle() {
 }
 
 function updateInterface() {
+    var updateRequest = get("update");
     var ask = dateViewed.print();
     var menu = menus.find(menu => menu["id"] == ask);
+
+    var nArguments = location.search.substr(1).split('&').length
+
+    if (nArguments) {
+        if (updateRequest)
+            if (update)
+                console.log("Database update request accepted");
+            else
+                console.log("Database update request denied");
+        filterUrl();
+    }
 
     console.log('Updating interface using day=' + ask);
     console.log(menu);
@@ -132,6 +144,11 @@ yesterday = function () {
     updateInterface();
     updateButtons();
     console.log("Changed day to yesterday (" + dateViewed.print() + ")");
+}
+
+function filterUrl() {
+    // No idea what's first argument, "arg"
+    window.history.replaceState('arg', document.title, '/hoy');
 }
 
 Date.prototype.print = function () {

@@ -21,6 +21,7 @@ class DailyMenusManager:
 
     def __init__(self):
         self.menus = []
+        self.updated = False
         self._lock = Lock()
 
     def __str__(self):
@@ -117,6 +118,7 @@ class DailyMenusManager:
             update = False
 
         logger.info("Final decision: %s", update)
+        self.updated = update
 
         if update:
             urls = get_menus_urls()
