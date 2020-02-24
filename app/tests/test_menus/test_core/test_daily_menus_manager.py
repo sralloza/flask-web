@@ -23,7 +23,6 @@ def dmm():
     return dmm
 
 
-# noinspection PyTypeChecker
 def test_contains(dmm):
     assert date(2019, 1, 1) in dmm
     assert date(2019, 2, 2) in dmm

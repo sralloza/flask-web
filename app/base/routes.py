@@ -68,7 +68,6 @@ def redirect_source():
     return redirect(url_for("base_blueprint.source"), code=301)
 
 
-# noinspection PyBroadException
 @base_blueprint.route("/source")
 def source():
     return redirect(get_last_menus_page())

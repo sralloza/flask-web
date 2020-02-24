@@ -81,7 +81,6 @@ class TestHasDay:
 
 
 class TestFilterData:
-    # noinspection PyTypeChecker
     def test_argument_type(self):
         assert filter_data("hola\nadios") == ""
         assert filter_data(["hola", "adios"]) == []
