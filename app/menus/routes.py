@@ -67,7 +67,7 @@ def today_view():
 
     dmm = DailyMenusManager.load(force=update)
     data = json.dumps(dmm.to_json())
-    update = json.dumps(update)
+    update = json.dumps(dmm.updated)
     return render_template(
         "today.html", menus=data, default=PRINCIPAL_URL, update=update
     )
