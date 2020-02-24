@@ -17,7 +17,10 @@ def test_user_agent_filter(app):
     assert client.get("/", headers={"User-Agent": "Rift/2.0"}).status_code == 401
     assert client.get("/", headers={"User-Agent": "YandexBot/3.0"}).status_code == 401
     assert client.get("/", headers={"User-Agent": "SMTBot/1.0"}).status_code == 401
-    assert client.get("/", headers={"User-Agent": "Nimbostratus-Bot/v1.3.2"}).status_code == 401
+    assert (
+        client.get("/", headers={"User-Agent": "Nimbostratus-Bot/v1.3.2"}).status_code
+        == 401
+    )
     assert client.get("/", headers={"User-Agent": "My-Custom-Bot"}).status_code == 401
 
 
@@ -30,6 +33,20 @@ def test_redirect_favicon(client):
 def test_index(client):
     rv = client.get("/")
     assert 200 <= rv.status_code <= 399
+
+
+def test_version_redirect(client):
+    rv = client.get("/v")
+    assert rv.status_code == 301
+    assert rv.location == "http://menus.sralloza.es/version"
+
+
+def test_version(client):
+    from app import get_version
+
+    rv = client.get("/version")
+    assert rv.status_code == 200
+    assert get_version().encode() in rv.data
 
 
 def test_redirect_index(client):
