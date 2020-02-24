@@ -42,4 +42,9 @@ def create_app(config_object):
     return flask_app
 
 
+def get_version():
+    path = Path(__file__).with_name("VERSION")
+    return path.read_text().strip()
+
+
 app = create_app(config_object="app.config.Config")
