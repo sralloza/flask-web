@@ -36,6 +36,12 @@ function updateInterface() {
     var ask = dateViewed.print();
     var menu = menus.find(menu => menu["id"] == ask);
 
+    var nArguments = location.search.substr(1).split('&').length
+
+    if (nArguments) {
+        filterUrl();
+    }
+
     console.log('Updating interface using day=' + ask);
     console.log(menu);
 
@@ -132,6 +138,11 @@ yesterday = function () {
     updateInterface();
     updateButtons();
     console.log("Changed day to yesterday (" + dateViewed.print() + ")");
+}
+
+function filterUrl() {
+    // No idea what's first argument, "arg"
+    window.history.replaceState('arg', document.title, '/hoy');
 }
 
 Date.prototype.print = function () {
