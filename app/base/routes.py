@@ -1,8 +1,9 @@
 import logging
 
-from flask import redirect, url_for, request
+from flask import redirect, request, url_for
 
 from app.utils import get_last_menus_page
+
 from . import base_blueprint
 
 logger = logging.getLogger(__name__)
