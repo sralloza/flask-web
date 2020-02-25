@@ -1,0 +1,106 @@
+[
+    {
+        "id": 20190107,
+        "day": "Lunes 7",
+        "lunch": {
+            "p1": null,
+            "p2": null
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "pizzas variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/03/semana-del-7-al-14-de-enero-2019/"
+    },
+    {
+        "id": 20190108,
+        "day": "Martes 8",
+        "lunch": {
+            "p1": "macarrones con jijas",
+            "p2": "muslos de pollo asados con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "sandwich mixto con croquetas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/03/semana-del-7-al-14-de-enero-2019/"
+    },
+    {
+        "id": 20190109,
+        "day": "Miércoles 9",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "pescado con ensalada"
+        },
+        "dinner": {
+            "p1": "patatas dippers",
+            "p2": "hamburguesa de ternera completa"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/03/semana-del-7-al-14-de-enero-2019/"
+    },
+    {
+        "id": 20190110,
+        "day": "Jueves 10",
+        "lunch": {
+            "p1": "menestra de verduras",
+            "p2": "escalope con patatas"
+        },
+        "dinner": {
+            "p1": "crema de champiñón",
+            "p2": "perrito caliente con bacon y queso"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/03/semana-del-7-al-14-de-enero-2019/"
+    },
+    {
+        "id": 20190111,
+        "day": "Viernes 11",
+        "lunch": {
+            "p1": "fideuá de marisco",
+            "p2": "secreto de cerdo con patatas"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "merluza a la romana"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/03/semana-del-7-al-14-de-enero-2019/"
+    },
+    {
+        "id": 20190112,
+        "day": "Sábado 12",
+        "lunch": {
+            "p1": "milhojas de verduras con bacon y queso",
+            "p2": "pechugas de pollo a la plancha con patatas"
+        },
+        "dinner": {
+            "p1": "sopa maravilla con jamón york",
+            "p2": "baguettes de rabas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/03/semana-del-7-al-14-de-enero-2019/"
+    },
+    {
+        "id": 20190113,
+        "day": "Domingo 13",
+        "lunch": {
+            "p1": "lasaña de boletus",
+            "p2": "ragú de ternera"
+        },
+        "dinner": {
+            "p1": "guisantes salteados",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/03/semana-del-7-al-14-de-enero-2019/"
+    },
+    {
+        "id": 20190114,
+        "day": "Lunes 14",
+        "lunch": {
+            "p1": "alubias blancas estofadas",
+            "p2": "lomo adobado con patatas"
+        },
+        "dinner": {
+            "p1": "nachos con salsa de queso",
+            "p2": "wrapp de fingers de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/03/semana-del-7-al-14-de-enero-2019/"
+    }
+]
