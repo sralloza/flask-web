@@ -10,26 +10,28 @@ class TestPaths(Enum):
     get_menus_urls = Config.TEST_DATA_PATH / "menus.core.utils.get_menus_urls"
 
 
-web_data_folder = TestPaths.html_parser.value / "input"
-pdf_paths = list(web_data_folder.joinpath("pdf").rglob("*.html.data"))
-photos_paths = list(web_data_folder.joinpath("photos").rglob("*.html.data"))
-html_paths = list(web_data_folder.joinpath("html").rglob("*.html.data"))
+_web_data_folder = TestPaths.html_parser.value / "input"
+_pdf_paths = list(_web_data_folder.joinpath("pdf").rglob("*.html.data"))
+_photos_paths = list(_web_data_folder.joinpath("photos").rglob("*.html.data"))
+_html_paths = list(_web_data_folder.joinpath("html").rglob("*.html.data"))
 
-menus_json = TestPaths.html_parser.value / "output"
-json_paths = list(menus_json.joinpath("html").rglob("*.json"))
+_menus_json = TestPaths.html_parser.value / "output"
+_json_paths = list(_menus_json.joinpath("html").rglob("*.json"))
 
-urls_dict = json.loads(web_data_folder.joinpath("urls.json").read_text(encoding="utf-8"))
+_urls_dict = json.loads(
+    _web_data_folder.joinpath("urls.json").read_text(encoding="utf-8")
+)
 
 
 class HtmlParserPaths(Enum):
-    pdf = pdf_paths
-    photos = photos_paths
-    html = html_paths
-    not_pdf = photos_paths + html_paths
-    not_photos = pdf_paths + html_paths
-    not_html = pdf_paths + photos_paths
-    json = json_paths
-    urls_dict = urls_dict
+    pdf = _pdf_paths
+    photos = _photos_paths
+    html = _html_paths
+    not_pdf = _photos_paths + _html_paths
+    not_photos = _pdf_paths + _html_paths
+    not_html = _pdf_paths + _photos_paths
+    json = _json_paths
+    urls_dict = _urls_dict
 
 
 class FilterDataPaths(Enum):

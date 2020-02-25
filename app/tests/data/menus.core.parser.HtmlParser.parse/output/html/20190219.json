@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20190219,
+        "day": "Martes 19",
+        "lunch": {
+            "p1": "menestra",
+            "p2": "ragout de ternera"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "baguettes variados"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/18/semana-del-19-al-25-de-febrero-2019/"
+    },
+    {
+        "id": 20190220,
+        "day": "Miércoles 20",
+        "lunch": {
+            "p1": "macarrones con jijas",
+            "p2": "bacalao en salsa"
+        },
+        "dinner": {
+            "p1": "crema de calabaza",
+            "p2": "chuleta de sajonia con guarnición"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/18/semana-del-19-al-25-de-febrero-2019/"
+    },
+    {
+        "id": 20190221,
+        "day": "Jueves 21",
+        "lunch": {
+            "p1": "cocido completo",
+            "p2": null
+        },
+        "dinner": {
+            "p1": "crema de champiñón",
+            "p2": "filetes rusos"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/18/semana-del-19-al-25-de-febrero-2019/"
+    },
+    {
+        "id": 20190222,
+        "day": "Viernes 22",
+        "lunch": {
+            "p1": "arroz a la cubana",
+            "p2": "pollo asado con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "salchichas frescas con patatas fritas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/18/semana-del-19-al-25-de-febrero-2019/"
+    },
+    {
+        "id": 20190223,
+        "day": "Sábado 23",
+        "lunch": {
+            "p1": "lasaña de carne",
+            "p2": "salmón a la naranja"
+        },
+        "dinner": {
+            "p1": "sopa minestrone",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/18/semana-del-19-al-25-de-febrero-2019/"
+    },
+    {
+        "id": 20190224,
+        "day": "Domingo 24",
+        "lunch": {
+            "p1": "coctel de marisco",
+            "p2": "entrecotte"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "tortilla de patata con croquetas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/18/semana-del-19-al-25-de-febrero-2019/"
+    },
+    {
+        "id": 20190225,
+        "day": "Lunes 25",
+        "lunch": {
+            "p1": "espaguettis carbonara",
+            "p2": "albondigas en salsa"
+        },
+        "dinner": {
+            "p1": "guisantes rehogados",
+            "p2": "merluza a la romana"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/18/semana-del-19-al-25-de-febrero-2019/"
+    }
+]

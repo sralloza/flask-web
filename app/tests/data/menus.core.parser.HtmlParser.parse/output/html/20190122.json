@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20190122,
+        "day": "Martes 22",
+        "lunch": {
+            "p1": "menestra de verduras",
+            "p2": "pechuga de pollo con guarnición"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "sajonia con ensalada"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/21/semana-del-22-al-28-de-enero-2019/"
+    },
+    {
+        "id": 20190123,
+        "day": "Miércoles 23",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "gallos con ensalada"
+        },
+        "dinner": {
+            "p1": "judías verdes salteadas",
+            "p2": "huevos fritos con jamón serrano"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/21/semana-del-22-al-28-de-enero-2019/"
+    },
+    {
+        "id": 20190124,
+        "day": "Jueves 24",
+        "lunch": {
+            "p1": "arroz a la cubana",
+            "p2": "chuleta de cerdo"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "alitas de pollo al horno con guarnición"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/21/semana-del-22-al-28-de-enero-2019/"
+    },
+    {
+        "id": 20190125,
+        "day": "Viernes 25",
+        "lunch": {
+            "p1": "macarrones con jijas",
+            "p2": "pescado en salsa"
+        },
+        "dinner": {
+            "p1": "sopa de ave",
+            "p2": "sanwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/21/semana-del-22-al-28-de-enero-2019/"
+    },
+    {
+        "id": 20190126,
+        "day": "Sábado 26",
+        "lunch": {
+            "p1": "canelones al horno",
+            "p2": "filete empanado con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "baguettes variados"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/21/semana-del-22-al-28-de-enero-2019/"
+    },
+    {
+        "id": 20190127,
+        "day": "Domingo 27",
+        "lunch": {
+            "p1": "arroz tres delicias",
+            "p2": "pollo al horno con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "tortilla de patata con croquetas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/21/semana-del-22-al-28-de-enero-2019/"
+    },
+    {
+        "id": 20190128,
+        "day": "Lunes 28",
+        "lunch": {
+            "p1": "alubias estofadas",
+            "p2": "filete de ternera a la plancha"
+        },
+        "dinner": {
+            "p1": "crema de champiñón",
+            "p2": "hamburguesa con flakes, queso y tomate"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/21/semana-del-22-al-28-de-enero-2019/"
+    }
+]
