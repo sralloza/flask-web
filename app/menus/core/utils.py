@@ -106,20 +106,25 @@ def filter_data(data: Union[str, List[str]]):
     for i, d in enumerate(data):
         # First check for 'combinado'
         if "combinado" in d:
+            if "1er plato:" in data[i - 1]:
+                out[-1] += " " + d.strip()
+                continue
             out.append(d.replace("1er plato:", "").strip())
         elif "1er plato:" in d:
             out.append(d)
         elif "2º plato:" in d:
             if "combinado" in data[i - 1]:
-                d = d.replace("2º plato:", "").strip()
-                out[-1] += " " + d
+                d_prime = d.replace("2º plato:", "").strip()
+                if d_prime == d or not d_prime:
+                    continue
+                out[-1] += " " + d_prime
                 continue
             out.append(d)
         elif "comida" in d:
             out.append(d)
         elif "cena" in d:
             out.append(d)
-        elif "cóctel" in d or "coctel" in d:
+        elif "cóctel" in d or "coctel" in d:  # and d.split() < 3:
             out.append("cóctel")
         elif Patterns.day_pattern.search(d) is not None:
             out.append(Patterns.day_pattern.search(d).group())
@@ -131,7 +136,11 @@ def filter_data(data: Union[str, List[str]]):
                     + Patterns.semi_day_pattern_2.search(d).group()
                 )
                 out.append(foo)
-        elif "2º plato" in data[i - 1] and data[i - 1].endswith("con"):
+        elif (
+            "2º plato" in data[i - 1]
+            and data[i - 1].endswith("con")
+            and "postre" not in d
+        ):
             out[-1] += " " + d
         elif (
             "1er plato" in data[i - 1]

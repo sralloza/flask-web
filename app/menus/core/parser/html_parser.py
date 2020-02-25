@@ -49,7 +49,7 @@ class HtmlParser(BaseParser):
         logger.debug("Processing texts")
         index = Index()
         for text in texts:
-            text = text.replace("_", " ").lower()
+            text = text.replace("_", " ").lower()  # .strip()
             if Patterns.day_pattern.search(text) is not None:
                 if index.commit():
                     HtmlParser._update_menu(index, menus)
@@ -67,11 +67,11 @@ class HtmlParser(BaseParser):
                 index.set_date(date(year, month, day))
                 continue
 
-            if "combinado" in text:
+            if "combinado" in text and text != "1er plato: plato combinado":
                 index.set_combined(index.state)
                 foo = text.split(":")[-1].strip()
                 index.set_first("PC: " + foo)
-            elif "coctel" in text or "cóctel" in text:
+            elif ("coctel" in text or "cóctel" in text) and len(text.split()) < 3:
                 index.set_first("cóctel")
             elif "comida" in text:
                 index.set_state("LUNCH")
