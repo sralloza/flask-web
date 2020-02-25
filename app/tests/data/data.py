@@ -30,3 +30,8 @@ class HtmlParserPaths(Enum):
     not_html = pdf_paths + photos_paths
     json = json_paths
     urls_dict = urls_dict
+
+
+class FilterDataPaths(Enum):
+    inputs = TestPaths.filter_data.value.joinpath("input").rglob("*.txt.data")
+    outputs = TestPaths.filter_data.value.joinpath("output").rglob("*.txt.data")

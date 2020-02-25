@@ -15,18 +15,9 @@ from app.menus.core.utils import (
     has_day,
 )
 
-_inputs = Path(Config.TEST_DATA_PATH / "filter_data" / "input").glob("*.txt")
-_outputs = Path(Config.TEST_DATA_PATH / "filter_data" / "output").glob("*.txt")
+from app.tests.data.data import FilterDataPaths
 
-metadata_type = List[Tuple[Path, Path]]
 
-metadata_paths: metadata_type = []
-
-for _input_path in _inputs:
-    for _output_path in _outputs:
-        if _input_path.stem == _output_path.stem:
-            metadata_paths.append((_input_path, _output_path))
-            break
 
 
 @mock.patch("requests.get", autospec=True)
@@ -94,54 +85,6 @@ class TestFilterData:
         with pytest.raises(TypeError, match="data must be str or list, not"):
             filter_data(object)
 
-    def test_normal(self):
-        input_data = [
-            "1er plato:  ",
-            "   1 plato:   ",
-            "2º plato:   ",
-            "2o plato:",
-            "2o plato:",
-            "2oa plato:",
-            "233 plato:",
-            "2\xa0 plato:",
-            "2 plato:",
-            "desayuno",
-            "CoMiDa  ",
-            "cena",
-            "combinado",
-            "cóctel",
-            "coctel",
-            "",
-            "",
-            "",
-            "",
-            "día: 29 de febrero de 2019 (viernes)",
-            "1er plato: macarrones con patatas.",
-            "2º plato: pollo asado con bechamel.",
-        ]
-        expected = [
-            "1er plato:",
-            "1er plato:",
-            "2º plato:",
-            "2º plato:",
-            "2º plato:",
-            "2º plato:",
-            "2º plato:",
-            "2º plato:",
-            "2º plato:",
-            "comida",
-            "cena",
-            "combinado",
-            "cóctel",
-            "cóctel",
-            "día: 29 de febrero de 2019 (viernes)",
-            "1er plato: macarrones con patatas",
-            "2º plato: pollo asado con bechamel",
-        ]
-        real = filter_data(input_data)
-
-        assert real == expected
-
     def test_separate_date(self):
         input_data = ["Día: 23 de diciembre", "de 2018 (martes)"]
         expected = ["día: 23 de diciembre de 2018 (martes)"]
@@ -170,18 +113,15 @@ class TestFilterData:
 
         assert real == expected
 
-    @pytest.mark.parametrize("input_path, output_path", metadata_paths)
-    def test_meta(self, input_path, output_path):
-        with input_path.open(encoding="utf-8") as fh:
-            input_data = fh.read().splitlines()
+    filter_data_paths = zip(FilterDataPaths.inputs.value, FilterDataPaths.outputs.value)
 
-        with output_path.open(encoding="utf-8") as fh:
-            output_data = fh.read().splitlines()
+    @pytest.mark.parametrize("input_path, output_path", filter_data_paths)
+    def test_all(self, input_path, output_path):
+        input_data = input_path.read_text(encoding="utf-8").splitlines()
+        output_data = output_path.read_text(encoding="utf-8").splitlines()
+        real = filter_data(input_data)
 
-        real_data = filter_data(input_data)
-
-        assert output_data == real_data
-
+        assert real == output_data
 
 class TestPatterns:
     day_pattern_data = (
