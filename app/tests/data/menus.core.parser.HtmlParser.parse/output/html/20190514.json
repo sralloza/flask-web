@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20190514,
+        "day": "Martes 14",
+        "lunch": {
+            "p1": "ensalada de arroz",
+            "p2": "conejo guisado con ensalada"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "cinta de lomo con patatas y ensalada"
+        },
+        "url": "https://www.residenciasantiago.es/2019/05/14/semana-del-14-al-20-de-mayo-2019/"
+    },
+    {
+        "id": 20190515,
+        "day": "Miércoles 15",
+        "lunch": {
+            "p1": "espaguettis con jijas",
+            "p2": "pescado en salsa y ensalada"
+        },
+        "dinner": {
+            "p1": "ensalada tropical",
+            "p2": "filete de ternera a la plancha con champiñones"
+        },
+        "url": "https://www.residenciasantiago.es/2019/05/14/semana-del-14-al-20-de-mayo-2019/"
+    },
+    {
+        "id": 20190516,
+        "day": "Jueves 16",
+        "lunch": {
+            "p1": "langostinos al brandy",
+            "p2": "escalope con patatas y ensalada"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "paninis variados con ensalada"
+        },
+        "url": "https://www.residenciasantiago.es/2019/05/14/semana-del-14-al-20-de-mayo-2019/"
+    },
+    {
+        "id": 20190517,
+        "day": "Viernes 17",
+        "lunch": {
+            "p1": "ensalada de ahumados con queso de cabra",
+            "p2": "filetes rusos con ensalada"
+        },
+        "dinner": {
+            "p1": "judías verdes salteadas",
+            "p2": "alas de pollo al horno con ensalada"
+        },
+        "url": "https://www.residenciasantiago.es/2019/05/14/semana-del-14-al-20-de-mayo-2019/"
+    },
+    {
+        "id": 20190518,
+        "day": "Sábado 18",
+        "lunch": {
+            "p1": "calabacín relleno",
+            "p2": "salmón a la naranja con ensalada"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "perrito caliente con bacon y cebolla frita"
+        },
+        "url": "https://www.residenciasantiago.es/2019/05/14/semana-del-14-al-20-de-mayo-2019/"
+    },
+    {
+        "id": 20190519,
+        "day": "Domingo 19",
+        "lunch": {
+            "p1": "alubias a la vinagreta",
+            "p2": "carne asada con puré de patatas y ensalada"
+        },
+        "dinner": {
+            "p1": "PC: ensaladilla de piña, pescado a la romana, croquetas, patatas y ensalada",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2019/05/14/semana-del-14-al-20-de-mayo-2019/"
+    },
+    {
+        "id": 20190520,
+        "day": "Lunes 20",
+        "lunch": {
+            "p1": "menestra de verduras",
+            "p2": "pollo al ajillo con ensalada"
+        },
+        "dinner": {
+            "p1": "crema de calabaza",
+            "p2": "chuleta de sajonia con guarnición y ensalada"
+        },
+        "url": "https://www.residenciasantiago.es/2019/05/14/semana-del-14-al-20-de-mayo-2019/"
+    }
+]

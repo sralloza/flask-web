@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20190305,
+        "day": "Martes 5",
+        "lunch": {
+            "p1": "patatas con bechamel",
+            "p2": "pechuga de pollo con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "pizzas variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/03/04/semana-del-5-al-11-de-marzo-2019/"
+    },
+    {
+        "id": 20190306,
+        "day": "Miércoles 6",
+        "lunch": {
+            "p1": "macarrones salteados con setas y calabacín",
+            "p2": "bacalao en salsa"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "wrapp de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2019/03/04/semana-del-5-al-11-de-marzo-2019/"
+    },
+    {
+        "id": 20190307,
+        "day": "Jueves 7",
+        "lunch": {
+            "p1": "coliflor al ajo arriero",
+            "p2": "filete de ternera con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada tropical",
+            "p2": "chuleta de cerdo con pimientos"
+        },
+        "url": "https://www.residenciasantiago.es/2019/03/04/semana-del-5-al-11-de-marzo-2019/"
+    },
+    {
+        "id": 20190308,
+        "day": "Viernes 8",
+        "lunch": {
+            "p1": "paella de marisco",
+            "p2": "lenguado con ensalada"
+        },
+        "dinner": {
+            "p1": "cóctel",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2019/03/04/semana-del-5-al-11-de-marzo-2019/"
+    },
+    {
+        "id": 20190309,
+        "day": "Sábado 9",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "secreto a la plancha con guarnición"
+        },
+        "dinner": {
+            "p1": "guisantes salteados",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/03/04/semana-del-5-al-11-de-marzo-2019/"
+    },
+    {
+        "id": 20190310,
+        "day": "Domingo 10",
+        "lunch": {
+            "p1": "volovan relleno de ensaladilla de cangrejo",
+            "p2": "cachopo con patatas"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "perrito con bacon, queso y cebolla caramelizada"
+        },
+        "url": "https://www.residenciasantiago.es/2019/03/04/semana-del-5-al-11-de-marzo-2019/"
+    },
+    {
+        "id": 20190311,
+        "day": "Lunes 11",
+        "lunch": {
+            "p1": "melocotones rellenos de atún y mahonesa",
+            "p2": "solomillo a la pimienta"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "hamburguesa de pollo crujiente"
+        },
+        "url": "https://www.residenciasantiago.es/2019/03/04/semana-del-5-al-11-de-marzo-2019/"
+    }
+]

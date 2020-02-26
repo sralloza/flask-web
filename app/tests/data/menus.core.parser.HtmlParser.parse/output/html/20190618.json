@@ -1,0 +1,41 @@
+[
+    {
+        "id": 20190618,
+        "day": "Martes 18",
+        "lunch": {
+            "p1": "pasta salteada con setas y calabacín",
+            "p2": "alas de pollo con guarnición"
+        },
+        "dinner": {
+            "p1": "PC: huevo con salchichas, patatas y ensalada",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/17/del-18-al-20-de-junio-2019/"
+    },
+    {
+        "id": 20190619,
+        "day": "Miércoles 19",
+        "lunch": {
+            "p1": "paella mixta",
+            "p2": "pescado con ensalada"
+        },
+        "dinner": {
+            "p1": "patatas dippers",
+            "p2": "wrapp de fingers de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/17/del-18-al-20-de-junio-2019/"
+    },
+    {
+        "id": 20190620,
+        "day": "Jueves 20",
+        "lunch": {
+            "p1": "ensalada campera",
+            "p2": "escalope con guarnición"
+        },
+        "dinner": {
+            "p1": "guisantes salteados",
+            "p2": "tortilla de patata, calamares y croquetas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/17/del-18-al-20-de-junio-2019/"
+    }
+]

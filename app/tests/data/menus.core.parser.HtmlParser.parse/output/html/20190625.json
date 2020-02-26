@@ -1,0 +1,54 @@
+[
+    {
+        "id": 20190625,
+        "day": "Martes 25",
+        "lunch": {
+            "p1": "alubias a la vinagreta",
+            "p2": "bacalao en salsa"
+        },
+        "dinner": {
+            "p1": "guisantes salteados",
+            "p2": "alas de pollo con guarnición"
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/24/del-25-al-28-de-junio-2019/"
+    },
+    {
+        "id": 20190626,
+        "day": "Miércoles 26",
+        "lunch": {
+            "p1": "ensalada campera",
+            "p2": "carne asada en salsa"
+        },
+        "dinner": {
+            "p1": "rollitos de primavera",
+            "p2": "san jacobo, empanadillas, calamares y ensalada"
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/24/del-25-al-28-de-junio-2019/"
+    },
+    {
+        "id": 20190627,
+        "day": "Jueves 27",
+        "lunch": {
+            "p1": "arroz tres delicias",
+            "p2": "chuletas de pavo al ajillo"
+        },
+        "dinner": {
+            "p1": "patatas dipper",
+            "p2": "perrito caliente con bacon y queso"
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/24/del-25-al-28-de-junio-2019/"
+    },
+    {
+        "id": 20190628,
+        "day": "Viernes 28",
+        "lunch": {
+            "p1": "canelones gratinados",
+            "p2": "salmón a la naranja"
+        },
+        "dinner": {
+            "p1": "PC: huevo frito, fingers de pollo, patatas y ensalada",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2019/06/24/del-25-al-28-de-junio-2019/"
+    }
+]

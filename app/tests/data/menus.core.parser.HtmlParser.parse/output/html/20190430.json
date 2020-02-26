@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20190430,
+        "day": "Martes 30",
+        "lunch": {
+            "p1": "ensalada de naranja, queso feta, pollo, cebolla con aliño de mostaza y miel",
+            "p2": "pescado al horno"
+        },
+        "dinner": {
+            "p1": "crema de calabaza",
+            "p2": "filetes rusos con guarnición y ensalada"
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/29/semana-del-30-de-abril-al-6-de-mayo-2019/"
+    },
+    {
+        "id": 20190501,
+        "day": "Miércoles 1",
+        "lunch": {
+            "p1": "volovan relleno de revuelto de gulas",
+            "p2": "ragú de ternera y ensalada"
+        },
+        "dinner": {
+            "p1": "judías verdes salteada",
+            "p2": "pizzas variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/29/semana-del-30-de-abril-al-6-de-mayo-2019/"
+    },
+    {
+        "id": 20190502,
+        "day": "Jueves 2",
+        "lunch": {
+            "p1": "alubias estofadas",
+            "p2": "pollo al horno con ensalada"
+        },
+        "dinner": {
+            "p1": "guisantes salteados",
+            "p2": "merluza en salsa con ensalada"
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/29/semana-del-30-de-abril-al-6-de-mayo-2019/"
+    },
+    {
+        "id": 20190503,
+        "day": "Viernes 3",
+        "lunch": {
+            "p1": "arroz a la cubana",
+            "p2": "conejo guisado con ensalada"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "baguettes de rabas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/29/semana-del-30-de-abril-al-6-de-mayo-2019/"
+    },
+    {
+        "id": 20190504,
+        "day": "Sábado 4",
+        "lunch": {
+            "p1": "lasaña vegetal",
+            "p2": "bacalao a la romana con guarnición y ensalada"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "cinta de lomo con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/29/semana-del-30-de-abril-al-6-de-mayo-2019/"
+    },
+    {
+        "id": 20190505,
+        "day": "Domingo 5",
+        "lunch": {
+            "p1": "fideuá de marisco",
+            "p2": "filete de ternera a la plancha con patatas y ensalada"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "carne asada con puré de patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/29/semana-del-30-de-abril-al-6-de-mayo-2019/"
+    },
+    {
+        "id": 20190506,
+        "day": "Lunes 6",
+        "lunch": {
+            "p1": "menestra de verduras",
+            "p2": "picatostes asados en salsa de zanahoria con patatas cuadradas y ensalada"
+        },
+        "dinner": {
+            "p1": "PC: huevo frito, chorizo frito, empanadillas, patatas y ensada",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2019/04/29/semana-del-30-de-abril-al-6-de-mayo-2019/"
+    }
+]
