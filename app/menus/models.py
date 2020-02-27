@@ -149,9 +149,6 @@ class UpdateControl:
         delta = timedelta(minutes=minutes)
         should_update = last_update + delta <= today
 
-        if should_update:
-            UpdateControl.set_last_update()
-
         logger.debug("Should Update decision: %s (%s)", should_update, last_update)
 
         return should_update

@@ -109,15 +109,23 @@ class DailyMenusManager:
             update = True
 
         # UpdateControl is more important than force
-        if not UpdateControl.should_update():
+        update_control_return = UpdateControl.should_update()
+        if not update_control_return:
             logger.info(
                 "Permission denied by UpdateControl (%s)",
                 UpdateControl.get_last_update(),
             )
             update = False
 
-        logger.info("Final decision: %s", update)
+        logger.info(
+            "Delivering: [missing today:%s|force:%s|update control:%s] -> %s",
+            today_date not in self,
+            force,
+            update_control_return,
+            update,
+        )
 
+        self.updated = update
         if update:
             urls = get_menus_urls()
 
@@ -125,6 +133,7 @@ class DailyMenusManager:
                 Parsers.parse(url, self)
 
             Parsers.join()
+            UpdateControl.set_last_update()
             self.save_to_database()
 
         self.sort()
