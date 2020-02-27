@@ -7,6 +7,15 @@ from app.tests.data.data import HtmlParserPaths
 
 
 class TestManualParser:
+    @pytest.mark.xfail
+    def test_data_correct(self):
+        assert HtmlParserPaths.not_html.value
+        assert HtmlParserPaths.html.value
+        assert HtmlParserPaths.pdf.value
+        assert HtmlParserPaths.not_pdf.value
+        assert HtmlParserPaths.photos.value
+        assert HtmlParserPaths.not_photos.value
+
     @pytest.mark.parametrize("data_path", HtmlParserPaths.not_html.value)
     def test_process_url_true(self, data_path):
         content = data_path.read_text(errors="ignore")
