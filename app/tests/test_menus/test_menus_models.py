@@ -24,13 +24,19 @@ class TestDailyMenusDatabaseController:
 
         menus = DailyMenusDatabaseController.list_menus()
         assert menus == [
-            DailyMenu(1, 1, 1998, Meal("cm-11", "cm-12"), Meal("cn-11", "cn-12"), "url-1"),
-            DailyMenu(2, 1, 1998, Meal("cm-21", "cm-22"), Meal("cn-21", "cn-22"), "url-2"),
+            DailyMenu(
+                1, 1, 1998, Meal("cm-11", "cm-12"), Meal("cn-11", "cn-12"), "url-1"
+            ),
+            DailyMenu(
+                2, 1, 1998, Meal("cm-21", "cm-22"), Meal("cn-21", "cn-22"), "url-2"
+            ),
         ]
 
     @pytest.mark.parametrize("error", [True, False])
     def test_save_daily_menu(self, mock_db, error):
-        menu = DailyMenu(1, 2, 2003, Meal("a", "b"), Meal("c", "d"), "https://example.com")
+        menu = DailyMenu(
+            1, 2, 2003, Meal("a", "b"), Meal("c", "d"), "https://example.com"
+        )
         # Use of context manager (__enter__)
         mock_connection = mock_db.return_value.__enter__.return_value
 
@@ -282,24 +288,6 @@ class TestUpdateControl:
             glu_mock.return_value = now() - timedelta(minutes=19)
 
             assert UpdateControl.should_update() is False
-
-        @mock.patch(
-            "app.menus.models.UpdateControl.set_last_update",
-            spec=UpdateControl.set_last_update,
-        )
-        @mock.patch(
-            "app.menus.models.UpdateControl.get_last_update",
-            spec=UpdateControl.get_last_update,
-            return_value=datetime(2000, 1, 1),
-        )
-        def test_set_after(self, glu_mock, slu_mock):
-            assert UpdateControl.should_update() is True
-            slu_mock.assert_called_once_with()
-
-            glu_mock.return_value = now()
-
-            assert UpdateControl.should_update() is False
-            assert slu_mock.call_count == 1
 
     @mock.patch("app.menus.models.now", autospec=True)
     def test_set_last_update(self, now_mock):
