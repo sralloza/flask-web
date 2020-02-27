@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20200120,
+        "day": "Lunes 20",
+        "lunch": {
+            "p1": "patatas con verduras",
+            "p2": "albóndigas con tomate"
+        },
+        "dinner": {
+            "p1": "nachos con salsa variada",
+            "p2": "pizzas variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/20/semana-del-20-al-26-de-enero-2020/"
+    },
+    {
+        "id": 20200121,
+        "day": "Martes 21",
+        "lunch": {
+            "p1": "macarrones a la carbonara",
+            "p2": "dorada al horno"
+        },
+        "dinner": {
+            "p1": "guisantes con jamón",
+            "p2": "nuggetts con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/20/semana-del-20-al-26-de-enero-2020/"
+    },
+    {
+        "id": 20200122,
+        "day": "Miércoles 22",
+        "lunch": {
+            "p1": "berenjenas con queso de cabra",
+            "p2": "pechuga de pollo a la plancha con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa de pescado",
+            "p2": "salchichas al vino con puré"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/20/semana-del-20-al-26-de-enero-2020/"
+    },
+    {
+        "id": 20200123,
+        "day": "Jueves 23",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "costillas a la barbacoa"
+        },
+        "dinner": {
+            "p1": "espirales con tomate",
+            "p2": "sandwich vegetal"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/20/semana-del-20-al-26-de-enero-2020/"
+    },
+    {
+        "id": 20200124,
+        "day": "Viernes 24",
+        "lunch": {
+            "p1": "arroz a la cubana",
+            "p2": "merluza en salsa"
+        },
+        "dinner": {
+            "p1": "ensalada de ahumados",
+            "p2": "hamburguesa de buey completa"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/20/semana-del-20-al-26-de-enero-2020/"
+    },
+    {
+        "id": 20200125,
+        "day": "Sábado 25",
+        "lunch": {
+            "p1": "esparragos dos salsas",
+            "p2": "caldereta de lechazo"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "ragú de pavo con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/20/semana-del-20-al-26-de-enero-2020/"
+    },
+    {
+        "id": 20200126,
+        "day": "Domingo 26",
+        "lunch": {
+            "p1": "canelones gratinados",
+            "p2": "pollo asado"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "bacalao a la romana"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/20/semana-del-20-al-26-de-enero-2020/"
+    }
+]

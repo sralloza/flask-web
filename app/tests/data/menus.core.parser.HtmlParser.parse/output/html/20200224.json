@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20200224,
+        "day": "Lunes 24",
+        "lunch": {
+            "p1": "alubias pintas con arroz",
+            "p2": "solomillo en salsa con patatas"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "tortilla de patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/24/semana-del-24-de-febrero-al-01-de-marzo-de-2020/"
+    },
+    {
+        "id": 20200225,
+        "day": "Martes 25",
+        "lunch": {
+            "p1": "patatas con bechamel gratinadas",
+            "p2": "codillo asado con puré de patatas"
+        },
+        "dinner": {
+            "p1": "menestra salteada",
+            "p2": "lomo adobado con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/24/semana-del-24-de-febrero-al-01-de-marzo-de-2020/"
+    },
+    {
+        "id": 20200226,
+        "day": "Miércoles 26",
+        "lunch": {
+            "p1": "judias verdes al ajo arriero",
+            "p2": "salmón a la naranja"
+        },
+        "dinner": {
+            "p1": "revuelto de champiñón",
+            "p2": "pizza 4 quesos"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/24/semana-del-24-de-febrero-al-01-de-marzo-de-2020/"
+    },
+    {
+        "id": 20200227,
+        "day": "Jueves 27",
+        "lunch": {
+            "p1": "cocido castellano",
+            "p2": null
+        },
+        "dinner": {
+            "p1": "crema de calabacín",
+            "p2": "dorada al horno"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/24/semana-del-24-de-febrero-al-01-de-marzo-de-2020/"
+    },
+    {
+        "id": 20200228,
+        "day": "Viernes 28",
+        "lunch": {
+            "p1": "fideua de marisco",
+            "p2": "conejo guisado"
+        },
+        "dinner": {
+            "p1": "pasta con tomate",
+            "p2": "pechuga de pollo a la plancha"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/24/semana-del-24-de-febrero-al-01-de-marzo-de-2020/"
+    },
+    {
+        "id": 20200229,
+        "day": "Sábado 29",
+        "lunch": {
+            "p1": "rissoto de setas",
+            "p2": "bacalao a la romana"
+        },
+        "dinner": {
+            "p1": "crema de puerros",
+            "p2": "huevo frito con empanadillas y patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/24/semana-del-24-de-febrero-al-01-de-marzo-de-2020/"
+    },
+    {
+        "id": 20200301,
+        "day": "Domingo 1",
+        "lunch": {
+            "p1": "milhojas de verduras",
+            "p2": "entrecot de ternera con patatas"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "pincho moruno"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/24/semana-del-24-de-febrero-al-01-de-marzo-de-2020/"
+    }
+]
