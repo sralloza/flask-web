@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.1]
+### Fixed
+* Fix `UpdateControl` bug: it set the last update timestamp whenever the decision was true.
+
 ## [2.1.0]
 ### Added
 * In `/hoy` endopoint, clicking in `All` button will allow the user to go back (click enable instead of HTTP redirect).
@@ -70,7 +74,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.0] - 2019-11-21
 
-[Unreleased]: https://github.com/sralloza/flask-web/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/sralloza/flask-web/compare/v2.1.1...HEAD
+[2.1.1]: https://github.com/sralloza/flask-web/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/sralloza/flask-web/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/sralloza/flask-web/compare/v1.3.0...v2.0.0
 [1.3.0]: https://github.com/sralloza/flask-web/compare/v1.2.0...v1.3.0
