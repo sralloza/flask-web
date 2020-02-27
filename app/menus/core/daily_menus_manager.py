@@ -20,6 +20,7 @@ class DailyMenusManager:
     """Represents a controller of a list of menus."""
 
     def __init__(self):
+        self.updated = False
         self.menus = []
         self._lock = Lock()
 
