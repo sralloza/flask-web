@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.1.0]
+## [2.1.0] - 2020-02-20
 ### Added
 * In `/hoy` endopoint, clicking in `All` button will allow the user to go back (click enable instead of HTTP redirect).
 * Enabled use of keys and clicking in `/hoy` endpoint. Clicks on the left will auto-click `previous` button, and clicks on the right will auto-click `next` button. This can be done with keys `K` and `L`, respectively. Also, `left arrow` and `right arrow` work, too. `T` key will change the date view to today's date.
@@ -19,8 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 * Fix Web Server Gateway Interface - `flaskapp.wsgi`
-
-### Removed
 
 ## [2.0.0] - 2020-02-17
 
@@ -52,8 +50,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * New token system. All tokens written in `TOKEN_FILE_PATH` config will be accepted.
 
 ## [1.2.0] - 2020-01-31
-### Added
-
 ### Changed
 * Set web to work `OFFLINE`, because menus are no longer uploaded in text format but as images.
 * `force` argument of `DailyMenusManager.load` only forces downloading, it can't force no downloading. `UpdateControl` can override it.
