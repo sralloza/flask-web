@@ -106,7 +106,7 @@ def filter_data(data: Union[str, List[str]]):
     for i, d in enumerate(data):
         # First check for 'combinado'
         if "combinado" in d:
-            if "1er plato:" in data[i - 1]:
+            if "1er plato:" in data[i - 1] and out:
                 out[-1] += " " + d.strip()
                 continue
             out.append(d.replace("1er plato:", "").strip())
