@@ -23,7 +23,7 @@ _urls_dict = json.loads(
 )
 
 
-class HtmlParserPaths(Enum):
+class ParserPaths(Enum):
     pdf = _pdf_paths
     photos = _photos_paths
     html = _html_paths
