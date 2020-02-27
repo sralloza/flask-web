@@ -103,7 +103,8 @@ class DailyMenusManager:
 
         today_date = now().date()
 
-        update = today_date not in self
+        today_not_in_self = today_date not in self
+        update = today_not_in_self
 
         if force:
             update = True
@@ -119,7 +120,7 @@ class DailyMenusManager:
 
         logger.info(
             "Delivering: [missing today:%s|force:%s|update control:%s] -> %s",
-            today_date not in self,
+            today_not_in_self,
             force,
             update_control_return,
             update,
