@@ -1,23 +1,32 @@
+import json
 from pathlib import Path
-from typing import List, Tuple
 from unittest import mock
 
 import pytest
-from flask import current_app
 from requests.exceptions import ConnectionError
 
-from app.config import Config
 from app.menus.core.utils import (
     PRINCIPAL_URL,
+    TEMPLATE,
     Patterns,
     filter_data,
     get_menus_urls,
     has_day,
 )
-
 from app.tests.data.data import FilterDataPaths
+from app.tests.data.data import GetMenusUrlsDataPaths as GMUDP
 
-
+gmu_test_data = []
+ids = []
+for input_path, output_path in zip(GMUDP.inputs.value, GMUDP.outputs.value):
+    assert input_path.stem.replace(".html", "") == output_path.stem
+    gmu_test_data.append(
+        (
+            input_path.read_text(encoding="utf-8"),
+            output_path.read_text(encoding="utf-8"),
+        )
+    )
+    ids.append(output_path.stem)
 
 
 @mock.patch("requests.get", autospec=True)
@@ -37,13 +46,17 @@ class TestGetMenusUrls:
         # client must be used always becaulse get_menus_urls uses flask's config.
         return
 
-    @pytest.fixture(scope="class")
-    def test_content(self):
-        path = Path(__file__).parent.parent.parent / "data" / "get_urls.txt"
+    @pytest.mark.parametrize("input_data, output_data", gmu_test_data, ids=ids)
+    def test_content(self, logger_mock, get_mock, input_data, output_data):
+        expected = json.loads(output_data)
+        interface = mock.MagicMock()
+        interface.text = input_data
+        get_mock.return_value = interface
 
-        with path.open() as f:
-            return f.read()
+        real = get_menus_urls(request_all=False)
 
+        get_mock.assert_called_once_with(TEMPLATE % 1)
+        assert real == expected
 
 
 class TestHasDay:
@@ -122,6 +135,7 @@ class TestFilterData:
         real = filter_data(input_data)
 
         assert real == output_data
+
 
 class TestPatterns:
     day_pattern_data = (
@@ -283,7 +297,7 @@ class TestPatterns:
 
     fix_content_pattern_3 = (
         ("1er plato: sardinas postre: manzana", "1er plato: sardinas\npostre: manzana"),
-        ("el postre será barato", None)
+        ("el postre será barato", None),
     )
 
     @pytest.mark.parametrize("string, expected_sub", fix_content_pattern_3)
