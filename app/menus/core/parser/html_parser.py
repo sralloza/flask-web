@@ -32,6 +32,7 @@ class HtmlParser(BaseParser):
         text = Patterns.fix_dates_pattern_3.sub(r"\1)", text)
         text = Patterns.fix_content_pattern_1.sub(r"\1 \2", text)
         text = Patterns.fix_content_pattern_2.sub(r" ", text)
+        text = Patterns.fix_content_pattern_3.sub(r"\1\n\2", text)
         texts = [x.strip() for x in text.splitlines() if x.strip()]
 
         texts = filter_data(texts)
@@ -67,13 +68,19 @@ class HtmlParser(BaseParser):
                 index.set_date(date(year, month, day))
                 continue
 
-            if "combinado" in text and text != "1er plato: plato combinado":
-                index.set_combined(index.state)
-                foo = text.split(":")[-1].strip()
-                index.set_first("PC: " + foo)
+            if "combinado" in text:
+                _filtered = text.replace("1er plato", "")
+                if len(_filtered) - len("plato combinado") > 3:
+                    index.set_combined(index.state)
+                    foo = text.split(":")[-1].strip()
+                    index.set_first("PC: " + foo)
+                    continue
+                text = "plato combinado"
             elif ("coctel" in text or "cóctel" in text) and len(text.split()) < 3:
                 index.set_first("cóctel")
-            elif "comida" in text:
+                continue
+
+            if "comida" in text:
                 index.set_state("LUNCH")
             elif "cena" in text:
                 index.set_state("DINNER")

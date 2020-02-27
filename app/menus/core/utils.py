@@ -146,6 +146,7 @@ def filter_data(data: Union[str, List[str]]):
             "1er plato" in data[i - 1]
             and i + 1 < len(data)
             and "2º plato" in data[i + 1]
+            and "postre" not in d
         ):
             out[-1] += " " + d
         else:
@@ -184,5 +185,5 @@ class Patterns:
         r"(?<!:)([A-Z\sÁÉÍÓÚÑ]+)\n([A-Z\sÁÉÍÓÚÑ]{3,})(?!([\wº]*[:\d]))",
         re.IGNORECASE,
     )
-
     fix_content_pattern_2 = re.compile(r"(\s){2,}", re.IGNORECASE)
+    fix_content_pattern_3 = re.compile(r"(\w+)(?:[ \t]+)(postre:)", re.IGNORECASE)
