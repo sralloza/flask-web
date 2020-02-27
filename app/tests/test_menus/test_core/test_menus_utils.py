@@ -280,3 +280,19 @@ class TestPatterns:
             assert real_sub == expected_sub
         else:
             assert pattern_match is None
+
+    fix_content_pattern_3 = (
+        ("1er plato: sardinas postre: manzana", "1er plato: sardinas\npostre: manzana"),
+        ("el postre será barato", None)
+    )
+
+    @pytest.mark.parametrize("string, expected_sub", fix_content_pattern_3)
+    def test_fix_content_pattern_3(self, string, expected_sub):
+        real_sub = Patterns.fix_content_pattern_3.sub(r"\1\n\2", string)
+        pattern_match = Patterns.fix_content_pattern_3.search(string)
+
+        if expected_sub:
+            assert pattern_match is not None
+            assert real_sub == expected_sub
+        else:
+            assert pattern_match is None
