@@ -1,15 +1,10 @@
-from pathlib import Path
 from unittest import mock
 
 import pytest
-from requests.exceptions import ConnectionError
 
 from app.utils import (
-    PRINCIPAL_URL,
     Tokens,
     Translator,
-    _Cache,
-    get_last_menus_url,
     get_post_arg,
 )
 
