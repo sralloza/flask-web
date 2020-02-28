@@ -6,10 +6,10 @@ import pytest
 from requests.exceptions import ConnectionError
 
 from app.menus.core.utils import (
-    PRINCIPAL_URL,
     TEMPLATE,
     Patterns,
     filter_data,
+    get_last_menus_url,
     get_menus_urls,
     has_day,
 )
@@ -57,6 +57,262 @@ class TestGetMenusUrls:
 
         get_mock.assert_called_once_with(TEMPLATE % 1)
         assert real == expected
+
+
+@pytest.mark.xfail
+class TestGetLastMenusUrl:
+    url_expected = (
+        "https://www.residenciasantiago.es/2019/06/20/del-21-al-24-de-junio-2019/"
+    )
+    warning_conn_error = (
+        "Connection error downloading principal url (%r) (%d retries left)"
+    )
+    dmm_error = (
+        "Could not retrieve url, trying to parse it by download principal url (%s)",
+        PRINCIPAL_URL,
+    )
+
+    @pytest.fixture()
+    def mocks(self):
+        dmm_mock = mock.patch(
+            "app.menus.core.daily_menus_manager.DailyMenusManager", autospec=True
+        ).start()
+        get_mock = mock.patch("requests.get", autospec=True).start()
+        logger_mock = mock.patch("app.utils.logger", autospec=True).start()
+
+        yield dmm_mock, get_mock, logger_mock
+
+        mock.patch.stopall()
+
+    @pytest.fixture(scope="class")
+    def test_content(self):
+        path = Path(__file__).parent.parent / "data" / "get_urls.txt"
+
+        with path.open() as f:
+            return f.read()
+
+    def test_use_cache(self, mocks, test_content):
+        dmm_mock, get_mock, logger_mock = mocks
+        _Cache.redirect_url = self.url_expected
+        foo_mock = mock.Mock()
+        foo_mock.text = test_content
+        get_mock.return_value = foo_mock
+        url = get_last_menus_url()
+
+        logger_mock.debug.assert_any_call("Getting last menus url")
+        logger_mock.debug.assert_any_call("Found in cache: %s", self.url_expected)
+        assert url == self.url_expected
+
+        assert logger_mock.debug.call_count == 2
+        dmm_mock.assert_not_called()
+        get_mock.assert_not_called()
+
+    def test_from_dmm(self, mocks, test_content):
+        dmm_mock, get_mock, logger_mock = mocks
+
+        _Cache.redirect_url = None
+        get_mock.return_value.text = test_content
+        menu_mock = mock.MagicMock()
+        menu_mock.url = self.url_expected
+        menu_mock.id = 1
+        dmm_mock.return_value.__iter__.return_value = [menu_mock]
+
+        url = get_last_menus_url()
+
+        dmm_mock.return_value.load_from_database.assert_called_once_with()
+        dmm_mock.return_value.sort.assert_called_once_with()
+
+        logger_mock.debug.assert_any_call("Getting last menus url")
+        logger_mock.warning.assert_not_called()
+        logger_mock.debug.assert_any_call(
+            "Retrieving url from last menu (%d): %s", 1, self.url_expected
+        )
+        assert logger_mock.debug.call_count == 2
+
+        assert url == self.url_expected
+        assert self.url_expected == _Cache.redirect_url
+
+    def test_with_request_no_connection_error(self, mocks, test_content):
+        dmm_mock, get_mock, logger_mock = mocks
+
+        _Cache.redirect_url = None
+        dmm_mock.return_value.__iter__.return_value = []
+        foo_mock = mock.Mock()
+        foo_mock.text = test_content
+        get_mock.return_value = foo_mock
+        url = get_last_menus_url()
+
+        logger_mock.debug.assert_any_call("Getting last menus url")
+        logger_mock.debug.assert_any_call("Set retries=%d", 5)
+        logger_mock.warning.assert_any_call(*self.dmm_error)
+        assert logger_mock.debug.call_count == 2
+
+        dmm_mock.assert_called_once_with()
+
+        assert url == self.url_expected
+
+    def test_one_connection_error(self, mocks, test_content):
+        dmm_mock, get_mock, logger_mock = mocks
+
+        _Cache.redirect_url = None
+        dmm_mock.return_value.__iter__.return_value = []
+        foo_mock = mock.Mock()
+        foo_mock.text = test_content
+        get_mock.side_effect = iter([ConnectionError, foo_mock])
+
+        url = get_last_menus_url()
+
+        logger_mock.debug.assert_any_call("Getting last menus url")
+        logger_mock.debug.assert_any_call("Set retries=%d", 5)
+        assert logger_mock.debug.call_count == 2
+
+        logger_mock.warning.assert_any_call(*self.dmm_error)
+        logger_mock.warning.assert_any_call(
+            self.warning_conn_error, PRINCIPAL_URL, 4,
+        )
+        assert logger_mock.warning.call_count == 2
+
+        dmm_mock.assert_called_once_with()
+        assert url == self.url_expected
+
+    def test_two_connection_error(self, mocks, test_content):
+        dmm_mock, get_mock, logger_mock = mocks
+
+        _Cache.redirect_url = None
+        dmm_mock.return_value.__iter__.return_value = []
+        foo_mock = mock.Mock()
+        foo_mock.text = test_content
+        get_mock.side_effect = iter([ConnectionError, ConnectionError, foo_mock])
+
+        url = get_last_menus_url()
+
+        logger_mock.debug.assert_any_call("Getting last menus url")
+        logger_mock.debug.assert_any_call("Set retries=%d", 5)
+        assert logger_mock.debug.call_count == 2
+
+        logger_mock.warning.assert_any_call(*self.dmm_error)
+        logger_mock.warning.assert_has_calls(
+            [
+                mock.call(self.warning_conn_error, PRINCIPAL_URL, 4),
+                mock.call(self.warning_conn_error, PRINCIPAL_URL, 3),
+            ]
+        )
+        assert logger_mock.warning.call_count == 3
+
+        dmm_mock.assert_called_once_with()
+        assert url == self.url_expected
+
+    def test_three_connection_error(self, mocks, test_content):
+        dmm_mock, get_mock, logger_mock = mocks
+
+        _Cache.redirect_url = None
+        dmm_mock.return_value.__iter__.return_value = []
+        foo_mock = mock.Mock()
+        foo_mock.text = test_content
+        get_mock.side_effect = iter(
+            [ConnectionError, ConnectionError, ConnectionError, foo_mock]
+        )
+
+        url = get_last_menus_url()
+
+        logger_mock.debug.assert_any_call("Getting last menus url")
+        logger_mock.debug.assert_any_call("Set retries=%d", 5)
+        assert logger_mock.debug.call_count == 2
+
+        logger_mock.warning.assert_any_call(*self.dmm_error)
+        logger_mock.warning.assert_has_calls(
+            [
+                mock.call(self.warning_conn_error, PRINCIPAL_URL, 4),
+                mock.call(self.warning_conn_error, PRINCIPAL_URL, 3),
+                mock.call(self.warning_conn_error, PRINCIPAL_URL, 2),
+            ]
+        )
+        assert logger_mock.warning.call_count == 4
+
+        dmm_mock.assert_called_once_with()
+        assert url == self.url_expected
+
+    def test_four_connection_error(self, mocks, test_content):
+        dmm_mock, get_mock, logger_mock = mocks
+
+        _Cache.redirect_url = None
+        dmm_mock.return_value.__iter__.return_value = []
+        foo_mock = mock.Mock()
+        foo_mock.text = test_content
+        get_mock.side_effect = iter(
+            [
+                ConnectionError,
+                ConnectionError,
+                ConnectionError,
+                ConnectionError,
+                foo_mock,
+            ]
+        )
+
+        url = get_last_menus_url()
+
+        logger_mock.debug.assert_any_call("Getting last menus url")
+        logger_mock.debug.assert_any_call("Set retries=%d", 5)
+        assert logger_mock.debug.call_count == 2
+
+        logger_mock.warning.assert_any_call(*self.dmm_error)
+        logger_mock.warning.assert_has_calls(
+            [
+                mock.call(self.warning_conn_error, PRINCIPAL_URL, 4),
+                mock.call(self.warning_conn_error, PRINCIPAL_URL, 3),
+                mock.call(self.warning_conn_error, PRINCIPAL_URL, 2),
+                mock.call(self.warning_conn_error, PRINCIPAL_URL, 1),
+            ]
+        )
+        assert logger_mock.warning.call_count == 5
+
+        dmm_mock.assert_called_once_with()
+        assert url == self.url_expected
+
+    def test_five_connection_error(self, mocks, test_content):
+        dmm_mock, get_mock, logger_mock = mocks
+
+        _Cache.redirect_url = None
+        dmm_mock.return_value.__iter__.return_value = []
+        foo_mock = mock.Mock()
+        foo_mock.text = test_content
+        get_mock.side_effect = iter(
+            [
+                ConnectionError,
+                ConnectionError,
+                ConnectionError,
+                ConnectionError,
+                ConnectionError,
+                foo_mock,
+            ]
+        )
+
+        url = get_last_menus_url()
+
+        logger_mock.debug.assert_any_call("Getting last menus url")
+        logger_mock.debug.assert_any_call("Set retries=%d", 5)
+        assert logger_mock.debug.call_count == 2
+
+        logger_mock.warning.assert_any_call(*self.dmm_error)
+        logger_mock.warning.assert_has_calls(
+            [
+                mock.call(self.warning_conn_error, PRINCIPAL_URL, 4),
+                mock.call(self.warning_conn_error, PRINCIPAL_URL, 3),
+                mock.call(self.warning_conn_error, PRINCIPAL_URL, 2),
+                mock.call(self.warning_conn_error, PRINCIPAL_URL, 1),
+                mock.call(self.warning_conn_error, PRINCIPAL_URL, 0),
+            ]
+        )
+        assert logger_mock.warning.call_count == 6
+
+        logger_mock.critical.assert_called_once_with(
+            "Fatal connection error downloading principal url (%r) (%d retries)",
+            PRINCIPAL_URL,
+            5,
+        )
+
+        dmm_mock.assert_called_once_with()
+        assert url == PRINCIPAL_URL
 
 
 class TestHasDay:

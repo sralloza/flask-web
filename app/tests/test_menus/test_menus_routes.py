@@ -31,7 +31,7 @@ class TestMenusView:
 
     @mock.patch("app.menus.routes.DailyMenusManager.load")
     @mock.patch(
-        "app.menus.routes.get_last_menus_page",
+        "app.menus.routes.get_last_menus_url",
         return_value="http://example.com",
         autospec=True,
     )

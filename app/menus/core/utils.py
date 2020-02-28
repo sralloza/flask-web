@@ -65,7 +65,7 @@ def get_menus_urls(retries=5, request_all=False):
     return []
 
 
-def get_last_menus_page(retries=5):
+def get_last_menus_url(retries=5):
     from app.menus.core.daily_menus_manager import DailyMenusManager
 
     logger.debug("Getting last menus url")
