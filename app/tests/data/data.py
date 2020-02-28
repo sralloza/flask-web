@@ -37,3 +37,8 @@ class ParserPaths(Enum):
 class FilterDataPaths(Enum):
     inputs = TestPaths.filter_data.value.joinpath("input").rglob("*.txt.data")
     outputs = TestPaths.filter_data.value.joinpath("output").rglob("*.txt.data")
+
+
+class GetMenusUrlsDataPaths(Enum):
+    inputs = TestPaths.get_menus_urls.value.joinpath("input").rglob("*.html.data")
+    outputs = TestPaths.get_menus_urls.value.joinpath("output").rglob("*.json")
