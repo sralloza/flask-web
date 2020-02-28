@@ -9,8 +9,13 @@ from flask import current_app
 from requests.exceptions import ConnectionError
 
 logger = logging.getLogger(__name__)
-PRINCIPAL_URL = "https://www.residenciasantiago.es/menus-1/"
+
+# PRINCIPAL_URL = "https://www.residenciasantiago.es/menus-1/"
 TEMPLATE = "https://www.residenciasantiago.es/app/blogpage?page=%d&withinCms=&layout=0"
+
+
+class _Cache:
+    redirect_url = None
 
 
 def get_menus_urls(retries=5, request_all=False):
@@ -58,6 +63,35 @@ def get_menus_urls(retries=5, request_all=False):
         total_retries,
     )
     return []
+
+
+def get_last_menus_page(retries=5):
+    from app.menus.core.daily_menus_manager import DailyMenusManager
+
+    logger.debug("Getting last menus url")
+
+    if _Cache.redirect_url:
+        logger.debug("Found in cache: %s", _Cache.redirect_url)
+        return _Cache.redirect_url
+
+    dmm = DailyMenusManager()
+    dmm.load_from_database()
+    dmm.sort()
+
+    for menu in dmm:
+        if menu.url:
+            logger.debug("Retrieving url from last menu (%d): %s", menu.id, menu.url)
+            _Cache.redirect_url = menu.url
+            return menu.url
+
+    logger.warning("No menus with urls saved in database. Using get_menus_urls")
+    urls = get_menus_urls(retries=retries)
+
+    if not urls:
+        return TEMPLATE % 1
+
+    _Cache.redirect_url = urls[0]
+    return _Cache.redirect_url
 
 
 def has_day(x):
