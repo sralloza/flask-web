@@ -11,12 +11,12 @@ class TestPaths(Enum):
 
 
 _web_data_folder = TestPaths.html_parser.value / "input"
-_pdf_paths = list(_web_data_folder.joinpath("pdf").rglob("*.html.data"))
-_photos_paths = list(_web_data_folder.joinpath("photos").rglob("*.html.data"))
-_html_paths = list(_web_data_folder.joinpath("html").rglob("*.html.data"))
+_pdf_paths = tuple(_web_data_folder.joinpath("pdf").rglob("*.html.data"))
+_photos_paths = tuple(_web_data_folder.joinpath("photos").rglob("*.html.data"))
+_html_paths = tuple(_web_data_folder.joinpath("html").rglob("*.html.data"))
 
 _menus_json = TestPaths.html_parser.value / "output"
-_json_paths = list(_menus_json.joinpath("html").rglob("*.json"))
+_json_paths = tuple(_menus_json.joinpath("html").rglob("*.json"))
 
 _urls_dict = json.loads(
     _web_data_folder.joinpath("urls.json").read_text(encoding="utf-8")
@@ -34,11 +34,18 @@ class ParserPaths(Enum):
     urls_dict = _urls_dict
 
 
+
 class FilterDataPaths(Enum):
-    inputs = TestPaths.filter_data.value.joinpath("input").rglob("*.txt.data")
-    outputs = TestPaths.filter_data.value.joinpath("output").rglob("*.txt.data")
+    _inputs = TestPaths.filter_data.value.joinpath("input").rglob("*.txt.data")
+    inputs = tuple(_inputs)
+    _outputs = TestPaths.filter_data.value.joinpath("output").rglob("*.txt.data")
+    outputs = tuple(_outputs)
 
 
 class GetMenusUrlsDataPaths(Enum):
-    inputs = TestPaths.get_menus_urls.value.joinpath("input").rglob("*.html.data")
-    outputs = TestPaths.get_menus_urls.value.joinpath("output").rglob("*.json")
+    _inputs = TestPaths.get_menus_urls.value.joinpath("input").rglob("*.html.data")
+    inputs = tuple(_inputs)
+    _outputs = TestPaths.get_menus_urls.value.joinpath("output").rglob("*.json")
+    outputs = tuple(_outputs)
+    _invalid = TestPaths.get_menus_urls.value.joinpath("invalid").rglob("*.html.data")
+    invalid = tuple(_invalid)[0]
