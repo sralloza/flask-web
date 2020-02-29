@@ -2,7 +2,7 @@ import logging
 
 from flask import redirect, request, url_for
 
-from app.utils import get_last_menus_url
+from app.menus.core.utils import get_last_menus_url
 
 from . import base_blueprint
 

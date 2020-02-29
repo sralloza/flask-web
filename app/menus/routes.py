@@ -3,7 +3,8 @@ from datetime import datetime
 
 from flask import redirect, render_template, request, url_for
 
-from app.utils import PRINCIPAL_URL, Tokens, get_last_menus_url, get_post_arg
+from app.menus.core.utils import PRINCIPAL_URL, get_last_menus_url
+from app.utils import Tokens, get_post_arg
 
 from . import menus_blueprint
 from .core.daily_menus_manager import DailyMenusManager

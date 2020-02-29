@@ -2,7 +2,6 @@ import logging
 import re
 from datetime import datetime
 
-import requests
 from bs4 import BeautifulSoup as Soup
 from flask import current_app, request
 

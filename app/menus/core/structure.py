@@ -5,7 +5,8 @@ from enum import Enum, unique
 from typing import Union
 
 from app.menus.models import DailyMenusDatabaseController
-from app.utils import PRINCIPAL_URL, Translator, now
+from app.utils import Translator, now
+from app.menus.core.utils import PRINCIPAL_URL
 
 from .exceptions import InvalidStateError, MealError, MealWarning
 
