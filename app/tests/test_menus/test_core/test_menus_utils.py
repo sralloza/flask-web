@@ -570,6 +570,24 @@ class TestPatterns:
         else:
             assert pattern_match is None
 
+    fix_dates_patterns_4_data = (
+        ("día: 25 de abril de 2020 (viernes", "día: 25 de abril de 2020 (viernes)"),
+        ("día:25deabrilde2020(viernes)", "día: 25 de abril de 2020 (viernes)"),
+        ("día\n:\n25\nde\nabril\nde\n2020\n(\nviernes\n)", "día: 25 de abril de 2020 (viernes)"),
+        ("día : 25 de abril de 2020 ( viernes )", "día: 25 de abril de 2020 (viernes)"),
+    )
+
+    @pytest.mark.parametrize("string, expected_sub", fix_dates_patterns_4_data)
+    def test_fix_dates_pattern_4(self, string, expected_sub):
+        real_sub = Patterns.fix_dates_pattern_4.sub(r"día: \1 de \2 de \3 (\4)", string)
+        pattern_match = Patterns.fix_dates_pattern_4.search(string)
+
+        if expected_sub:
+            assert pattern_match is not None
+            assert real_sub == expected_sub
+        else:
+            assert pattern_match is None
+
     fix_content_pattern_1 = (
         ("cocido\ncompleto", "cocido completo"),
         ("fruta\ndía:", None),

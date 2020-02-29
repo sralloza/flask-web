@@ -204,6 +204,10 @@ class Patterns:
         r"(día\s*:\s*\d+\s*de\s*\w+\s*de\s*\d{4}\s*\(\w+(?![\)a-zA-ZáéíóúÁÉÍÓÚ]))",
         re.IGNORECASE,
     )
+    fix_dates_pattern_4 = re.compile(
+        r"d[íÍ]a\s*:\s*(\d+)\s*de\s*(\w+)\s*de\s*(\d{4})\s*\(?\s*([\wá-úÁ-Ú]+)\s*\)?",
+        re.IGNORECASE,
+    )
 
     fix_content_pattern_1 = re.compile(
         # r"(?<!:)([\w\sÁÉÍÓÚÑ]+)\n([\w\sÁÉÍÓÚÑ]+)(?!\w*:)", re.IGNORECASE

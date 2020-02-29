@@ -30,6 +30,7 @@ class HtmlParser(BaseParser):
         text = Patterns.fix_dates_pattern_1.sub(r"\1 \2", text)
         text = Patterns.fix_dates_pattern_2.sub(r"\1 \2", text)
         text = Patterns.fix_dates_pattern_3.sub(r"\1)", text)
+        text = Patterns.fix_dates_pattern_4.sub(r"día: \1 de \2 de \3 (\4)", text)
         text = Patterns.fix_content_pattern_1.sub(r"\1 \2", text)
         text = Patterns.fix_content_pattern_2.sub(r" ", text)
         text = Patterns.fix_content_pattern_3.sub(r"\1\n\2", text)
