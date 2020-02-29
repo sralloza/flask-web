@@ -1,13 +1,13 @@
 import logging
 from collections import UserList
-from threading import Thread, Lock
-
-import requests
+from threading import Lock, Thread
 
 from app.menus.core.exceptions import ParserError
 from app.menus.core.parser.abc import BaseParser
 from app.menus.core.parser.html_parser import HtmlParser
 from app.menus.core.parser.manual_parser import ManualParser
+from app.utils.exceptions import DownloaderError
+from app.utils.networking import downloader
 
 logger = logging.getLogger(__name__)
 
@@ -27,13 +27,13 @@ class ParserThread(Thread):
         retries_left = self.retries
         while retries_left:
             try:
-                response = requests.get(self.url)
+                response = downloader.get(self.url)
                 break
             except Exception:
                 retries_left -= 1
                 if not retries_left:
                     logger.error("Fatal connection error downloading %s", self.url)
-                    raise requests.exceptions.ConnectionError(
+                    raise DownloaderError(
                         "Fatal connection error downloading %s" % self.url
                     )
 

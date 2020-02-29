@@ -2,9 +2,9 @@ from collections import UserList
 from unittest import mock
 
 import pytest
-from requests.exceptions import ConnectionError
 
 from app.menus.core.parser import Parsers, ParserThread, ParserThreadList
+from app.utils.exceptions import DownloaderError
 
 
 class TestParserThread:
@@ -19,7 +19,7 @@ class TestParserThread:
         logger_mock = mock.patch("app.menus.core.parser.logger", autospec=True).start()
         html = mock.patch("app.menus.core.parser.HtmlParser", autospec=True).start()
         manual = mock.patch("app.menus.core.parser.ManualParser", autospec=True).start()
-        get = mock.patch("app.menus.core.parser.requests.get", autospec=True).start()
+        get = mock.patch("app.menus.core.parser.downloader.get", autospec=True).start()
 
         parsers = mock.patch("app.menus.core.parser.Parsers", autospec=True).start()
 
@@ -141,7 +141,7 @@ class TestParserThread:
         # Simulate situation where requests.get returns one error
         foo_mock = mock.MagicMock()
         foo_mock.text = "text"
-        get_mock.side_effect = [ConnectionError, foo_mock]
+        get_mock.side_effect = [DownloaderError, foo_mock]
 
         thread = ParserThread("url", dmm)
         thread.start()
@@ -176,9 +176,9 @@ class TestParserThread:
         foo_mock = mock.MagicMock()
         foo_mock.text = "text"
         get_mock.side_effect = [
-            ConnectionError,
-            ConnectionError,
-            ConnectionError,
+            DownloaderError,
+            DownloaderError,
+            DownloaderError,
             foo_mock,
         ]
 
@@ -214,7 +214,7 @@ class TestParserThread:
         # Simulate situation where requests.get returns one error
         foo_mock = mock.MagicMock()
         foo_mock.text = "text"
-        get_mock.side_effect = ConnectionError
+        get_mock.side_effect = DownloaderError
 
         thread = ParserThread("url", dmm)
         thread.start()
@@ -246,13 +246,13 @@ class TestParserThread:
         foo_mock = mock.MagicMock()
         foo_mock.text = "text"
         get_mock.side_effect = [
-            ConnectionError,
-            ConnectionError,
-            ConnectionError,
-            ConnectionError,
-            ConnectionError,
-            ConnectionError,
-            ConnectionError,
+            DownloaderError,
+            DownloaderError,
+            DownloaderError,
+            DownloaderError,
+            DownloaderError,
+            DownloaderError,
+            DownloaderError,
             foo_mock,
         ]
 

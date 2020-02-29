@@ -3,11 +3,12 @@ from pathlib import Path
 from unittest import mock
 
 import pytest
-from requests.exceptions import ConnectionError
 
 from app.menus.core.utils import (
+    PRINCIPAL_URL,
     TEMPLATE,
     Patterns,
+    _Cache,
     filter_data,
     get_last_menus_url,
     get_menus_urls,
@@ -15,6 +16,7 @@ from app.menus.core.utils import (
 )
 from app.tests.data.data import FilterDataPaths
 from app.tests.data.data import GetMenusUrlsDataPaths as GMUDP
+from app.utils.exceptions import DownloaderError
 
 gmu_test_data = []
 ids = []
@@ -77,7 +79,9 @@ class TestGetLastMenusUrl:
         dmm_mock = mock.patch(
             "app.menus.core.daily_menus_manager.DailyMenusManager", autospec=True
         ).start()
-        get_mock = mock.patch("requests.get", autospec=True).start()
+        get_mock = mock.patch(
+            "app.menus.core.utils.downloader.get", autospec=True
+        ).start()
         logger_mock = mock.patch("app.utils.logger", autospec=True).start()
 
         yield dmm_mock, get_mock, logger_mock
@@ -158,7 +162,7 @@ class TestGetLastMenusUrl:
         dmm_mock.return_value.__iter__.return_value = []
         foo_mock = mock.Mock()
         foo_mock.text = test_content
-        get_mock.side_effect = iter([ConnectionError, foo_mock])
+        get_mock.side_effect = iter([DownloaderError, foo_mock])
 
         url = get_last_menus_url()
 
@@ -182,7 +186,7 @@ class TestGetLastMenusUrl:
         dmm_mock.return_value.__iter__.return_value = []
         foo_mock = mock.Mock()
         foo_mock.text = test_content
-        get_mock.side_effect = iter([ConnectionError, ConnectionError, foo_mock])
+        get_mock.side_effect = iter([DownloaderError, DownloaderError, foo_mock])
 
         url = get_last_menus_url()
 
@@ -210,7 +214,7 @@ class TestGetLastMenusUrl:
         foo_mock = mock.Mock()
         foo_mock.text = test_content
         get_mock.side_effect = iter(
-            [ConnectionError, ConnectionError, ConnectionError, foo_mock]
+            [DownloaderError, DownloaderError, DownloaderError, foo_mock]
         )
 
         url = get_last_menus_url()
@@ -241,10 +245,10 @@ class TestGetLastMenusUrl:
         foo_mock.text = test_content
         get_mock.side_effect = iter(
             [
-                ConnectionError,
-                ConnectionError,
-                ConnectionError,
-                ConnectionError,
+                DownloaderError,
+                DownloaderError,
+                DownloaderError,
+                DownloaderError,
                 foo_mock,
             ]
         )
@@ -278,11 +282,11 @@ class TestGetLastMenusUrl:
         foo_mock.text = test_content
         get_mock.side_effect = iter(
             [
-                ConnectionError,
-                ConnectionError,
-                ConnectionError,
-                ConnectionError,
-                ConnectionError,
+                DownloaderError,
+                DownloaderError,
+                DownloaderError,
+                DownloaderError,
+                DownloaderError,
                 foo_mock,
             ]
         )
