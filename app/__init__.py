@@ -11,10 +11,12 @@ from .menus import menus_blueprint
 logging.basicConfig(
     filename=Path(__file__).parent.parent / "flask-app.log",
     level=logging.DEBUG,
-    format = "[%(asctime)s] %(levelname)s - %(threadName)s.%(module)s:%(lineno)s - %(message)s",
+    format="[%(asctime)s] %(levelname)s - %(threadName)s.%(name)s:%(lineno)s - %(message)s",
 )
 
 werkzeug = logging.getLogger("werkzeug")
+werkzeug.setLevel(logging.INFO)
+werkzeug.propagate = False
 werkzeug.handlers = []
 
 if system() != "Linux":
@@ -24,6 +26,7 @@ if system() != "Linux":
     werkzeug_handler.setFormatter(
         logging.Formatter(fmt="%(asctime)s] %(levelname)s - %(message)s")
     )
+    werkzeug_handler.setLevel(logging.INFO)
     werkzeug.addHandler(werkzeug_handler)
 
 
@@ -37,6 +40,11 @@ def create_app(config_object):
     flask_app.register_blueprint(menus_blueprint)
 
     return flask_app
+
+
+def get_version():
+    path = Path(__file__).with_name("VERSION")
+    return path.read_text().strip()
 
 
 app = create_app(config_object="app.config.Config")

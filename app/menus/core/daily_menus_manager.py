@@ -22,6 +22,7 @@ class DailyMenusManager:
     def __init__(self):
         self.updated = False
         self.menus = []
+        self.updated = False
         self._lock = Lock()
 
     def __str__(self):
@@ -119,13 +120,8 @@ class DailyMenusManager:
             )
             update = False
 
-        logger.info(
-            "Delivering: [missing today:%s|force:%s|update control:%s] -> %s",
-            today_not_in_self,
-            force,
-            update_control_return,
-            update,
-        )
+        logger.info("Final decision: %s", update)
+        self.updated = update
 
         self.updated = update
         if update:

@@ -1,8 +1,9 @@
 import logging
 
-from flask import redirect, url_for, request
+from flask import redirect, request, url_for
 
 from app.utils import get_last_menus_page
+
 from . import base_blueprint
 
 logger = logging.getLogger(__name__)
@@ -40,14 +41,26 @@ def before_request():
         return "A user agent must be provided", 401
 
 
+@base_blueprint.route("/")
+def index():
+    return redirect(url_for("menus_blueprint.today_view"))
+
+
 @base_blueprint.route("/favicon.ico")
 def favicon():
     return redirect(url_for("static", filename="images/favicon.png"), code=301)
 
 
-@base_blueprint.route("/")
-def index():
-    return redirect(url_for("menus_blueprint.today_view"))
+@base_blueprint.route("/v")
+def redirect_version():
+    return redirect(url_for("base_blueprint.version"), code=301)
+
+
+@base_blueprint.route("/version")
+def version():
+    from app import get_version
+
+    return "<h1>Current version=%s" % get_version() + "</h1>"
 
 
 @base_blueprint.route("/s")

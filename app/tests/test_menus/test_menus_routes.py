@@ -100,13 +100,16 @@ def test_menus_redirect(client):
     assert rv.status_code == 301
     assert rv.location == "http://menus.sralloza.es/menus"
 
+def test_do_not_use_force_or_reload(client):
+    assert client.get("/menus/reload").status_code == 404
+    assert client.get("/hoy/reload").status_code == 404
 
 @mock.patch("app.menus.routes.DailyMenusManager", autospec=True)
-def test_menus_reload(dmm_mock, client):
+def test_menus_update(dmm_mock, client):
     m = mock.Mock()
     dmm_mock.load.return_value.__iter__.return_value = iter([m, m, m, m, m])
 
-    rv = client.get("/menus/reload")
+    rv = client.get("/menus/update")
     assert rv.status_code == 302
     assert rv.location == "http://menus.sralloza.es/menus"
 
@@ -123,14 +126,14 @@ def test_today_redirect(client):
 
 
 @mock.patch("app.menus.routes.DailyMenusManager", autospec=True)
-def test_today_reload(dmm_mock, client, menu_mock):
+def test_today_update(dmm_mock, client, menu_mock):
     dmm_mock.load.return_value.__iter__.return_value = iter(
         [menu_mock, menu_mock, menu_mock, menu_mock, menu_mock, menu_mock, menu_mock]
     )
 
-    rv = client.get("/hoy/reload")
+    rv = client.get("/hoy/update")
     assert rv.status_code == 302
-    assert rv.location == "http://menus.sralloza.es/hoy?force"
+    assert rv.location == "http://menus.sralloza.es/hoy?update"
 
     dmm_mock.load.assert_not_called()
     dmm_mock.load.return_value.__iter__.assert_not_called()
