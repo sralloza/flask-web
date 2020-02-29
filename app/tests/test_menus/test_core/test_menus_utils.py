@@ -3,6 +3,7 @@ from pathlib import Path
 from unittest import mock
 
 import pytest
+from flask.globals import current_app
 
 from app.menus.core.utils import (
     PRINCIPAL_URL,
@@ -31,25 +32,25 @@ for input_path, output_path in zip(GMUDP.inputs.value, GMUDP.outputs.value):
     ids.append(output_path.stem)
 
 
-@mock.patch("requests.get", autospec=True)
+@mock.patch("app.menus.core.utils.downloader.get", autospec=True)
 @mock.patch("app.menus.core.utils.logger", autospec=True)
 class TestGetMenusUrls:
-    urls_expected = [
-        "https://www.residenciasantiago.es/2019/06/20/del-21-al-24-de-junio-2019/",
-        "https://www.residenciasantiago.es/2019/06/17/del-18-al-20-de-junio-2019/",
-    ]
-
-    warning_expected = (
-        "Connection error downloading principal url (%r) (%d retries left)"
-    )
-
-    @pytest.fixture(autouse=True, scope="class")
+    @pytest.fixture(autouse=True)
     def autouse_client(self, client):
         # client must be used always becaulse get_menus_urls uses flask's config.
-        return
+        current_app.config["OFFLINE"] = False
+        yield
+
+    def test_offline(self, logger_mock, get_mock):
+        current_app.config["OFFLINE"] = True
+
+        real = get_menus_urls()
+
+        logger_mock.info.assert_called_once()
+        assert real == []
 
     @pytest.mark.parametrize("input_data, output_data", gmu_test_data, ids=ids)
-    def test_content(self, logger_mock, get_mock, input_data, output_data):
+    def test_normal_multiple(self, logger_mock, get_mock, input_data, output_data):
         expected = json.loads(output_data)
         interface = mock.MagicMock()
         interface.text = input_data
@@ -57,8 +58,57 @@ class TestGetMenusUrls:
 
         real = get_menus_urls(request_all=False)
 
+        logger_mock.debug.assert_called_once_with("Getting menus urls")
         get_mock.assert_called_once_with(TEMPLATE % 1)
         assert real == expected
+
+    def test_normal_downloader_error(self, logger_mock, get_mock):
+        get_mock.side_effect = DownloaderError
+
+        real = get_menus_urls(request_all=False)
+
+        get_mock.assert_called_once()
+        logger_mock.debug.assert_called_once_with("Getting menus urls")
+        logger_mock.warning.assert_called_once()
+
+        assert real == []
+
+    @pytest.mark.parametrize("errors", [False, *range(1, len(gmu_test_data) + 1)])
+    def test_request_all(self, logger_mock, get_mock, errors):
+        expected = []
+        interfaces = []
+        ngood = 0
+        nbad = 0
+
+        for input_data, output_data in gmu_test_data:
+            if nbad == errors:
+                expected += json.loads(output_data)
+                interface = mock.MagicMock()
+                interface.text = input_data
+                interfaces.append(interface)
+                ngood += 1
+            else:
+                interfaces.append(DownloaderError)
+                nbad += 1
+
+        ndata = ngood + nbad
+
+        invalid_interface = mock.MagicMock()
+        invalid_interface.text = GMUDP.invalid.value.read_text(encoding="utf-8")
+        ndata += 1  # the invalid one
+
+        interfaces.append(invalid_interface)
+        get_mock.side_effect = interfaces
+
+        real = get_menus_urls(request_all=True)
+
+        logger_mock.debug.assert_called_once()
+        assert get_mock.call_count == ndata
+        assert real == expected
+        assert logger_mock.warning.call_count == nbad
+
+        if nbad == len(gmu_test_data):
+            assert real == []
 
 
 @pytest.mark.xfail

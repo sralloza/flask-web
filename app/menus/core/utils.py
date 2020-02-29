@@ -46,15 +46,17 @@ def get_menus_urls(request_all=False):
                 return urls
 
         except DownloaderError:
-            retries -= 1
+            logger.warning("Could not retrieve url %r", url)
 
-        return urls
+            # If there is an error in the first try and only the first one needs to
+            # be processed, then return nothing (urls = [])
+            if not request_all:
+                return urls
 
-    logger.critical("Fatal connection error downloading principal url (%r)", url)
-    return []
+    return urls
 
 
-def get_last_menus_url(retries=5):
+def get_last_menus_url():
     from app.menus.core.daily_menus_manager import DailyMenusManager
 
     logger.debug("Getting last menus url")
@@ -74,7 +76,7 @@ def get_last_menus_url(retries=5):
             return menu.url
 
     logger.warning("No menus with urls saved in database. Using get_menus_urls")
-    urls = get_menus_urls(retries=retries)
+    urls = get_menus_urls()
 
     if not urls:
         return TEMPLATE % 1
