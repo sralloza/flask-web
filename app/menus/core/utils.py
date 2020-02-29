@@ -201,10 +201,6 @@ class Patterns:
     fix_dates_pattern_1 = re.compile(r"(\w+)[\n\s]*(\d{4})", re.I)
     fix_dates_pattern_2 = re.compile(r"(día:)[\s\n]*(\d+)", re.I)
     fix_dates_pattern_3 = re.compile(
-        r"(día\s*:\s*\d+\s*de\s*\w+\s*de\s*\d{4}\s*\(\w+(?![\)a-zA-ZáéíóúÁÉÍÓÚ]))",
-        re.IGNORECASE,
-    )
-    fix_dates_pattern_4 = re.compile(
         r"d[íÍ]a\s*:\s*(\d+)\s*de\s*(\w+)\s*de\s*(\d{4})\s*\(?\s*([\wá-úÁ-Ú]+)\s*\)?",
         re.IGNORECASE,
     )
