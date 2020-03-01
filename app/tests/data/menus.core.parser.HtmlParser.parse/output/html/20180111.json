@@ -1,0 +1,67 @@
+[
+    {
+        "id": 20180111,
+        "day": "Jueves 11",
+        "lunch": {
+            "p1": "espirales carbonara",
+            "p2": "libro con guarnicion"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "hamburguesa de ternera completa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/01/10/semana-del-11-al-15-de-enero-2018/"
+    },
+    {
+        "id": 20180112,
+        "day": "Viernes 12",
+        "lunch": {
+            "p1": "cocido castellano",
+            "p2": null
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "fajitas de pollo mejicanas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/01/10/semana-del-11-al-15-de-enero-2018/"
+    },
+    {
+        "id": 20180113,
+        "day": "Sábado 13",
+        "lunch": {
+            "p1": "patatas con bechamel",
+            "p2": "filete de ternera con pimientos"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "baguette de bacon con queso"
+        },
+        "url": "https://www.residenciasantiago.es/2018/01/10/semana-del-11-al-15-de-enero-2018/"
+    },
+    {
+        "id": 20180114,
+        "day": "Domingo 14",
+        "lunch": {
+            "p1": "carpaccio de piña con jamon",
+            "p2": "pollo a la cerveza"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/01/10/semana-del-11-al-15-de-enero-2018/"
+    },
+    {
+        "id": 20180115,
+        "day": "Lunes 15",
+        "lunch": {
+            "p1": "alubias estofadas",
+            "p2": "salmon con ensalada"
+        },
+        "dinner": {
+            "p1": "ensalada de ahumados con queso de cabra",
+            "p2": "perrito caliente con bacon y queso"
+        },
+        "url": "https://www.residenciasantiago.es/2018/01/10/semana-del-11-al-15-de-enero-2018/"
+    }
+]

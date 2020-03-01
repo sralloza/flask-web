@@ -1,0 +1,54 @@
+[
+    {
+        "id": 20181018,
+        "day": "Jueves 18",
+        "lunch": {
+            "p1": "potaje de garbanzos",
+            "p2": "pescado con ensalada"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "chuleta de sajonia con pimientos"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/17/semana-del-18-al-21-de-diciembre-2018/"
+    },
+    {
+        "id": 20181019,
+        "day": "Viernes 19",
+        "lunch": {
+            "p1": "macarrones salteados con setas",
+            "p2": "filetes rusos"
+        },
+        "dinner": {
+            "p1": "patatas dipper",
+            "p2": "hamburguesa de pollo con corn flakes"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/17/semana-del-18-al-21-de-diciembre-2018/"
+    },
+    {
+        "id": 20181020,
+        "day": "Sábado 20",
+        "lunch": {
+            "p1": "arroz tres delicias",
+            "p2": "lomo adobado con patatas"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "tortilla de patata con rabas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/17/semana-del-18-al-21-de-diciembre-2018/"
+    },
+    {
+        "id": 20181021,
+        "day": "Domingo 21",
+        "lunch": {
+            "p1": "crema de verduras",
+            "p2": "merluza a la romana con ensalada"
+        },
+        "dinner": {
+            "p1": "plato combinado",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/17/semana-del-18-al-21-de-diciembre-2018/"
+    }
+]

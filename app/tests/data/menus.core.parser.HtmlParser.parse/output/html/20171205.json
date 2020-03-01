@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20171205,
+        "day": "Martes 5",
+        "lunch": {
+            "p1": "arroz tres delicias",
+            "p2": "merluza con cebolla caramelizado"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "tortilla de patatas con palomitas de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/04/semana-del-05-12-2017-al-11-12-2017/"
+    },
+    {
+        "id": 20171206,
+        "day": "Miércoles 6",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "escalope con patatas"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "perritos calientes con bacon, queso y cebolla frita"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/04/semana-del-05-12-2017-al-11-12-2017/"
+    },
+    {
+        "id": 20171207,
+        "day": "Jueves 7",
+        "lunch": {
+            "p1": "pimientos rellenos de marisco",
+            "p2": "chuletas de cerdo con guarnicion"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "hamburguesa completa"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/04/semana-del-05-12-2017-al-11-12-2017/"
+    },
+    {
+        "id": 20171208,
+        "day": "Viernes 8",
+        "lunch": {
+            "p1": "patatas riojana",
+            "p2": "albóndigas en salsa"
+        },
+        "dinner": {
+            "p1": "ensalada de ahumados",
+            "p2": "fajitas mejicanas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/04/semana-del-05-12-2017-al-11-12-2017/"
+    },
+    {
+        "id": 20171209,
+        "day": "Sábado 9",
+        "lunch": {
+            "p1": "entremeses variados",
+            "p2": "pechugas de pollo con guarnición"
+        },
+        "dinner": {
+            "p1": "revuelto de ajetes y gambas",
+            "p2": "baguettes de bacon con queso"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/04/semana-del-05-12-2017-al-11-12-2017/"
+    },
+    {
+        "id": 20171210,
+        "day": "Domingo 10",
+        "lunch": {
+            "p1": "macarrones salteados con setas",
+            "p2": "filete de ternera con guarnición"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "pizzas variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/04/semana-del-05-12-2017-al-11-12-2017/"
+    },
+    {
+        "id": 20171211,
+        "day": "Lunes 11",
+        "lunch": {
+            "p1": "patatas con bechamel",
+            "p2": "merluza rellena de puerros y gambas"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "sandwich vegetal"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/04/semana-del-05-12-2017-al-11-12-2017/"
+    }
+]

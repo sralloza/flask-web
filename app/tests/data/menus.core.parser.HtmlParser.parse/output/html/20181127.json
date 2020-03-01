@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20181127,
+        "day": "Martes 27",
+        "lunch": {
+            "p1": "menestra de verduras",
+            "p2": "pechuga de pollo con patatas"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "perritos calientes con bacon y queso"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/26/semana-del-27-11-al-03-12/"
+    },
+    {
+        "id": 20181128,
+        "day": "Miércoles 28",
+        "lunch": {
+            "p1": "potaje de garbanzos",
+            "p2": "bacalao en salsa"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "pincho moruno"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/26/semana-del-27-11-al-03-12/"
+    },
+    {
+        "id": 20181129,
+        "day": "Jueves 29",
+        "lunch": {
+            "p1": "calabacín relleno de bacon y queso",
+            "p2": "escalope con pimientos verdes"
+        },
+        "dinner": {
+            "p1": "patatas chips",
+            "p2": "alitas de pollo a la barbacoa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/26/semana-del-27-11-al-03-12/"
+    },
+    {
+        "id": 20181130,
+        "day": "Viernes 30",
+        "lunch": {
+            "p1": "arroz a la zamorana",
+            "p2": "salmón a la naranja"
+        },
+        "dinner": {
+            "p1": "nachos con salsa de queso",
+            "p2": "fajitas mejicanas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/26/semana-del-27-11-al-03-12/"
+    },
+    {
+        "id": 20181201,
+        "day": "Sábado 1",
+        "lunch": {
+            "p1": "fideua de marisco",
+            "p2": "lomo asado con champiñones"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "baguettes de rabas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/26/semana-del-27-11-al-03-12/"
+    },
+    {
+        "id": 20181202,
+        "day": "Domingo 2",
+        "lunch": {
+            "p1": "volovan relleno",
+            "p2": "cachopo de ternera"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/26/semana-del-27-11-al-03-12/"
+    },
+    {
+        "id": 20181203,
+        "day": "Lunes 3",
+        "lunch": {
+            "p1": "alubias pintas estofadas",
+            "p2": "pollo al horno con guarnición"
+        },
+        "dinner": {
+            "p1": "rollitos de primavera",
+            "p2": "hamburguesa completa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/26/semana-del-27-11-al-03-12/"
+    }
+]

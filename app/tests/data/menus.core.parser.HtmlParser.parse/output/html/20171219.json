@@ -1,0 +1,41 @@
+[
+    {
+        "id": 20171219,
+        "day": "Martes 19",
+        "lunch": {
+            "p1": "macarrones boloñesa",
+            "p2": "chuleta de cerdo con patatas"
+        },
+        "dinner": {
+            "p1": "ensalada de ahumados",
+            "p2": "san jacobos"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/18/semana-del-19-12-2017-al-21-12-2017/"
+    },
+    {
+        "id": 20171220,
+        "day": "Miércoles 20",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "ragú de ternera"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "sandwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/18/semana-del-19-12-2017-al-21-12-2017/"
+    },
+    {
+        "id": 20171221,
+        "day": "Jueves 21",
+        "lunch": {
+            "p1": "arroz tres delicias",
+            "p2": "solomillo de cerdo al horno con hojaldre"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "hamburguesa con corn flakes"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/18/semana-del-19-12-2017-al-21-12-2017/"
+    }
+]

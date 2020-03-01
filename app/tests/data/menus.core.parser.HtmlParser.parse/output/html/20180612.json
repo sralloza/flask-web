@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20180612,
+        "day": "Martes 12",
+        "lunch": {
+            "p1": "espaguettis a la carbonara",
+            "p2": "escalope con patatas"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "nuggets con salsa barbacoa y salchichas frescas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/11/12-06-2018-al-18-12-2018/"
+    },
+    {
+        "id": 20180613,
+        "day": "Miércoles 13",
+        "lunch": {
+            "p1": "pimientos rellenos de setas",
+            "p2": "radaballo al cava"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "hamburguesa completa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/11/12-06-2018-al-18-12-2018/"
+    },
+    {
+        "id": 20180614,
+        "day": "Jueves 14",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "pollo al horno"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "perritos calientes con cebolla frita, queso y bacon"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/11/12-06-2018-al-18-12-2018/"
+    },
+    {
+        "id": 20180615,
+        "day": "Viernes 15",
+        "lunch": {
+            "p1": "ensalada campera",
+            "p2": "salmón a la naranja"
+        },
+        "dinner": {
+            "p1": "guisantes salteados",
+            "p2": "tortilla de patata con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/11/12-06-2018-al-18-12-2018/"
+    },
+    {
+        "id": 20180616,
+        "day": "Sábado 16",
+        "lunch": {
+            "p1": "macarrones con atún",
+            "p2": "filete de ternera a la plancha con patatas"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/11/12-06-2018-al-18-12-2018/"
+    },
+    {
+        "id": 20180617,
+        "day": "Domingo 17",
+        "lunch": {
+            "p1": "entremeses variados",
+            "p2": "libro con patatas"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "pizzas variadas con varitas de merluza"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/11/12-06-2018-al-18-12-2018/"
+    },
+    {
+        "id": 20180618,
+        "day": "Lunes 18",
+        "lunch": {
+            "p1": "arroz a la zamorana",
+            "p2": "calabacín relleno"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "sandwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/11/12-06-2018-al-18-12-2018/"
+    }
+]

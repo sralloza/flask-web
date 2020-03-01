@@ -1,0 +1,28 @@
+[
+    {
+        "id": 20180628,
+        "day": "Jueves 28",
+        "lunch": {
+            "p1": "ensalada de pasta",
+            "p2": "filete de ternera, o chuleta de cerdo con patatas"
+        },
+        "dinner": {
+            "p1": "nachos con queso y jalapeños",
+            "p2": "baguette, o tortilla de patata"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/27/28-06-2018-y-29-06-2018/"
+    },
+    {
+        "id": 20180629,
+        "day": "Viernes 29",
+        "lunch": {
+            "p1": "paella de marisco",
+            "p2": "canelones gratinados"
+        },
+        "dinner": {
+            "p1": "puré de patata",
+            "p2": "empanada de atún"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/27/28-06-2018-y-29-06-2018/"
+    }
+]

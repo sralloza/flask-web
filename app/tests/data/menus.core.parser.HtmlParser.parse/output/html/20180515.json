@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20180515,
+        "day": "Martes 15",
+        "lunch": {
+            "p1": "ensalada de pasta",
+            "p2": "secreto de cerdo con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "paninis variados"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/15/15-05-2018-al-21-05-2018/"
+    },
+    {
+        "id": 20180516,
+        "day": "Miércoles 16",
+        "lunch": {
+            "p1": "patatas a la marinera",
+            "p2": "costilla asada con puré de patatas"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "perritos calientes con cebolla frita, bacon y queso"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/15/15-05-2018-al-21-05-2018/"
+    },
+    {
+        "id": 20180517,
+        "day": "Jueves 17",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "lubina a la espalda con ensalada"
+        },
+        "dinner": {
+            "p1": "cóctel",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/15/15-05-2018-al-21-05-2018/"
+    },
+    {
+        "id": 20180518,
+        "day": "Viernes 18",
+        "lunch": {
+            "p1": "arroz frito",
+            "p2": "pechuga de pollo a la plancha con guarnición"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "bacalao en salsa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/15/15-05-2018-al-21-05-2018/"
+    },
+    {
+        "id": 20180519,
+        "day": "Sábado 19",
+        "lunch": {
+            "p1": "espaguettis boloñesa",
+            "p2": "libro con guarnición"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/15/15-05-2018-al-21-05-2018/"
+    },
+    {
+        "id": 20180520,
+        "day": "Domingo 20",
+        "lunch": {
+            "p1": "ensaladilla rusa",
+            "p2": "pollo al ajillo"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/15/15-05-2018-al-21-05-2018/"
+    },
+    {
+        "id": 20180521,
+        "day": "Lunes 21",
+        "lunch": {
+            "p1": "garbanzos guisados",
+            "p2": "cachopo con patatas"
+        },
+        "dinner": {
+            "p1": "guisantes con jamón",
+            "p2": "sandwich vegetal"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/15/15-05-2018-al-21-05-2018/"
+    }
+]

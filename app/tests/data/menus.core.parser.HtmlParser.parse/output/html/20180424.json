@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20180424,
+        "day": "Martes 24",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "solomillo en salsa"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "perrito con bacon, queso y cebolla frita"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/24/26-04-2018-al-30-04-2018/"
+    },
+    {
+        "id": 20180425,
+        "day": "Miércoles 25",
+        "lunch": {
+            "p1": "langostinos al brandy",
+            "p2": "escalope con patatas"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "huevo frito, salchichas y ensalada"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/24/26-04-2018-al-30-04-2018/"
+    },
+    {
+        "id": 20180426,
+        "day": "Jueves 26",
+        "lunch": {
+            "p1": "macarrones boloñesa",
+            "p2": "pollo asado en salsa"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "hamburguesa completa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/24/26-04-2018-al-30-04-2018/"
+    },
+    {
+        "id": 20180427,
+        "day": "Viernes 27",
+        "lunch": {
+            "p1": "ensalada de ahumados",
+            "p2": "merluza a la romana con guarnición"
+        },
+        "dinner": {
+            "p1": "guisantes con jamón",
+            "p2": "paninis variados"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/24/26-04-2018-al-30-04-2018/"
+    },
+    {
+        "id": 20180428,
+        "day": "Sábado 28",
+        "lunch": {
+            "p1": "coliflor gratinada",
+            "p2": "pechuga de pollo a la plancha con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/24/26-04-2018-al-30-04-2018/"
+    },
+    {
+        "id": 20180429,
+        "day": "Domingo 29",
+        "lunch": {
+            "p1": "esparragos trigueros a la plancha con jamón y queso",
+            "p2": "entrecote con patatas"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "pizzas variadas con rabas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/24/26-04-2018-al-30-04-2018/"
+    },
+    {
+        "id": 20180430,
+        "day": "Lunes 30",
+        "lunch": {
+            "p1": "arroz a la cubana",
+            "p2": "costilla asada con puré de patatas"
+        },
+        "dinner": {
+            "p1": "ensalada de pollo, piña y salsa cocktail",
+            "p2": "tortilla de patatas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/24/26-04-2018-al-30-04-2018/"
+    }
+]

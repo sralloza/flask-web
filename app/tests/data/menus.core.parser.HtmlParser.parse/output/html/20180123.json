@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20180123,
+        "day": "Martes 23",
+        "lunch": {
+            "p1": "patatas con bechamel",
+            "p2": "lubina al horno"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "fajitas mejicanas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/01/22/23-01-2018-al-29-01-2018/"
+    },
+    {
+        "id": 20180124,
+        "day": "Miércoles 24",
+        "lunch": {
+            "p1": "pisto con huevo",
+            "p2": "escalope con patatas"
+        },
+        "dinner": {
+            "p1": "crema de calabaza",
+            "p2": "paninis variados"
+        },
+        "url": "https://www.residenciasantiago.es/2018/01/22/23-01-2018-al-29-01-2018/"
+    },
+    {
+        "id": 20180125,
+        "day": "Jueves 25",
+        "lunch": {
+            "p1": "langostinos al brandy",
+            "p2": "secreto en salsa con guarnición"
+        },
+        "dinner": {
+            "p1": "patatas con salsa",
+            "p2": "hamburguesa completa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/01/22/23-01-2018-al-29-01-2018/"
+    },
+    {
+        "id": 20180126,
+        "day": "Viernes 26",
+        "lunch": {
+            "p1": "potaje de garbanzos",
+            "p2": "pechuga de pollo con guarnición"
+        },
+        "dinner": {
+            "p1": "menestra de verduras",
+            "p2": "tortilla de patatas con calamares"
+        },
+        "url": "https://www.residenciasantiago.es/2018/01/22/23-01-2018-al-29-01-2018/"
+    },
+    {
+        "id": 20180127,
+        "day": "Sábado 27",
+        "lunch": {
+            "p1": "canelones gratinados",
+            "p2": "filete de ternera con patatas"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "baguettes de bacon con queso"
+        },
+        "url": "https://www.residenciasantiago.es/2018/01/22/23-01-2018-al-29-01-2018/"
+    },
+    {
+        "id": 20180128,
+        "day": "Domingo 28",
+        "lunch": {
+            "p1": "alubias blancas estofadas",
+            "p2": "bacalao con guarnición"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "pizzas variadas con calamares"
+        },
+        "url": "https://www.residenciasantiago.es/2018/01/22/23-01-2018-al-29-01-2018/"
+    },
+    {
+        "id": 20180129,
+        "day": "Lunes 29",
+        "lunch": {
+            "p1": "ensalada de pasta",
+            "p2": "lomo a la plancha con patatas"
+        },
+        "dinner": {
+            "p1": "crema de calabacín",
+            "p2": "sandwich vegetal con san jacobo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/01/22/23-01-2018-al-29-01-2018/"
+    }
+]

@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20171107,
+        "day": "Martes 7",
+        "lunch": {
+            "p1": "patatas con bechamel",
+            "p2": "lubina al horno"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "brocheta de pollo a la plancha"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/06/semana-del-7-11-2017-al-13-11-2017/"
+    },
+    {
+        "id": 20171108,
+        "day": "Miércoles 8",
+        "lunch": {
+            "p1": "potaje de garbanzos",
+            "p2": "filete de cerdo con patatas"
+        },
+        "dinner": {
+            "p1": "sopa de ave",
+            "p2": "panini y cordón bleu de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/06/semana-del-7-11-2017-al-13-11-2017/"
+    },
+    {
+        "id": 20171109,
+        "day": "Jueves 9",
+        "lunch": {
+            "p1": "macarrones con chorizo",
+            "p2": "salmón a la naranja"
+        },
+        "dinner": {
+            "p1": "guisantes con jamón",
+            "p2": "hamburguesa a la plancha con guarnición"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/06/semana-del-7-11-2017-al-13-11-2017/"
+    },
+    {
+        "id": 20171110,
+        "day": "Viernes 10",
+        "lunch": {
+            "p1": "judias blancas estofadas",
+            "p2": "pechuga de pollo a la plancha con guarnición"
+        },
+        "dinner": {
+            "p1": "pizzas y tortilla de patata",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/06/semana-del-7-11-2017-al-13-11-2017/"
+    },
+    {
+        "id": 20171111,
+        "day": "Sábado 11",
+        "lunch": {
+            "p1": "pisto con huevo",
+            "p2": "filete de ternera a la plancha con ensalada"
+        },
+        "dinner": {
+            "p1": "crema de calabaza",
+            "p2": "baguette de lomo con queso"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/06/semana-del-7-11-2017-al-13-11-2017/"
+    },
+    {
+        "id": 20171112,
+        "day": "Domingo 12",
+        "lunch": {
+            "p1": "comida de hermandad",
+            "p2": null
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "fajitas mejicanas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/06/semana-del-7-11-2017-al-13-11-2017/"
+    },
+    {
+        "id": 20171113,
+        "day": "Lunes 13",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "conejo al horno"
+        },
+        "dinner": {
+            "p1": "ensalada de ahumados con queso de cabra",
+            "p2": "merluza rellena de puerros y gambas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/06/semana-del-7-11-2017-al-13-11-2017/"
+    }
+]

@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20180529,
+        "day": "Martes 29",
+        "lunch": {
+            "p1": "espaguettis carbonara",
+            "p2": "gallo con ensalada"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "hamburguesa completa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/28/29-05-2018-al-04-06-2018/"
+    },
+    {
+        "id": 20180530,
+        "day": "Miércoles 30",
+        "lunch": {
+            "p1": "arroz tre delicias",
+            "p2": "carne asada con puré de patatas"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "perrito caliente con bacon, queso y cebolla frita"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/28/29-05-2018-al-04-06-2018/"
+    },
+    {
+        "id": 20180531,
+        "day": "Jueves 31",
+        "lunch": {
+            "p1": "canelones gratinados",
+            "p2": "bacalao en salsa"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "paninis variados"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/28/29-05-2018-al-04-06-2018/"
+    },
+    {
+        "id": 20180601,
+        "day": "Viernes 1",
+        "lunch": {
+            "p1": "menestra de verduras",
+            "p2": "escalope con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa castellana",
+            "p2": "tortilla de patatas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/28/29-05-2018-al-04-06-2018/"
+    },
+    {
+        "id": 20180602,
+        "day": "Sábado 2",
+        "lunch": {
+            "p1": "paella mixta",
+            "p2": "pechuga de pollo con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/28/29-05-2018-al-04-06-2018/"
+    },
+    {
+        "id": 20180603,
+        "day": "Domingo 3",
+        "lunch": {
+            "p1": "entremeses variados",
+            "p2": "ragut de ternera"
+        },
+        "dinner": {
+            "p1": "guisantes con jamón",
+            "p2": "pizzas variadas con varitas de merluza"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/28/29-05-2018-al-04-06-2018/"
+    },
+    {
+        "id": 20180604,
+        "day": "Lunes 4",
+        "lunch": {
+            "p1": "lentejas estofados",
+            "p2": "chuleta de cerdo con guarnición"
+        },
+        "dinner": {
+            "p1": "PC: huevo, salchichas frescas, croquetas, patatas y ensalada",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/28/29-05-2018-al-04-06-2018/"
+    }
+]

@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20181023,
+        "day": "Martes 23",
+        "lunch": {
+            "p1": "macarrones boloñesa",
+            "p2": "salmón en salsa"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "lomo adobado con guarnición"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/22/semana-del-23-al-29-de-octubre-2018/"
+    },
+    {
+        "id": 20181024,
+        "day": "Miércoles 24",
+        "lunch": {
+            "p1": "arroz tres delicias",
+            "p2": "chuleta de cerdo con patatas"
+        },
+        "dinner": {
+            "p1": "PC: salchichas, nuggettes, croquetas de boletus y ensalada",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/22/semana-del-23-al-29-de-octubre-2018/"
+    },
+    {
+        "id": 20181025,
+        "day": "Jueves 25",
+        "lunch": {
+            "p1": "patatas a la riojana",
+            "p2": "pollo al horno con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "perrito caliente completo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/22/semana-del-23-al-29-de-octubre-2018/"
+    },
+    {
+        "id": 20181026,
+        "day": "Viernes 26",
+        "lunch": {
+            "p1": "lasaña de verduras",
+            "p2": "dorada a la espalda con ensalada"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "tortilla de patata con calamares"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/22/semana-del-23-al-29-de-octubre-2018/"
+    },
+    {
+        "id": 20181027,
+        "day": "Sábado 27",
+        "lunch": {
+            "p1": "paella mixta",
+            "p2": "solomillo a la plancha con salsa"
+        },
+        "dinner": {
+            "p1": "guisantes con jamón",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/22/semana-del-23-al-29-de-octubre-2018/"
+    },
+    {
+        "id": 20181028,
+        "day": "Domingo 28",
+        "lunch": {
+            "p1": "entremeses variados",
+            "p2": "ragú de ternera"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/22/semana-del-23-al-29-de-octubre-2018/"
+    },
+    {
+        "id": 20181029,
+        "day": "Lunes 29",
+        "lunch": {
+            "p1": "menestra de verduras",
+            "p2": "escalope con patatas"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "hamburguesa de pollo con flakes"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/22/semana-del-23-al-29-de-octubre-2018/"
+    }
+]

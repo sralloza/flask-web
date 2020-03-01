@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20180206,
+        "day": "Martes 6",
+        "lunch": {
+            "p1": "macarrones con jijas",
+            "p2": "ragú de ternera"
+        },
+        "dinner": {
+            "p1": "crema de calabaza",
+            "p2": "fajitas mejicanas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/02/05/06-02-2018-al-12-02-2018/"
+    },
+    {
+        "id": 20180207,
+        "day": "Miércoles 7",
+        "lunch": {
+            "p1": "coliflor gratinada",
+            "p2": "salmón a la naranja"
+        },
+        "dinner": {
+            "p1": "patatas gajo con salsa barbacoa",
+            "p2": "hamburguesa de ternera completa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/02/05/06-02-2018-al-12-02-2018/"
+    },
+    {
+        "id": 20180208,
+        "day": "Jueves 8",
+        "lunch": {
+            "p1": "alubias blancas estofadas",
+            "p2": "escalope con patatas"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "paninis variados"
+        },
+        "url": "https://www.residenciasantiago.es/2018/02/05/06-02-2018-al-12-02-2018/"
+    },
+    {
+        "id": 20180209,
+        "day": "Viernes 9",
+        "lunch": {
+            "p1": "arroz a la cubana",
+            "p2": "bacalao con ensalada"
+        },
+        "dinner": {
+            "p1": "guisantes con jamón",
+            "p2": "tortilla de patatas con rabas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/02/05/06-02-2018-al-12-02-2018/"
+    },
+    {
+        "id": 20180210,
+        "day": "Sábado 10",
+        "lunch": {
+            "p1": "patatas a la riojana",
+            "p2": "pechuga de pollo con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "baguettes de lomo con queso"
+        },
+        "url": "https://www.residenciasantiago.es/2018/02/05/06-02-2018-al-12-02-2018/"
+    },
+    {
+        "id": 20180211,
+        "day": "Domingo 11",
+        "lunch": {
+            "p1": "pimientos rellenos",
+            "p2": "filete de ternera con patatas"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/02/05/06-02-2018-al-12-02-2018/"
+    },
+    {
+        "id": 20180212,
+        "day": "Lunes 12",
+        "lunch": {
+            "p1": "cocido castellano",
+            "p2": null
+        },
+        "dinner": {
+            "p1": "judías verdes salteadas",
+            "p2": "sandwich mixto con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/02/05/06-02-2018-al-12-02-2018/"
+    }
+]

@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20171121,
+        "day": "Martes 21",
+        "lunch": {
+            "p1": "alubias estofadas",
+            "p2": "merluza a la romana"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "san jacobo"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/20/semana-del-20-11-2017-al-27-11-2017/"
+    },
+    {
+        "id": 20171122,
+        "day": "Miércoles 22",
+        "lunch": {
+            "p1": "judías verdes salteadas",
+            "p2": "solomillo en salsa"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "pechuga de pollo a la plancha con champiñones"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/20/semana-del-20-11-2017-al-27-11-2017/"
+    },
+    {
+        "id": 20171123,
+        "day": "Jueves 23",
+        "lunch": {
+            "p1": "paella mixta",
+            "p2": "canelones gratinados"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "baguette de lomo con queso"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/20/semana-del-20-11-2017-al-27-11-2017/"
+    },
+    {
+        "id": 20171124,
+        "day": "Viernes 24",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "dorada al horno"
+        },
+        "dinner": {
+            "p1": "menestra de verduras",
+            "p2": "fajitas mejicanas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/20/semana-del-20-11-2017-al-27-11-2017/"
+    },
+    {
+        "id": 20171125,
+        "day": "Sábado 25",
+        "lunch": {
+            "p1": "esparragos trigueros con mouse de queso",
+            "p2": "tortilla al horno con puré"
+        },
+        "dinner": {
+            "p1": "ensalada césar",
+            "p2": "hamburguesa con queso"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/20/semana-del-20-11-2017-al-27-11-2017/"
+    },
+    {
+        "id": 20171126,
+        "day": "Domingo 26",
+        "lunch": {
+            "p1": "macarrones con chorizo",
+            "p2": "albóndigas en salsa"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "pizzas con calamares"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/20/semana-del-20-11-2017-al-27-11-2017/"
+    },
+    {
+        "id": 20171127,
+        "day": "Lunes 27",
+        "lunch": {
+            "p1": "patatas con bechamel",
+            "p2": "pollo al ajillo"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "sandwich vegetal"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/20/semana-del-20-11-2017-al-27-11-2017/"
+    }
+]

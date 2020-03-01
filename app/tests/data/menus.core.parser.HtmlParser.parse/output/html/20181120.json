@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20181120,
+        "day": "Martes 20",
+        "lunch": {
+            "p1": "langostinos cocidos",
+            "p2": "entrecote de ternera a la plancha con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "hamburguesa de pollo con flakes"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/21/semana-del-20-al-26-de-noviembre-2018/"
+    },
+    {
+        "id": 20181121,
+        "day": "Miércoles 21",
+        "lunch": {
+            "p1": "patatas con bechamel",
+            "p2": "pollo al horno con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "paninis variados"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/21/semana-del-20-al-26-de-noviembre-2018/"
+    },
+    {
+        "id": 20181122,
+        "day": "Jueves 22",
+        "lunch": {
+            "p1": "macarrones salteados con setas",
+            "p2": "lubina al horno con ensalada"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "wrapp de fingers de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/21/semana-del-20-al-26-de-noviembre-2018/"
+    },
+    {
+        "id": 20181123,
+        "day": "Viernes 23",
+        "lunch": {
+            "p1": "ensalada de ahumados con queso de cabra",
+            "p2": "lasaña boloñesa"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "sandwich mixto con croquetas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/21/semana-del-20-al-26-de-noviembre-2018/"
+    },
+    {
+        "id": 20181124,
+        "day": "Sábado 24",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "costilla asada con puré de patatas"
+        },
+        "dinner": {
+            "p1": "guisantes con jamön",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/21/semana-del-20-al-26-de-noviembre-2018/"
+    },
+    {
+        "id": 20181125,
+        "day": "Domingo 25",
+        "lunch": {
+            "p1": "paella mixta",
+            "p2": "lomo a la plancha con patatas"
+        },
+        "dinner": {
+            "p1": "sopa de ave",
+            "p2": "pizzas variadas con calamares"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/21/semana-del-20-al-26-de-noviembre-2018/"
+    },
+    {
+        "id": 20181126,
+        "day": "Lunes 26",
+        "lunch": {
+            "p1": "espaguettis con atún",
+            "p2": "ragú de ternera"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "huevos rotos con patatas y chorizo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/21/semana-del-20-al-26-de-noviembre-2018/"
+    }
+]
