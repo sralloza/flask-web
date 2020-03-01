@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+* Added testing of all menus published until `March 1, 2020`.
+* New argument for `get_menus_urls`: `request_all`. If True, it will return all menus urls.
+
+### Changed
+* Changed test data storage system.
+* Moved `get_last_menus_page` from `app.utils` to `app.menus.core.utils`.
+* Make `get_last_menus_page` use `get_menus_urls` if it can't generate the last url.
+* Rename `get_last_menus_page` to `get_last_menus_url`.
+
+### Fixed
+* Fixed some bugs with `cocktail` and `combined plates`.
+* Fixed some bugs using semicolons instead of colons, like `comida;` instead of `comida:`
 
 ## [2.1.0] - 2020-02-20
 ### Added
