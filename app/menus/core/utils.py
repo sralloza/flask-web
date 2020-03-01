@@ -130,7 +130,9 @@ def filter_data(data: Union[str, List[str]]):
     out = []
     for i, d in enumerate(data):
         # First check for 'combinado'
-        if "combinado" in d:
+        if len(d) <= 2:
+            continue
+        elif "combinado" in d:
             if "1er plato:" in data[i - 1] and out:
                 out[-1] += " " + d.strip()
                 continue
@@ -145,9 +147,10 @@ def filter_data(data: Union[str, List[str]]):
                 out[-1] += " " + d_prime
                 continue
             out.append(d)
-        elif "comida" in d:
+        # TODO: use the same patterns for "comida" and "cena" as HtmlParser._process_texts
+        elif re.search(r"comida[:;]", d):
             out.append(d)
-        elif "cena" in d:
+        elif re.search(r"cena(r)?[:;]", d):
             out.append(d)
         elif "cóctel" in d or "coctel" in d:  # and d.split() < 3:
             out.append("cóctel")
@@ -177,6 +180,8 @@ def filter_data(data: Union[str, List[str]]):
         else:
             if "combinado" in data[i - 1] and "postre" not in d:
                 out[-1] += " " + d
+            elif "comida" in data[i-1] or "cena" in data[i-1]:
+                out.append("1er plato: " + d)
 
     if is_string:
         return "\n".join(out)

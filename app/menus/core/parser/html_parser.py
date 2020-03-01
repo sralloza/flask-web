@@ -1,13 +1,15 @@
 import logging
+import re
 from datetime import date, datetime
 from threading import Lock
-from typing import Union, Iterable, List
+from typing import Iterable, List, Union
 
 from bs4 import BeautifulSoup as Soup
 
 from app.menus.core.structure import DailyMenu, Index
 from app.menus.core.utils import Patterns, filter_data, has_day
 from app.utils import Translator
+
 from .abc import BaseParser
 
 logger = logging.getLogger(__name__)
@@ -80,9 +82,9 @@ class HtmlParser(BaseParser):
                 index.set_first("cóctel")
                 continue
 
-            if "comida" in text:
+            if re.search(r"comida[:;]", text):
                 index.set_state("LUNCH")
-            elif "cena" in text:
+            elif re.search(r"cena(r)?[:;]", text):
                 index.set_state("DINNER")
             elif "1er" in text:
                 index.set_first(text.split(":")[1])
