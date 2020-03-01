@@ -3,7 +3,12 @@ from unittest import mock
 
 import pytest
 
-from app.menus.core.parser import Parsers, ParserThread, ParserThreadList
+from app.menus.core.parser import (
+    KNOWN_UNPARSEABLE_URLS,
+    Parsers,
+    ParserThread,
+    ParserThreadList,
+)
 from app.utils.exceptions import DownloaderError
 
 
@@ -57,6 +62,36 @@ class TestParserThread:
 
         # Info called 1 time (after HtmlParser success)
         logger_mock.info.assert_called_once()
+
+        # Error called 0 times (no error)
+        logger_mock.error.assert_not_called()
+
+    @pytest.mark.parametrize("url", KNOWN_UNPARSEABLE_URLS)
+    def test_run_unparseable_url(self, parser_mocks, url):
+        get_mock, html_mock, manual_mock, logger_mock = parser_mocks
+
+        get_mock.return_value.text = "text"
+        dmm = mock.MagicMock()
+
+        thread = ParserThread(url, dmm)
+        thread.start()
+        thread.join()
+
+        # Warning stating url is in KNOWN_UNPARSEABLE_URLS
+        logger_mock.warning.assert_called_once()
+
+        # No parser is called
+        html_mock.process_text.assert_not_called()
+        manual_mock.process_text.assert_not_called()
+
+        # No request is made
+        get_mock.assert_not_called()
+
+        # Debug called 1 times (Starting)
+        logger_mock.debug.assert_called_once()
+
+        # Info not called
+        logger_mock.info.assert_not_called()
 
         # Error called 0 times (no error)
         logger_mock.error.assert_not_called()

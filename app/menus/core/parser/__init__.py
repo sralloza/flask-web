@@ -11,6 +11,12 @@ from app.utils.networking import downloader
 
 logger = logging.getLogger(__name__)
 
+KNOWN_UNPARSEABLE_URLS = (
+    "https://www.residenciasantiago.es/2018/06/18/19-06-2018/",
+    "https://www.residenciasantiago.es/2018/05/21/22-05-2018-al-28-05-2018/",
+    "https://www.residenciasantiago.es/2018/03/19/semana-del-20-al-26-de-marzo-2018/",
+)
+
 
 class ParserThread(Thread):
     """Thread made to control."""
@@ -23,6 +29,10 @@ class ParserThread(Thread):
 
     def run(self):
         logger.debug("Starting %s with url %r", self.name, self.url)
+
+        if self.url in KNOWN_UNPARSEABLE_URLS:
+            logger.warning("Skipped url because its in KNOWN_UNPARSEABLE_URLS")
+            return
 
         retries_left = self.retries
         while retries_left:
