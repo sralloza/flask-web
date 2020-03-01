@@ -7,7 +7,6 @@ from app.tests.data.data import ParserPaths
 
 
 class TestManualParser:
-    @pytest.mark.xfail
     def test_data_correct(self):
         assert ParserPaths.not_html.value
         assert ParserPaths.html.value
