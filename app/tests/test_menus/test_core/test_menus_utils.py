@@ -576,6 +576,8 @@ class TestPatterns:
     fix_content_pattern_1 = (
         ("cocido\ncompleto", "cocido completo"),
         ("fruta\ndía:", None),
+        ("mantequilla, mermelada\ncomida:", None),
+        ("mantequilla, mermelada\ncomida;", None),
     )
 
     @pytest.mark.parametrize("string, expected_sub", fix_content_pattern_1)
@@ -594,6 +596,7 @@ class TestPatterns:
         ("\t \t\t \t", " "),
         ("\t", None),
         ("\t\t", " "),
+        ("\n\n", None),
         ("hola que tal estás", None),
     )
 

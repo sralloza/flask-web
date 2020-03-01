@@ -212,8 +212,8 @@ class Patterns:
 
     fix_content_pattern_1 = re.compile(
         # r"(?<!:)([\w\sÁÉÍÓÚÑ]+)\n([\w\sÁÉÍÓÚÑ]+)(?!\w*:)", re.IGNORECASE
-        r"(?<!:)([A-Z\sÁÉÍÓÚÑ]+)\n([A-Z\sÁÉÍÓÚÑ]{3,})(?!([\wº]*[:\d]))",
+        r"(?<!:)([A-Z\sÁÉÍÓÚÑ]+)\n([A-Z\sÁÉÍÓÚÑ]{3,})(?!([\wº]*[;:\d]))",
         re.IGNORECASE,
     )
-    fix_content_pattern_2 = re.compile(r"(\s){2,}", re.IGNORECASE)
+    fix_content_pattern_2 = re.compile(r"([ \t]){2,}", re.IGNORECASE)
     fix_content_pattern_3 = re.compile(r"(\w+)(?:[ \t]+)(postre:)", re.IGNORECASE)
