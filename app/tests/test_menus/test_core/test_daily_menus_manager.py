@@ -258,7 +258,8 @@ def force(request):
 
 
 @pytest.fixture(params=[True, False])
-def today_in_database(request):
+def tid(request):
+    """Today in database."""
     return request.param
 
 
@@ -266,25 +267,30 @@ def today_in_database(request):
 def should_update(request):
     return request.param
 
+@pytest.fixture(params=[True, False])
+def parse_all(request):
+    return request.param
 
-def test_load(load_mocks, force, today_in_database, should_update, reset_database):
+def test_load(load_mocks, force, tid, should_update, reset_database, parse_all):
     std_mock, contains_mock, lfd_mock, su_mock, parse_mock, gmu_mock = load_mocks
-    contains_mock.return_value = today_in_database
+    contains_mock.return_value = tid
     su_mock.return_value = should_update
 
-    will_update = not today_in_database
+    will_update = not tid
     if force:
         will_update = True
     if not should_update:
         will_update = False
+    if parse_all:
+        will_update = True
 
-    DailyMenusManager.load(force=force)
+    DailyMenusManager.load(force=force, parse_all=parse_all)
 
     # Mocks
     contains_mock.assert_called_once_with(now().date())
 
     if will_update:
-        gmu_mock.assert_called_once_with()
+        gmu_mock.assert_called_once_with(request_all=parse_all)
         std_mock.assert_called_once_with()
         parse_mock.assert_called()
         # gmu_mock returns 2 subdomains of example.com
