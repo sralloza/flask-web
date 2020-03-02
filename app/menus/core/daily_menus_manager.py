@@ -1,3 +1,4 @@
+"""Manager for DailyMenus instances."""
 import logging
 import re
 from datetime import date
@@ -12,10 +13,9 @@ from app.utils import now
 from .structure import DailyMenu
 
 logger = logging.getLogger(__name__)
-M = Union[DailyMenu, List[DailyMenu]]
+_M = Union[DailyMenu, List[DailyMenu]]
 
 
-# TODO: subclass UserList
 class DailyMenusManager:
     """Represents a controller of a list of menus."""
 
@@ -70,11 +70,11 @@ class DailyMenusManager:
         """Returns html representation of the menus."""
         return "<br>".join([x.to_html() for x in self.menus])
 
-    def add_to_menus(self, menus: M):
+    def add_to_menus(self, menus: _M):
         """Adds menus to the database.
 
         Args:
-            menus: menus to add.
+            menus (list of DailyMenu): menus to add.
 
         """
 
