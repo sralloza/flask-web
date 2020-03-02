@@ -82,9 +82,9 @@ class HtmlParser(BaseParser):
                 index.set_first("cóctel")
                 continue
 
-            if re.search(r"comida[:;]", text):
+            if Patterns.pattern_lunch.search(text):
                 index.set_state("LUNCH")
-            elif re.search(r"cena(r)?[:;]", text):
+            elif Patterns.pattern_dinner.search(text):
                 index.set_state("DINNER")
             elif "1er" in text:
                 index.set_first(text.split(":")[1])

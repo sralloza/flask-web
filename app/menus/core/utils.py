@@ -148,9 +148,9 @@ def filter_data(data: Union[str, List[str]]):
                 continue
             out.append(d)
         # TODO: use the same patterns for "comida" and "cena" as HtmlParser._process_texts
-        elif re.search(r"comida[:;]", d):
+        elif Patterns.pattern_lunch.search(d):
             out.append(d)
-        elif re.search(r"cena(r)?[:;]", d):
+        elif Patterns.pattern_dinner.search(d):
             out.append(d)
         elif "cóctel" in d or "coctel" in d:  # and d.split() < 3:
             out.append("cóctel")
@@ -217,3 +217,6 @@ class Patterns:
     )
     fix_content_pattern_2 = re.compile(r"([ \t]){2,}", re.IGNORECASE)
     fix_content_pattern_3 = re.compile(r"(\w+)(?:[ \t]+)(postre:)", re.IGNORECASE)
+
+    pattern_lunch = re.compile(r"comida[:;]", re.IGNORECASE)
+    pattern_dinner = re.compile(r"cena(r)?[:;]", re.IGNORECASE)
