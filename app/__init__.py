@@ -1,6 +1,8 @@
 import logging
 from pathlib import Path
 from platform import system
+from random import choice
+from string import ascii_letters
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
@@ -39,6 +41,7 @@ def create_app(config_object):
     flask_app.register_blueprint(base_blueprint)
     flask_app.register_blueprint(menus_blueprint)
 
+    flask_app.secret_key = "".join(choice(ascii_letters) for _ in range(16))
     return flask_app
 
 

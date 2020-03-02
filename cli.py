@@ -1,12 +1,9 @@
 import sys
-from random import choice
-from string import ascii_letters
 
 from app import app
 from app.menus.core.daily_menus_manager import DailyMenusManager
 
 KEYWORD = "moises"
-app.secret_key = "".join(choice(ascii_letters) for _ in range(16))
 
 
 def show_help():
