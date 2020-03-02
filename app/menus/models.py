@@ -20,10 +20,16 @@ class DailyMenusDatabaseController:
             )
 
             return [
-                DailyMenu(data[0], data[1], data[2], Meal(*data[3:5]), Meal(*data[5:7]), data[7])
+                DailyMenu(
+                    data[0],
+                    data[1],
+                    data[2],
+                    Meal(*data[3:5]),
+                    Meal(*data[5:7]),
+                    data[7],
+                )
                 for data in connection.fetch_all()
             ]
-
 
     @classmethod
     def save_daily_menu(cls, daily_menu):
@@ -37,7 +43,7 @@ class DailyMenusDatabaseController:
                 daily_menu.lunch.p2,
                 daily_menu.dinner.p1,
                 daily_menu.dinner.p2,
-                daily_menu.url
+                daily_menu.url,
             )
 
             try:

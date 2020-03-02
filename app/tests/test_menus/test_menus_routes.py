@@ -100,9 +100,11 @@ def test_menus_redirect(client):
     assert rv.status_code == 301
     assert rv.location == "http://menus.sralloza.es/menus"
 
+
 def test_do_not_use_force_or_reload(client):
     assert client.get("/menus/reload").status_code == 404
     assert client.get("/hoy/reload").status_code == 404
+
 
 @mock.patch("app.menus.routes.DailyMenusManager", autospec=True)
 def test_menus_update(dmm_mock, client):

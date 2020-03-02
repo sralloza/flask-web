@@ -267,9 +267,11 @@ def tid(request):
 def should_update(request):
     return request.param
 
+
 @pytest.fixture(params=[True, False])
 def parse_all(request):
     return request.param
+
 
 def test_load(load_mocks, force, tid, should_update, reset_database, parse_all):
     std_mock, contains_mock, lfd_mock, su_mock, parse_mock, gmu_mock = load_mocks
