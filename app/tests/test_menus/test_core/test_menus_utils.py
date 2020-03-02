@@ -403,6 +403,7 @@ class TestPatterns:
             "día: 25 de abril de 2020 (viernes)",
         ),
         ("día : 25 de abril de 2020 ( viernes )", "día: 25 de abril de 2020 (viernes)"),
+        ("día: invalid", None)
     )
 
     @pytest.mark.parametrize("string, expected_sub", fix_dates_patterns_3_data)
