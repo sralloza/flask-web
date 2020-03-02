@@ -1,7 +1,9 @@
 import json
+from collections import namedtuple
 from datetime import datetime
 
 from flask import redirect, render_template, request, url_for
+from flask.helpers import flash
 
 from app.menus.core.utils import PRINCIPAL_URL, get_last_menus_url
 from app.utils import Tokens, get_post_arg
@@ -68,9 +70,15 @@ def today_view():
 
     dmm = DailyMenusManager.load(force=update)
     data = json.dumps(dmm.to_json())
-    update = json.dumps(dmm.updated)
+
+    if dmm.today_not_in_self or update:
+        if dmm.updated:
+            flash("Base de datos actualizada", "success")
+        else:
+            flash("Permiso denegado", "danger")
+
     return render_template(
-        "today.html", menus=data, default=PRINCIPAL_URL, update=update
+        "today.html", menus=data, default=PRINCIPAL_URL, update=json.dumps(dmm.updated)
     )
 
 
@@ -117,8 +125,11 @@ def api_menus():
 
 @menus_blueprint.route("/add", methods=["GET", "POST"])
 def add_menu_interface():
+    FormData = namedtuple("FormData", "date lunch1 lunch2 dinner1 dinner2".split())
+    form_data = FormData("", "", "", "", "")
+
     if request.method == "GET":
-        return render_template("add-interface.html")
+        return render_template("add-interface.html", data=form_data)
 
     try:
         date = get_post_arg("date", required=True, strip=True)
@@ -130,54 +141,72 @@ def add_menu_interface():
     except RuntimeError as err:
         return str(err.args[0]), 403
 
+    form_data = FormData(date, lunch1, lunch2, dinner1, dinner2)
+
     if not Tokens.check_token(token):
-        return "Invalid token", 403
+        flash("Invalid token", "danger")
+        return render_template("add-interface.html", data=form_data), 403
 
     try:
-        date = datetime.strptime(date, "%Y-%m-%d")
+        date = datetime.strptime(date, r"%Y-%m-%d")
     except ValueError as err:
-        return "Invalid date format: " + err.args[0], 403
+        flash("Invalid date format: " + err.args[0], "danger")
+        form_data = form_data._replace(date=None)
+        return render_template("add-interface.html", data=form_data), 403
 
     menu = DailyMenu(
         date.day, date.month, date.year, Meal(lunch1, lunch2), Meal(dinner1, dinner2)
     )
 
     result = menu.to_database()
-    meta = '<meta http-equiv="refresh" content="15; url=/">'
-    meta += '<br><a href="/">Home</a><br><a href="/add">Add more</a>'
 
-    status = "Saved" if result else "Not saved"
+    if result:
+        flash("Menú guardado: %s" % menu.format_date(), "success")
+    else:
+        flash("Menú no guardado: %s" % menu.format_date(), "warning")
+
     code = 200 if result else 409
 
-    return f"{status}:\n<br>" + repr(menu) + meta, code
+    form_data = FormData("", "", "", "", "")
+    return render_template("add-interface.html", data=form_data), code
 
 
 @menus_blueprint.route("/del", methods=["GET", "POST"])
 def del_menu_interface():
+    FormData = namedtuple("FormData", ["date"])
+    date = ""
+
     if request.method == "GET":
-        return render_template("del-interface.html")
+        return render_template("del-interface.html", data=FormData(date))
 
     try:
         date = get_post_arg("date", required=True, strip=True)
         token = get_post_arg("token", required=True, strip=True)
     except RuntimeError as err:
-        return str(err.args[0]), 403
+        flash(err, "info")
+        flash(str(err.args[0]), "danger")
+        return render_template("del-interface.html", data=FormData(date)), 403
 
     if not Tokens.check_token(token):
-        return "Invalid token", 403
+        flash("Invalid token", "danger")
+        return render_template("del-interface.html", data=FormData(date)), 403
 
     try:
         date = datetime.strptime(date, "%Y-%m-%d")
     except ValueError as err:
-        return "Invalid date format: " + err.args[0], 403
+        flash("Invalid date format: " + err.args[0], "danger")
+        date = ""
+        return render_template("del-interface.html", data=FormData(date)), 403
 
     menu = DailyMenu(date.day, date.month, date.year)
     result = menu.remove_from_database()
 
-    meta = '<meta http-equiv="refresh" content="15; url=/">'
-    meta += '<br><a href="/">Home</a><br><a href="/del">Del more</a>'
+    if result:
+        flash("Menú eliminado: %s" % menu.format_date(), "success")
+    else:
+        flash("Menú no eliminado: %s" % menu.format_date(), "warning")
 
-    status = "Deleted" if result else "Not deleted"
     code = 200 if result else 409
+    date = ""
 
-    return f"{status}:\n<br>" + menu.format_date() + meta, code
+    return render_template("del-interface.html", data=FormData(date)), code

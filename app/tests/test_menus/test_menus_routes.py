@@ -442,16 +442,11 @@ class TestAddMenuInterface:
         # Meals (lunch1, lunch2, dinner1 and dinner2) are not required
         if data_type is self.PostDataType.good or data_type.is_meal():
             assert rv.status_code == 200
-            assert b"Saved:\n<br>" in rv.data
-            assert b"DailyMenu(" in rv.data
-            assert b"meta http-equiv" in rv.data
-            assert b"Home" in rv.data
-            assert b"Add more" in rv.data
-            assert b"href" in rv.data
+            assert "Menú guardado".encode("utf-8") in rv.data
         else:
             if action_type == self.ActionType.change:
                 if data_type == self.PostDataType.date:
-                    assert b"Invalid date" in rv.data
+                    assert b"Invalid date format" in rv.data
                 elif data_type == self.PostDataType.token:
                     assert b"Invalid token" in rv.data
             elif action_type == self.ActionType.delete:
@@ -468,13 +463,13 @@ class TestAddMenuInterface:
 
         rv = client.post("/add", data=post_data)
         assert rv.status_code == 200
-        assert b"Saved" in rv.data
-        assert b"Not saved" not in rv.data
+        assert "Menú guardado".encode("utf-8") in rv.data
+        assert "Menú no guardado".encode("utf-8") not in rv.data
 
         rv = client.post("/add", data=post_data)
         assert rv.status_code == 409
-        assert b"Saved" not in rv.data
-        assert b"Not saved" in rv.data
+        assert "Menú guardado".encode("utf-8") not in rv.data
+        assert "Menú no guardado".encode("utf-8") in rv.data
 
 
 class TestDelMenuInterface:
@@ -546,22 +541,18 @@ class TestDelMenuInterface:
         # Data
         if action is self.ActionType.good:
             if is_ok:
-                assert b"Deleted:\n<br>" in rv.data
+                assert "Menú eliminado".encode("utf-8") in rv.data
                 assert rv.status_code == 200
             else:
-                assert b"Not deleted:\n<br>" in rv.data
+                assert "Menú no eliminado".encode("utf-8") in rv.data
                 assert rv.status_code == 409
-            assert b"meta http-equiv" in rv.data
-            assert b"Home" in rv.data
-            assert b"Del more" in rv.data
-            assert b"href" in rv.data
         else:
             assert rv.status_code == 403
         if action is self.ActionType.invalid_token:
             assert b"Invalid token" in rv.data
         elif action is self.ActionType.missing_token:
-            assert b"'token' is required" in rv.data
+            assert b"&#39;token&#39; is required" in rv.data
         elif action is self.ActionType.invalid_date:
             assert b"Invalid date" in rv.data
         elif action is self.ActionType.missing_date:
-            assert b"'date' is required" in rv.data
+            assert b"&#39;date&#39; is required" in rv.data

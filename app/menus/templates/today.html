@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block page_content %}
 <div class="container h-100 d-flex">
-    <div class="jumbotron col-sm-8 text-center mt-5 mb-1 mx-auto">
+    <div class="jumbotron col-sm-8 text-center mt-5 mb-1 mx-auto" id="main-jumbotron">
         <h1 style="color: #0088ff;" class="text-nowrap mb-3 text-center display-4 d-none d-md-block">
             <a id="day-title-a" target="_blank">{{ day }}</a>
         </h1>
@@ -72,13 +72,13 @@
 <div class="container h-100 d-flex justify-content-center">
     <div class="container h-100 col-sm-8 d-flex justify-content-between p-0">
         <div>
-            <a id="previous" class="btn btn-primary" role="button" onclick="yesterday()">
+            <a id="previous" class="btn btn-primary" role="button">
                 Anterior
             </a>
         </div>
         <div><a id="all" class="btn btn-primary" role="button">Todos</a></div>
         <div>
-            <a id="next" class="btn btn-primary" role="button" onclick="tomorrow()">Siguiente</a>
+            <a id="next" class="btn btn-primary" role="button">Siguiente</a>
         </div>
     </div>
 </div>
@@ -106,4 +106,5 @@
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/today.js') }}"></script>
+{{ super() }}
 {% endblock %}

@@ -1,6 +1,8 @@
 import logging
 
 from flask import redirect, request, url_for
+from flask.helpers import flash
+from flask.templating import render_template
 
 from app.menus.core.utils import get_last_menus_url
 
@@ -89,3 +91,15 @@ def aemet():
         "http://www.aemet.es/es/eltiempo/prediccion/municipios/horas/tabla/valladolid-id47186",
         code=301,
     )
+
+
+@base_blueprint.route("/notificaciones")
+@base_blueprint.route("/notifications")
+def asdfsdaffdsfas():
+    flash("primary", "primary")
+    flash("secondary", "secondary")
+    flash("success", "success")
+    flash("danger", "danger")
+    flash("warning", "warning")
+    flash("info", "info")
+    return render_template("base.html")

@@ -182,9 +182,9 @@ function get(name) {
 
 //window.onload = fetchMenus;
 window.onload = updateInterface;
-document.getElementById("next").onclick = tomorrow;
+// document.getElementById("next").onclick = tomorrow;
 document.getElementById("all").onclick = function () { window.location.href = '/menus' };
-document.getElementById("previous").onclick = yesterday;
+// document.getElementById("previous").onclick = yesterday;
 
 
 
@@ -197,16 +197,22 @@ var lastTouch = new Date();
 var enableMiddleClick = false;
 
 // Calculate width
-function updateWindowWidth() {
+function updateWindowsDimensions() {
     newWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    if (newWidth == width)
+    newHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+    if (newWidth == width & newHeight == height)
         return;
 
     width = newWidth;
+    height = newHeight;
+
     console.log("Calculated width: " + width);
+    console.log("Calculated height: " + height);
 }
 width = 0;
-updateWindowWidth();
+height = 0;
+updateWindowsDimensions();
 
 // Events listeners
 document.addEventListener('touchstart', handleTouchStart, false);
@@ -221,13 +227,15 @@ function handleClick(e) {
     if (currentTime - lastTouch < 750)
         return;
 
-    updateWindowWidth();
+    updateWindowsDimensions();
     let cursorX = e.pageX * 100 / width;
-    if (cursorX == 0)
+    let cursorY = e.pageY * 100 / height;
+
+    if (cursorX == 0 || cursorY == 0)
         return;
 
-    console.log("Click detected on PC: " + cursorX.toFixed(2) + "%");
-    return clickDetected(cursorX);
+    console.log("Click detected on PC: (" + cursorX.toFixed(2) + "%, " + cursorY.toFixed(2) + "%)");
+    return clickDetected(cursorX, cursorY);
 }
 
 function getTouches(evt) {
@@ -235,26 +243,34 @@ function getTouches(evt) {
 }
 
 function handleTouchStart(evt) {
-    updateWindowWidth();
+    updateWindowsDimensions();
     const firstTouch = getTouches(evt)[0];
     cursorX = firstTouch.clientX * 100 / width;
+    cursorY = firstTouch.clientY * 100 / height;
 
-    console.log("Detected Touch: " + cursorX.toFixed(2) + "%");
+    console.log("Detected Touch: (" + cursorX.toFixed(2) + "%, " + cursorY.toFixed(2) + "%)");
     lastTouch = new Date();
-    return clickDetected(cursorX);
+    return clickDetected(cursorX, cursorY);
 };
 
 
-function clickDetected(cursorXPercentage) {
+function clickDetected(cursorXPercentage, cursorYPercentage) {
+    let jumboUp = document.getElementById("main-jumbotron").getBoundingClientRect()["top"] * 100 / height;
     let prevLeft = document.getElementById("previous").getBoundingClientRect()["left"] * 100 / width;
     let prevWidth = document.getElementById("previous").getBoundingClientRect()["width"] * 100 / width;
     let allWidth = document.getElementById("all").getBoundingClientRect()["width"] * 100 / width;
 
+    let y = jumboUp;
     let x = (50 - prevLeft - prevWidth - allWidth / 2) / 2;
     let centerDiff = allWidth / 2 + x;
 
     let rightMargin = 50 + centerDiff;
     let leftMargin = 50 - centerDiff;
+
+    if (cursorYPercentage < y) {
+        console.log("Cancelling click (click above jumbotron)");
+        return;
+    }
 
     if (cursorXPercentage > rightMargin)
         return clickNext();
@@ -266,13 +282,13 @@ function clickDetected(cursorXPercentage) {
 }
 
 function clickPrevious() {
-    console.log("Autoclicking left button (previous)");
-    document.getElementById("previous").click();
+    console.log("Calling yesterday()");
+    yesterday();
 }
 
 function clickNext() {
-    console.log("Autoclicking right button (next)");
-    document.getElementById("next").click();
+    console.log("Calling tomorrow()");
+    tomorrow();
 }
 
 function clickAll() {
