@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20200302,
+        "day": "Lunes 2",
+        "lunch": {
+            "p1": "coliflor al ajo arriero",
+            "p2": "carne asada con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa de fideos",
+            "p2": "huevos rotos con jamón"
+        },
+        "url": "https://www.residenciasantiago.es/2020/03/02/semana-del-02-al-08-de-marzo-2020/"
+    },
+    {
+        "id": 20200303,
+        "day": "Martes 3",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "bacalao a la romana"
+        },
+        "dinner": {
+            "p1": "crema de calabaza",
+            "p2": "paninis variados"
+        },
+        "url": "https://www.residenciasantiago.es/2020/03/02/semana-del-02-al-08-de-marzo-2020/"
+    },
+    {
+        "id": 20200304,
+        "day": "Miércoles 4",
+        "lunch": {
+            "p1": "macarrones con atún",
+            "p2": "pollo asado con patatas"
+        },
+        "dinner": {
+            "p1": "guisantes salteados",
+            "p2": "lubina al horno"
+        },
+        "url": "https://www.residenciasantiago.es/2020/03/02/semana-del-02-al-08-de-marzo-2020/"
+    },
+    {
+        "id": 20200305,
+        "day": "Jueves 5",
+        "lunch": {
+            "p1": "menestra de verduras",
+            "p2": "ragú de ternera"
+        },
+        "dinner": {
+            "p1": "espárragos trigueros con queso fresco",
+            "p2": "sanwich mixto con croquetas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/03/02/semana-del-02-al-08-de-marzo-2020/"
+    },
+    {
+        "id": 20200306,
+        "day": "Viernes 6",
+        "lunch": {
+            "p1": "volován relleno de ensaladilla",
+            "p2": "salmón a la naranja"
+        },
+        "dinner": {
+            "p1": "pimientos rellenos",
+            "p2": "tortilla de patatas con mayonesa"
+        },
+        "url": "https://www.residenciasantiago.es/2020/03/02/semana-del-02-al-08-de-marzo-2020/"
+    },
+    {
+        "id": 20200307,
+        "day": "Sábado 7",
+        "lunch": {
+            "p1": "paella de marisco",
+            "p2": "costilla al horno con puré de manzana"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "lomo adobado con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/03/02/semana-del-02-al-08-de-marzo-2020/"
+    },
+    {
+        "id": 20200308,
+        "day": "Domingo 8",
+        "lunch": {
+            "p1": "milhojas de verduras",
+            "p2": "merluza gratinada"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "hamburguesa de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2020/03/02/semana-del-02-al-08-de-marzo-2020/"
+    }
+]
