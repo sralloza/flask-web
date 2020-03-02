@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20171017,
+        "day": "Martes 17",
+        "lunch": {
+            "p1": "menestra de verduras",
+            "p2": "pollo asado con patatas"
+        },
+        "dinner": {
+            "p1": "PC: ensaladilla, tortilla de patata y lomo adobado",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/16/semana-del-17-10-2017-al-23-10-2017/"
+    },
+    {
+        "id": 20171018,
+        "day": "Miércoles 18",
+        "lunch": {
+            "p1": "arroz tres delicias",
+            "p2": "filete de ternera con patatas"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "merluza rellena de puerros y gambas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/16/semana-del-17-10-2017-al-23-10-2017/"
+    },
+    {
+        "id": 20171019,
+        "day": "Jueves 19",
+        "lunch": {
+            "p1": "cocido castellano",
+            "p2": null
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "hamburguesa con flakes"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/16/semana-del-17-10-2017-al-23-10-2017/"
+    },
+    {
+        "id": 20171020,
+        "day": "Viernes 20",
+        "lunch": {
+            "p1": "macarrones con jijas",
+            "p2": "bacalao con ensalada"
+        },
+        "dinner": {
+            "p1": "guisantes con jamón",
+            "p2": "paninis de hot dog y contramuslo kentucky"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/16/semana-del-17-10-2017-al-23-10-2017/"
+    },
+    {
+        "id": 20171021,
+        "day": "Sábado 21",
+        "lunch": {
+            "p1": "piña con jamón",
+            "p2": "conejo asado"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "baguette de bacon con queso"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/16/semana-del-17-10-2017-al-23-10-2017/"
+    },
+    {
+        "id": 20171022,
+        "day": "Domingo 22",
+        "lunch": {
+            "p1": "canelones con atún",
+            "p2": "ragú de ternera"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "pizzas variadas con calamares"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/16/semana-del-17-10-2017-al-23-10-2017/"
+    },
+    {
+        "id": 20171023,
+        "day": "Lunes 23",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "chuleta de cerdo con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "sanwich mixto con huevo"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/16/semana-del-17-10-2017-al-23-10-2017/"
+    }
+]

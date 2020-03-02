@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20180501,
+        "day": "Martes 1",
+        "lunch": {
+            "p1": "extremeses variados",
+            "p2": "ragú de ternera"
+        },
+        "dinner": {
+            "p1": "vichyssoise",
+            "p2": "sandwich vegetal con croquetas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/30/01-05-2018-al-07-05-2018/"
+    },
+    {
+        "id": 20180502,
+        "day": "Miércoles 2",
+        "lunch": {
+            "p1": "alubias a la vinagreta",
+            "p2": "libro relleno con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "bacalao en salsa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/30/01-05-2018-al-07-05-2018/"
+    },
+    {
+        "id": 20180503,
+        "day": "Jueves 3",
+        "lunch": {
+            "p1": "macarrones con setas",
+            "p2": "atún rojo con patatas y crema de queso fresco"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "hamburguesa de pollo con flakes"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/30/01-05-2018-al-07-05-2018/"
+    },
+    {
+        "id": 20180504,
+        "day": "Viernes 4",
+        "lunch": {
+            "p1": "patatas a la riojana",
+            "p2": "escalope con pimientos"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "huevo frito con salchichas y chips"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/30/01-05-2018-al-07-05-2018/"
+    },
+    {
+        "id": 20180505,
+        "day": "Sábado 5",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "pollo a la cerveza"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/30/01-05-2018-al-07-05-2018/"
+    },
+    {
+        "id": 20180506,
+        "day": "Domingo 6",
+        "lunch": {
+            "p1": "ensalada de pasta",
+            "p2": "chuleta de cerdo a la plancha"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/30/01-05-2018-al-07-05-2018/"
+    },
+    {
+        "id": 20180507,
+        "day": "Lunes 7",
+        "lunch": {
+            "p1": "paella mixta",
+            "p2": "filetes rusos con tomate"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "sandwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/30/01-05-2018-al-07-05-2018/"
+    }
+]

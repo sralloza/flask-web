@@ -3,7 +3,8 @@ from datetime import datetime
 
 from flask import redirect, render_template, request, url_for
 
-from app.utils import PRINCIPAL_URL, Tokens, get_last_menus_page, get_post_arg
+from app.menus.core.utils import PRINCIPAL_URL, get_last_menus_url
+from app.utils import Tokens, get_post_arg
 
 from . import menus_blueprint
 from .core.daily_menus_manager import DailyMenusManager
@@ -20,7 +21,7 @@ def menus_view():
 
     dmm = DailyMenusManager.load()
 
-    last_url = get_last_menus_page()
+    last_url = get_last_menus_url()
     show = dmm.menus
 
     if not _all and not beta:

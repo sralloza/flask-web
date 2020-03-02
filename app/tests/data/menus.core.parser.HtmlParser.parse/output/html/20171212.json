@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20171212,
+        "day": "Martes 12",
+        "lunch": {
+            "p1": "menestra de verdura",
+            "p2": "pollo a la cerveza"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "lomo adobado con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/11/semana-del-12-12-2017-al-18-12-2017/"
+    },
+    {
+        "id": 20171213,
+        "day": "Miércoles 13",
+        "lunch": {
+            "p1": "lentejas con chorizo",
+            "p2": "dorada al horno con ensalada"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "hamburguesa de ternera"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/11/semana-del-12-12-2017-al-18-12-2017/"
+    },
+    {
+        "id": 20171214,
+        "day": "Jueves 14",
+        "lunch": {
+            "p1": "arroz tres delicias",
+            "p2": "costilla al horno con pure de patata"
+        },
+        "dinner": {
+            "p1": "PC: ensaladilla de cangrejo, pechuga de polloa la plancha y patatas",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/11/semana-del-12-12-2017-al-18-12-2017/"
+    },
+    {
+        "id": 20171215,
+        "day": "Viernes 15",
+        "lunch": {
+            "p1": "langostinos al brandy",
+            "p2": "canelones gratinados"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "tortilla de patata con croquetas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/11/semana-del-12-12-2017-al-18-12-2017/"
+    },
+    {
+        "id": 20171216,
+        "day": "Sábado 16",
+        "lunch": {
+            "p1": "macarrones con bonito",
+            "p2": "filete de ternera"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "fajitas mejicanas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/11/semana-del-12-12-2017-al-18-12-2017/"
+    },
+    {
+        "id": 20171217,
+        "day": "Domingo 17",
+        "lunch": {
+            "p1": "alubias blancas estofadas",
+            "p2": "bacalao a la romana"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/11/semana-del-12-12-2017-al-18-12-2017/"
+    },
+    {
+        "id": 20171218,
+        "day": "Lunes 18",
+        "lunch": {
+            "p1": "arroz a la cubana",
+            "p2": "muslos de pollo al ajillo"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "paninis variados"
+        },
+        "url": "https://www.residenciasantiago.es/2017/12/11/semana-del-12-12-2017-al-18-12-2017/"
+    }
+]

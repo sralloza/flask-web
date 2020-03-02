@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20181106,
+        "day": "Martes 6",
+        "lunch": {
+            "p1": "macarrones a la carbonara",
+            "p2": "lomo adobado con patatas"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "sandwich vegetal con croquetas de jamón"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/05/semana-del-06-al-12-de-noviembre/"
+    },
+    {
+        "id": 20181107,
+        "day": "Miércoles 7",
+        "lunch": {
+            "p1": "patatas a la riojana",
+            "p2": "lubina a la espalda con ensalada"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "wrap de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/05/semana-del-06-al-12-de-noviembre/"
+    },
+    {
+        "id": 20181108,
+        "day": "Jueves 8",
+        "lunch": {
+            "p1": "cocido castellano",
+            "p2": null
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "perrito caliente completo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/05/semana-del-06-al-12-de-noviembre/"
+    },
+    {
+        "id": 20181109,
+        "day": "Viernes 9",
+        "lunch": {
+            "p1": "menestra de verduras",
+            "p2": "escalope con patatas"
+        },
+        "dinner": {
+            "p1": "cocktail",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/05/semana-del-06-al-12-de-noviembre/"
+    },
+    {
+        "id": 20181110,
+        "day": "Sábado 10",
+        "lunch": {
+            "p1": "esparragos trigueros con jamón",
+            "p2": "ragu de ternera"
+        },
+        "dinner": {
+            "p1": "guisantes con bacon",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/05/semana-del-06-al-12-de-noviembre/"
+    },
+    {
+        "id": 20181111,
+        "day": "Domingo 11",
+        "lunch": {
+            "p1": "arroz con setas",
+            "p2": "merluza con ensalada"
+        },
+        "dinner": {
+            "p1": "sopa de ave",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/05/semana-del-06-al-12-de-noviembre/"
+    },
+    {
+        "id": 20181112,
+        "day": "Lunes 12",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "muslos de pollo asado"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "paninis minibomba brava"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/05/semana-del-06-al-12-de-noviembre/"
+    }
+]

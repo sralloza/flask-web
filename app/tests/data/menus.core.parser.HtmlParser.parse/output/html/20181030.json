@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20181030,
+        "day": "Martes 30",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "bacalao en salsa"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "paninis variados"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/29/semana-del-30-10-al-06-11/"
+    },
+    {
+        "id": 20181031,
+        "day": "Miércoles 31",
+        "lunch": {
+            "p1": "pimientos rellenos",
+            "p2": "libro con guarnición"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "sandwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/29/semana-del-30-10-al-06-11/"
+    },
+    {
+        "id": 20181101,
+        "day": "Jueves 1",
+        "lunch": {
+            "p1": "macarrones con jijas",
+            "p2": "pechuga de pollo al la plancha con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "merluza a la romana"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/29/semana-del-30-10-al-06-11/"
+    },
+    {
+        "id": 20181102,
+        "day": "Viernes 2",
+        "lunch": {
+            "p1": "patatas a la marinera",
+            "p2": "entrecote con pimientos"
+        },
+        "dinner": {
+            "p1": "sopa de ave",
+            "p2": "tortilla de patata con calamares"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/29/semana-del-30-10-al-06-11/"
+    },
+    {
+        "id": 20181103,
+        "day": "Sábado 3",
+        "lunch": {
+            "p1": "alubias blancas estofadas",
+            "p2": "lenguado con ensalada"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/29/semana-del-30-10-al-06-11/"
+    },
+    {
+        "id": 20181104,
+        "day": "Domingo 4",
+        "lunch": {
+            "p1": "paella mixta",
+            "p2": "solomillo de cerdo en salsa con patatas"
+        },
+        "dinner": {
+            "p1": "guisantes con jamón",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/29/semana-del-30-10-al-06-11/"
+    },
+    {
+        "id": 20181105,
+        "day": "Lunes 5",
+        "lunch": {
+            "p1": "patatas con bechamel",
+            "p2": "costilla asada con ensalada"
+        },
+        "dinner": {
+            "p1": "crema de calabaza",
+            "p2": "hamburguesa de ternera"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/29/semana-del-30-10-al-06-11/"
+    }
+]

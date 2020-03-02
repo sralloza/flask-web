@@ -1,0 +1,80 @@
+[
+    {
+        "id": 20200107,
+        "day": "Martes 7",
+        "lunch": {
+            "p1": null,
+            "p2": null
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "pizzas variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/03/semana-del-7-al-12-de-enero-de-2020/"
+    },
+    {
+        "id": 20200108,
+        "day": "Miércoles 8",
+        "lunch": {
+            "p1": "macarrones con jijas",
+            "p2": "pollo asado con patatas"
+        },
+        "dinner": {
+            "p1": "guisantes salteados",
+            "p2": "pescado al horno"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/03/semana-del-7-al-12-de-enero-de-2020/"
+    },
+    {
+        "id": 20200109,
+        "day": "Jueves 9",
+        "lunch": {
+            "p1": "menestra de verduras",
+            "p2": "ragú de ternera"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "sanwich mixto con croquetas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/03/semana-del-7-al-12-de-enero-de-2020/"
+    },
+    {
+        "id": 20200110,
+        "day": "Viernes 10",
+        "lunch": {
+            "p1": "patatas con costilla",
+            "p2": "pescado al horno"
+        },
+        "dinner": {
+            "p1": "pimientos rellenos",
+            "p2": "lomo adobado con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/03/semana-del-7-al-12-de-enero-de-2020/"
+    },
+    {
+        "id": 20200111,
+        "day": "Sábado 11",
+        "lunch": {
+            "p1": "paella de marisco",
+            "p2": "costilla al horno con puré de manzana"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "baguettes variados"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/03/semana-del-7-al-12-de-enero-de-2020/"
+    },
+    {
+        "id": 20200112,
+        "day": "Domingo 12",
+        "lunch": {
+            "p1": "entremeses variados",
+            "p2": "merluza gratinada"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "hamburguesa de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/03/semana-del-7-al-12-de-enero-de-2020/"
+    }
+]

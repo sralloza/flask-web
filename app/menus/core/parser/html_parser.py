@@ -1,13 +1,15 @@
 import logging
+import re
 from datetime import date, datetime
 from threading import Lock
-from typing import Union, Iterable, List
+from typing import Iterable, List, Union
 
 from bs4 import BeautifulSoup as Soup
 
 from app.menus.core.structure import DailyMenu, Index
 from app.menus.core.utils import Patterns, filter_data, has_day
 from app.utils import Translator
+
 from .abc import BaseParser
 
 logger = logging.getLogger(__name__)
@@ -29,9 +31,10 @@ class HtmlParser(BaseParser):
         text = "\n".join(x.strip() for x in container.text.splitlines() if x.strip())
         text = Patterns.fix_dates_pattern_1.sub(r"\1 \2", text)
         text = Patterns.fix_dates_pattern_2.sub(r"\1 \2", text)
-        text = Patterns.fix_dates_pattern_3.sub(r"\1)", text)
+        text = Patterns.fix_dates_pattern_3.sub(r"día: \1 de \2 de \3 (\4)", text)
         text = Patterns.fix_content_pattern_1.sub(r"\1 \2", text)
         text = Patterns.fix_content_pattern_2.sub(r" ", text)
+        text = Patterns.fix_content_pattern_3.sub(r"\1\n\2", text)
         texts = [x.strip() for x in text.splitlines() if x.strip()]
 
         texts = filter_data(texts)
@@ -49,7 +52,7 @@ class HtmlParser(BaseParser):
         logger.debug("Processing texts")
         index = Index()
         for text in texts:
-            text = text.replace("_", " ").lower()
+            text = text.replace("_", " ").lower()  # .strip()
             if Patterns.day_pattern.search(text) is not None:
                 if index.commit():
                     HtmlParser._update_menu(index, menus)
@@ -68,14 +71,20 @@ class HtmlParser(BaseParser):
                 continue
 
             if "combinado" in text:
-                index.set_combined(index.state)
-                foo = text.split(":")[-1].strip()
-                index.set_first("PC: " + foo)
-            elif "coctel" in text or "cóctel" in text:
+                _filtered = text.replace("1er plato", "")
+                if len(_filtered) - len("plato combinado") > 3:
+                    index.set_combined(index.state)
+                    foo = text.split(":")[-1].strip()
+                    index.set_first("PC: " + foo)
+                    continue
+                text = "plato combinado"
+            elif ("coctel" in text or "cóctel" in text) and len(text.split()) < 3:
                 index.set_first("cóctel")
-            elif "comida" in text:
+                continue
+
+            if re.search(r"comida[:;]", text):
                 index.set_state("LUNCH")
-            elif "cena" in text:
+            elif re.search(r"cena(r)?[:;]", text):
                 index.set_state("DINNER")
             elif "1er" in text:
                 index.set_first(text.split(":")[1])

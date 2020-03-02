@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20190226,
+        "day": "Martes 26",
+        "lunch": {
+            "p1": "coliflor gratinada",
+            "p2": "chuleta de cerdo con guarnición"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "sanwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/25/semana-del-26-de-febrero-al-04-de-marzo-2019/"
+    },
+    {
+        "id": 20190227,
+        "day": "Miércoles 27",
+        "lunch": {
+            "p1": "lentejas rehogadas",
+            "p2": "lubina al horno"
+        },
+        "dinner": {
+            "p1": "sopa minestrone",
+            "p2": "paninis"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/25/semana-del-26-de-febrero-al-04-de-marzo-2019/"
+    },
+    {
+        "id": 20190228,
+        "day": "Jueves 28",
+        "lunch": {
+            "p1": "arroz tres delicias",
+            "p2": "pollo al horno con guarnición"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "san jacobos con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/25/semana-del-26-de-febrero-al-04-de-marzo-2019/"
+    },
+    {
+        "id": 20190301,
+        "day": "Viernes 1",
+        "lunch": {
+            "p1": "garbanzos salteados con verduras",
+            "p2": "filete empanado con patatas fritas"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "hamburguesa con flakes completa"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/25/semana-del-26-de-febrero-al-04-de-marzo-2019/"
+    },
+    {
+        "id": 20190302,
+        "day": "Sábado 2",
+        "lunch": {
+            "p1": "ensalada campera",
+            "p2": "lomo de cerdo relleno de jamón york y queso"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "sajonia con ensalada"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/25/semana-del-26-de-febrero-al-04-de-marzo-2019/"
+    },
+    {
+        "id": 20190303,
+        "day": "Domingo 3",
+        "lunch": {
+            "p1": "pastel de bonito",
+            "p2": "ragout de ternera"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "tortilla de patata con calamares"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/25/semana-del-26-de-febrero-al-04-de-marzo-2019/"
+    },
+    {
+        "id": 20190304,
+        "day": "Lunes 4",
+        "lunch": {
+            "p1": "alubias blancas estofadas",
+            "p2": "costillas asadas con puré de patatas"
+        },
+        "dinner": {
+            "p1": "crema de calabacín",
+            "p2": "perritos calientes de bacon y queso"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/25/semana-del-26-de-febrero-al-04-de-marzo-2019/"
+    }
+]

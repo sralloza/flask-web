@@ -1,49 +1,88 @@
 import logging
 import re
+from itertools import count
 from typing import List, Union
 
-import requests
 from bs4 import BeautifulSoup as Soup
 from flask import current_app
-from requests.exceptions import ConnectionError
+
+from app.utils.exceptions import DownloaderError
+from app.utils.networking import downloader
 
 logger = logging.getLogger(__name__)
+
 PRINCIPAL_URL = "https://www.residenciasantiago.es/menus-1/"
+TEMPLATE = "https://www.residenciasantiago.es/app/blogpage?page=%d&withinCms=&layout=0"
 
 
-def get_menus_urls(retries=5):
+class _Cache:
+    redirect_url = None
+
+
+def get_menus_urls(request_all=False):
     """Returns the url to retrieve menus from."""
 
     if current_app.config["OFFLINE"]:
         logger.info("Server set to offline, returning emtpy list as menus urls")
         return []
 
-    # TODO: add option to retrieve all the urls.
-
-    total_retries = retries
     logger.debug("Getting menus urls")
 
-    while retries:
+    url = TEMPLATE % 0  # To avoid possible runtime errors
+    urls = []
+
+    for index in count(1):
         try:
-            response = requests.get(PRINCIPAL_URL)
+            url = TEMPLATE % index
+            response = downloader.get(url)
+            if "¡Esto es un blog!" in response.text:
+                break
+
             soup = Soup(response.text, "html.parser")
             container = soup.findAll("div", {"class": "j-blog-meta"})
-            urls = [x.a["href"] for x in container]
-            return urls
-        except ConnectionError:
-            retries -= 1
-            logger.warning(
-                "Connection error downloading principal url (%r) (%d retries left)",
-                PRINCIPAL_URL,
-                retries,
-            )
+            urls += [x.a["href"] for x in container]
 
-    logger.critical(
-        "Fatal connection error downloading principal url (%r) (%d retries)",
-        PRINCIPAL_URL,
-        total_retries,
-    )
-    return []
+            if not request_all:
+                return urls
+
+        except DownloaderError:
+            logger.warning("Could not retrieve url %r", url)
+
+            # If there is an error in the first try and only the first one needs to
+            # be processed, then return nothing (urls = [])
+            if not request_all:
+                return urls
+
+    return urls
+
+
+def get_last_menus_url():
+    from app.menus.core.daily_menus_manager import DailyMenusManager
+
+    logger.debug("Getting last menus url")
+
+    if _Cache.redirect_url:
+        logger.debug("Found in cache: %s", _Cache.redirect_url)
+        return _Cache.redirect_url
+
+    dmm = DailyMenusManager()
+    dmm.load_from_database()
+    dmm.sort()
+
+    for menu in dmm:
+        if menu.url:
+            logger.debug("Retrieving url from last menu (%d): %s", menu.id, menu.url)
+            _Cache.redirect_url = menu.url
+            return menu.url
+
+    logger.warning("No menus with urls saved in database. Using get_menus_urls")
+    urls = get_menus_urls()
+
+    if not urls:
+        return TEMPLATE % 1
+
+    _Cache.redirect_url = urls[0]
+    return _Cache.redirect_url
 
 
 def has_day(x):
@@ -91,21 +130,29 @@ def filter_data(data: Union[str, List[str]]):
     out = []
     for i, d in enumerate(data):
         # First check for 'combinado'
-        if "combinado" in d:
+        if len(d) <= 2:
+            continue
+        elif "combinado" in d:
+            if "1er plato:" in data[i - 1] and out:
+                out[-1] += " " + d.strip()
+                continue
             out.append(d.replace("1er plato:", "").strip())
         elif "1er plato:" in d:
             out.append(d)
         elif "2º plato:" in d:
             if "combinado" in data[i - 1]:
-                d = d.replace("2º plato:", "").strip()
-                out[-1] += " " + d
+                d_prime = d.replace("2º plato:", "").strip()
+                if d_prime == d or not d_prime:
+                    continue
+                out[-1] += " " + d_prime
                 continue
             out.append(d)
-        elif "comida" in d:
+        # TODO: use the same patterns for "comida" and "cena" as HtmlParser._process_texts
+        elif re.search(r"comida[:;]", d):
             out.append(d)
-        elif "cena" in d:
+        elif re.search(r"cena(r)?[:;]", d):
             out.append(d)
-        elif "cóctel" in d or "coctel" in d:
+        elif "cóctel" in d or "coctel" in d:  # and d.split() < 3:
             out.append("cóctel")
         elif Patterns.day_pattern.search(d) is not None:
             out.append(Patterns.day_pattern.search(d).group())
@@ -117,17 +164,24 @@ def filter_data(data: Union[str, List[str]]):
                     + Patterns.semi_day_pattern_2.search(d).group()
                 )
                 out.append(foo)
-        elif "2º plato" in data[i - 1] and data[i - 1].endswith("con"):
+        elif (
+            "2º plato" in data[i - 1]
+            and data[i - 1].endswith("con")
+            and "postre" not in d
+        ):
             out[-1] += " " + d
         elif (
             "1er plato" in data[i - 1]
             and i + 1 < len(data)
             and "2º plato" in data[i + 1]
+            and "postre" not in d
         ):
             out[-1] += " " + d
         else:
             if "combinado" in data[i - 1] and "postre" not in d:
                 out[-1] += " " + d
+            elif "comida" in data[i-1] or "cena" in data[i-1]:
+                out.append("1er plato: " + d)
 
     if is_string:
         return "\n".join(out)
@@ -152,14 +206,14 @@ class Patterns:
     fix_dates_pattern_1 = re.compile(r"(\w+)[\n\s]*(\d{4})", re.I)
     fix_dates_pattern_2 = re.compile(r"(día:)[\s\n]*(\d+)", re.I)
     fix_dates_pattern_3 = re.compile(
-        r"(día\s*:\s*\d+\s*de\s*\w+\s*de\s*\d{4}\s*\(\w+(?![\)a-zA-ZáéíóúÁÉÍÓÚ]))",
+        r"d[íÍ]a\s*:\s*(\d+)\s*de\s*(\w+)\s*de\s*(\d{4})\s*\(?\s*([\wá-úÁ-Ú]+)\s*\)?",
         re.IGNORECASE,
     )
 
     fix_content_pattern_1 = re.compile(
         # r"(?<!:)([\w\sÁÉÍÓÚÑ]+)\n([\w\sÁÉÍÓÚÑ]+)(?!\w*:)", re.IGNORECASE
-        r"(?<!:)([A-Z\sÁÉÍÓÚÑ]+)\n([A-Z\sÁÉÍÓÚÑ]{3,})(?!([\wº]*[:\d]))",
+        r"(?<!:)([A-Z\sÁÉÍÓÚÑ]+)\n([A-Z\sÁÉÍÓÚÑ]{3,})(?!([\wº]*[;:\d]))",
         re.IGNORECASE,
     )
-
-    fix_content_pattern_2 = re.compile(r"(\s){2,}", re.IGNORECASE)
+    fix_content_pattern_2 = re.compile(r"([ \t]){2,}", re.IGNORECASE)
+    fix_content_pattern_3 = re.compile(r"(\w+)(?:[ \t]+)(postre:)", re.IGNORECASE)

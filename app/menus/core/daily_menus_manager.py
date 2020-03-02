@@ -91,13 +91,14 @@ class DailyMenusManager:
             self.menus += new_menus
 
     @classmethod
-    def load(cls, force=None):
+    def load(cls, force=None, parse_all=False):
         """Loads the menus, from the database and from the menus web server (only if
         UpdateControl authorizes it).
 
         Args:
             force (bool): if True, download menus from the web server even if today is
                 in the database. Otherwise, it won't affect. Defaults to None.
+            parse_all (bool): if True, the system will parse every url found on the server.
         """
 
         self = DailyMenusManager()
@@ -120,12 +121,21 @@ class DailyMenusManager:
             )
             update = False
 
-        logger.info("Final decision: %s", update)
-        self.updated = update
+        if parse_all:
+            logger.info("Parse_all override the final decision (%s)", update)
+            update = True
+
+        logger.info(
+            "Delivering: [missing today:%s|force:%s|update control:%s] -> %s",
+            today_not_in_self,
+            force,
+            update_control_return,
+            update,
+        )
 
         self.updated = update
         if update:
-            urls = get_menus_urls()
+            urls = get_menus_urls(request_all=parse_all)
 
             for url in urls:
                 Parsers.parse(url, self)

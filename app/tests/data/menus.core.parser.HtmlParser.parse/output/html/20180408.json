@@ -1,0 +1,119 @@
+[
+    {
+        "id": 20180408,
+        "day": "Domingo 8",
+        "lunch": {
+            "p1": null,
+            "p2": null
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "tortilla de patatas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/06/08-04-2018-al-16-04-2018/"
+    },
+    {
+        "id": 20180409,
+        "day": "Lunes 9",
+        "lunch": {
+            "p1": "macarrones con jijas",
+            "p2": "pollo al horno con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "sandwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/06/08-04-2018-al-16-04-2018/"
+    },
+    {
+        "id": 20180410,
+        "day": "Martes 10",
+        "lunch": {
+            "p1": "ensalada cesar",
+            "p2": "costilla a la barbacoa con chips"
+        },
+        "dinner": {
+            "p1": "patatas tex - mex",
+            "p2": "hamburguesa de buey"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/06/08-04-2018-al-16-04-2018/"
+    },
+    {
+        "id": 20180411,
+        "day": "Miércoles 11",
+        "lunch": {
+            "p1": "arroz frito chino",
+            "p2": "cerdo agridulce"
+        },
+        "dinner": {
+            "p1": "rollitos de primavera",
+            "p2": "pollo al limón"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/06/08-04-2018-al-16-04-2018/"
+    },
+    {
+        "id": 20180412,
+        "day": "Jueves 12",
+        "lunch": {
+            "p1": "penne rigati all´amatriciana",
+            "p2": "tagliata con pomodoro naturale"
+        },
+        "dinner": {
+            "p1": "ensalada caprese",
+            "p2": "pizzas variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/06/08-04-2018-al-16-04-2018/"
+    },
+    {
+        "id": 20180413,
+        "day": "Viernes 13",
+        "lunch": {
+            "p1": "nachos con queso y guacamole",
+            "p2": "tacos de pescado"
+        },
+        "dinner": {
+            "p1": "cóctel",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/06/08-04-2018-al-16-04-2018/"
+    },
+    {
+        "id": 20190414,
+        "day": "Domingo 14",
+        "lunch": {
+            "p1": "paella mixta",
+            "p2": "buffet"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/06/08-04-2018-al-16-04-2018/"
+    },
+    {
+        "id": 20180415,
+        "day": "Domingo 15",
+        "lunch": {
+            "p1": "barbacoa",
+            "p2": "buffet"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "alas de pollo con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/06/08-04-2018-al-16-04-2018/"
+    },
+    {
+        "id": 20180416,
+        "day": "Lunes 16",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "lenguado con patatas"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "san jacobo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/06/08-04-2018-al-16-04-2018/"
+    }
+]

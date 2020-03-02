@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20180508,
+        "day": "Martes 8",
+        "lunch": {
+            "p1": "menestra de verduras",
+            "p2": "pechuga de pollo con guarnición"
+        },
+        "dinner": {
+            "p1": "rollitos de primavera",
+            "p2": "san jacobo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/07/08-05-2018-al-14-05-2018/"
+    },
+    {
+        "id": 20180509,
+        "day": "Miércoles 9",
+        "lunch": {
+            "p1": "ensalada campera",
+            "p2": "filete de ternera con patatas"
+        },
+        "dinner": {
+            "p1": "guisantes con jamón",
+            "p2": "fajitas mejicanas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/07/08-05-2018-al-14-05-2018/"
+    },
+    {
+        "id": 20180510,
+        "day": "Jueves 10",
+        "lunch": {
+            "p1": "macarrones con jijas",
+            "p2": "merluza gratinada en salsa"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "lomo adobado con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/07/08-05-2018-al-14-05-2018/"
+    },
+    {
+        "id": 20180511,
+        "day": "Viernes 11",
+        "lunch": {
+            "p1": "pimientos rellenos",
+            "p2": "escalope con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "tortilla de patatas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/07/08-05-2018-al-14-05-2018/"
+    },
+    {
+        "id": 20180512,
+        "day": "Sábado 12",
+        "lunch": {
+            "p1": "calabacín relleno",
+            "p2": "salmón a la naranja"
+        },
+        "dinner": {
+            "p1": "patatas gajo con salsa barbacoa",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/07/08-05-2018-al-14-05-2018/"
+    },
+    {
+        "id": 20180513,
+        "day": "Domingo 13",
+        "lunch": {
+            "p1": "entremeses variados",
+            "p2": "ragú de ternera"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "pizzas variadas con rabas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/07/08-05-2018-al-14-05-2018/"
+    },
+    {
+        "id": 20180514,
+        "day": "Lunes 14",
+        "lunch": {
+            "p1": "langostinos al brandy",
+            "p2": "muslos de pollo con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "sandwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/07/08-05-2018-al-14-05-2018/"
+    }
+]

@@ -62,16 +62,16 @@ def test_redirect_source(client):
 
 
 @mock.patch(
-    "app.base.routes.get_last_menus_page",
+    "app.base.routes.get_last_menus_url",
     return_value="http://example.com",
     autospec=True,
 )
-def test_source(get_last_menus_page_mock, client):
+def test_source(get_last_menus_url_mock, client):
     rv = client.get("/source")
     assert rv.status_code == 302
     assert rv.location == "http://example.com"
 
-    get_last_menus_page_mock.assert_called_once_with()
+    get_last_menus_url_mock.assert_called_once_with()
 
 
 def test_feedback(client):

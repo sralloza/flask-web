@@ -1,207 +1,213 @@
-from pathlib import Path
-from typing import List, Tuple
+import json
 from unittest import mock
 
 import pytest
-from flask import current_app
-from requests.exceptions import ConnectionError
+from flask.globals import current_app
 
-from app.config import Config
 from app.menus.core.utils import (
-    PRINCIPAL_URL,
+    TEMPLATE,
     Patterns,
+    _Cache,
     filter_data,
+    get_last_menus_url,
     get_menus_urls,
     has_day,
 )
+from app.tests.data.data import FilterDataPaths
+from app.tests.data.data import GetMenusUrlsDataPaths as GMUDP
+from app.utils.exceptions import DownloaderError
 
-_inputs = Path(Config.TEST_DATA_PATH / "filter_data" / "input").glob("*.txt")
-_outputs = Path(Config.TEST_DATA_PATH / "filter_data" / "output").glob("*.txt")
+gmu_test_data = []
+ids = []
 
-metadata_type = List[Tuple[Path, Path]]
+for input_path, output_path in zip(GMUDP.inputs.value, GMUDP.outputs.value):
+    assert input_path.stem.replace(".html", "") == output_path.stem
+    gmu_test_data.append(
+        (
+            input_path.read_text(encoding="utf-8"),
+            output_path.read_text(encoding="utf-8"),
+        )
+    )
+    ids.append(output_path.stem)
 
-metadata_paths: metadata_type = []
 
-for _input_path in _inputs:
-    for _output_path in _outputs:
-        if _input_path.stem == _output_path.stem:
-            metadata_paths.append((_input_path, _output_path))
-            break
-
-
-@mock.patch("requests.get", autospec=True)
+@mock.patch("app.menus.core.utils.downloader.get", autospec=True)
 @mock.patch("app.menus.core.utils.logger", autospec=True)
 class TestGetMenusUrls:
-    urls_expected = [
-        "https://www.residenciasantiago.es/2019/06/20/del-21-al-24-de-junio-2019/",
-        "https://www.residenciasantiago.es/2019/06/17/del-18-al-20-de-junio-2019/",
-    ]
-
-    warning_expected = (
-        "Connection error downloading principal url (%r) (%d retries left)"
-    )
-
-    @pytest.fixture(autouse=True, scope="class")
+    @pytest.fixture(autouse=True)
     def autouse_client(self, client):
         # client must be used always becaulse get_menus_urls uses flask's config.
-        return
-
-    @pytest.fixture(scope="class")
-    def test_content(self):
-        path = Path(__file__).parent.parent.parent / "data" / "get_urls.txt"
-
-        with path.open() as f:
-            return f.read()
-
-    def test_ok(self, logger_mock, requests_get_mock, test_content):
         current_app.config["OFFLINE"] = False
+        yield
 
-        requests_get_mock.return_value.text = test_content
-        urls = get_menus_urls()
-
-        assert len(urls) == 2
-        assert urls == self.urls_expected
-
-        logger_mock.debug.assert_called_once_with("Getting menus urls")
-
-    def test_one_connection_error(self, logger_mock, requests_get_mock, test_content):
-        current_app.config["OFFLINE"] = False
-
-        foo_mock = mock.Mock()
-        foo_mock.text = test_content
-        requests_get_mock.side_effect = iter([ConnectionError, foo_mock])
-        urls = get_menus_urls()
-
-        assert len(urls) == 2
-        assert urls == self.urls_expected
-
-        logger_mock.debug.assert_called_once_with("Getting menus urls")
-        logger_mock.warning.assert_has_calls(
-            [mock.call(self.warning_expected, PRINCIPAL_URL, 4)]
-        )
-
-    def test_two_connection_error(self, logger_mock, requests_get_mock, test_content):
-        current_app.config["OFFLINE"] = False
-
-        foo_mock = mock.Mock()
-        foo_mock.text = test_content
-        requests_get_mock.side_effect = iter(
-            [ConnectionError, ConnectionError, foo_mock]
-        )
-        urls = get_menus_urls()
-
-        assert len(urls) == 2
-        assert urls == self.urls_expected
-
-        assert logger_mock.warning.call_count == 2
-
-        logger_mock.debug.assert_called_once_with("Getting menus urls")
-        logger_mock.warning.assert_has_calls(
-            [
-                mock.call(self.warning_expected, PRINCIPAL_URL, 4),
-                mock.call(self.warning_expected, PRINCIPAL_URL, 3),
-            ]
-        )
-
-    def test_three_connection_error(self, logger_mock, requests_get_mock, test_content):
-        current_app.config["OFFLINE"] = False
-
-        foo_mock = mock.Mock()
-        foo_mock.text = test_content
-        requests_get_mock.side_effect = iter(
-            [ConnectionError, ConnectionError, ConnectionError, foo_mock]
-        )
-        urls = get_menus_urls()
-
-        assert len(urls) == 2
-        assert urls == self.urls_expected
-
-        assert logger_mock.warning.call_count == 3
-
-        logger_mock.debug.assert_called_once_with("Getting menus urls")
-        logger_mock.warning.assert_has_calls(
-            [
-                mock.call(self.warning_expected, PRINCIPAL_URL, 4),
-                mock.call(self.warning_expected, PRINCIPAL_URL, 3),
-                mock.call(self.warning_expected, PRINCIPAL_URL, 2),
-            ]
-        )
-
-    def test_four_connection_error(self, logger_mock, requests_get_mock, test_content):
-        current_app.config["OFFLINE"] = False
-
-        foo_mock = mock.Mock()
-        foo_mock.text = test_content
-        requests_get_mock.side_effect = iter(
-            [
-                ConnectionError,
-                ConnectionError,
-                ConnectionError,
-                ConnectionError,
-                foo_mock,
-            ]
-        )
-        urls = get_menus_urls()
-
-        assert len(urls) == 2
-        assert urls == self.urls_expected
-
-        assert logger_mock.warning.call_count == 4
-
-        logger_mock.debug.assert_called_once_with("Getting menus urls")
-        logger_mock.warning.assert_has_calls(
-            [
-                mock.call(self.warning_expected, PRINCIPAL_URL, 4),
-                mock.call(self.warning_expected, PRINCIPAL_URL, 3),
-                mock.call(self.warning_expected, PRINCIPAL_URL, 2),
-                mock.call(self.warning_expected, PRINCIPAL_URL, 1),
-            ]
-        )
-
-    def test_five_connection_error(self, logger_mock, requests_get_mock, test_content):
-        current_app.config["OFFLINE"] = False
-
-        foo_mock = mock.Mock()
-        foo_mock.text = test_content
-        requests_get_mock.side_effect = iter(
-            [
-                ConnectionError,
-                ConnectionError,
-                ConnectionError,
-                ConnectionError,
-                ConnectionError,
-                foo_mock,
-            ]
-        )
-        urls = get_menus_urls()
-
-        assert len(urls) == 0
-        assert urls == []
-
-        logger_mock.debug.assert_called_once_with("Getting menus urls")
-        logger_mock.warning.assert_has_calls(
-            [
-                mock.call(self.warning_expected, PRINCIPAL_URL, 4),
-                mock.call(self.warning_expected, PRINCIPAL_URL, 3),
-                mock.call(self.warning_expected, PRINCIPAL_URL, 2),
-                mock.call(self.warning_expected, PRINCIPAL_URL, 1),
-                mock.call(self.warning_expected, PRINCIPAL_URL, 0),
-            ]
-        )
-        assert logger_mock.warning.call_count == 5
-
-        logger_mock.critical.assert_called_once_with(
-            "Fatal connection error downloading principal url (%r) (%d retries)",
-            PRINCIPAL_URL,
-            5,
-        )
-
-    def test_offline(self, logger_mock, requests_get_mock):
+    def test_offline(self, logger_mock, get_mock):
         current_app.config["OFFLINE"] = True
 
-        assert get_menus_urls() == []
-        requests_get_mock.assert_not_called()
+        real = get_menus_urls()
+
         logger_mock.info.assert_called_once()
+        assert real == []
+
+    @pytest.mark.parametrize("input_data, output_data", gmu_test_data, ids=ids)
+    def test_normal_multiple(self, logger_mock, get_mock, input_data, output_data):
+        expected = json.loads(output_data)
+        interface = mock.MagicMock()
+        interface.text = input_data
+        get_mock.return_value = interface
+
+        real = get_menus_urls(request_all=False)
+
+        logger_mock.debug.assert_called_once_with("Getting menus urls")
+        get_mock.assert_called_once_with(TEMPLATE % 1)
+        assert real == expected
+
+    def test_normal_downloader_error(self, logger_mock, get_mock):
+        get_mock.side_effect = DownloaderError
+
+        real = get_menus_urls(request_all=False)
+
+        get_mock.assert_called_once()
+        logger_mock.debug.assert_called_once_with("Getting menus urls")
+        logger_mock.warning.assert_called_once()
+
+        assert real == []
+
+    @pytest.mark.parametrize("errors", [False, *range(1, len(gmu_test_data) + 1)])
+    def test_request_all(self, logger_mock, get_mock, errors):
+        expected = []
+        interfaces = []
+        ngood = 0
+        nbad = 0
+
+        for input_data, output_data in gmu_test_data:
+            if nbad == errors:
+                expected += json.loads(output_data)
+                interface = mock.MagicMock()
+                interface.text = input_data
+                interfaces.append(interface)
+                ngood += 1
+            else:
+                interfaces.append(DownloaderError)
+                nbad += 1
+
+        ndata = ngood + nbad
+
+        invalid_interface = mock.MagicMock()
+        invalid_interface.text = GMUDP.invalid.value.read_text(encoding="utf-8")
+        ndata += 1  # the invalid one
+
+        interfaces.append(invalid_interface)
+        get_mock.side_effect = interfaces
+
+        real = get_menus_urls(request_all=True)
+
+        logger_mock.debug.assert_called_once()
+        assert get_mock.call_count == ndata
+        assert real == expected
+        assert logger_mock.warning.call_count == nbad
+
+        if nbad == len(gmu_test_data):
+            assert real == []
+
+
+class TestGetLastMenusUrl:
+    url_expected = (
+        "https://www.residenciasantiago.es/2019/06/20/del-21-al-24-de-junio-2019/"
+    )
+    warning = "No menus with urls saved in database. Using get_menus_urls"
+
+    @pytest.fixture()
+    def mocks(self):
+        dmm_mock = mock.patch(
+            "app.menus.core.daily_menus_manager.DailyMenusManager", autospec=True
+        ).start()
+        gmu_mock = mock.patch(
+            "app.menus.core.utils.get_menus_urls", autospec=True
+        ).start()
+        logger_mock = mock.patch("app.menus.core.utils.logger", autospec=True).start()
+
+        yield dmm_mock, gmu_mock, logger_mock
+
+        mock.patch.stopall()
+
+    def test_use_cache(self, mocks):
+        dmm_mock, gmu_mock, logger_mock = mocks
+        _Cache.redirect_url = self.url_expected
+
+        url = get_last_menus_url()
+
+        logger_mock.debug.assert_any_call("Getting last menus url")
+        logger_mock.debug.assert_any_call("Found in cache: %s", self.url_expected)
+        assert url == self.url_expected
+
+        assert logger_mock.debug.call_count == 2
+        dmm_mock.assert_not_called()
+        gmu_mock.assert_not_called()
+
+    @pytest.mark.parametrize("menus_after_success", range(6))
+    def test_from_dmm(self, mocks, menus_after_success):
+        dmm_mock, gmu_mock, logger_mock = mocks
+
+        _Cache.redirect_url = None
+
+        invalid_menu_mock = mock.MagicMock()
+        invalid_menu_mock.url = None
+        invalid_menu_mock.id = -1
+
+        menu_mock = mock.MagicMock()
+        menu_mock.url = "valid-url"
+        menu_mock.id = 1
+
+        # Test that the url returned is the first url found
+        out_menu_mock = mock.MagicMock()
+        out_menu_mock.url = "outside-url"
+        out_menu_mock.id = 2
+
+        menus = [invalid_menu_mock] * (menus_after_success - 1)
+        menus += [menu_mock, out_menu_mock]
+
+        dmm_mock.return_value.__iter__.return_value = menus
+
+        url = get_last_menus_url()
+
+        dmm_mock.return_value.load_from_database.assert_called_once_with()
+        dmm_mock.return_value.sort.assert_called_once_with()
+
+        logger_mock.debug.assert_any_call("Getting last menus url")
+        logger_mock.warning.assert_not_called()
+        logger_mock.debug.assert_any_call(
+            "Retrieving url from last menu (%d): %s", 1, "valid-url"
+        )
+        assert logger_mock.debug.call_count == 2
+
+        assert url == "valid-url"
+        assert _Cache.redirect_url == "valid-url"
+        gmu_mock.assert_not_called()
+
+        gmu_mock.assert_not_called()
+
+    @pytest.mark.parametrize("nurls_returned", range(3))
+    def test_use_gmu(self, mocks, nurls_returned):
+        dmm_mock, gmu_mock, logger_mock = mocks
+
+        _Cache.redirect_url = None
+        gmu_mock.return_value = [self.url_expected] * nurls_returned
+        dmm_mock.return_value.__iter__.return_value = []
+
+        url = get_last_menus_url()
+
+        logger_mock.debug.assert_called_once_with("Getting last menus url")
+        logger_mock.warning.assert_any_call(self.warning)
+
+        dmm_mock.assert_called_once_with()
+        gmu_mock.assert_called_once()
+
+        if nurls_returned:
+            assert url == self.url_expected
+            assert _Cache.redirect_url == self.url_expected
+        else:
+            assert _Cache.redirect_url is None
+            assert url == TEMPLATE % 1
 
 
 class TestHasDay:
@@ -230,7 +236,6 @@ class TestHasDay:
 
 
 class TestFilterData:
-    # noinspection PyTypeChecker
     def test_argument_type(self):
         assert filter_data("hola\nadios") == ""
         assert filter_data(["hola", "adios"]) == []
@@ -243,54 +248,6 @@ class TestFilterData:
             filter_data(True)
         with pytest.raises(TypeError, match="data must be str or list, not"):
             filter_data(object)
-
-    def test_normal(self):
-        input_data = [
-            "1er plato:  ",
-            "   1 plato:   ",
-            "2º plato:   ",
-            "2o plato:",
-            "2o plato:",
-            "2oa plato:",
-            "233 plato:",
-            "2\xa0 plato:",
-            "2 plato:",
-            "desayuno",
-            "CoMiDa  ",
-            "cena",
-            "combinado",
-            "cóctel",
-            "coctel",
-            "",
-            "",
-            "",
-            "",
-            "día: 29 de febrero de 2019 (viernes)",
-            "1er plato: macarrones con patatas.",
-            "2º plato: pollo asado con bechamel.",
-        ]
-        expected = [
-            "1er plato:",
-            "1er plato:",
-            "2º plato:",
-            "2º plato:",
-            "2º plato:",
-            "2º plato:",
-            "2º plato:",
-            "2º plato:",
-            "2º plato:",
-            "comida",
-            "cena",
-            "combinado",
-            "cóctel",
-            "cóctel",
-            "día: 29 de febrero de 2019 (viernes)",
-            "1er plato: macarrones con patatas",
-            "2º plato: pollo asado con bechamel",
-        ]
-        real = filter_data(input_data)
-
-        assert real == expected
 
     def test_separate_date(self):
         input_data = ["Día: 23 de diciembre", "de 2018 (martes)"]
@@ -320,17 +277,15 @@ class TestFilterData:
 
         assert real == expected
 
-    @pytest.mark.parametrize("input_path, output_path", metadata_paths)
-    def test_meta(self, input_path, output_path):
-        with input_path.open(encoding="utf-8") as fh:
-            input_data = fh.read().splitlines()
+    filter_data_paths = zip(FilterDataPaths.inputs.value, FilterDataPaths.outputs.value)
 
-        with output_path.open(encoding="utf-8") as fh:
-            output_data = fh.read().splitlines()
+    @pytest.mark.parametrize("input_path, output_path", filter_data_paths)
+    def test_all(self, input_path, output_path):
+        input_data = input_path.read_text(encoding="utf-8").splitlines()
+        output_data = output_path.read_text(encoding="utf-8").splitlines()
+        real = filter_data(input_data)
 
-        real_data = filter_data(input_data)
-
-        assert output_data == real_data
+        assert real == output_data
 
 
 class TestPatterns:
@@ -441,13 +396,19 @@ class TestPatterns:
             assert pattern_match is None
 
     fix_dates_patterns_3_data = (
-        ("día: 27 de enero de 2020 (sábado)", None),
         ("día: 25 de abril de 2020 (viernes", "día: 25 de abril de 2020 (viernes)"),
+        ("día:25deabrilde2020(viernes)", "día: 25 de abril de 2020 (viernes)"),
+        (
+            "día\n:\n25\nde\nabril\nde\n2020\n(\nviernes\n)",
+            "día: 25 de abril de 2020 (viernes)",
+        ),
+        ("día : 25 de abril de 2020 ( viernes )", "día: 25 de abril de 2020 (viernes)"),
+        ("día: invalid", None)
     )
 
     @pytest.mark.parametrize("string, expected_sub", fix_dates_patterns_3_data)
     def test_fix_dates_pattern_3(self, string, expected_sub):
-        real_sub = Patterns.fix_dates_pattern_3.sub(r"\1)", string)
+        real_sub = Patterns.fix_dates_pattern_3.sub(r"día: \1 de \2 de \3 (\4)", string)
         pattern_match = Patterns.fix_dates_pattern_3.search(string)
 
         if expected_sub:
@@ -459,6 +420,8 @@ class TestPatterns:
     fix_content_pattern_1 = (
         ("cocido\ncompleto", "cocido completo"),
         ("fruta\ndía:", None),
+        ("mantequilla, mermelada\ncomida:", None),
+        ("mantequilla, mermelada\ncomida;", None),
     )
 
     @pytest.mark.parametrize("string, expected_sub", fix_content_pattern_1)
@@ -477,6 +440,7 @@ class TestPatterns:
         ("\t \t\t \t", " "),
         ("\t", None),
         ("\t\t", " "),
+        ("\n\n", None),
         ("hola que tal estás", None),
     )
 
@@ -484,6 +448,22 @@ class TestPatterns:
     def test_fix_content_pattern_2(self, string, expected_sub):
         real_sub = Patterns.fix_content_pattern_2.sub(r" ", string)
         pattern_match = Patterns.fix_content_pattern_2.search(string)
+
+        if expected_sub:
+            assert pattern_match is not None
+            assert real_sub == expected_sub
+        else:
+            assert pattern_match is None
+
+    fix_content_pattern_3 = (
+        ("1er plato: sardinas postre: manzana", "1er plato: sardinas\npostre: manzana"),
+        ("el postre será barato", None),
+    )
+
+    @pytest.mark.parametrize("string, expected_sub", fix_content_pattern_3)
+    def test_fix_content_pattern_3(self, string, expected_sub):
+        real_sub = Patterns.fix_content_pattern_3.sub(r"\1\n\2", string)
+        pattern_match = Patterns.fix_content_pattern_3.search(string)
 
         if expected_sub:
             assert pattern_match is not None

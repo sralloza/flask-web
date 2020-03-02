@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20181204,
+        "day": "Martes 4",
+        "lunch": {
+            "p1": "macarrones carbonara",
+            "p2": "costilla asada con guarnición"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "merluza rebozada"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/03/semana-del-4-al-10-de-diciembre-2018/"
+    },
+    {
+        "id": 20181205,
+        "day": "Miércoles 5",
+        "lunch": {
+            "p1": "patatas a la marinera",
+            "p2": "escalope con pimientos"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "huevos rellenos con san jacobo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/03/semana-del-4-al-10-de-diciembre-2018/"
+    },
+    {
+        "id": 20181206,
+        "day": "Jueves 6",
+        "lunch": {
+            "p1": "arroz a la cubana",
+            "p2": "pechuga a la plancha con patatas gajo"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "tacos mejicanos de lomo adobado"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/03/semana-del-4-al-10-de-diciembre-2018/"
+    },
+    {
+        "id": 20181207,
+        "day": "Viernes 7",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "pescado con ensalada"
+        },
+        "dinner": {
+            "p1": "judias verdes salteadas",
+            "p2": "sandwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/03/semana-del-4-al-10-de-diciembre-2018/"
+    },
+    {
+        "id": 20181208,
+        "day": "Sábado 8",
+        "lunch": {
+            "p1": "lasaña gratinada",
+            "p2": "ragú de ternera"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "tortilla de patata con calamares"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/03/semana-del-4-al-10-de-diciembre-2018/"
+    },
+    {
+        "id": 20181209,
+        "day": "Domingo 9",
+        "lunch": {
+            "p1": "entremeses variados",
+            "p2": "lomo con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/03/semana-del-4-al-10-de-diciembre-2018/"
+    },
+    {
+        "id": 20181210,
+        "day": "Lunes 10",
+        "lunch": {
+            "p1": "menestra de verduras",
+            "p2": "pollo guisado"
+        },
+        "dinner": {
+            "p1": "patatas dippers",
+            "p2": "perritos calientes con bacon y queso"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/03/semana-del-4-al-10-de-diciembre-2018/"
+    }
+]

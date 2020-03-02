@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20181211,
+        "day": "Martes 11",
+        "lunch": {
+            "p1": "macarrones carbonara",
+            "p2": "libro con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "hamburguesa de pollo con flakes"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/10/semana-del-11-al-17-de-diciembre-2018/"
+    },
+    {
+        "id": 20181212,
+        "day": "Miércoles 12",
+        "lunch": {
+            "p1": "cocido castellano",
+            "p2": null
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "paninis variados"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/10/semana-del-11-al-17-de-diciembre-2018/"
+    },
+    {
+        "id": 20181213,
+        "day": "Jueves 13",
+        "lunch": {
+            "p1": "patatas con costillas",
+            "p2": "pescado con ensalada"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "albóndigas en salsa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/10/semana-del-11-al-17-de-diciembre-2018/"
+    },
+    {
+        "id": 20181214,
+        "day": "Viernes 14",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "caldereta de lechazo"
+        },
+        "dinner": {
+            "p1": "nachos en salsa",
+            "p2": "tortitas de pollo con salsa mejicana y guacamole"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/10/semana-del-11-al-17-de-diciembre-2018/"
+    },
+    {
+        "id": 20181215,
+        "day": "Sábado 15",
+        "lunch": {
+            "p1": "paella mixta",
+            "p2": "filete de ternera a la plancha con guarnición"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "tortilla de patata con san jacobo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/10/semana-del-11-al-17-de-diciembre-2018/"
+    },
+    {
+        "id": 20181216,
+        "day": "Domingo 16",
+        "lunch": {
+            "p1": "macarrones con jijas",
+            "p2": "escalope con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/10/semana-del-11-al-17-de-diciembre-2018/"
+    },
+    {
+        "id": 20181217,
+        "day": "Lunes 17",
+        "lunch": {
+            "p1": "canelones de atún",
+            "p2": "pechuga de pollo a la plancha"
+        },
+        "dinner": {
+            "p1": "guisantes salteados",
+            "p2": "sandwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2018/12/10/semana-del-11-al-17-de-diciembre-2018/"
+    }
+]

@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20171031,
+        "day": "Martes 31",
+        "lunch": {
+            "p1": "macarrones salteados con setas",
+            "p2": "merluza rebozada"
+        },
+        "dinner": {
+            "p1": "crema de verdura",
+            "p2": "pechuga de pollo a la plancha"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/30/semana-del-31-10-2017-al-06-11-2017/"
+    },
+    {
+        "id": 20171101,
+        "day": "Miércoles 1",
+        "lunch": {
+            "p1": "guisantes salteados",
+            "p2": "costilla asada con puré"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "lenguado con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/30/semana-del-31-10-2017-al-06-11-2017/"
+    },
+    {
+        "id": 20171102,
+        "day": "Jueves 2",
+        "lunch": {
+            "p1": "langostinos al brandy",
+            "p2": "lasaña de boletus"
+        },
+        "dinner": {
+            "p1": "sopa de fideos",
+            "p2": "baguette de bacon con queso"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/30/semana-del-31-10-2017-al-06-11-2017/"
+    },
+    {
+        "id": 20171103,
+        "day": "Viernes 3",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "dorada al horno con ensalada"
+        },
+        "dinner": {
+            "p1": "menestra de verduras",
+            "p2": "fajita de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/30/semana-del-31-10-2017-al-06-11-2017/"
+    },
+    {
+        "id": 20171104,
+        "day": "Sábado 4",
+        "lunch": {
+            "p1": "esparragos trigueros con jamón y crema de queso",
+            "p2": "pollo al ajillo con rodajas de tomate"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "hamburguesa con queso y patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/30/semana-del-31-10-2017-al-06-11-2017/"
+    },
+    {
+        "id": 20171105,
+        "day": "Domingo 5",
+        "lunch": {
+            "p1": "arroz tres delicias",
+            "p2": "albondigas con patatas"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/30/semana-del-31-10-2017-al-06-11-2017/"
+    },
+    {
+        "id": 20171006,
+        "day": "Viernes 6",
+        "lunch": {
+            "p1": "ensalada de pasta",
+            "p2": "muslo de pollo en salsa de champiñones"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "sanwich mixto con san jacobo"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/30/semana-del-31-10-2017-al-06-11-2017/"
+    }
+]

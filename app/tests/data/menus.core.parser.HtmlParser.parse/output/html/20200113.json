@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20200113,
+        "day": "Lunes 13",
+        "lunch": {
+            "p1": "tortiglionis salteados con setas",
+            "p2": "lomo con patatas"
+        },
+        "dinner": {
+            "p1": "vichyssoise",
+            "p2": "fajitas de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/13/semana-del-13-al-19-de-enero-2020/"
+    },
+    {
+        "id": 20200114,
+        "day": "Martes 14",
+        "lunch": {
+            "p1": "arroz a la milanesa tres delicias",
+            "p2": "salmon a la naranja"
+        },
+        "dinner": {
+            "p1": "judías verdes salteadas",
+            "p2": "filetes rusos con tomate"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/13/semana-del-13-al-19-de-enero-2020/"
+    },
+    {
+        "id": 20200115,
+        "day": "Miércoles 15",
+        "lunch": {
+            "p1": "cocido castellano",
+            "p2": null
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "pechuga de pollo a la plancha con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/13/semana-del-13-al-19-de-enero-2020/"
+    },
+    {
+        "id": 20200116,
+        "day": "Jueves 16",
+        "lunch": {
+            "p1": "lasaña de atún",
+            "p2": "filete de ternera con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada de pasta",
+            "p2": "pescado al horno"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/13/semana-del-13-al-19-de-enero-2020/"
+    },
+    {
+        "id": 20200117,
+        "day": "Viernes 17",
+        "lunch": {
+            "p1": "esparragos trigueros con jamón y queso fresco",
+            "p2": "chuletas de cerdo con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "tortilla de patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/13/semana-del-13-al-19-de-enero-2020/"
+    },
+    {
+        "id": 20200118,
+        "day": "Sábado 18",
+        "lunch": {
+            "p1": "langostinos al brandy",
+            "p2": "brochetas de pavo con patatas"
+        },
+        "dinner": {
+            "p1": "crema de calabaza",
+            "p2": "perrito caliente con cebolla, bacon y queso"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/13/semana-del-13-al-19-de-enero-2020/"
+    },
+    {
+        "id": 20200119,
+        "day": "Domingo 19",
+        "lunch": {
+            "p1": "fabada asturiana",
+            "p2": "lenguado con ensalada"
+        },
+        "dinner": {
+            "p1": "ensalada tropical",
+            "p2": "filete de maza de cerdo con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/01/13/semana-del-13-al-19-de-enero-2020/"
+    }
+]

@@ -5,12 +5,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+* Added testing of all menus published until `March 1, 2020`.
+* New argument for `get_menus_urls`: `request_all`. If True, it will return all menus urls.
+* Add downloader class with retry control: `Downloader`
 
-## [2.1.1]
+### Changed
+* Changed test data storage system.
+* Moved `get_last_menus_page` from `app.utils` to `app.menus.core.utils`.
+* Make `get_last_menus_page` use `get_menus_urls` if it can't generate the last url.
+* Rename `get_last_menus_page` to `get_last_menus_url`.
+
+### Fixed
+* Fixed some bugs with `cocktail` and `combined plates`.
+* Fixed some bugs using semicolons instead of colons, like `comida;` instead of `comida:`
+
+
+## [2.1.1] -2020-02-27
 ### Fixed
 * Fix `UpdateControl` bug: it set the last update timestamp whenever the decision was true.
 
-## [2.1.0]
+## [2.1.0] - 2020-02-20
 ### Added
 * In `/hoy` endopoint, clicking in `All` button will allow the user to go back (click enable instead of HTTP redirect).
 * Enabled use of keys and clicking in `/hoy` endpoint. Clicks on the left will auto-click `previous` button, and clicks on the right will auto-click `next` button. This can be done with keys `K` and `L`, respectively. Also, `left arrow` and `right arrow` work, too. `T` key will change the date view to today's date.
@@ -23,8 +38,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 * Fix Web Server Gateway Interface - `flaskapp.wsgi`
-
-### Removed
 
 ## [2.0.0] - 2020-02-17
 
@@ -56,8 +69,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * New token system. All tokens written in `TOKEN_FILE_PATH` config will be accepted.
 
 ## [1.2.0] - 2020-01-31
-### Added
-
 ### Changed
 * Set web to work `OFFLINE`, because menus are no longer uploaded in text format but as images.
 * `force` argument of `DailyMenusManager.load` only forces downloading, it can't force no downloading. `UpdateControl` can override it.

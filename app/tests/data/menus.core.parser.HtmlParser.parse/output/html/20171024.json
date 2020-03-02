@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20171024,
+        "day": "Martes 24",
+        "lunch": {
+            "p1": "macarrones salteados con setas",
+            "p2": "secreto de cerdo con pimientos"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "huevo frito con croquetas de cecina y san jacobo"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/25/semana-del-24-al-30-de-octubre-de-2017/"
+    },
+    {
+        "id": 20171025,
+        "day": "Miércoles 25",
+        "lunch": {
+            "p1": "alubias pintas estofadas",
+            "p2": "lubina al horno con rodajas de tomate"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "pechuga de pollo a la plancha con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/25/semana-del-24-al-30-de-octubre-de-2017/"
+    },
+    {
+        "id": 20171026,
+        "day": "Jueves 26",
+        "lunch": {
+            "p1": "judías verdes salteadas",
+            "p2": "albóndigas con tomate"
+        },
+        "dinner": {
+            "p1": "ensalada de pasta",
+            "p2": "cinta de lomo con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/25/semana-del-24-al-30-de-octubre-de-2017/"
+    },
+    {
+        "id": 20171027,
+        "day": "Viernes 27",
+        "lunch": {
+            "p1": "arroz a la cubana",
+            "p2": "escalope con patatas"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "merluza rellena de puerros y gambas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/25/semana-del-24-al-30-de-octubre-de-2017/"
+    },
+    {
+        "id": 20171028,
+        "day": "Sábado 28",
+        "lunch": {
+            "p1": "paella mixta",
+            "p2": "solomillo en salsa"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "fajitas mejicanas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/25/semana-del-24-al-30-de-octubre-de-2017/"
+    },
+    {
+        "id": 20171029,
+        "day": "Domingo 29",
+        "lunch": {
+            "p1": "entremeses variados",
+            "p2": "filete de ternera con guarnición"
+        },
+        "dinner": {
+            "p1": "crema de calabacín y queso",
+            "p2": "pizzas variadas con calamares"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/25/semana-del-24-al-30-de-octubre-de-2017/"
+    },
+    {
+        "id": 20171030,
+        "day": "Lunes 30",
+        "lunch": {
+            "p1": "tallarines carbonara",
+            "p2": "pollo a la cerveza con rodajas de tomate"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "sanwich vegetal con huevo cocido"
+        },
+        "url": "https://www.residenciasantiago.es/2017/10/25/semana-del-24-al-30-de-octubre-de-2017/"
+    }
+]

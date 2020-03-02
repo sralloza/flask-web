@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20171114,
+        "day": "Martes 14",
+        "lunch": {
+            "p1": "macarrones a la carbonara",
+            "p2": "atún a la plancha con patatas"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "sandwich vegetal con san jacobo"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/14/semana-del-14-11-2017-al-20-11-2017/"
+    },
+    {
+        "id": 20171115,
+        "day": "Miércoles 15",
+        "lunch": {
+            "p1": "arroz tres delicias",
+            "p2": "ragú de ternera"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "paninis variados"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/14/semana-del-14-11-2017-al-20-11-2017/"
+    },
+    {
+        "id": 20171116,
+        "day": "Jueves 16",
+        "lunch": {
+            "p1": "cocido castellano",
+            "p2": null
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "hamburguesa de pollo con flakes"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/14/semana-del-14-11-2017-al-20-11-2017/"
+    },
+    {
+        "id": 20171117,
+        "day": "Viernes 17",
+        "lunch": {
+            "p1": "moussaka",
+            "p2": "lubina al horno"
+        },
+        "dinner": {
+            "p1": "ensalada césar",
+            "p2": "tortilla de patata"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/14/semana-del-14-11-2017-al-20-11-2017/"
+    },
+    {
+        "id": 20171118,
+        "day": "Sábado 18",
+        "lunch": {
+            "p1": "pimientos rellenos",
+            "p2": "chuleta de cerdo con ensalada"
+        },
+        "dinner": {
+            "p1": "sopa de fideos",
+            "p2": "baguette de bacón con queso"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/14/semana-del-14-11-2017-al-20-11-2017/"
+    },
+    {
+        "id": 20171119,
+        "day": "Domingo 19",
+        "lunch": {
+            "p1": "ensaladilla rusa",
+            "p2": "escalope con patatas"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "pizzas variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/14/semana-del-14-11-2017-al-20-11-2017/"
+    },
+    {
+        "id": 20171120,
+        "day": "Lunes 20",
+        "lunch": {
+            "p1": "espaguettis con jijas",
+            "p2": "pollo a la cerveza"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "sandwich mixto con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2017/11/14/semana-del-14-11-2017-al-20-11-2017/"
+    }
+]

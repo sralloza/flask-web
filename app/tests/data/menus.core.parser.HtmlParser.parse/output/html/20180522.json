@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20180522,
+        "day": "Martes 22",
+        "lunch": {
+            "p1": "arroz a la cubana",
+            "p2": "merluza con ensalada"
+        },
+        "dinner": {
+            "p1": "patatas gajo con salsa barbacoa",
+            "p2": "hamburguesa completa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/21/22-05-2018-al-28-05-2018/453876397/"
+    },
+    {
+        "id": 20180523,
+        "day": "Miércoles 23",
+        "lunch": {
+            "p1": "macarrones con jijas",
+            "p2": "chuleta de cerdo a la plancha con patatas"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "san jacobo con ensalada"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/21/22-05-2018-al-28-05-2018/453876397/"
+    },
+    {
+        "id": 20180524,
+        "day": "Jueves 24",
+        "lunch": {
+            "p1": "menestra con jamón",
+            "p2": "pollo al horno con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa castellana",
+            "p2": "lomo adobado con pimientos"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/21/22-05-2018-al-28-05-2018/453876397/"
+    },
+    {
+        "id": 20180525,
+        "day": "Viernes 25",
+        "lunch": {
+            "p1": "patatas con calamares",
+            "p2": "libro con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "tortilla de patatas con rabas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/21/22-05-2018-al-28-05-2018/453876397/"
+    },
+    {
+        "id": 20180526,
+        "day": "Sábado 26",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "costilla asada con puré"
+        },
+        "dinner": {
+            "p1": "judías verdes salteadas",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/21/22-05-2018-al-28-05-2018/453876397/"
+    },
+    {
+        "id": 20180527,
+        "day": "Domingo 27",
+        "lunch": {
+            "p1": "ensalada de pasta",
+            "p2": "pechuga de pollo con patatas"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/21/22-05-2018-al-28-05-2018/453876397/"
+    },
+    {
+        "id": 20180528,
+        "day": "Lunes 28",
+        "lunch": {
+            "p1": "alubias a la vinagreta",
+            "p2": "solomillo en salsa"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "sandwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2018/05/21/22-05-2018-al-28-05-2018/453876397/"
+    }
+]

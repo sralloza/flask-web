@@ -2,18 +2,10 @@ import logging
 import re
 from datetime import datetime
 
-import requests
 from bs4 import BeautifulSoup as Soup
 from flask import current_app, request
-from requests.exceptions import ConnectionError
 
 logger = logging.getLogger(__name__)
-
-PRINCIPAL_URL = "https://www.residenciasantiago.es/menus-1/"
-
-
-class _Cache:
-    redirect_url = None
 
 
 class Translator:
@@ -90,58 +82,6 @@ class Translator:
         return text
 
 
-def get_last_menus_page(retries=5):
-    from app.menus.core.daily_menus_manager import DailyMenusManager
-
-    logger.debug("Getting last menus url")
-
-    if _Cache.redirect_url:
-        logger.debug("Found in cache: %s", _Cache.redirect_url)
-        return _Cache.redirect_url
-
-    dmm = DailyMenusManager()
-    dmm.load_from_database()
-    dmm.sort()
-
-    for menu in dmm:
-        if menu.url:
-            logger.debug("Retrieving url from last menu (%d): %s", menu.id, menu.url)
-            _Cache.redirect_url = menu.url
-            return menu.url
-
-    logger.warning(
-        "Could not retrieve url, trying to parse it by download principal url (%s)",
-        PRINCIPAL_URL,
-    )
-
-    total_retries = retries
-    logger.debug("Set retries=%d", retries)
-
-    while retries:
-        try:
-            response = requests.get(PRINCIPAL_URL)
-            soup = Soup(response.text, "html.parser")
-            container = soup.findAll("div", {"class": "j-blog-meta"})
-            urls = [x.a["href"] for x in container]
-            url = urls[0]
-            _Cache.redirect_url = url
-            return url
-        except ConnectionError:
-            retries -= 1
-            logger.warning(
-                "Connection error downloading principal url (%r) (%d retries left)",
-                PRINCIPAL_URL,
-                retries,
-            )
-
-    logger.critical(
-        "Fatal connection error downloading principal url (%r) (%d retries)",
-        PRINCIPAL_URL,
-        total_retries,
-    )
-    return PRINCIPAL_URL
-
-
 def now():
     return datetime.now()
 
@@ -199,3 +139,19 @@ class Tokens:
     def update_tokens_file(cls, tokens):
         to_write = "\n".join(tokens)
         current_app.config["TOKEN_FILE_PATH"].write_text(to_write)
+
+
+class MetaSingleton(type):
+    """Metaclass to always make class return the same instance."""
+
+    def __init__(cls, name, bases, attrs):
+        super(MetaSingleton, cls).__init__(name, bases, attrs)
+        cls._instance = None
+
+    def __call__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(MetaSingleton, cls).__call__(*args, **kwargs)
+
+        # Uncomment line to check possible singleton errors
+        # logger.info("Requested Connection (id=%d)", id(cls._instance))
+        return cls._instance

@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20180605,
+        "day": "Martes 5",
+        "lunch": {
+            "p1": "macarrones boloñesa",
+            "p2": "lubina a la espalda con ensalada"
+        },
+        "dinner": {
+            "p1": "judías verdes salteadas",
+            "p2": "lomo adobado con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/04/12-06-2018-al-11-06-2018/"
+    },
+    {
+        "id": 20180606,
+        "day": "Miércoles 6",
+        "lunch": {
+            "p1": "ensalada campera",
+            "p2": "muslos de pollo con patatas"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "hamburguesa completa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/04/12-06-2018-al-11-06-2018/"
+    },
+    {
+        "id": 20180607,
+        "day": "Jueves 7",
+        "lunch": {
+            "p1": "paella mixta",
+            "p2": "secreto a la plancha con patatas"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "bacalao a la romana con ensalada"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/04/12-06-2018-al-11-06-2018/"
+    },
+    {
+        "id": 20180608,
+        "day": "Viernes 8",
+        "lunch": {
+            "p1": "esparragos trigueros con bacon y queso fresco",
+            "p2": "costilla al horno con puré de patatas"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "tortilla de patatas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/04/12-06-2018-al-11-06-2018/"
+    },
+    {
+        "id": 20180609,
+        "day": "Sábado 9",
+        "lunch": {
+            "p1": "milhojas de verduras gratinadas",
+            "p2": "pechuga de pollo a la plancha con patatas"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/04/12-06-2018-al-11-06-2018/"
+    },
+    {
+        "id": 20180610,
+        "day": "Domingo 10",
+        "lunch": {
+            "p1": "entremeses variados",
+            "p2": "solomillo wellington"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "pizzas variadas con calamares a la romana"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/04/12-06-2018-al-11-06-2018/"
+    },
+    {
+        "id": 20180611,
+        "day": "Lunes 11",
+        "lunch": {
+            "p1": "ensalada cesar",
+            "p2": "entrecote de ternera con patatas"
+        },
+        "dinner": {
+            "p1": "huevos rellenos",
+            "p2": "sandwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2018/06/04/12-06-2018-al-11-06-2018/"
+    }
+]

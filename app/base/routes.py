@@ -2,7 +2,7 @@ import logging
 
 from flask import redirect, request, url_for
 
-from app.utils import get_last_menus_page
+from app.menus.core.utils import get_last_menus_url
 
 from . import base_blueprint
 
@@ -68,10 +68,9 @@ def redirect_source():
     return redirect(url_for("base_blueprint.source"), code=301)
 
 
-# noinspection PyBroadException
 @base_blueprint.route("/source")
 def source():
-    return redirect(get_last_menus_page())
+    return redirect(get_last_menus_url())
 
 
 @base_blueprint.route("/feedback")

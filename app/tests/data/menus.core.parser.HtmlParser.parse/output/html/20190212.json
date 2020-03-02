@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20190212,
+        "day": "Martes 12",
+        "lunch": {
+            "p1": "macarrones boloñesa",
+            "p2": "bacalao a la romana con ensalada"
+        },
+        "dinner": {
+            "p1": "sopa minestrone",
+            "p2": "paninis variados"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/11/semana-del-12-al-18-de-febrero-2019/"
+    },
+    {
+        "id": 20190213,
+        "day": "Miércoles 13",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "pollo asado con guarnición"
+        },
+        "dinner": {
+            "p1": "guisantes rehogados con jamón",
+            "p2": "lomo adosado con ensalada"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/11/semana-del-12-al-18-de-febrero-2019/"
+    },
+    {
+        "id": 20190214,
+        "day": "Jueves 14",
+        "lunch": {
+            "p1": "arroz tres delicias",
+            "p2": "secreto de cerdo con salsa española y patatas"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "sandwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/11/semana-del-12-al-18-de-febrero-2019/"
+    },
+    {
+        "id": 20190215,
+        "day": "Viernes 15",
+        "lunch": {
+            "p1": "patatas con costillas",
+            "p2": "lubina al horno"
+        },
+        "dinner": {
+            "p1": "plato combinado",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/11/semana-del-12-al-18-de-febrero-2019/"
+    },
+    {
+        "id": 20190216,
+        "day": "Sábado 16",
+        "lunch": {
+            "p1": "paella de pollo y conejo",
+            "p2": "entrecot de ternera"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "hamburguesa con flakes"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/11/semana-del-12-al-18-de-febrero-2019/"
+    },
+    {
+        "id": 20190217,
+        "day": "Domingo 17",
+        "lunch": {
+            "p1": "ensaladilla rusa",
+            "p2": "pechuga de pollo a la plancha"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "perrito caliente con bacon y queso"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/11/semana-del-12-al-18-de-febrero-2019/"
+    },
+    {
+        "id": 20190218,
+        "day": "Lunes 18",
+        "lunch": {
+            "p1": "alubias blancas estofadas",
+            "p2": "filete de cerdo empanado"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "pincho moruno de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2019/02/11/semana-del-12-al-18-de-febrero-2019/"
+    }
+]

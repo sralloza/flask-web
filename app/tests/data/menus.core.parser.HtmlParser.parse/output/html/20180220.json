@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20180220,
+        "day": "Martes 20",
+        "lunch": {
+            "p1": "macarrones a la boloñesa",
+            "p2": "pechugas de pollo a la plancha con patatas"
+        },
+        "dinner": {
+            "p1": "guisantes con jamón",
+            "p2": "paninis variados"
+        },
+        "url": "https://www.residenciasantiago.es/2018/02/19/19-02-2018-al-26-02-2018/"
+    },
+    {
+        "id": 20180221,
+        "day": "Miércoles 21",
+        "lunch": {
+            "p1": "patatas con costillas",
+            "p2": "lenguado con ensalada"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "san jacobo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/02/19/19-02-2018-al-26-02-2018/"
+    },
+    {
+        "id": 20180222,
+        "day": "Jueves 22",
+        "lunch": {
+            "p1": "judías verdes con jamón",
+            "p2": "libro con patatas"
+        },
+        "dinner": {
+            "p1": "rollitos de primavera",
+            "p2": "alitas de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/02/19/19-02-2018-al-26-02-2018/"
+    },
+    {
+        "id": 20180223,
+        "day": "Viernes 23",
+        "lunch": {
+            "p1": "potaje de garbanzos",
+            "p2": "salmón a la naranja con ensalada"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "tortilla de patatas y empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/02/19/19-02-2018-al-26-02-2018/"
+    },
+    {
+        "id": 20180224,
+        "day": "Sábado 24",
+        "lunch": {
+            "p1": "totada de calabacín relleno de jamón serrano y queso en salsa",
+            "p2": "caldereta de cordero"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "baguettes variados"
+        },
+        "url": "https://www.residenciasantiago.es/2018/02/19/19-02-2018-al-26-02-2018/"
+    },
+    {
+        "id": 20180225,
+        "day": "Domingo 25",
+        "lunch": {
+            "p1": "pastel de pescado",
+            "p2": "solomillo en costra de hojaldre wellington con salsa"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "pizzas variadas con crocretas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/02/19/19-02-2018-al-26-02-2018/"
+    },
+    {
+        "id": 20180226,
+        "day": "Lunes 26",
+        "lunch": {
+            "p1": "pasta salteada con setas",
+            "p2": "lomo adobado con patatas"
+        },
+        "dinner": {
+            "p1": "patatas gajo en salsa barbacoa",
+            "p2": "sandwich vegetal"
+        },
+        "url": "https://www.residenciasantiago.es/2018/02/19/19-02-2018-al-26-02-2018/"
+    }
+]

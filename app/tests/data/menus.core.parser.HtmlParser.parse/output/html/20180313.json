@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20180313,
+        "day": "Martes 13",
+        "lunch": {
+            "p1": "espaguettis a la carbonara",
+            "p2": "atún con cebolla caramelizada y patatas panadera"
+        },
+        "dinner": {
+            "p1": "patatas gajo con salsa barbacoa",
+            "p2": "hamburguesa completa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/03/12/13-03-2018-al-19-03-2018/"
+    },
+    {
+        "id": 20180314,
+        "day": "Miércoles 14",
+        "lunch": {
+            "p1": "pimientos rellenos",
+            "p2": "costilla asada con puré de patatas"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "fajitas mejicanas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/03/12/13-03-2018-al-19-03-2018/"
+    },
+    {
+        "id": 20180315,
+        "day": "Jueves 15",
+        "lunch": {
+            "p1": "cocido castellano",
+            "p2": null
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "sandwich mixto con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/03/12/13-03-2018-al-19-03-2018/"
+    },
+    {
+        "id": 20180316,
+        "day": "Viernes 16",
+        "lunch": {
+            "p1": "salpicón de marisco",
+            "p2": "salmón a la naranja"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "patatas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/03/12/13-03-2018-al-19-03-2018/"
+    },
+    {
+        "id": 20180317,
+        "day": "Sábado 17",
+        "lunch": {
+            "p1": "lasaña de verduras",
+            "p2": "solomillo a la plancha con salsa de hongos"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "baguettes de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/03/12/13-03-2018-al-19-03-2018/"
+    },
+    {
+        "id": 20180318,
+        "day": "Domingo 18",
+        "lunch": {
+            "p1": "calabacín relleno en salsa",
+            "p2": "entrecote de ternera con patatas"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "pizzas variadas con rabas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/03/12/13-03-2018-al-19-03-2018/"
+    },
+    {
+        "id": 20180319,
+        "day": "Lunes 19",
+        "lunch": {
+            "p1": "patatas a la riojana",
+            "p2": "pollo a la cerveza"
+        },
+        "dinner": {
+            "p1": "ensalada de ahumados",
+            "p2": "huevo frito, paninis y croquetas de cecina"
+        },
+        "url": "https://www.residenciasantiago.es/2018/03/12/13-03-2018-al-19-03-2018/"
+    }
+]

@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20181016,
+        "day": "Martes 16",
+        "lunch": {
+            "p1": "judías verdes salteadas",
+            "p2": "bacalao con ensalada"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "hamburguesa completa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/15/semana-del-16-al-22-de-octubre-de-2018/"
+    },
+    {
+        "id": 20181017,
+        "day": "Miércoles 17",
+        "lunch": {
+            "p1": "cocido castellano",
+            "p2": null
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "wrap de pollo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/15/semana-del-16-al-22-de-octubre-de-2018/"
+    },
+    {
+        "id": 20181018,
+        "day": "Jueves 18",
+        "lunch": {
+            "p1": "arroz tres delicias",
+            "p2": "filete de ternera con guarnición"
+        },
+        "dinner": {
+            "p1": "PC: merluza a la romana, espárragos, patatas y delicias de boletus",
+            "p2": null
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/15/semana-del-16-al-22-de-octubre-de-2018/"
+    },
+    {
+        "id": 20181019,
+        "day": "Viernes 19",
+        "lunch": {
+            "p1": "guisantes con jamón",
+            "p2": "lubina al horno"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "tortilla de patatas con calamares"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/15/semana-del-16-al-22-de-octubre-de-2018/"
+    },
+    {
+        "id": 20181020,
+        "day": "Sábado 20",
+        "lunch": {
+            "p1": "patatas con pulpo",
+            "p2": "conejo guisado"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/15/semana-del-16-al-22-de-octubre-de-2018/"
+    },
+    {
+        "id": 20181021,
+        "day": "Domingo 21",
+        "lunch": {
+            "p1": "ensalada caprese",
+            "p2": "costilla asada con puré"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "pizzas variadas con croquetas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/15/semana-del-16-al-22-de-octubre-de-2018/"
+    },
+    {
+        "id": 20181022,
+        "day": "Lunes 22",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "pechuga de pollo con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "huevos rotos con patatas y chorizo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/10/15/semana-del-16-al-22-de-octubre-de-2018/"
+    }
+]

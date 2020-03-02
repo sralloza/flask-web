@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20190115,
+        "day": "Martes 15",
+        "lunch": {
+            "p1": "calabacin relleno de jamon serrano y queso en salsa",
+            "p2": "carrilleras de cerdo al vino tinto con guarnicion"
+        },
+        "dinner": {
+            "p1": "ensalada de queso fresco",
+            "p2": "pizzas variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/15/semana-del-15-al-21-de-enero-2019/"
+    },
+    {
+        "id": 20190116,
+        "day": "Miércoles 16",
+        "lunch": {
+            "p1": "paella mixta",
+            "p2": "salmon a la naranja"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "sandwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/15/semana-del-15-al-21-de-enero-2019/"
+    },
+    {
+        "id": 20190117,
+        "day": "Jueves 17",
+        "lunch": {
+            "p1": "cocktail de piña y langostinos",
+            "p2": "pollo asado con guarnicion"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "hamburguesa barbacoa completa"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/15/semana-del-15-al-21-de-enero-2019/"
+    },
+    {
+        "id": 20190118,
+        "day": "Viernes 18",
+        "lunch": {
+            "p1": "macarrones salteados con setas y gambas",
+            "p2": "filete a la plancha"
+        },
+        "dinner": {
+            "p1": "sopa maravilla",
+            "p2": "alitas de pollo caramelizadas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/15/semana-del-15-al-21-de-enero-2019/"
+    },
+    {
+        "id": 20190119,
+        "day": "Sábado 19",
+        "lunch": {
+            "p1": "patatas con costillas",
+            "p2": "merluza en salsa"
+        },
+        "dinner": {
+            "p1": "crema de calabacin",
+            "p2": "baguettes de bacon y queso"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/15/semana-del-15-al-21-de-enero-2019/"
+    },
+    {
+        "id": 20190120,
+        "day": "Domingo 20",
+        "lunch": {
+            "p1": "entremeses variados",
+            "p2": "cachopo de cecina y queso de cabra"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "pizzas variadas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/15/semana-del-15-al-21-de-enero-2019/"
+    },
+    {
+        "id": 20190121,
+        "day": "Lunes 21",
+        "lunch": {
+            "p1": "potaje de garbanzos",
+            "p2": "costilla de cerdo con guarnición"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "perritos calientes completos"
+        },
+        "url": "https://www.residenciasantiago.es/2019/01/15/semana-del-15-al-21-de-enero-2019/"
+    }
+]

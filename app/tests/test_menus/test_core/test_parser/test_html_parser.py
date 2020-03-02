@@ -6,18 +6,28 @@ import pytest
 
 from app.menus.core.daily_menus_manager import DailyMenusManager
 from app.menus.core.parser import HtmlParser
-from app.tests.data.data import Paths
+from app.tests.data.data import ParserPaths
 
 ptd_type = List[Tuple[Path, Path]]
 
 process_text_data: ptd_type = []
 
-for html_path in Paths.html.value:
-    for json_path in Paths.json.value:
+for html_path in ParserPaths.html.value:
+    for json_path in ParserPaths.json.value:
         # Due to naming convention
         if html_path.stem == json_path.stem + ".html":
-            process_text_data.append((html_path, json_path, Paths.urls_dict.value.get(json_path.stem, None)))
+            process_text_data.append(
+                (
+                    html_path,
+                    json_path,
+                    ParserPaths.urls_dict.value["html"].get(json_path.stem, None),
+                )
+            )
             break
+
+
+def test_correct_text_data():
+    assert process_text_data
 
 
 class TestHtmlParser:

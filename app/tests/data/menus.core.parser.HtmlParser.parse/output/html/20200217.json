@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20200217,
+        "day": "Lunes 17",
+        "lunch": {
+            "p1": "patatas con verduras",
+            "p2": "albóndigas en salsa"
+        },
+        "dinner": {
+            "p1": "sopa maravilla con jamón york y huevo",
+            "p2": "pizzas variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/17/semana-del-17-al-23-de-febrero-2020/"
+    },
+    {
+        "id": 20200218,
+        "day": "Martes 18",
+        "lunch": {
+            "p1": "macarrones carbonara",
+            "p2": "lubina al horno"
+        },
+        "dinner": {
+            "p1": "guisantes salteados",
+            "p2": "libro de lomo"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/17/semana-del-17-al-23-de-febrero-2020/"
+    },
+    {
+        "id": 20200219,
+        "day": "Miércoles 19",
+        "lunch": {
+            "p1": "emparedado con berenjena de queso de cabra",
+            "p2": "pechuga de pollo con guarnición"
+        },
+        "dinner": {
+            "p1": "sopa de pescado",
+            "p2": "salchichas al vino con puré de patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/17/semana-del-17-al-23-de-febrero-2020/"
+    },
+    {
+        "id": 20200220,
+        "day": "Jueves 20",
+        "lunch": {
+            "p1": "lentejas estofadas",
+            "p2": "costillas asadas"
+        },
+        "dinner": {
+            "p1": "espirales con tomate",
+            "p2": "sanwich vegetal"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/17/semana-del-17-al-23-de-febrero-2020/"
+    },
+    {
+        "id": 20200221,
+        "day": "Viernes 21",
+        "lunch": {
+            "p1": "arroz a la cubana",
+            "p2": "merluza en salsa"
+        },
+        "dinner": {
+            "p1": "coliflor al ajo arriero",
+            "p2": "hamburguesa de buey completa"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/17/semana-del-17-al-23-de-febrero-2020/"
+    },
+    {
+        "id": 20200222,
+        "day": "Sábado 22",
+        "lunch": {
+            "p1": "espárragos dos salsas",
+            "p2": "caldereta de lechazo"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "ragú de pavo con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/17/semana-del-17-al-23-de-febrero-2020/"
+    },
+    {
+        "id": 20200223,
+        "day": "Domingo 23",
+        "lunch": {
+            "p1": "canelones gratinados",
+            "p2": "pollo asado"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "bacalao en salsa"
+        },
+        "url": "https://www.residenciasantiago.es/2020/02/17/semana-del-17-al-23-de-febrero-2020/"
+    }
+]

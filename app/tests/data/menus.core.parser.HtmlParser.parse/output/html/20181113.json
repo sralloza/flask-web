@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20181113,
+        "day": "Martes 13",
+        "lunch": {
+            "p1": "macarrones con jijas",
+            "p2": "solomillo en salsa con pimientos"
+        },
+        "dinner": {
+            "p1": "ensalada cesar",
+            "p2": "salchichas frescas, croquetas y patatas chips"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/12/semana-del-13-al-19-de-noviembre-2018/"
+    },
+    {
+        "id": 20181114,
+        "day": "Miércoles 14",
+        "lunch": {
+            "p1": "patatas con costillas",
+            "p2": "gallos con guarnición"
+        },
+        "dinner": {
+            "p1": "rollitos de primavera",
+            "p2": "sandwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/12/semana-del-13-al-19-de-noviembre-2018/"
+    },
+    {
+        "id": 20181115,
+        "day": "Jueves 15",
+        "lunch": {
+            "p1": "canelones de atún gratinados",
+            "p2": "pechuga de pollo a la plancha con patatas"
+        },
+        "dinner": {
+            "p1": "patatas sol y sombra",
+            "p2": "san jacobo"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/12/semana-del-13-al-19-de-noviembre-2018/"
+    },
+    {
+        "id": 20181116,
+        "day": "Viernes 16",
+        "lunch": {
+            "p1": "judías verdes salteadas",
+            "p2": "bacalao a la vizcaina"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "tortilla de patatas con empanadillas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/12/semana-del-13-al-19-de-noviembre-2018/"
+    },
+    {
+        "id": 20181117,
+        "day": "Sábado 17",
+        "lunch": {
+            "p1": "alubias estofadas",
+            "p2": "filete de ternera a la plancha con patatas"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "chuleta de sajonia con guarnición"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/12/semana-del-13-al-19-de-noviembre-2018/"
+    },
+    {
+        "id": 20181118,
+        "day": "Domingo 18",
+        "lunch": {
+            "p1": "entremeses variados",
+            "p2": "libro con patatas"
+        },
+        "dinner": {
+            "p1": "guisantes salteados",
+            "p2": "pizzas variadas con delicias de boletus"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/12/semana-del-13-al-19-de-noviembre-2018/"
+    },
+    {
+        "id": 20181119,
+        "day": "Lunes 19",
+        "lunch": {
+            "p1": "arroz a la cubana",
+            "p2": "merluza a la romana con ensalada"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "lomo con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/11/12/semana-del-13-al-19-de-noviembre-2018/"
+    }
+]

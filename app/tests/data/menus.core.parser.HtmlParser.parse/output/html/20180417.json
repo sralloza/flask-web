@@ -1,0 +1,93 @@
+[
+    {
+        "id": 20180417,
+        "day": "Martes 17",
+        "lunch": {
+            "p1": "macarrones salteados con setas",
+            "p2": "escalope con patatas"
+        },
+        "dinner": {
+            "p1": "sopa de verduras",
+            "p2": "hamburguesa completa"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/16/17-04-2018-al-23-04-2018/"
+    },
+    {
+        "id": 20180418,
+        "day": "Miércoles 18",
+        "lunch": {
+            "p1": "patatas guisadas",
+            "p2": "merluza con ensalada"
+        },
+        "dinner": {
+            "p1": "crema de verduras",
+            "p2": "lomo adobado con patatas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/16/17-04-2018-al-23-04-2018/"
+    },
+    {
+        "id": 20180419,
+        "day": "Jueves 19",
+        "lunch": {
+            "p1": "escalope con arroz",
+            "p2": "ragú de ternera"
+        },
+        "dinner": {
+            "p1": "patatas gajo con barbacoa",
+            "p2": "fajitas mejicanas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/16/17-04-2018-al-23-04-2018/"
+    },
+    {
+        "id": 20180420,
+        "day": "Viernes 20",
+        "lunch": {
+            "p1": "garbanzos guisados con jamón",
+            "p2": "pollo al ajillo"
+        },
+        "dinner": {
+            "p1": "judías verdes con jamón",
+            "p2": "tortilla de patatas con varitas de merluza"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/16/17-04-2018-al-23-04-2018/"
+    },
+    {
+        "id": 20180421,
+        "day": "Sábado 21",
+        "lunch": {
+            "p1": "espaguettis con atún",
+            "p2": "costilla asada con puré de patata"
+        },
+        "dinner": {
+            "p1": "ensalada mixta",
+            "p2": "baguettes variadas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/16/17-04-2018-al-23-04-2018/"
+    },
+    {
+        "id": 20180422,
+        "day": "Domingo 22",
+        "lunch": {
+            "p1": "paella mixta",
+            "p2": "bacalao en salsa"
+        },
+        "dinner": {
+            "p1": "sopa de ave con fideos",
+            "p2": "pizzas variadas con rabas"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/16/17-04-2018-al-23-04-2018/"
+    },
+    {
+        "id": 20180423,
+        "day": "Lunes 23",
+        "lunch": {
+            "p1": "ensalada campera",
+            "p2": "filete de ternera con guarnición"
+        },
+        "dinner": {
+            "p1": "crema de calabacín",
+            "p2": "sandwich mixto"
+        },
+        "url": "https://www.residenciasantiago.es/2018/04/16/17-04-2018-al-23-04-2018/"
+    }
+]
