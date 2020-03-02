@@ -1,5 +1,6 @@
 from unittest import mock
 
+import pytest
 from flask.testing import FlaskClient
 from werkzeug.wrappers import BaseResponse
 
@@ -91,3 +92,16 @@ def test_aemet(client):
     rv = client.get("/aemet")
     assert rv.status_code == 301
     assert rv.location == aemet
+
+
+@pytest.mark.parametrize("url", ["notificaciones", "notifications"])
+def test_notifications(client, url):
+    rv = client.get("/" + url)
+    assert rv.status_code == 200
+
+    assert b"primary" in rv.data
+    assert b"secondary" in rv.data
+    assert b"success" in rv.data
+    assert b"danger" in rv.data
+    assert b"warning" in rv.data
+    assert b"info" in rv.data
