@@ -1,3 +1,6 @@
+"""Command Line Interface for running server or more advanced
+functions.
+"""
 import sys
 
 from app import app
@@ -7,14 +10,16 @@ KEYWORD = "moises"
 
 
 def show_help():
+    """Prints the usage of the program."""
     print("Usage: ")
     print("- To run server normally:")
-    print("    $ cli.py ")
+    print("    $ python cli.py ")
     print("- To parse all data found on the server:")
-    print("    $ cli.py %s" % KEYWORD)
+    print("    $ python cli.py %s" % KEYWORD)
 
 
-def do_it():
+def trigger_moises_protocol():
+    """Triggers moises protocol and starts processing all urls."""
     print("MOISES PROTOCOL: parsing every data since moises' flood")
     with app.app_context():
         DailyMenusManager.load(parse_all=True)
@@ -22,11 +27,12 @@ def do_it():
 
 
 def main():
+    """Main function of the program."""
     if len(sys.argv) == 1:
         app.run(port=80, host="0.0.0.0", debug=True)
     elif len(sys.argv) == 2:
         if sys.argv[1] == KEYWORD:
-            do_it()
+            trigger_moises_protocol()
         else:
             show_help()
     else:
