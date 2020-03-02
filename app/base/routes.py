@@ -1,3 +1,4 @@
+"""Base routes of the flask application."""
 import logging
 
 from flask import redirect, request, url_for
@@ -13,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 @base_blueprint.before_request
 def before_request():
+    """Deny access to some user agents."""
     user_agent = request.headers.get("User-Agent")
 
     if user_agent is None:
@@ -42,24 +44,30 @@ def before_request():
         logger.debug("Not user agent provided (%r)", user_agent)
         return "A user agent must be provided", 401
 
+    return
+
 
 @base_blueprint.route("/")
 def index():
+    """Index route."""
     return redirect(url_for("menus_blueprint.today_view"))
 
 
 @base_blueprint.route("/favicon.ico")
 def favicon():
+    """Favicon route."""
     return redirect(url_for("static", filename="images/favicon.png"), code=301)
 
 
 @base_blueprint.route("/v")
 def redirect_version():
+    """Route to redirect /v to /version permanently (301)."""
     return redirect(url_for("base_blueprint.version"), code=301)
 
 
 @base_blueprint.route("/version")
 def version():
+    """Route to return the current version of the application."""
     from app import get_version
 
     return "<h1>Current version=%s" % get_version() + "</h1>"
@@ -67,26 +75,31 @@ def version():
 
 @base_blueprint.route("/s")
 def redirect_source():
+    """Redirects /s to /source permanently (301)."""
     return redirect(url_for("base_blueprint.source"), code=301)
 
 
 @base_blueprint.route("/source")
 def source():
+    """Redirects to the last menus' url."""
     return redirect(get_last_menus_url())
 
 
 @base_blueprint.route("/feedback")
 def feedback():
+    """States the admin email to send feedback to."""
     return "<h1>Send feedback to sralloza@gmail.com</h1>"
 
 
 @base_blueprint.route("/a")
 def redirect_aemet():
+    """Redirects /a to /aemet permanently (301)."""
     return redirect(url_for("base_blueprint.aemet"), code=301)
 
 
 @base_blueprint.route("/aemet")
 def aemet():
+    """Redirects to the aemet's web page of valladolid, showing data by hours."""
     return redirect(
         "http://www.aemet.es/es/eltiempo/prediccion/municipios/horas/tabla/valladolid-id47186",
         code=301,
@@ -96,6 +109,7 @@ def aemet():
 @base_blueprint.route("/notificaciones")
 @base_blueprint.route("/notifications")
 def asdfsdaffdsfas():
+    """Simple route to check if notifications are working."""
     flash("primary", "primary")
     flash("secondary", "secondary")
     flash("success", "success")
