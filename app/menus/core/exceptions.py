@@ -1,3 +1,5 @@
+"""Exceptions and warnings used in the application."""
+
 # EXCEPTIONS
 
 
@@ -18,6 +20,8 @@ class ParserError(BaseMenusError):
 
 
 # WARNINGS
+
+
 class BaseMenusWarning(Warning):
     """Base menus warning."""
 
