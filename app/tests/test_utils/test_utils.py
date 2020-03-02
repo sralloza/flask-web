@@ -2,11 +2,7 @@ from unittest import mock
 
 import pytest
 
-from app.utils import (
-    Tokens,
-    Translator,
-    get_post_arg,
-)
+from app.utils import MetaSingleton, Tokens, Translator, get_post_arg
 
 
 class TestTranslator:
@@ -220,3 +216,16 @@ class TestTokens:
 
         Tokens.update_tokens_file(tokens)
         m.write_text.assert_called_once_with(text)
+
+
+def test_singleton():
+    class Helper(metaclass=MetaSingleton):
+        def __init__(self, value):
+            self.value = value
+
+    h1 = Helper("h1")
+    h2 = Helper("h2")
+
+    assert h1.value == "h1"
+    assert h2.value == "h1"
+    assert h1 is h2
