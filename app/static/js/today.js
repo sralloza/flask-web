@@ -182,9 +182,9 @@ function get(name) {
 
 //window.onload = fetchMenus;
 window.onload = updateInterface;
-document.getElementById("next").onclick = tomorrow;
+// document.getElementById("next").onclick = tomorrow;
 document.getElementById("all").onclick = function () { window.location.href = '/menus' };
-document.getElementById("previous").onclick = yesterday;
+// document.getElementById("previous").onclick = yesterday;
 
 
 
@@ -282,13 +282,13 @@ function clickDetected(cursorXPercentage, cursorYPercentage) {
 }
 
 function clickPrevious() {
-    console.log("Autoclicking left button (previous)");
-    document.getElementById("previous").click();
+    console.log("Calling yesterday()");
+    yesterday();
 }
 
 function clickNext() {
-    console.log("Autoclicking right button (next)");
-    document.getElementById("next").click();
+    console.log("Calling tomorrow()");
+    tomorrow();
 }
 
 function clickAll() {
