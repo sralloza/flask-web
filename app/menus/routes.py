@@ -70,9 +70,15 @@ def today_view():
 
     dmm = DailyMenusManager.load(force=update)
     data = json.dumps(dmm.to_json())
-    update = json.dumps(dmm.updated)
+
+    if dmm.today_not_in_self or update:
+        if dmm.updated:
+            flash("Base de datos actualizada", "success")
+        else:
+            flash("Permiso denegado", "danger")
+
     return render_template(
-        "today.html", menus=data, default=PRINCIPAL_URL, update=update
+        "today.html", menus=data, default=PRINCIPAL_URL, update=json.dumps(dmm.updated)
     )
 
 
