@@ -157,7 +157,7 @@ def add_menu_interface():
     if result:
         flash("Menú guardado: %s" % menu.format_date(), "success")
     else:
-        flash("Menú no guardado: %s" % menu.format_date(), "danger")
+        flash("Menú no guardado: %s" % menu.format_date(), "warning")
 
     code = 200 if result else 409
 
@@ -167,30 +167,40 @@ def add_menu_interface():
 
 @menus_blueprint.route("/del", methods=["GET", "POST"])
 def del_menu_interface():
+    FormData = namedtuple("FormData", ["date"])
+    date = ""
+
     if request.method == "GET":
-        return render_template("del-interface.html")
+        return render_template("del-interface.html", data=FormData(date))
 
     try:
         date = get_post_arg("date", required=True, strip=True)
         token = get_post_arg("token", required=True, strip=True)
     except RuntimeError as err:
-        return str(err.args[0]), 403
+        flash(err, "info")
+        flash(str(err.args[0]), "danger")
+        return render_template("del-interface.html", data=FormData(date)), 403
 
     if not Tokens.check_token(token):
-        return "Invalid token", 403
+        flash("Invalid token", "danger")
+        return render_template("del-interface.html", data=FormData(date)), 403
 
     try:
         date = datetime.strptime(date, "%Y-%m-%d")
     except ValueError as err:
-        return "Invalid date format: " + err.args[0], 403
+        flash("Invalid date format: " + err.args[0], "danger")
+        date = ""
+        return render_template("del-interface.html", data=FormData(date)), 403
 
     menu = DailyMenu(date.day, date.month, date.year)
     result = menu.remove_from_database()
 
-    meta = '<meta http-equiv="refresh" content="15; url=/">'
-    meta += '<br><a href="/">Home</a><br><a href="/del">Del more</a>'
+    if result:
+        flash("Menú eliminado: %s" % menu.format_date(), "success")
+    else:
+        flash("Menú no eliminado: %s" % menu.format_date(), "warning")
 
-    status = "Deleted" if result else "Not deleted"
     code = 200 if result else 409
+    date = ""
 
-    return f"{status}:\n<br>" + menu.format_date() + meta, code
+    return render_template("del-interface.html", data=FormData(date)), code
