@@ -1,12 +1,10 @@
 import json
-from pathlib import Path
 from unittest import mock
 
 import pytest
 from flask.globals import current_app
 
 from app.menus.core.utils import (
-    PRINCIPAL_URL,
     TEMPLATE,
     Patterns,
     _Cache,
@@ -21,6 +19,7 @@ from app.utils.exceptions import DownloaderError
 
 gmu_test_data = []
 ids = []
+
 for input_path, output_path in zip(GMUDP.inputs.value, GMUDP.outputs.value):
     assert input_path.stem.replace(".html", "") == output_path.stem
     gmu_test_data.append(
@@ -164,7 +163,8 @@ class TestGetLastMenusUrl:
         out_menu_mock.url = "outside-url"
         out_menu_mock.id = 2
 
-        menus = [invalid_menu_mock] * (menus_after_success-1) + [menu_mock, out_menu_mock]
+        menus = [invalid_menu_mock] * (menus_after_success - 1)
+        menus += [menu_mock, out_menu_mock]
 
         dmm_mock.return_value.__iter__.return_value = menus
 
