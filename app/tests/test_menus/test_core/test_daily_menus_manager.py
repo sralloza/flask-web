@@ -22,6 +22,11 @@ def dmm():
 
     return dmm
 
+def test_attributes(dmm):
+    assert hasattr(dmm, "updated")
+    assert hasattr(dmm, "today_not_in_self")
+    assert hasattr(dmm, "menus")
+    assert hasattr(dmm, "_lock")
 
 def test_contains(dmm):
     assert date(2019, 1, 1) in dmm
