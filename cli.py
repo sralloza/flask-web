@@ -38,7 +38,7 @@ def main():
     else:
         show_help()
 
-    exit()
+    sys.exit()
 
 
 if __name__ == "__main__":
