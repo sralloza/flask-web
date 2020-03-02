@@ -7,6 +7,8 @@
 <link rel="apple-touch-icon-precomposed" sizes="200x200" href="{{ url_for('static', filename='images/favicon.png') }}"/>
 <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}"/>
 <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}"/>
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+<script src="https://kit.fontawesome.com/ec22cb5018.js" crossorigin="anonymous"></script>
 {% endblock %}
 
 <{% block content %}
@@ -15,6 +17,19 @@
     {% for category, message in get_flashed_messages(with_categories=true) %}
     <div class="alert alert-{{category}} mt-2">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {% if category == "primary" %}
+        <i class="fas fa-star fa-lg mr-1"></i>
+        {% elif category == "secondary" %}
+        <i class="fas fa-comment fa-lg mr-1"></i>
+        {% elif category == "success" %}
+        <i class="fas fa-check fa-lg mr-1"></i>
+        {% elif category == "warning" %}
+        <i class="fas fa-exclamation-triangle fa-lg mr-1"></i>
+        {% elif category == "danger" %}
+        <i class="fas fa-exclamation fa-lg mr-1"></i>
+        {% elif category == "info" %}
+        <i class="fas fa-info-circle fa-lg mr-1"></i>
+        {% endif %}
         {{ message }}
     </div>
     {% endfor %}
