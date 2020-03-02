@@ -1,7 +1,9 @@
 import json
+from collections import namedtuple
 from datetime import datetime
 
 from flask import redirect, render_template, request, url_for
+from flask.helpers import flash
 
 from app.menus.core.utils import PRINCIPAL_URL, get_last_menus_url
 from app.utils import Tokens, get_post_arg
@@ -117,8 +119,11 @@ def api_menus():
 
 @menus_blueprint.route("/add", methods=["GET", "POST"])
 def add_menu_interface():
+    FormData = namedtuple("FormData", "date lunch1 lunch2 dinner1 dinner2".split())
+    form_data = FormData("", "", "", "", "")
+
     if request.method == "GET":
-        return render_template("add-interface.html")
+        return render_template("add-interface.html", data=form_data)
 
     try:
         date = get_post_arg("date", required=True, strip=True)
@@ -130,26 +135,34 @@ def add_menu_interface():
     except RuntimeError as err:
         return str(err.args[0]), 403
 
+    form_data = FormData(date, lunch1, lunch2, dinner1, dinner2)
+
     if not Tokens.check_token(token):
-        return "Invalid token", 403
+        flash("Invalid token", "danger")
+        return render_template("add-interface.html", data=form_data), 403
 
     try:
-        date = datetime.strptime(date, "%Y-%m-%d")
+        date = datetime.strptime(date, r"%Y-%m-%d")
     except ValueError as err:
-        return "Invalid date format: " + err.args[0], 403
+        flash("Invalid date format: " + err.args[0], "danger")
+        form_data = form_data._replace(date=None)
+        return render_template("add-interface.html", data=form_data), 403
 
     menu = DailyMenu(
         date.day, date.month, date.year, Meal(lunch1, lunch2), Meal(dinner1, dinner2)
     )
 
     result = menu.to_database()
-    meta = '<meta http-equiv="refresh" content="15; url=/">'
-    meta += '<br><a href="/">Home</a><br><a href="/add">Add more</a>'
 
-    status = "Saved" if result else "Not saved"
+    if result:
+        flash("Menú guardado: %s" % menu.format_date(), "success")
+    else:
+        flash("Menú no guardado: %s" % menu.format_date(), "danger")
+
     code = 200 if result else 409
 
-    return f"{status}:\n<br>" + repr(menu) + meta, code
+    form_data = FormData("", "", "", "", "")
+    return render_template("add-interface.html", data=form_data), code
 
 
 @menus_blueprint.route("/del", methods=["GET", "POST"])
