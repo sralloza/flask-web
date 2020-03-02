@@ -125,8 +125,13 @@ class DailyMenusManager:
             logger.info("Parse_all override the final decision (%s)", update)
             update = True
 
-        logger.info("Final decision: %s", update)
-        self.updated = update
+        logger.info(
+            "Delivering: [missing today:%s|force:%s|update control:%s] -> %s",
+            today_not_in_self,
+            force,
+            update_control_return,
+            update,
+        )
 
         self.updated = update
         if update:
