@@ -50,6 +50,9 @@ def test_version(client):
     assert rv.status_code == 200
     assert get_version().encode() in rv.data
 
+    assert b"display-2" in rv.data
+    assert "<link rel=\"stylesheet\"".encode("utf-8") in rv.data
+    assert b"<script src=" in rv.data
 
 def test_redirect_index(client):
     rv = client.get("/")

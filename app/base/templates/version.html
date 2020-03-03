@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block page_content %}
+<div class="container h-100 d-flex">
+    <div class="jumbotron col-sm-8 text-center mt-5 mb-1 mx-auto">
+        <h5 id="title" class="display-4 mb-4">Versión Actual</h5>
+        <!-- <div class="col"></div> -->
+        <p class="lead">
+            Actualmente, la web está ejecutando la versión
+        </p>
+        <h1 class="display-2 text-primary"><samp>{{version}}</samp></h1>
+        <!-- Other great way to show version -->
+        <!-- <h1 class="display-2 text-primary"><kbd>{{version}}</kbd></h1> -->
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

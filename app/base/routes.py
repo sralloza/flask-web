@@ -62,7 +62,7 @@ def redirect_version():
 def version():
     from app import get_version
 
-    return "<h1>Current version=%s" % get_version() + "</h1>"
+    return render_template("version.html", version=get_version())
 
 
 @base_blueprint.route("/s")
