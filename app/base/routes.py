@@ -62,7 +62,7 @@ def redirect_version():
 def version():
     from app import get_version
 
-    return "<h1>Current version=%s" % get_version() + "</h1>"
+    return render_template("version.html", version=get_version())
 
 
 @base_blueprint.route("/s")
@@ -77,7 +77,8 @@ def source():
 
 @base_blueprint.route("/feedback")
 def feedback():
-    return "<h1>Send feedback to sralloza@gmail.com</h1>"
+    # return "<h1>Send feedback to sralloza@gmail.com</h1>"
+    return render_template("feedback.html")
 
 
 @base_blueprint.route("/a")
@@ -94,12 +95,14 @@ def aemet():
 
 
 @base_blueprint.route("/notificaciones")
+@base_blueprint.route("/alertas")
 @base_blueprint.route("/notifications")
-def asdfsdaffdsfas():
+@base_blueprint.route("/alerts")
+def notifications():
     flash("primary", "primary")
     flash("secondary", "secondary")
     flash("success", "success")
     flash("danger", "danger")
     flash("warning", "warning")
     flash("info", "info")
-    return render_template("base.html")
+    return render_template("notifications.html")

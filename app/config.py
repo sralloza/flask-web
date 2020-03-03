@@ -8,9 +8,9 @@ class Config(object):
     TESTING: bool = False
     DATABASE_PATH: Path = ROOT_PATH.parent.joinpath("flask.db")
     IS_LINUX: bool = platform.system() == "Linux"
-    BASE_RESIDENCE_URL: str = "https://www.residenciasantiago.es"
     TOKEN_FILE_PATH = ROOT_PATH / "VALID_TOKENS"
     OFFLINE = False
+    ADMIN_EMAIL = "sralloza@gmail.com"
 
 
 class TestingConfig(Config):

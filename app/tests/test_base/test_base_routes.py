@@ -1,6 +1,7 @@
 from unittest import mock
 
 import pytest
+from flask.globals import current_app
 from flask.testing import FlaskClient
 from werkzeug.wrappers import BaseResponse
 
@@ -49,6 +50,9 @@ def test_version(client):
     assert rv.status_code == 200
     assert get_version().encode() in rv.data
 
+    assert b"display-2" in rv.data
+    assert "<link rel=\"stylesheet\"".encode("utf-8") in rv.data
+    assert b"<script src=" in rv.data
 
 def test_redirect_index(client):
     rv = client.get("/")
@@ -78,7 +82,12 @@ def test_source(get_last_menus_url_mock, client):
 def test_feedback(client):
     rv = client.get("/feedback")
     assert rv.status_code == 200
-    assert b"<h1>Send feedback to sralloza@gmail.com</h1>" in rv.data
+    assert "Si encuentras algún error".encode("utf-8") in rv.data
+    assert b"mailto" in rv.data
+
+    assert "<link rel=\"stylesheet\"".encode("utf-8") in rv.data
+    assert b"<script src=" in rv.data
+    assert current_app.config["ADMIN_EMAIL"].encode("utf-8") in rv.data
 
 
 def test_redirect_aemet(client):
@@ -94,7 +103,10 @@ def test_aemet(client):
     assert rv.location == aemet
 
 
-@pytest.mark.parametrize("url", ["notificaciones", "notifications"])
+_urls_notifications_test = ["notificaciones", "notifications", "alerts", "alertas"]
+
+
+@pytest.mark.parametrize("url", _urls_notifications_test)
 def test_notifications(client, url):
     rv = client.get("/" + url)
     assert rv.status_code == 200
@@ -105,3 +117,14 @@ def test_notifications(client, url):
     assert b"danger" in rv.data
     assert b"warning" in rv.data
     assert b"info" in rv.data
+
+
+_footer_urls_test = ["add", "del", "feedback", "version"] + _urls_notifications_test
+
+
+@pytest.mark.parametrize("url", _footer_urls_test)
+def test_footer(client, url):
+    rv = client.get("/" + url)
+    assert b"https://sralloza.es" in rv.data
+    assert "¿Algún error? ¿Alguna sugerencia?".encode("utf-8") in rv.data
+    assert "© 2018-2020 Diego Alloza González".encode("utf-8") in rv.data
