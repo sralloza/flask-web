@@ -77,7 +77,8 @@ def source():
 
 @base_blueprint.route("/feedback")
 def feedback():
-    return "<h1>Send feedback to sralloza@gmail.com</h1>"
+    # return "<h1>Send feedback to sralloza@gmail.com</h1>"
+    return render_template("feedback.html")
 
 
 @base_blueprint.route("/a")

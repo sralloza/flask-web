@@ -1,6 +1,7 @@
 from unittest import mock
 
 import pytest
+from flask.globals import current_app
 from flask.testing import FlaskClient
 from werkzeug.wrappers import BaseResponse
 
@@ -78,7 +79,12 @@ def test_source(get_last_menus_url_mock, client):
 def test_feedback(client):
     rv = client.get("/feedback")
     assert rv.status_code == 200
-    assert b"<h1>Send feedback to sralloza@gmail.com</h1>" in rv.data
+    assert "Si encuentras algún error".encode("utf-8") in rv.data
+    assert b"mailto" in rv.data
+
+    assert "<link rel=\"stylesheet\"".encode("utf-8") in rv.data
+    assert b"<script src=" in rv.data
+    assert current_app.config["ADMIN_EMAIL"].encode("utf-8") in rv.data
 
 
 def test_redirect_aemet(client):

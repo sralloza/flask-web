@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block page_content %}
+<div class="container h-100 d-flex">
+    <div class="jumbotron col-sm-8 text-center mt-5 mb-1 mx-auto">
+        <h5 id="title" class="display-4 mb-4">Feedback</h5>
+        <!-- <div class="col"></div> -->
+        <p class="lead">
+            Si encuentras algún error, o tienes alguna sugerencia puedes mandar
+            un email a <a href="mailto:{{config['ADMIN_EMAIL']}}">{{config["ADMIN_EMAIL"]}}</a>
+        </p>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
