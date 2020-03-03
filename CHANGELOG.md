@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added testing of all menus published until `March 1, 2020`.
 * New argument for `get_menus_urls`: `request_all`. If True, it will return all menus urls.
 * Add downloader class with retry control: `Downloader`
+* Add footer with contact info.
 
 ### Changed
 * Changed test data storage system.

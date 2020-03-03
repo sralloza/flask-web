@@ -4,15 +4,14 @@
 
 {% block head %}
 {{ super() }}
-<link rel="apple-touch-icon-precomposed" sizes="200x200" href="{{ url_for('static', filename='images/favicon.png') }}"/>
+<link rel="apple-touch-icon-precomposed" sizes="200x200"href="{{ url_for('static', filename='images/favicon.png') }}"/>
 <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}"/>
 <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}"/>
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 {% endblock %}
 
 <{% block content %}
-{{super()}}
-<div class="container">
+    {{super()}}
+    <div class="container">
     {% for category, message in get_flashed_messages(with_categories=true) %}
     <div class="alert alert-{{category}} mt-2">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -36,22 +35,22 @@
     </div>
     {% endfor %}
     {% block page_content %}{% endblock %}
-</div>
 
-{% block footer %}
-<!--<footer class="page-footer font-small blue bg-dark">-->
+    {% block footer %}
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+            <a href="https://sralloza.es" class="text-muted btn">
+                <p class="mb-0">© 2018-2020 Diego Alloza González</p>
+            </a>
+            <p class="mb-1">¿Algo va mal? ¿Alguna sugerencia?</p>
 
-  <!-- Copyright -->
-  <!--<div class="footer-copyright text-center py-3">-->
-      <!--<br><br>-->
-  <!--</div>-->
-  <!-- Copyright -->
-
-<!--</footer>-->
-{% endblock %}
-{% endblock %}
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="/feedback">Contacto</a></li>
+            </ul>
+        </footer>
+    {% endblock %}
+    {% endblock %}
 
 {% block scripts %}
-<script src="https://kit.fontawesome.com/ec22cb5018.js" crossorigin="anonymous"></script>
-{{ super() }}
+    <script src="https://kit.fontawesome.com/ec22cb5018.js" crossorigin="anonymous"></script>
+    {{ super() }}
 {% endblock %}
