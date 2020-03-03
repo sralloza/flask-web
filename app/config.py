@@ -11,6 +11,7 @@ class Config(object):
     BASE_RESIDENCE_URL: str = "https://www.residenciasantiago.es"
     TOKEN_FILE_PATH = ROOT_PATH / "VALID_TOKENS"
     OFFLINE = False
+    ADMIN_EMAIL = "sralloza@gmail.com"
 
 
 class TestingConfig(Config):
