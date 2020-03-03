@@ -70,7 +70,7 @@ def version():
     """Route to return the current version of the application."""
     from app import get_version
 
-    return "<h1>Current version=%s" % get_version() + "</h1>"
+    return render_template("version.html", version=get_version())
 
 
 @base_blueprint.route("/s")
@@ -88,7 +88,7 @@ def source():
 @base_blueprint.route("/feedback")
 def feedback():
     """States the admin email to send feedback to."""
-    return "<h1>Send feedback to sralloza@gmail.com</h1>"
+    return render_template("feedback.html")
 
 
 @base_blueprint.route("/a")
@@ -107,8 +107,10 @@ def aemet():
 
 
 @base_blueprint.route("/notificaciones")
+@base_blueprint.route("/alertas")
 @base_blueprint.route("/notifications")
-def asdfsdaffdsfas():
+@base_blueprint.route("/alerts")
+def notifications():
     """Simple route to check if notifications are working."""
     flash("primary", "primary")
     flash("secondary", "secondary")
@@ -116,4 +118,4 @@ def asdfsdaffdsfas():
     flash("danger", "danger")
     flash("warning", "warning")
     flash("info", "info")
-    return render_template("base.html")
+    return render_template("notifications.html")
