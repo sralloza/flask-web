@@ -94,12 +94,14 @@ def aemet():
 
 
 @base_blueprint.route("/notificaciones")
+@base_blueprint.route("/alertas")
 @base_blueprint.route("/notifications")
-def asdfsdaffdsfas():
+@base_blueprint.route("/alerts")
+def notifications():
     flash("primary", "primary")
     flash("secondary", "secondary")
     flash("success", "success")
     flash("danger", "danger")
     flash("warning", "warning")
     flash("info", "info")
-    return render_template("base.html")
+    return render_template("notifications.html")

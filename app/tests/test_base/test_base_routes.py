@@ -94,7 +94,10 @@ def test_aemet(client):
     assert rv.location == aemet
 
 
-@pytest.mark.parametrize("url", ["notificaciones", "notifications"])
+_urls_notifications_test = ["notificaciones", "notifications", "alerts", "alertas"]
+
+
+@pytest.mark.parametrize("url", _urls_notifications_test)
 def test_notifications(client, url):
     rv = client.get("/" + url)
     assert rv.status_code == 200
