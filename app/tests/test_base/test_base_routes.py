@@ -108,3 +108,14 @@ def test_notifications(client, url):
     assert b"danger" in rv.data
     assert b"warning" in rv.data
     assert b"info" in rv.data
+
+
+_footer_urls_test = ["add", "del", "feedback", "version"] + _urls_notifications_test
+
+
+@pytest.mark.parametrize("url", _footer_urls_test)
+def test_footer(client, url):
+    rv = client.get("/" + url)
+    assert b"https://sralloza.es" in rv.data
+    assert "¿Algo va mal? ¿Alguna sugerencia?".encode("utf-8") in rv.data
+    assert "© 2018-2020 Diego Alloza González".encode("utf-8") in rv.data
