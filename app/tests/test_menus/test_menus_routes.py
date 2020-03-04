@@ -143,7 +143,7 @@ def test_today_update(dmm_mock, client, menu_mock):
 
 
 @mock.patch("app.menus.core.daily_menus_manager.UpdateControl.should_update")
-def test_today(su_mock, client, reset_database):
+def test_today(su_mock, client):
     su_mock.return_value = False
     rv = client.get("/hoy")
     assert rv.status_code == 200
@@ -419,7 +419,7 @@ class TestAddMenuInterface:
         return request.param
 
     @mock.patch("app.utils.Tokens.gen_tokens")
-    def test_post(self, token_mock, client, data_type, action_type, reset_database):
+    def test_post(self, token_mock, client, data_type, action_type):
         token_mock.return_value = ["foo-token"]
 
         post_data = self.POST_DATA_GOOD.copy()
@@ -455,7 +455,7 @@ class TestAddMenuInterface:
             assert rv.status_code == 403
 
     @mock.patch("app.utils.Tokens.gen_tokens")
-    def test_post_repeating_date(self, token_mock, client, reset_database):
+    def test_post_repeating_date(self, token_mock, client):
         token_mock.return_value = ["foo-token"]
 
         post_data = self.POST_DATA_GOOD.copy()
@@ -518,7 +518,7 @@ class TestDelMenuInterface:
 
     @mock.patch("app.menus.routes.DailyMenu.remove_from_database", autospec=True)
     @mock.patch("app.utils.Tokens.gen_tokens")
-    def test_post(self, token_mock, rfd_mock, is_ok, client, action, reset_database):
+    def test_post(self, token_mock, rfd_mock, is_ok, client, action):
         rfd_mock.return_value = is_ok
         token_mock.return_value = ["foo-token"]
 

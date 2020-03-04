@@ -1,5 +1,4 @@
-import os
-import sqlite3
+"""Testing configuration for pytest."""
 
 import pytest
 from flask.globals import current_app
@@ -10,12 +9,13 @@ from app.config import TestingConfig
 
 @pytest.fixture(scope="session", autouse=True)
 def app():
-    app = create_app(config_object="app.config.TestingConfig")
-    return app
+    """Creates the application."""
+    return create_app(config_object="app.config.TestingConfig")
 
 
 @pytest.fixture(scope="module")
 def client(app):
+    """Creates the client to simulate a real client."""
     # Flask provides a way to test your application by exposing the Werkzeug
     # test Client and handling the context locals for you.
     testing_client = app.test_client()
@@ -27,20 +27,9 @@ def client(app):
         yield testing_client  # this is where the testing happens!
 
 
-@pytest.fixture(scope="function")
-def reset_database(client):
-    # TODO: random temp file
-    connection = sqlite3.connect(current_app.config["DATABASE_PATH"])
-    cursor = connection.cursor()
-    cursor.execute("DROP TABLE IF EXISTS 'update_control'")
-    cursor.execute("DROP TABLE IF EXISTS 'daily_menus'")
-    connection.commit()
-    connection.close()
-    yield
-
-
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="function", autouse=True)
 def remove_testing_database():
+    """Removes the testing database."""
     yield
 
     if TestingConfig.DATABASE_PATH.is_file():

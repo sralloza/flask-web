@@ -198,10 +198,6 @@ class TestDatabaseConnection:
 
 
 class TestUpdateControl:
-    @pytest.fixture(autouse=True)
-    def auto_remove_database(self, reset_database):
-        yield reset_database
-
     @pytest.fixture
     def uc_sqlite(self):
         sqlite_mock = mock.patch("app.menus.models.sqlite3", autospec=True).start()
@@ -269,7 +265,7 @@ class TestUpdateControl:
             yield glu_mock
             mock.patch.stopall()
 
-        def test_yes_1(self, glu_mock, reset_database):
+        def test_yes_1(self, glu_mock):
             glu_mock.return_value = datetime(2000, 1, 1, 0, 0, 0)
 
             assert UpdateControl.should_update() is True
