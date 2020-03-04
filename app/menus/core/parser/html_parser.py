@@ -1,5 +1,5 @@
+"""Parser for html-like data."""
 import logging
-import re
 from datetime import date, datetime
 from threading import Lock
 from typing import Iterable, List, Union
@@ -13,9 +13,9 @@ from app.utils import Translator
 from .abc import BaseParser
 
 logger = logging.getLogger(__name__)
-M = Union[DailyMenu, Iterable[DailyMenu]]
-ML = List[DailyMenu]
-S = List[str]
+_M = Union[DailyMenu, Iterable[DailyMenu]]
+_ML = List[DailyMenu]
+_S = List[str]
 
 
 class HtmlParser(BaseParser):
@@ -25,9 +25,8 @@ class HtmlParser(BaseParser):
 
     @classmethod
     def process_text(cls, dmm, text: str, url: str):
-        """Processes url in search from menus."""
-        s = Soup(text, "html.parser")
-        container = s.find("article", {"class": "j-blog"})
+        soup = Soup(text, "html.parser")
+        container = soup.find("article", {"class": "j-blog"})
         text = "\n".join(x.strip() for x in container.text.splitlines() if x.strip())
         text = Patterns.fix_dates_pattern_1.sub(r"\1 \2", text)
         text = Patterns.fix_dates_pattern_2.sub(r"\1 \2", text)
@@ -47,7 +46,7 @@ class HtmlParser(BaseParser):
         dmm.add_to_menus(menus)
 
     @staticmethod
-    def _process_texts(texts: S, menus: ML):
+    def _process_texts(texts: _S, menus: _ML):
         """Processes texts retrieved from url."""
         logger.debug("Processing texts")
         index = Index()
@@ -74,8 +73,7 @@ class HtmlParser(BaseParser):
                 _filtered = text.replace("1er plato", "")
                 if len(_filtered) - len("plato combinado") > 3:
                     index.set_combined(index.state)
-                    foo = text.split(":")[-1].strip()
-                    index.set_first("PC: " + foo)
+                    index.set_first("PC: " + text.split(":")[-1].strip())
                     continue
                 text = "plato combinado"
             elif ("coctel" in text or "cóctel" in text) and len(text.split()) < 3:
@@ -99,10 +97,10 @@ class HtmlParser(BaseParser):
         return menus
 
     @staticmethod
-    def _update_menu(index: Index, menus: ML):
+    def _update_menu(index: Index, menus: _ML):
         # logger.debug('Updating menu')
         with HtmlParser._lock:
-            for i, menu in enumerate(menus):
+            for i, _ in enumerate(menus):
                 if menus[i].date == index.date:
                     if index.is_combinated:
                         menus[i].set_combined(index.meal_combined)
