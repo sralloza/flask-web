@@ -1,3 +1,4 @@
+"""Routes related to menus."""
 import json
 from collections import namedtuple
 from datetime import datetime
@@ -15,6 +16,7 @@ from .core.structure import DailyMenu, Meal
 
 @menus_blueprint.route("/menus")
 def menus_view():
+    """Route to show all the menus as a table."""
     _all = request.args.get("all") is not None
     beta = request.args.get("beta") is not None
 
@@ -41,11 +43,15 @@ def menus_view():
 @menus_blueprint.route("/new_menus")
 @menus_blueprint.route("/new-menus")
 def menus_redirect():
+    """Permamently redirect /n, /new-menus, /new_menus to /menus (301)."""
     return redirect("menus", code=301)
 
 
 @menus_blueprint.route("/menus/update")
 def menus_update():
+    """Special endpoint for /menus to enable update.
+    After update, the user is redirected to /menus.
+    """
     dmm = DailyMenusManager.load(force=True)
 
     for menu in dmm:
@@ -56,16 +62,19 @@ def menus_update():
 
 @menus_blueprint.route("/h")
 def today_redirect():
+    """Permanently redirect /h to /hoy (301)."""
     return redirect("hoy", code=301)
 
 
 @menus_blueprint.route("/hoy/update")
 def today_update():
+    """Redirect /hoy/update to /hoy?update to proper handling."""
     return redirect(url_for("menus_blueprint.today_view", _external=True) + "?update")
 
 
 @menus_blueprint.route("/hoy")
 def today_view():
+    """Special view using bootstrap, css and javascript."""
     update = request.args.get("update") is not None
 
     dmm = DailyMenusManager.load(force=update)
@@ -84,6 +93,7 @@ def today_view():
 
 @menus_blueprint.route("/api/menus/add", methods=["POST"])
 def add_menu_api():
+    """API to add menus using scripts."""
     json_data = dict(request.form)
     for key, value in json_data.items():
         json_data[key] = value[0]
@@ -105,9 +115,7 @@ def add_menu_api():
     if not Tokens.check_token(token):
         return "Invalid token", 403
 
-    lunch = Meal(lunch1, lunch2)
-    dinner = Meal(dinner1, dinner2)
-    menu = DailyMenu(day, month, year, lunch, dinner)
+    menu = DailyMenu(day, month, year, Meal(lunch1, lunch2), Meal(dinner1, dinner2))
 
     dmm = DailyMenusManager()
     dmm.add_to_menus(menu)
@@ -117,6 +125,7 @@ def add_menu_api():
 
 @menus_blueprint.route("/api/menus")
 def api_menus():
+    """API endpoint that returns all the menus as json."""
     force = request.args.get("force") is not None or request.args.get("f") is not None
     dmm = DailyMenusManager.load(force=force)
     data = dmm.to_json()
@@ -125,7 +134,12 @@ def api_menus():
 
 @menus_blueprint.route("/add", methods=["GET", "POST"])
 def add_menu_interface():
-    FormData = namedtuple("FormData", "date lunch1 lunch2 dinner1 dinner2".split())
+    """Interface endpoint used to add menus manually, with a graphical
+    interface using bootstrap.
+    """
+    FormData = namedtuple(
+        "FormData", ["date", "lunch1", "lunch2", "dinner1", "dinner2"]
+    )
     form_data = FormData("", "", "", "", "")
 
     if request.method == "GET":
@@ -173,6 +187,9 @@ def add_menu_interface():
 
 @menus_blueprint.route("/del", methods=["GET", "POST"])
 def del_menu_interface():
+    """Interface endpoint used to delete menus manually, with a
+    graphical interface using bootstrap.
+    """
     FormData = namedtuple("FormData", ["date"])
     date = ""
 

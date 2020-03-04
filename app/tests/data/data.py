@@ -1,9 +1,11 @@
+"""Data tests manager."""
 from enum import Enum
 import json
 from app.config import Config
 
 
 class TestPaths(Enum):
+    """Data paths for each test group."""
     filter_data = Config.TEST_DATA_PATH / "menus.core.filter_data"
     html_parser = Config.TEST_DATA_PATH / "menus.core.parser.HtmlParser.parse"
     get_menus_urls = Config.TEST_DATA_PATH / "menus.core.utils.get_menus_urls"
@@ -23,6 +25,7 @@ _urls_dict = json.loads(
 
 
 class ParserPaths(Enum):
+    """Parser paths grouped by type."""
     pdf = _pdf_paths
     photos = _photos_paths
     html = _html_paths
@@ -34,6 +37,7 @@ class ParserPaths(Enum):
 
 
 class FilterDataPaths(Enum):
+    """filter_data tests paths."""
     _inputs = TestPaths.filter_data.value.joinpath("input").rglob("*.txt.data")
     inputs = tuple(sorted(_inputs))
     _outputs = TestPaths.filter_data.value.joinpath("output").rglob("*.txt.data")
@@ -41,6 +45,7 @@ class FilterDataPaths(Enum):
 
 
 class GetMenusUrlsDataPaths(Enum):
+    """get_menus_url data paths."""
     _inputs = TestPaths.get_menus_urls.value.joinpath("input").rglob("*.html.data")
     inputs = tuple(sorted(_inputs))
     _outputs = TestPaths.get_menus_urls.value.joinpath("output").rglob("*.json")

@@ -17,7 +17,6 @@ class TestParserThread:
         thread = ParserThread(None, None)
         assert hasattr(thread, "url")
         assert hasattr(thread, "dmm")
-        assert hasattr(thread, "retries")
 
     @pytest.fixture
     def parser_mocks(self):
@@ -139,8 +138,7 @@ class TestParserThread:
         get_mock.return_value.text = "text"
         dmm = mock.MagicMock()
 
-        # Simulate situation where HtmlParser and ManualParser
-        # always raise ValueError
+        # Simulate situation where HtmlParser and ManualParser always raise ValueError
         html_mock.process_text.side_effect = ValueError
         manual_mock.process_text.side_effect = ValueError
 
@@ -154,7 +152,7 @@ class TestParserThread:
 
         get_mock.assert_called_once_with("url")
 
-        # Logger called 63 times (1xStarting + 2xTrying)
+        # Logger called 3 times (1xStarting + 2xTrying)
         logger_mock.debug.assert_called()
         assert logger_mock.debug.call_count == 3
 
@@ -167,79 +165,6 @@ class TestParserThread:
 
         # Error called 1 time (at the end)
         logger_mock.error.assert_called_once()
-
-    def test_run_with_one_error_in_request(self, parser_mocks):
-        get_mock, html_mock, manual_mock, logger_mock = parser_mocks
-
-        dmm = mock.MagicMock()
-
-        # Simulate situation where requests.get returns one error
-        foo_mock = mock.MagicMock()
-        foo_mock.text = "text"
-        get_mock.side_effect = [DownloaderError, foo_mock]
-
-        thread = ParserThread("url", dmm)
-        thread.start()
-        thread.join()
-
-        # First parser is called
-        html_mock.process_text.assert_called_once()
-
-        # The rest of the parsers are not called
-        manual_mock.process_text.assert_not_called()
-
-        # Get called 2 times (1 error)
-        get_mock.assert_called_with("url")
-        assert get_mock.call_count == 2
-
-        # Debug called 2 times (Starting and Trying)
-        logger_mock.debug.assert_called()
-        assert logger_mock.debug.call_count == 2
-
-        # Info called 1 time (after HtmlParser success)
-        logger_mock.info.assert_called_once()
-
-        # Error called 0 times (no error)
-        logger_mock.error.assert_not_called()
-
-    def test_run_with_three_error_in_request(self, parser_mocks):
-        get_mock, html_mock, manual_mock, logger_mock = parser_mocks
-
-        dmm = mock.MagicMock()
-
-        # Simulate situation where requests.get returns one error
-        foo_mock = mock.MagicMock()
-        foo_mock.text = "text"
-        get_mock.side_effect = [
-            DownloaderError,
-            DownloaderError,
-            DownloaderError,
-            foo_mock,
-        ]
-
-        thread = ParserThread("url", dmm)
-        thread.start()
-        thread.join()
-
-        # First parser is called
-        html_mock.process_text.assert_called_once()
-
-        # The rest of the parsers are not called
-        manual_mock.process_text.assert_not_called()
-
-        # Get called 4 times (3 error)
-        get_mock.assert_called_with("url")
-        assert get_mock.call_count == 4
-
-        # Debug called 2 times (Starting and Trying)
-        logger_mock.debug.assert_called()
-        assert logger_mock.debug.call_count == 2
-
-        # Info called 1 time (after HtmlParser success)
-        logger_mock.info.assert_called_once()
-
-        # Error called 0 times (no error)
-        logger_mock.error.assert_not_called()
 
     def test_run_with_fatal_error_in_request(self, parser_mocks):
         get_mock, html_mock, manual_mock, logger_mock = parser_mocks
@@ -259,9 +184,9 @@ class TestParserThread:
         html_mock.process_text.assert_not_called()
         manual_mock.process_text.assert_not_called()
 
-        # Get called 5 times (5 error)
+        # Get called 1 times
         get_mock.assert_called_with("url")
-        assert get_mock.call_count == 5
+        assert get_mock.call_count == 1
 
         # Debug called 1 times (Starting)
         logger_mock.debug.assert_called_once()
@@ -272,7 +197,7 @@ class TestParserThread:
         # Error called 1 times (fatal error)
         logger_mock.error.assert_called_once()
 
-    def test_run_with_seven_error_in_request_with_ten_retries(self, parser_mocks):
+    def test_run_with_error_in_request_with_ten_retries(self, parser_mocks):
         get_mock, html_mock, manual_mock, logger_mock = parser_mocks
 
         dmm = mock.MagicMock()
@@ -280,40 +205,29 @@ class TestParserThread:
         # Simulate situation where requests.get returns one error
         foo_mock = mock.MagicMock()
         foo_mock.text = "text"
-        get_mock.side_effect = [
-            DownloaderError,
-            DownloaderError,
-            DownloaderError,
-            DownloaderError,
-            DownloaderError,
-            DownloaderError,
-            DownloaderError,
-            foo_mock,
-        ]
+        get_mock.side_effect = DownloaderError
 
-        thread = ParserThread("url", dmm, retries=10)
+        thread = ParserThread("url", dmm)
         thread.start()
         thread.join()
 
-        # First parser is called
-        html_mock.process_text.assert_called_once()
-
-        # The rest of the parsers are not called
+        # No parsers are called
+        html_mock.process_text.assert_not_called()
         manual_mock.process_text.assert_not_called()
 
-        # Get called 8 times (7 error)
+        # Get called 1 times
         get_mock.assert_called_with("url")
-        assert get_mock.call_count == 8
+        assert get_mock.call_count == 1
 
-        # Debug called 2 times (Starting and Trying)
+        # Debug called 2 times (Starting)
         logger_mock.debug.assert_called()
-        assert logger_mock.debug.call_count == 2
+        assert logger_mock.debug.call_count == 1
 
-        # Info called 1 time (after HtmlParser success)
-        logger_mock.info.assert_called_once()
+        # Info called 0 times
+        logger_mock.info.assert_not_called()
 
-        # Error called 0 times (no error)
-        logger_mock.error.assert_not_called()
+        # Error called 1 times (Downloader error)
+        logger_mock.error.assert_called_once()
 
 
 class TestParserList:
@@ -330,15 +244,15 @@ class TestParserList:
         assert hasattr(parser_thread_list, "__iter__")
 
     @pytest.mark.parametrize(
-        "object", [ParserThread(None, None), ParserThread(None, None, None)]
+        "parser", [ParserThread(None, None), ParserThread(None, None)]
     )
-    def test_append_valid(self, object, parser_thread_list):
-        parser_thread_list.append(object)
+    def test_append_valid(self, parser, parser_thread_list):
+        parser_thread_list.append(parser)
 
-    @pytest.mark.parametrize("object", ["a", 5, 1 + 3j, False, True])
-    def test_append_invalid(self, object, parser_thread_list):
+    @pytest.mark.parametrize("not_parser", ["a", 5, 1 + 3j, False, True])
+    def test_append_invalid(self, not_parser, parser_thread_list):
         with pytest.raises(TypeError):
-            parser_thread_list.append(object)
+            parser_thread_list.append(not_parser)
 
 
 class TestParsers:

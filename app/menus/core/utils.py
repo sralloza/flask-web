@@ -1,3 +1,4 @@
+"""Utils for menus' core."""
 import logging
 import re
 from itertools import count
@@ -16,6 +17,9 @@ TEMPLATE = "https://www.residenciasantiago.es/app/blogpage?page=%d&withinCms=&la
 
 
 class _Cache:
+    """Static class to store the redirect_url in case
+    it is needed again."""
+
     redirect_url = None
 
 
@@ -57,6 +61,12 @@ def get_menus_urls(request_all=False):
 
 
 def get_last_menus_url():
+    """Returns the most recent menus url, using the cache, the DMM and
+    finally, the main web.
+
+    Returns:
+        str: most recent menus url.
+    """
     from app.menus.core.daily_menus_manager import DailyMenusManager
 
     logger.debug("Getting last menus url")
@@ -85,11 +95,11 @@ def get_last_menus_url():
     return _Cache.redirect_url
 
 
-def has_day(x):
+def has_day(anything):
     """Checks if the string is a date format."""
-    x = x.lower()
+    anything = anything.lower()
 
-    return Patterns.day_pattern.search(x) is not None
+    return Patterns.day_pattern.search(anything) is not None
 
 
 def filter_data(data: Union[str, List[str]]):
@@ -99,7 +109,7 @@ def filter_data(data: Union[str, List[str]]):
         data: input data.
 
     Returns:
-        Union[str, List[str]]: data processed. It will be the same type as the input.
+        str or list of str: data processed. It will be the same type as the input.
 
     """
 
@@ -115,73 +125,75 @@ def filter_data(data: Union[str, List[str]]):
     while "" in data:
         data.remove("")
 
-    for i in range(len(data)):
-        data[i] = data[i].lower().strip()
+    for index, line in enumerate(data):
+        data[index] = data[index].lower().strip()
 
-    for i in range(len(data)):
-        if "." in data[i]:
-            data[i] = data[i].replace(".", "")
+    for index, line in enumerate(data):
+        if "." in data[index]:
+            data[index] = data[index].replace(".", "")
 
-        if re.search(r"1.*\splato:", data[i]):
-            data[i] = re.sub(r"1.*\splato:", "1er plato:", data[i])
-        elif re.search(r"2.*\splato:", data[i]):
-            data[i] = re.sub(r"2.*\splato:", "2º plato:", data[i])
+        if re.search(r"1.*\splato:", data[index]):
+            data[index] = re.sub(r"1.*\splato:", "1er plato:", data[index])
+        elif re.search(r"2.*\splato:", data[index]):
+            data[index] = re.sub(r"2.*\splato:", "2º plato:", data[index])
 
     out = []
-    for i, d in enumerate(data):
+    for index, line in enumerate(data):
         # First check for 'combinado'
-        if len(d) <= 2:
+        if len(line) <= 2:
             continue
-        elif "combinado" in d:
-            if "1er plato:" in data[i - 1] and out:
-                out[-1] += " " + d.strip()
+        if "combinado" in line:
+            if "1er plato:" in data[index - 1] and out:
+                out[-1] += " " + line.strip()
                 continue
-            out.append(d.replace("1er plato:", "").strip())
-        elif "1er plato:" in d:
-            out.append(d)
-        elif "2º plato:" in d:
-            if "combinado" in data[i - 1]:
-                d_prime = d.replace("2º plato:", "").strip()
-                if d_prime == d or not d_prime:
+            out.append(line.replace("1er plato:", "").strip())
+        elif "1er plato:" in line:
+            out.append(line)
+        elif "2º plato:" in line:
+            if "combinado" in data[index - 1]:
+                d_prime = line.replace("2º plato:", "").strip()
+                if d_prime == line or not d_prime:
                     continue
                 out[-1] += " " + d_prime
                 continue
-            out.append(d)
-        # TODO: use the same patterns for "comida" and "cena" as HtmlParser._process_texts
-        elif re.search(r"comida[:;]", d):
-            out.append(d)
-        elif re.search(r"cena(r)?[:;]", d):
-            out.append(d)
-        elif "cóctel" in d or "coctel" in d:  # and d.split() < 3:
+            out.append(line)
+        elif Patterns.pattern_lunch.search(line):
+            out.append(line)
+        elif Patterns.pattern_dinner.search(line):
+            out.append(line)
+        elif "cóctel" in line or "coctel" in line:  # and d.split() < 3:
             out.append("cóctel")
-        elif Patterns.day_pattern.search(d) is not None:
-            out.append(Patterns.day_pattern.search(d).group())
-        elif Patterns.semi_day_pattern_2.search(d) is not None:
-            if Patterns.semi_day_pattern_1.search(data[i - 1]) is not None:
-                foo = (
-                    Patterns.semi_day_pattern_1.search(data[i - 1]).group()
+        elif Patterns.day_pattern.search(line) is not None:
+            out.append(Patterns.day_pattern.search(line).group())
+        elif Patterns.semi_day_pattern_2.search(line) is not None:
+            if Patterns.semi_day_pattern_1.search(data[index - 1]) is not None:
+                good_to_go = (
+                    Patterns.semi_day_pattern_1.search(data[index - 1]).group()
                     + " de "
-                    + Patterns.semi_day_pattern_2.search(d).group()
+                    + Patterns.semi_day_pattern_2.search(line).group()
                 )
-                out.append(foo)
+                out.append(good_to_go)
+        # I don't know how, but this shit works. Don't ask
         elif (
-            "2º plato" in data[i - 1]
-            and data[i - 1].endswith("con")
-            and "postre" not in d
+            "2º plato" in data[index - 1]
+            and data[index - 1].endswith("con")
+            and "postre" not in line
         ):
-            out[-1] += " " + d
+            out[-1] += " " + line
+
+        # I don't know how, but this shit works. Don't ask
         elif (
-            "1er plato" in data[i - 1]
-            and i + 1 < len(data)
-            and "2º plato" in data[i + 1]
-            and "postre" not in d
+            "1er plato" in data[index - 1]
+            and index + 1 < len(data)
+            and "2º plato" in data[index + 1]
+            and "postre" not in line
         ):
-            out[-1] += " " + d
+            out[-1] += " " + line
         else:
-            if "combinado" in data[i - 1] and "postre" not in d:
-                out[-1] += " " + d
-            elif "comida" in data[i-1] or "cena" in data[i-1]:
-                out.append("1er plato: " + d)
+            if "combinado" in data[index - 1] and "postre" not in line:
+                out[-1] += " " + line
+            elif "comida" in data[index - 1] or "cena" in data[index - 1]:
+                out.append("1er plato: " + line)
 
     if is_string:
         return "\n".join(out)
@@ -217,3 +229,6 @@ class Patterns:
     )
     fix_content_pattern_2 = re.compile(r"([ \t]){2,}", re.IGNORECASE)
     fix_content_pattern_3 = re.compile(r"(\w+)(?:[ \t]+)(postre:)", re.IGNORECASE)
+
+    pattern_lunch = re.compile(r"comida[:;]", re.IGNORECASE)
+    pattern_dinner = re.compile(r"cena(r)?[:;]", re.IGNORECASE)

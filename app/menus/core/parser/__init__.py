@@ -21,11 +21,10 @@ KNOWN_UNPARSEABLE_URLS = (
 class ParserThread(Thread):
     """Thread made to control."""
 
-    def __init__(self, url, dmm, retries=5):
+    def __init__(self, url, dmm):
         super().__init__()
         self.url = url
         self.dmm = dmm
-        self.retries = retries
 
     def run(self):
         logger.debug("Starting %s with url %r", self.name, self.url)
@@ -34,18 +33,13 @@ class ParserThread(Thread):
             logger.warning("Skipped url because its in KNOWN_UNPARSEABLE_URLS")
             return
 
-        retries_left = self.retries
-        while retries_left:
-            try:
-                response = downloader.get(self.url)
-                break
-            except Exception:
-                retries_left -= 1
-                if not retries_left:
-                    logger.error("Fatal connection error downloading %s", self.url)
-                    raise DownloaderError(
-                        "Fatal connection error downloading %s" % self.url
-                    )
+        try:
+            response = downloader.get(self.url)
+        except DownloaderError as exc:
+            logger.error("Fatal connection error downloading %s", self.url)
+            raise DownloaderError(
+                "Fatal connection error downloading %s" % self.url
+            ) from exc
 
         for parser in Parsers.parsers:
             try:
@@ -53,7 +47,7 @@ class ParserThread(Thread):
                 parser.process_text(dmm=self.dmm, text=response.text, url=self.url)
                 logger.info("URL parsed correcty with parser %r", parser.__name__)
                 return
-            except Exception:
+            except:
                 logger.exception(
                     "Exception parsing %r using parser %r:", self.url, parser.__name__
                 )
@@ -64,34 +58,50 @@ class ParserThread(Thread):
 
 
 class ParserThreadList(UserList):
-    def append(self, object: ParserThread):
-        if not isinstance(object, ParserThread):
+    """Custom list to store parser threads."""
+
+    def append(self, something: ParserThread):
+        if not isinstance(something, ParserThread):
             raise TypeError(
-                "ParserThreadList can only contain ParserThread instances, not %r",
-                type(ParserThread).__name__,
+                "ParserThreadList can only contain ParserThread instances, not %r"
+                % type(ParserThread).__name__,
             )
 
-        super(ParserThreadList, self).append(object)
+        super(ParserThreadList, self).append(something)
 
 
 class Parsers:
+    """Parsers manager class."""
+
     parsers = [HtmlParser, ManualParser]
     _threads = ParserThreadList()
     _lock = Lock()
 
     @staticmethod
     def _append(thread: ParserThread):
+        """Appends a thread to the list of threads.
+
+        Args:
+            thread (ParserThread): thread to append.
+        """
         with Parsers._lock:
             Parsers._threads.append(thread)
 
     @staticmethod
-    def parse(url, dmm, retries=5):
-        worker = ParserThread(url, dmm, retries)
+    def parse(url, dmm):
+        """Starts the parsing of the url.
+
+        Args:
+            url (str): url to get the menus from.
+            dmm (DailyMenusManager): DMM instance.
+        """
+        worker = ParserThread(url, dmm)
         worker.start()
         Parsers._append(worker)
 
     @staticmethod
     def join():
+        """Waits for all parser threads to finish."""
         for worker in Parsers._threads:
             worker.join()
 

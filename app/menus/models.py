@@ -1,3 +1,4 @@
+"""Database models for application."""
 import logging
 import sqlite3
 from datetime import datetime, timedelta
@@ -10,8 +11,15 @@ logger = logging.getLogger(__name__)
 
 
 class DailyMenusDatabaseController:
+    """Interface to list, save and remove menus using a sqlite database."""
+
     @staticmethod
     def list_menus():
+        """Returns a list with menus stored in the database.
+
+        Returns:
+            list of DailyMenu: menus stored in the database.
+        """
         from app.menus.core.structure import DailyMenu, Meal
 
         with DatabaseConnection() as connection:
@@ -33,6 +41,14 @@ class DailyMenusDatabaseController:
 
     @classmethod
     def save_daily_menu(cls, daily_menu):
+        """Saves a menu in the database.
+
+        Args:
+            daily_menu (DailyMenu): menu to saveself.
+
+        Returns:
+            bool: True if it has been saved. False otherwise.
+        """
         with DatabaseConnection() as connection:
             data = (
                 daily_menu.id,
@@ -57,6 +73,14 @@ class DailyMenusDatabaseController:
 
     @classmethod
     def remove_daily_menu(cls, daily_menu):
+        """Removes a menu from the database.
+
+        Args:
+            daily_menu (DailyMenu): menu to remove from the database.
+
+        Returns:
+            bool: True if it was deleted. False otherwise.
+        """
         with DatabaseConnection() as connection:
             connection.execute(
                 "SELECT COUNT(*) FROM 'daily_menus' WHERE id=?", [daily_menu.id]
@@ -72,6 +96,8 @@ class DailyMenusDatabaseController:
 
 
 class DatabaseConnection:
+    """Interface for raw database connections."""
+
     def __init__(self):
         try:
             self.connection = sqlite3.connect(current_app.config["DATABASE_PATH"])
@@ -90,19 +116,24 @@ class DatabaseConnection:
         self.close()
 
     def close(self):
+        """Closes the database connection."""
         self.cursor.close()
         self.connection.close()
 
     def commit(self):
+        """Saves changes to the database."""
         self.connection.commit()
 
     def execute(self, *args, **kwargs):
+        """Executes a SQL order."""
         return self.cursor.execute(*args, **kwargs)
 
     def fetch_all(self):
+        """Returns all the data stored in the database."""
         return self.cursor.fetchall()
 
     def ensure_tables(self):
+        """Executes a SQL script to ensure the existance of the sqlite table."""
         self.execute(
             """
                 CREATE TABLE IF NOT EXISTS 'daily_menus' (
@@ -130,6 +161,8 @@ class DatabaseConnection:
 
 
 class UpdateControl:
+    """Manager class that decides when is the database can be updated."""
+
     MIN_DATETIME = datetime.min
 
     def __init__(self):
@@ -142,13 +175,27 @@ class UpdateControl:
         self.close()
 
     def close(self):
+        """Closes the connection with the database."""
         self.connection.close()
 
     def commit(self):
+        """Saves the changes made to the database."""
         self.connection.commit()
 
     @staticmethod
     def should_update(minutes=20):
+        """Returns whether or not the database can be updated.
+
+        Notes:
+            When the database is updated, the method UpdateControl.set_last_update()
+                must be called
+
+        Args:
+            minutes (int, optional): Minimum minutes between updates. Defaults to 20.
+
+        Returns:
+            bool: True if the database can be updated. False otherwise
+        """
         last_update = UpdateControl.get_last_update()
         today = now()
         today.replace(microsecond=0)
@@ -161,32 +208,46 @@ class UpdateControl:
 
     @staticmethod
     def set_last_update():
-        # TODO: add argument dt
-        with UpdateControl() as uc:
-            dt = now()
-            dt_str = dt.strftime("%Y-%m-%d %H:%M:%S")
+        """Indicates that the database just have been updated. This
+        method will save the exact time when it was called to the
+        database, so UpdateControl.should_update() can make a choice.
+        """
+        with UpdateControl() as update_control:
+            dt_str = now().strftime("%Y-%m-%d %H:%M:%S")
 
-            last_update = uc.get_last_update()
+            last_update = update_control.get_last_update()
 
             if last_update is UpdateControl.MIN_DATETIME:
-                uc.connection.execute(
+                update_control.connection.execute(
                     "INSERT INTO update_control VALUES (?)", (dt_str,)
                 )
             else:
-                uc.connection.execute("UPDATE update_control SET datetime=?", (dt_str,))
+                update_control.connection.execute(
+                    "UPDATE update_control SET datetime=?", (dt_str,)
+                )
 
             # To check that no more than one entry exists in the database
-            uc.get_last_update()
-            uc.commit()
+            update_control.get_last_update()
+            update_control.commit()
 
     @staticmethod
     def get_last_update():
-        with UpdateControl() as uc:
-            uc.connection.execute("select datetime from update_control")
-            data = uc.connection.fetch_all()
+        """Returns the datetime when the database was last updated.
+
+        Raises:
+            sqlite3.DatabaseError: If there are multiple datetimes stored
+                in the database, which by design can't - but errors happens,
+                so here we are.
+
+        Returns:
+            datetime.datetime: datetime of the last update.
+        """
+        with UpdateControl() as update_control:
+            update_control.connection.execute("select datetime from update_control")
+            data = update_control.connection.fetch_all()
 
             if len(data) == 0:
-                return uc.MIN_DATETIME
+                return update_control.MIN_DATETIME
 
             if len(data) > 1:
                 raise sqlite3.DatabaseError(f"Too many datetimes stored ({len(data)})")
@@ -194,6 +255,6 @@ class UpdateControl:
             try:
                 return datetime.strptime(data[0][0], "%Y-%m-%d %H:%M:%S")
             except ValueError:
-                uc.connection.execute("DELETE FROM update_control")
-                uc.commit()
-                return uc.MIN_DATETIME
+                update_control.connection.execute("DELETE FROM update_control")
+                update_control.commit()
+                return update_control.MIN_DATETIME

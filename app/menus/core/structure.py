@@ -1,3 +1,6 @@
+"""This module contains the base classes related to
+menus used in this application.
+"""
 import logging
 import warnings
 from datetime import date, datetime
@@ -15,6 +18,8 @@ logger = logging.getLogger(__name__)
 
 @unique
 class LunchState(Enum):
+    """States of meals."""
+
     LUNCH = "LUNCH"
     DINNER = "DINNER"
     NONE = "NONE"
@@ -61,6 +66,11 @@ class Index:
 
     @property
     def is_combinated(self):
+        """Returns whether the meal is combinated or not.
+
+        Returns:
+            bool: True if the meal is combinated, False otherwise.
+        """
         return self.meal_combined is not None
 
     def set_combined(self, meal_combined: Union[LunchState, str]):
@@ -134,10 +144,11 @@ class Index:
 
         if self.state == LunchState.LUNCH:
             return self.lunch.is_empty()
-        elif self.state == LunchState.DINNER:
+        if self.state == LunchState.DINNER:
             return self.dinner.is_empty()
-        elif not self.state:
+        if not self.state:
             raise MealError("state not set while checking for emtpyness")
+        return None
 
     def decide(self, text: str):
         """Called if the normal algorithm couldn't idenfity content.
@@ -160,9 +171,9 @@ class Index:
         if self.is_current_meal_empty():
             self.set_first(text)
             return True
-        else:
-            warnings.warn(f"Could not decide: {text}", MealWarning, stacklevel=2)
-            return False
+
+        warnings.warn(f"Could not decide: {text}", MealWarning, stacklevel=2)
+        return False
 
     def set_state(self, state: Union[LunchState, str]):
         """Sets the actual state.
@@ -204,8 +215,9 @@ class Index:
 
         if self.state == LunchState.LUNCH:
             return self.lunch.p1
-        elif self.state == LunchState.DINNER:
+        if self.state == LunchState.DINNER:
             return self.dinner.p1
+        return None
 
     def set_second(self, second):
         """Sets the second plate.
@@ -236,8 +248,9 @@ class Index:
 
         if self.state == LunchState.LUNCH:
             return self.lunch.p2
-        elif self.state == LunchState.DINNER:
+        if self.state == LunchState.DINNER:
             return self.dinner.p2
+        return None
 
     def to_dict(self):
         """Returns the lunch and dinner info as a dict."""
@@ -322,17 +335,18 @@ class Combined(Meal):
 
 
 class DailyMenu:
-    """Represents the menu of a day."""
+    """Represents the menu of a day.
 
-    def __init__(
-        self,
-        day: int,
-        month: int,
-        year: int,
-        lunch: Meal = None,
-        dinner: Meal = None,
-        url: str = None,
-    ):
+    Args:
+        day (int): day of the menu.
+        month (int): month of the menu.
+        year (int): year of the menu.
+        lunch (Meal, optional): lunch of the menu. Defaults to None.
+        dinner (Meal, optional): dinner of the menu. Defaults to None.
+        url (str, optional): url where the menu was parsed from. Defaults to None.
+    """
+
+    def __init__(self, day, month, year, lunch=None, dinner=None, url=None):
         self.day = day
         self.month = month
         self.year = year
@@ -379,6 +393,14 @@ class DailyMenu:
             return False
 
     def set_combined(self, meal: Union[LunchState, str]):
+        """Sets the meal to combinated.
+
+        Args:
+            meal (LunchState or str): meal to set to combinated
+
+        Raises:
+            MealError: if `meal` is not a valid meal.
+        """
         if not isinstance(meal, LunchState):
             try:
                 meal = LunchState(meal)
@@ -433,28 +455,30 @@ class DailyMenu:
         return self.to_string().replace("\n", "<br>")
 
     @classmethod
-    def from_datetime(cls, dt: Union[datetime, str, date]):
+    def from_datetime(cls, timestamp: Union[datetime, str, date]):
         """Creates a DailyMenu given its datetime.
 
         Args:
-            dt: datetime of the menu.
+            timestamp (datetime, str or date): datetime of the menu.
 
         """
 
         self = DailyMenu.__new__(DailyMenu)
 
-        if isinstance(dt, str):
-            dt = dt.lower()
-            dt = dt.replace("miercoles", "miércoles")
-            dt = dt.replace("sabado", "sábado")
-            dt = datetime.strptime(
-                Translator.spanish_to_english(dt), "día: %d de %B de %Y (%A)"
+        if isinstance(timestamp, str):
+            timestamp = timestamp.lower()
+            timestamp = timestamp.replace("miercoles", "miércoles")
+            timestamp = timestamp.replace("sabado", "sábado")
+            timestamp = datetime.strptime(
+                Translator.spanish_to_english(timestamp), "día: %d de %B de %Y (%A)"
             )
 
-        if not isinstance(dt, (datetime, date)):
-            raise TypeError(f"dt must be datetime or str, not {type(dt).__name__}")
+        if not isinstance(timestamp, (datetime, date)):
+            raise TypeError(
+                f"timestamp must be datetime or str, not {type(timestamp).__name__}"
+            )
 
-        self.__init__(dt.day, dt.month, dt.year)
+        self.__init__(timestamp.day, timestamp.month, timestamp.year, None, None, None)
 
         return self
 

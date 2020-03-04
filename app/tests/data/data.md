@@ -17,8 +17,6 @@ Output files have words that are useful to the system (one group per line).
 
 
 ## HtmlParser.parse
-**TODO: add tests for 2017 and 2018**
-
 ### Inputs
 There are 3 folders (`pdf`, `photos` and `html`) to save inputs of each type. Additionaly, there is
 a file at the same level as the folders named `urls.json` that states which url does each file come from.

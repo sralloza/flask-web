@@ -278,7 +278,7 @@ def parse_all(request):
     return request.param
 
 
-def test_load(load_mocks, force, tid, should_update, reset_database, parse_all):
+def test_load(load_mocks, force, tid, should_update, parse_all, client):
     std_mock, contains_mock, lfd_mock, su_mock, parse_mock, gmu_mock = load_mocks
     contains_mock.return_value = tid
     su_mock.return_value = should_update
