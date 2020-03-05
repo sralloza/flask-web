@@ -91,21 +91,6 @@ def feedback():
     return render_template("feedback.html")
 
 
-@base_blueprint.route("/a")
-def redirect_aemet():
-    """Redirects /a to /aemet permanently (301)."""
-    return redirect(url_for("base_blueprint.aemet"), code=301)
-
-
-@base_blueprint.route("/aemet")
-def aemet():
-    """Redirects to the aemet's web page of valladolid, showing data by hours."""
-    return redirect(
-        "http://www.aemet.es/es/eltiempo/prediccion/municipios/horas/tabla/valladolid-id47186",
-        code=301,
-    )
-
-
 @base_blueprint.route("/notificaciones")
 @base_blueprint.route("/alertas")
 @base_blueprint.route("/notifications")

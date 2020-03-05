@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add downloader class with retry control: `Downloader`
 * Add footer with contact info.
 * Use bootstrap interface in `/notifications`, `/version` and `/feedback`.
+* Add docs.
 
 ### Changed
 * Changed test data storage system.
@@ -22,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed some bugs with `cocktail` and `combined plates`.
 * Fixed some bugs using semicolons instead of colons, like `comida;` instead of `comida:`
 
+### Removed
+* Removed aemet sites (`/aemet` and `/a`).
 
 ## [2.1.1] -2020-02-27
 ### Fixed

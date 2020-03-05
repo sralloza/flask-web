@@ -51,8 +51,9 @@ def test_version(client):
     assert get_version().encode() in rv.data
 
     assert b"display-2" in rv.data
-    assert "<link rel=\"stylesheet\"".encode("utf-8") in rv.data
+    assert '<link rel="stylesheet"'.encode("utf-8") in rv.data
     assert b"<script src=" in rv.data
+
 
 def test_redirect_index(client):
     rv = client.get("/")
@@ -85,22 +86,9 @@ def test_feedback(client):
     assert "Si encuentras algún error".encode("utf-8") in rv.data
     assert b"mailto" in rv.data
 
-    assert "<link rel=\"stylesheet\"".encode("utf-8") in rv.data
+    assert '<link rel="stylesheet"'.encode("utf-8") in rv.data
     assert b"<script src=" in rv.data
     assert current_app.config["ADMIN_EMAIL"].encode("utf-8") in rv.data
-
-
-def test_redirect_aemet(client):
-    rv = client.get("/a")
-    assert rv.status_code == 301
-    assert rv.location == "http://menus.sralloza.es/aemet"
-
-
-def test_aemet(client):
-    aemet = "http://www.aemet.es/es/eltiempo/prediccion/municipios/horas/tabla/valladolid-id47186"
-    rv = client.get("/aemet")
-    assert rv.status_code == 301
-    assert rv.location == aemet
 
 
 _urls_notifications_test = ["notificaciones", "notifications", "alerts", "alertas"]
