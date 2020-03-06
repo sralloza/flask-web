@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.2.0] - 2020-03-06
 ### Added
 * Added testing of all menus published until `March 1, 2020`.
 * New argument for `get_menus_urls`: `request_all`. If True, it will return all menus urls.
@@ -93,7 +93,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.0] - 2019-11-21
 
-[Unreleased]: https://github.com/sralloza/flask-web/compare/v2.1.1...HEAD
+[Unreleased]: https://github.com/sralloza/flask-web/compare/v2.2.0...HEAD
+[2.2.0]: https://github.com/sralloza/flask-web/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/sralloza/flask-web/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/sralloza/flask-web/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/sralloza/flask-web/compare/v1.3.0...v2.0.0
