@@ -8,9 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * Added testing of all menus published until `March 1, 2020`.
 * New argument for `get_menus_urls`: `request_all`. If True, it will return all menus urls.
-* Add downloader class with retry control: `Downloader`
+* Add downloader class with retry control: `Downloader`.
 * Add footer with contact info.
 * Use bootstrap interface in `/notifications`, `/version` and `/feedback`.
+* Add docs.
+* Add README with a detailed explanation of the available sites.
 
 ### Changed
 * Changed test data storage system.
@@ -22,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed some bugs with `cocktail` and `combined plates`.
 * Fixed some bugs using semicolons instead of colons, like `comida;` instead of `comida:`
 
+### Removed
+* Removed aemet sites (`/aemet` and `/a`).
 
 ## [2.1.1] -2020-02-27
 ### Fixed
