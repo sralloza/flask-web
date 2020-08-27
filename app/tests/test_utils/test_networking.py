@@ -44,30 +44,35 @@ class TestDownloader:
         assert downloader.headers["User-Agent"] == USER_AGENT
 
     def test_get(self, request_mock, caplog):
+        caplog.set_level(10)
         downloader = Downloader()
         downloader.get("some-url")
         request_mock.assert_called_with("GET", "some-url", allow_redirects=True)
         assert "GET 'some-url'" in caplog.text
 
     def test_post(self, request_mock, caplog):
+        caplog.set_level(10)
         downloader = Downloader()
         downloader.post("some-url", data="data", json="json")
         request_mock.assert_called_with("POST", "some-url", data="data", json="json")
         assert "POST 'some-url'" in caplog.text
 
     def test_delete(self, request_mock, caplog):
+        caplog.set_level(10)
         downloader = Downloader()
         downloader.delete("some-url")
         request_mock.assert_called_with("DELETE", "some-url")
         assert "DELETE 'some-url'" in caplog.text
 
     def test_put(self, request_mock, caplog):
+        caplog.set_level(10)
         downloader = Downloader()
         downloader.put("some-url", data="data")
         request_mock.assert_called_with("PUT", "some-url", data="data")
         assert "PUT 'some-url'" in caplog.text
 
     def test_head(self, request_mock, caplog):
+        caplog.set_level(10)
         downloader = Downloader()
         downloader.head("some-url")
         # Default allow_redirects for HEAD is false
