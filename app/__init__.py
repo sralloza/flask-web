@@ -8,6 +8,7 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 
 from .base import base_blueprint
+from .base.routes import after_request, before_request
 from .menus import menus_blueprint
 
 logging.basicConfig(
@@ -40,6 +41,9 @@ def create_app(config_object):
     Bootstrap(flask_app)
     flask_app.register_blueprint(base_blueprint)
     flask_app.register_blueprint(menus_blueprint)
+
+    flask_app.after_request(after_request)
+    flask_app.before_request(before_request)
 
     flask_app.secret_key = "".join(choice(ascii_letters) for _ in range(16))
     return flask_app

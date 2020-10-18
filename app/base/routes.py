@@ -12,7 +12,11 @@ from . import base_blueprint
 logger = logging.getLogger(__name__)
 
 
-@base_blueprint.before_request
+def after_request(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
+
+
 def before_request():
     """Deny access to some user agents."""
     user_agent = request.headers.get("User-Agent")
